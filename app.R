@@ -23,6 +23,7 @@ ui <- navbarPage("DELPHI",
                                   sliderInput("designMinCohortB", "Minimum Cohort B Patients Option", min = 0, max = 100, value = 2),
                                   sliderInput("designCohortSize", "Patients to Treat at Current Dose", min = 1, max = 100, value = 3),
                                   sliderInput("designMaxN", "Maximum Enrolled Patients", min = 1, max = 100, value = 20),
+                                  checkboxGroupInput("designSelector", "Select Designs", choices = c("TARGET-CRM", "3+3")),
                                   actionButton("designSimulate", "Simulate")
                               )
                             ),
