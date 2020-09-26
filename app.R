@@ -8,8 +8,7 @@ ui <- navbarPage("DELPHI",
                  tabPanel("Home"),
                  tabPanel("Design",
                           tabBox(
-                            tabPanel(
-                              title = "Inputs",
+                            tabPanel("Inputs",
                               div(style = 'overflow-y:scroll;height:500px;',
                                   selectizeInput("designPriorTox", "Prior Toxicity Probabilities", choices = NULL, multiple = TRUE, options = list(create = TRUE)),
                                   sliderInput("designTargetTox", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.1),
@@ -23,8 +22,12 @@ ui <- navbarPage("DELPHI",
                                   radioButtons("designTargetCRM", "Target CRM Option", choices = c(0,1,2)),
                                   sliderInput("designMinCohortB", "Minimum Cohort B Patients Option", min = 0, max = 100, value = 2),
                                   sliderInput("designCohortSize", "Patients to Treat at Current Dose", min = 1, max = 100, value = 3),
-                                  sliderInput("designMaxN", "Maximum Enrolled Patients", min = 1, max = 100, value = 20)
+                                  sliderInput("designMaxN", "Maximum Enrolled Patients", min = 1, max = 100, value = 20),
+                                  actionButton("designSimulate", "Simulate")
                               )
+                            ),
+                            tabPanel("Results",
+                                     h1("Plot Output Place Holder")
                             )
                           )
                   ),
