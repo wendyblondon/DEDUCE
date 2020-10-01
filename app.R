@@ -28,7 +28,7 @@ ui <- navbarPage("DELPHI",
                               )
                             ),
                             tabPanel("Results",
-                                     h1("Plot Output Place Holder")
+                                     textOutput("targetCRMSelecTable")
                             )
                           )
                   ),
@@ -37,6 +37,22 @@ ui <- navbarPage("DELPHI",
 )
 
 server <- function(input, output, session) {
+  
+  targetCRM <- eventReactive(input$designSimulate, {
+    if (input$designSelector == 'TARGET-CRM') {
+      target.crm(prior = input$designPriorTox, target.tox = input$designTargetTox, number.trials = input$designNumTrials, 
+                 true.tox = input$designTrueTox, arrival.rate = input$designArrivalRate, prop.B = input$designPropB, 
+                 target.crm = input$designTargetCRM, min.cohortB = input$designMinCohortB, cycle.length = input$designCycleLength, 
+                 cohort.size = input$designCohortSize, max.N = input$designMaxN, start.level = input$designStartLevel)
+    }
+    else{
+      #three.plus.three()
+    }
+  })
+  
+  output$targetCRMSelecTable <- renderText({
+    targetCRM()$MTD.selection.table
+  })
   
 }
 
