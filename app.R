@@ -25,7 +25,7 @@ ui <- navbarPage("DELPHI",
                                    actionButton("designSimulate", "Simulate")
                             ),
                             column(8,
-                                   withSpinner(textOutput("targetCRMSelecTable"))
+                                   withSpinner(textOutput("targetCRMSelecTable"), type = 7, color = "003087")
                             )
                           )
                   ),
