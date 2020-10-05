@@ -1,6 +1,8 @@
 library(shiny)
 library(shinydashboard)
 library(shinycssloaders)
+library(tidyverse)
+library(plotly)
 
 source("target_crm.R")
 
@@ -25,7 +27,7 @@ ui <- navbarPage("DELPHI",
                                    actionButton("designSimulate", "Simulate")
                             ),
                             column(8,
-                                   withSpinner(textOutput("targetCRMSelecTable"), type = 7, color = "#003087", size = 2)
+                                   withSpinner(plotlyOutput("designPlotly1"), type = 7, color = "#003087", size = 2)
                             )
                           )
                   ),
@@ -35,7 +37,7 @@ ui <- navbarPage("DELPHI",
 
 server <- function(input, output, session) {
   
-  targetCRM <- eventReactive(input$designSimulate, {
+  designTargetCRM <- eventReactive(input$designSimulate, {
     if (input$designSelector == 'TARGET-CRM') {
       target.crm(prior = as.numeric(input$designPriorTox), target.tox = input$designTargetTox, number.trials = input$designNumTrials, 
                  true.tox = as.numeric(input$designTrueTox), arrival.rate = input$designArrivalRate, prop.B = input$designPropB, 
@@ -47,8 +49,10 @@ server <- function(input, output, session) {
     }
   })
   
-  output$targetCRMSelecTable <- renderText({
-    targetCRM()$MTD.selection.table
+  output$designPlotly1 <- renderPlotly({
+    p1 <- designTargetCRM()$df %>% ggplot(aes(x=Dose.Number, y=MTD.Selection)) + geom_bar(stat = 'identity')
+    
+    ggplotly(p1) %>% config(displayModeBar = FALSE)
   })
   
 }
