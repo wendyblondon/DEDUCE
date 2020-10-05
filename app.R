@@ -50,7 +50,8 @@ server <- function(input, output, session) {
   })
   
   output$designPlotly1 <- renderPlotly({
-    p1 <- designTargetCRM()$df %>% ggplot(aes(x=Dose.Number, y=MTD.Selection)) + geom_bar(stat = 'identity')
+    p1 <- designTargetCRM()$df %>% mutate(MTD.Selection = MTD.Selection/100) %>% 
+      ggplot(aes(x=Dose.Number, y=MTD.Selection)) + geom_bar(stat = 'identity')
     
     ggplotly(p1) %>% config(displayModeBar = FALSE)
   })
