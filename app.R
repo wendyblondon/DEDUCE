@@ -17,14 +17,14 @@ ui <- navbarPage("DELPHI",
                                    conditionalPanel(
                                      condition = "input.designSelector == '3+3'",
                                      
-                                     selectizeInput("designDoseLabels", "Dose Level Labels", selected = c("-1","1","2","3"), choices = NULL, multiple = TRUE, options = list(create = TRUE)),
+                                     textInput("designDoseLabels", "Dose Level Labels", value = "-1,1,2,3"),
                                      sliderInput("designTargetTox", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.1),
                                      sliderInput("designNumTrials", "Number of Simulated Trials", min = 0, max = 10000, value = 100),
                                      selectizeInput("designTrueTox", "True Toxicity Probability Vector", selected = c(0.05,0.12,0.2,0.3), choices = NULL, multiple = TRUE, options = list(create = TRUE)),
                                      sliderInput("designArrivalRate", "Patient Enrollment Rate", min = 0, max = 180, value = 15),
                                      sliderInput("designPropB", "Proportion of Patients from Cohort B", min = 0, max = 1, value = 0.1, step = 0.1),
                                      sliderInput("designCycleLength", "Duration of DLT Observation Period", min = 0, max = 365, value = 28),
-                                     selectInput("designStartLevel", "Starting Dose Level", choices = NULL, )
+                                     selectInput("designStartLevel", "Starting Dose Level", choices = NULL)
                                    ),
                                    conditionalPanel(
                                      condition = "input.designSelector == 'TARGET-CRM'",
@@ -47,9 +47,14 @@ ui <- navbarPage("DELPHI",
 )
 
 server <- function(input, output, session) {
+
+  # Get Dose Level Labels
+  designDoseLabels <- reactive({
+    as.vector(unlist(strsplit(input$designDoseLabels, ",")))
+  })
   
   observe({
-    updateSelectInput(session, "designStartLevel", choices = input$designDoseLabels)
+    updateSelectInput(session, "designStartLevel", choices = designDoseLabels(), selected = as.numeric(designDoseLabels()[2]))
     updateSliderInput(session, "designMinCohortB", max = input$designMaxN)
   })
   
