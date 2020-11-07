@@ -5,25 +5,36 @@ library(tidyverse)
 library(plotly)
 
 source("target_crm.R")
+source("three_plus_three.R")
 
 ui <- navbarPage("DELPHI",
                  tabPanel("Home"),
                  tabPanel("Design",
                           fluidRow(
                             column(4,
-                                   selectizeInput("designPriorTox", "Prior Toxicity Probabilities", choices = NULL, multiple = TRUE, options = list(create = TRUE)),
-                                   sliderInput("designTargetTox", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.1),
-                                   sliderInput("designNumTrials", "Number of Trials", min = 0, max = 50000, value = 1000),
-                                   selectizeInput("designTrueTox", "True Toxicity Probabilities", choices = NULL, multiple = TRUE, options = list(create = TRUE)),
-                                   sliderInput("designArrivalRate", "Mean Inter-Arrival Time", min = 1, max = 100, value = 15),
-                                   sliderInput("designPropB", "Proportion of Patients in Cohort B", min = 0, max = 1, value = 0.1, step = 0.1),
-                                   radioButtons("designTargetCRM", "Target CRM Option", choices = c(0,1,2)),
-                                   sliderInput("designMinCohortB", "Minimum Cohort B Patients Option", min = 0, max = 100, value = 2),
-                                   sliderInput("designCycleLength", "Duration of DLT Observation", min = 1, max = 100, value = 28),
-                                   sliderInput("designCohortSize", "Patients to Treat at Current Dose", min = 1, max = 100, value = 3),
-                                   sliderInput("designMaxN", "Maximum Enrolled Patients", min = 1, max = 100, value = 20),
-                                   sliderInput("designStartLevel", "Starting Dose Level", min = 1, max = 10, value = 2),
-                                   checkboxGroupInput("designSelector", "Select Designs", choices = c("TARGET-CRM", "3+3")),
+                                   checkboxGroupInput("designSelector", "Dose-Escalation Designs", choices = c("3+3", "TARGET-CRM"), selected = "3+3"),
+                                   
+                                   conditionalPanel(
+                                     condition = "input.designSelector == '3+3'",
+                                     
+                                     selectizeInput("designDoseLabels", "Dose Level Labels", selected = c("-1","1","2","3"), choices = NULL, multiple = TRUE, options = list(create = TRUE)),
+                                     sliderInput("designTargetTox", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.1),
+                                     sliderInput("designNumTrials", "Number of Simulated Trials", min = 0, max = 10000, value = 100),
+                                     selectizeInput("designTrueTox", "True Toxicity Probability Vector", selected = c(0.05,0.12,0.2,0.3), choices = NULL, multiple = TRUE, options = list(create = TRUE)),
+                                     sliderInput("designArrivalRate", "Patient Enrollment Rate", min = 0, max = 180, value = 15),
+                                     sliderInput("designPropB", "Proportion of Patients from Cohort B", min = 0, max = 1, value = 0.1, step = 0.1),
+                                     sliderInput("designCycleLength", "Duration of DLT Observation Period", min = 0, max = 365, value = 28),
+                                     selectInput("designStartLevel", "Starting Dose Level", choices = NULL, )
+                                   ),
+                                   conditionalPanel(
+                                     condition = "input.designSelector == 'TARGET-CRM'",
+                                     
+                                     selectizeInput("designPriorTox", "Prior Toxicity Probability Vector", selected = c(0.05,0.12,0.2,0.3), choices = NULL, multiple = TRUE, options = list(create = TRUE)),
+                                     selectInput("designCohortSize", "Cohort Size", choices = c(seq(1,9)), selected = 3),
+                                     sliderInput("designMaxN", "Maximum Sample Size", min = 1, max = 200, value = 18),
+                                     selectInput("designTargetCRM", "Target-CRM Option", choices = c(0,1,2), selected = 1),
+                                     sliderInput("designMinCohortB", "Minimum Enrollment of Cohort B Patients (Optional)", min = 0, max = 100, value = 2)
+                                   ),
                                    actionButton("designSimulate", "Simulate")
                             ),
                             column(8,
@@ -37,6 +48,11 @@ ui <- navbarPage("DELPHI",
 
 server <- function(input, output, session) {
   
+  observe({
+    updateSelectInput(session, "designStartLevel", choices = input$designDoseLabels)
+    updateSliderInput(session, "designMinCohortB", max = input$designMaxN)
+  })
+  
   designTargetCRM <- eventReactive(input$designSimulate, {
     if (input$designSelector == 'TARGET-CRM') {
       target.crm(prior = as.numeric(input$designPriorTox), target.tox = input$designTargetTox, number.trials = input$designNumTrials, 
@@ -44,8 +60,8 @@ server <- function(input, output, session) {
                  target.crm = as.numeric(input$designTargetCRM), min.cohortB = input$designMinCohortB, cycle.length = input$designCycleLength, 
                  cohort.size = input$designCohortSize, max.N = input$designMaxN, start.level = input$designStartLevel)
     }
-    else{
-      #three.plus.three()
+    if (input$designSelector == '3+3') {
+      three.plus.three()
     }
   })
   
