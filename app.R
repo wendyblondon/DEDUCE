@@ -45,7 +45,7 @@ server <- function(input, output, session) {
     
     else if(input$designSelector == "TARGET-CRM"){
       tagList(
-        textInput("designDoseLabels", "Dose Level Labels", value = "-1,1,2,3"),
+        textInput("designDoseLabels2", "Dose Level Labels", value = "-1,1,2,3"),
         textInput("designPriorTox", "Prior Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3"),
         sliderInput("designTargetTox", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.1),
         sliderInput("designNumTrials", "Number of Simulated Trials", min = 0, max = 10000, value = 100),
@@ -92,12 +92,12 @@ server <- function(input, output, session) {
   })
   
   # Displaying the Plots
-  output$designPlotly1 <- renderPlotly({
-    p1 <- designTargetCRM()$df %>% mutate(MTD.Selection = MTD.Selection/100) %>%
-      ggplot(aes(x=Dose.Number, y=MTD.Selection)) + geom_bar(stat = 'identity')
-    
-    ggplotly(p1) %>% config(displayModeBar = FALSE)
-  })
+  # output$designPlotly1 <- renderPlotly({
+  #   p1 <- designTargetCRM()$df %>% mutate(MTD.Selection = MTD.Selection/100) %>%
+  #     ggplot(aes(x=Dose.Number, y=MTD.Selection)) + geom_bar(stat = 'identity')
+  #   
+  #   ggplotly(p1) %>% config(displayModeBar = FALSE)
+  #})
   
 }
 
