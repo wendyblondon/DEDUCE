@@ -73,13 +73,15 @@ server <- function(input, output, session) {
   
   designTargetCRM <- eventReactive(input$designSimulate, {
     if (input$designSelector == 'TARGET-CRM') {
-      target.crm(prior = as.numeric(unlist(strsplit(input$designPriorTox, ","))), target.tox = input$designTargetTox, number.trials = input$designNumTrials, 
-                 true.tox = as.numeric(unlist(strsplit(input$designTrueTox, ","))), arrival.rate = input$designArrivalRate, prop.B = input$designPropB, 
-                 target.crm = as.numeric(input$designTargetCRM), min.cohortB = input$designMinCohortB, cycle.length = input$designCycleLength, 
-                 cohort.size = input$designCohortSize, max.N = input$designMaxN, start.level = input$designStartLevel)
+      target.crm(prior = as.numeric(unlist(strsplit(input$designPriorTox, ","))), target.tox = input$designTargetTox2, number.trials = input$designNumTrials2, 
+                 true.tox = as.numeric(unlist(strsplit(input$designTrueTox2, ","))), arrival.rate = input$designArrivalRate2, prop.B = input$designPropB2, 
+                 target.crm = as.numeric(input$designTargetCRM), min.cohortB = input$designMinCohortB, cycle.length = input$designCycleLength2, 
+                 cohort.size = input$designCohortSize, max.N = input$designMaxN, start.level = as.numeric(input$designStartLevel2))
     }
     if (input$designSelector == '3+3') {
-      three.plus.three()
+      three.plus.three(target.tox = input$designTargetTox, number.trials = input$designNumTrials, 
+                       true.tox = as.numeric(unlist(strsplit(input$designTrueTox, ","))), arrival.rate = input$designArrivalRate, 
+                       input$designPropB, cycle.length = input$designCycleLength, start.level = as.numeric(input$designStartLevel))
     }
   })
   
