@@ -13,7 +13,7 @@ ui <- navbarPage("DELPHI",
                           fluidRow(
                             column(4,
                                    checkboxGroupInput("designSelector", "Dose-Escalation Designs", choices = c("3+3", "TARGET-CRM"), selected = "3+3"),
-                                   #uiOutput("designUI"),
+                                   uiOutput("designUI"),
                                    actionButton("designSimulate", "Simulate")
                             ),
                             column(8,
@@ -28,39 +28,39 @@ ui <- navbarPage("DELPHI",
 server <- function(input, output, session) {
 
   # Rendering the UI
-  # output$designUI <- renderUI({
-  #   
-  #   if (input$designSelector == "3+3") {
-  #     tagList(
-  #       textInput("designDoseLabels", "Dose Level Labels", value = "-1,1,2,3"),
-  #       sliderInput("designTargetTox", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.1),
-  #       sliderInput("designNumTrials", "Number of Simulated Trials", min = 0, max = 10000, value = 100),
-  #       textInput("designTrueTox", "True Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3"),
-  #       sliderInput("designArrivalRate", "Patient Enrollment Rate", min = 0, max = 180, value = 15),
-  #       sliderInput("designPropB", "Proportion of Patients from Cohort B", min = 0, max = 1, value = 0.1, step = 0.1),
-  #       sliderInput("designCycleLength", "Duration of DLT Observation Period", min = 0, max = 365, value = 28),
-  #       selectInput("designStartLevel", "Starting Dose Level", choices = NULL)
-  #     )
-  #   }
-  #   
-  #   else if(input$designSelector == "TARGET-CRM"){
-  #     tagList(
-  #       textInput("designDoseLabels", "Dose Level Labels", value = "-1,1,2,3"),
-  #       textInput("designPriorTox", "Prior Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3"),
-  #       sliderInput("designTargetTox", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.1),
-  #       sliderInput("designNumTrials", "Number of Simulated Trials", min = 0, max = 10000, value = 100),
-  #       textInput("designTrueTox", "True Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3"),
-  #       sliderInput("designArrivalRate", "Patient Enrollment Rate", min = 0, max = 180, value = 15),
-  #       sliderInput("designPropB", "Proportion of Patients from Cohort B", min = 0, max = 1, value = 0.1, step = 0.1),
-  #       selectInput("designTargetCRM", "Target-CRM Option", choices = c(0,1,2), selected = 1),
-  #       sliderInput("designMinCohortB", "Minimum Enrollment of Cohort B Patients (Optional)", min = 0, max = 100, value = 2),
-  #       sliderInput("designCycleLength", "Duration of DLT Observation Period", min = 0, max = 365, value = 28),
-  #       selectInput("designCohortSize", "Cohort Size", choices = c(seq(1,9)), selected = 3),
-  #       sliderInput("designMaxN", "Maximum Sample Size", min = 1, max = 200, value = 18),
-  #       selectInput("designStartLevel", "Starting Dose Level", choices = NULL)
-  #     )
-  #   }
-  # })
+  output$designUI <- renderUI({
+    
+    if (input$designSelector == "3+3") {
+      tagList(
+        textInput("designDoseLabels", "Dose Level Labels", value = "-1,1,2,3"),
+        sliderInput("designTargetTox", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.1),
+        sliderInput("designNumTrials", "Number of Simulated Trials", min = 0, max = 10000, value = 100),
+        textInput("designTrueTox", "True Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3"),
+        sliderInput("designArrivalRate", "Patient Enrollment Rate", min = 0, max = 180, value = 15),
+        sliderInput("designPropB", "Proportion of Patients from Cohort B", min = 0, max = 1, value = 0.1, step = 0.1),
+        sliderInput("designCycleLength", "Duration of DLT Observation Period", min = 0, max = 365, value = 28),
+        selectInput("designStartLevel", "Starting Dose Level", choices = NULL)
+      )
+    }
+    
+    else if(input$designSelector == "TARGET-CRM"){
+      tagList(
+        textInput("designDoseLabels", "Dose Level Labels", value = "-1,1,2,3"),
+        textInput("designPriorTox", "Prior Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3"),
+        sliderInput("designTargetTox", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.1),
+        sliderInput("designNumTrials", "Number of Simulated Trials", min = 0, max = 10000, value = 100),
+        textInput("designTrueTox", "True Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3"),
+        sliderInput("designArrivalRate", "Patient Enrollment Rate", min = 0, max = 180, value = 15),
+        sliderInput("designPropB", "Proportion of Patients from Cohort B", min = 0, max = 1, value = 0.1, step = 0.1),
+        selectInput("designTargetCRM", "Target-CRM Option", choices = c(0,1,2), selected = 1),
+        sliderInput("designMinCohortB", "Minimum Enrollment of Cohort B Patients (Optional)", min = 0, max = 100, value = 2),
+        sliderInput("designCycleLength", "Duration of DLT Observation Period", min = 0, max = 365, value = 28),
+        selectInput("designCohortSize", "Cohort Size", choices = c(seq(1,9)), selected = 3),
+        sliderInput("designMaxN", "Maximum Sample Size", min = 1, max = 200, value = 18),
+        selectInput("designStartLevel", "Starting Dose Level", choices = NULL)
+      )
+    }
+  })
   
   
   
