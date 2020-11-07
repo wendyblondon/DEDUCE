@@ -62,8 +62,12 @@ server <- function(input, output, session) {
     as.vector(unlist(strsplit(input$designDoseLabels, ",")))
   })
   
+  designDoseLabels2 <- reactive({
+    as.vector(unlist(strsplit(input$designDoseLabels2, ",")))
+  })
   observe({
     updateSelectInput(session, "designStartLevel", choices = designDoseLabels(), selected = as.numeric(designDoseLabels()[2]))
+    updateSelectInput(session, "designStartLevel2", choices = designDoseLabels(), selected = as.numeric(designDoseLabels2()[2]))
     updateSliderInput(session, "designMinCohortB", max = input$designMaxN)
   })
   
