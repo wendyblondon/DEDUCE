@@ -20,7 +20,7 @@ ui <- navbarPage("DELPHI",
                                      textInput("designDoseLabels", "Dose Level Labels", value = "-1,1,2,3"),
                                      sliderInput("designTargetTox", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.1),
                                      sliderInput("designNumTrials", "Number of Simulated Trials", min = 0, max = 10000, value = 100),
-                                     selectizeInput("designTrueTox", "True Toxicity Probability Vector", selected = c(0.05,0.12,0.2,0.3), choices = NULL, multiple = TRUE, options = list(create = TRUE)),
+                                     textInput("designTrueTox", "True Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3"),
                                      sliderInput("designArrivalRate", "Patient Enrollment Rate", min = 0, max = 180, value = 15),
                                      sliderInput("designPropB", "Proportion of Patients from Cohort B", min = 0, max = 1, value = 0.1, step = 0.1),
                                      sliderInput("designCycleLength", "Duration of DLT Observation Period", min = 0, max = 365, value = 28),
@@ -29,11 +29,20 @@ ui <- navbarPage("DELPHI",
                                    conditionalPanel(
                                      condition = "input.designSelector == 'TARGET-CRM'",
                                      
-                                     selectizeInput("designPriorTox", "Prior Toxicity Probability Vector", selected = c(0.05,0.12,0.2,0.3), choices = NULL, multiple = TRUE, options = list(create = TRUE)),
+                                     textInput("designDoseLabels2", "Dose Level Labels", value = "-1,1,2,3"),
+                                     textInput("designPriorTox", "Prior Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3"),
+                                     sliderInput("designTargetTox2", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.1),
+                                     sliderInput("designNumTrials2", "Number of Simulated Trials", min = 0, max = 10000, value = 100),
+                                     textInput("designTrueTox2", "True Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3"),
+                                     sliderInput("designArrivalRate2", "Patient Enrollment Rate", min = 0, max = 180, value = 15),
+                                     sliderInput("designPropB2", "Proportion of Patients from Cohort B", min = 0, max = 1, value = 0.1, step = 0.1),
+                                     selectInput("designTargetCRM", "Target-CRM Option", choices = c(0,1,2), selected = 1),
+                                     sliderInput("designMinCohortB", "Minimum Enrollment of Cohort B Patients (Optional)", min = 0, max = 100, value = 2),
+                                     sliderInput("designCycleLength2", "Duration of DLT Observation Period", min = 0, max = 365, value = 28),
                                      selectInput("designCohortSize", "Cohort Size", choices = c(seq(1,9)), selected = 3),
                                      sliderInput("designMaxN", "Maximum Sample Size", min = 1, max = 200, value = 18),
-                                     selectInput("designTargetCRM", "Target-CRM Option", choices = c(0,1,2), selected = 1),
-                                     sliderInput("designMinCohortB", "Minimum Enrollment of Cohort B Patients (Optional)", min = 0, max = 100, value = 2)
+                                     selectInput("designStartLevel2", "Starting Dose Level", choices = NULL)
+                                     
                                    ),
                                    actionButton("designSimulate", "Simulate")
                             ),
@@ -60,8 +69,8 @@ server <- function(input, output, session) {
   
   designTargetCRM <- eventReactive(input$designSimulate, {
     if (input$designSelector == 'TARGET-CRM') {
-      target.crm(prior = as.numeric(input$designPriorTox), target.tox = input$designTargetTox, number.trials = input$designNumTrials, 
-                 true.tox = as.numeric(input$designTrueTox), arrival.rate = input$designArrivalRate, prop.B = input$designPropB, 
+      target.crm(prior = as.numeric(unlist(strsplit(input$designPriorTox, ","))), target.tox = input$designTargetTox, number.trials = input$designNumTrials, 
+                 true.tox = as.numeric(unlist(strsplit(input$designTrueTox, ","))), arrival.rate = input$designArrivalRate, prop.B = input$designPropB, 
                  target.crm = as.numeric(input$designTargetCRM), min.cohortB = input$designMinCohortB, cycle.length = input$designCycleLength, 
                  cohort.size = input$designCohortSize, max.N = input$designMaxN, start.level = input$designStartLevel)
     }
