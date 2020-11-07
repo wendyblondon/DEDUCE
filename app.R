@@ -13,7 +13,7 @@ ui <- navbarPage("DELPHI",
                           fluidRow(
                             column(4,
                                    checkboxGroupInput("designSelector", "Dose-Escalation Designs", choices = c("3+3", "TARGET-CRM"), selected = "3+3"),
-                                   uiOutput("designSelector"),
+                                   uiOutput("designUI"),
                                    actionButton("designSimulate", "Simulate")
                             ),
                             column(8,
@@ -79,10 +79,10 @@ server <- function(input, output, session) {
   # Running the Design(s)
   designTargetCRM <- eventReactive(input$designSimulate, {
     if (input$designSelector == 'TARGET-CRM') {
-      target.crm(prior = as.numeric(unlist(strsplit(input$designPriorTox, ","))), target.tox = input$designTargetTox2, number.trials = input$designNumTrials2, 
-                 true.tox = as.numeric(unlist(strsplit(input$designTrueTox2, ","))), arrival.rate = input$designArrivalRate2, prop.B = input$designPropB2, 
-                 target.crm = as.numeric(input$designTargetCRM), min.cohortB = input$designMinCohortB, cycle.length = input$designCycleLength2, 
-                 cohort.size = input$designCohortSize, max.N = input$designMaxN, start.level = as.numeric(input$designStartLevel2))
+      target.crm(prior = as.numeric(unlist(strsplit(input$designPriorTox, ","))), target.tox = input$designTargetTox, number.trials = input$designNumTrials, 
+                 true.tox = as.numeric(unlist(strsplit(input$designTrueTox, ","))), arrival.rate = input$designArrivalRate, prop.B = input$designPropB, 
+                 target.crm = as.numeric(input$designTargetCRM), min.cohortB = input$designMinCohortB, cycle.length = input$designCycleLength, 
+                 cohort.size = input$designCohortSize, max.N = input$designMaxN, start.level = as.numeric(input$designStartLevel))
     }
     if (input$designSelector == '3+3') {
       three.plus.three(target.tox = input$designTargetTox, number.trials = input$designNumTrials, 
