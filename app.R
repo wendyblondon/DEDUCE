@@ -57,7 +57,7 @@ server <- function(input, output, session) {
     req(input$designSelector)
     tagList(
       selectInput("designStartLevel", "Starting Dose Level", choices = as.vector(unlist(strsplit(input$designDoseLabels, ","))), 
-                  selected = as.vector(unlist(strsplit(input$designDoseLabels, ",")))[2])
+                  selected = as.numeric(unlist(strsplit(input$designDoseLabels, ",")))[2])
     )
   })
   
