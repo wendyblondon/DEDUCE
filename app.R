@@ -12,9 +12,9 @@ ui <- navbarPage("DELPHI",
                  tabPanel("Design",
                           fluidRow(
                             column(4,
-                                   checkboxGroupInput("designSelector", "Dose-Escalation Designs", choices = c("3+3", "TARGET-CRM"), selected = "3+3"),
+                                   radioButtons("designSelector", "Dose-Escalation Designs", choices = c("3+3"=1, "TARGET-CRM"=2, "Both"=3), selected = 1),
                                    conditionalPanel(
-                                     condition = "input.designSelector == '3+3'",
+                                     condition = "input.designSelector == 1",
                                      textInput("designDoseLabels", "Dose Level Labels", value = "-1,1,2,3"),
                                      sliderInput("designTargetTox", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.1),
                                      sliderInput("designNumTrials", "Number of Simulated Trials", min = 0, max = 10000, value = 100),
@@ -24,7 +24,7 @@ ui <- navbarPage("DELPHI",
                                      sliderInput("designCycleLength", "Duration of DLT Observation Period", min = 0, max = 365, value = 28)
                                    ),
                                    conditionalPanel(
-                                     condition = "input.designSelector == 'TARGET-CRM'",
+                                     condition = "input.designSelector == 2",
                                      textInput("designDoseLabels", "Dose Level Labels", value = "-1,1,2,3"),
                                      textInput("designPriorTox", "Prior Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3"),
                                      sliderInput("designTargetTox", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.1),
@@ -37,6 +37,10 @@ ui <- navbarPage("DELPHI",
                                      sliderInput("designCycleLength", "Duration of DLT Observation Period", min = 0, max = 365, value = 28),
                                      selectInput("designCohortSize", "Cohort Size", choices = c(seq(1,9)), selected = 3),
                                      sliderInput("designMaxN", "Maximum Sample Size", min = 1, max = 200, value = 18)
+                                   ),
+                                   conditionalPanel(
+                                     condition = "input.designSelector == 3",
+                                     h1("Something Here")
                                    ),
                                    uiOutput("designStartLevel"),
                                    actionButton("designSimulate", "Simulate")
@@ -56,8 +60,8 @@ server <- function(input, output, session) {
   output$designStartLevel <- renderUI({
     req(input$designSelector)
     tagList(
-      selectInput("designStartLevel", "Starting Dose Level", choices = as.vector(unlist(strsplit(input$designDoseLabels, ","))), 
-                  selected = as.numeric(unlist(strsplit(input$designDoseLabels, ",")))[2])
+      selectInput("designStartLevel", "Starting Dose Level", choices = seq(1, length(as.vector(unlist(strsplit(input$designDoseLabels, ","))))), 
+                  selected = seq(1, length(as.vector(unlist(strsplit(input$designDoseLabels, ",")))))[2])
     )
   })
   
