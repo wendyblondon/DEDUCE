@@ -7,90 +7,130 @@ library(plotly)
 source("target_crm.R")
 source("three_plus_three.R")
 
+# Functions
+numerizer <- function(x){
+  as.numeric(unlist(strsplit(x, ",")))
+}
+
 ui <- navbarPage("DELPHI",
                  tabPanel("Home"),
                  tabPanel("Design",
                           fluidRow(
                             column(4,
-                                   radioButtons("designSelector", "Dose-Escalation Designs", choices = c("3+3"=1, "TARGET-CRM"=2, "Both"=3), selected = 1),
-                                   conditionalPanel(
-                                     condition = "input.designSelector == 1",
-                                     textInput("designDoseLabels", "Dose Level Labels", value = "-1,1,2,3"),
-                                     sliderInput("designTargetTox", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.1),
-                                     sliderInput("designNumTrials", "Number of Simulated Trials", min = 0, max = 10000, value = 100),
-                                     textInput("designTrueTox", "True Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3"),
-                                     sliderInput("designArrivalRate", "Patient Enrollment Rate", min = 0, max = 180, value = 15),
-                                     sliderInput("designPropB", "Proportion of Patients from Cohort B", min = 0, max = 1, value = 0.1, step = 0.1),
-                                     sliderInput("designCycleLength", "Duration of DLT Observation Period", min = 0, max = 365, value = 28)
-                                   ),
-                                   conditionalPanel(
-                                     condition = "input.designSelector == 2",
-                                     textInput("designDoseLabels", "Dose Level Labels", value = "-1,1,2,3"),
-                                     textInput("designPriorTox", "Prior Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3"),
-                                     sliderInput("designTargetTox", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.1),
-                                     sliderInput("designNumTrials", "Number of Simulated Trials", min = 0, max = 10000, value = 100),
-                                     textInput("designTrueTox", "True Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3"),
-                                     sliderInput("designArrivalRate", "Patient Enrollment Rate", min = 0, max = 180, value = 15),
-                                     sliderInput("designPropB", "Proportion of Patients from Cohort B", min = 0, max = 1, value = 0.1, step = 0.1),
-                                     selectInput("designTargetCRM", "Target-CRM Option", choices = c(0,1,2), selected = 1),
-                                     sliderInput("designMinCohortB", "Minimum Enrollment of Cohort B Patients (Optional)", min = 0, max = 100, value = 2),
-                                     sliderInput("designCycleLength", "Duration of DLT Observation Period", min = 0, max = 365, value = 28),
-                                     selectInput("designCohortSize", "Cohort Size", choices = c(seq(1,9)), selected = 3),
-                                     sliderInput("designMaxN", "Maximum Sample Size", min = 1, max = 200, value = 18)
-                                   ),
-                                   conditionalPanel(
-                                     condition = "input.designSelector == 3",
-                                     h1("Something Here")
-                                   ),
-                                   uiOutput("designStartLevel"),
+                                   radioButtons("designSelector", "Dose-Escalation Design", choices = c("3+3"=1, "TARGET-CRM"=2, "Both"=3), 
+                                                selected = 1, inline = TRUE),
+                                   textInput("designDoseLabels", "Dose Level Labels", value = "-1,1,2,3"),
+                                   selectInput("designStartLevel", "Starting Dose Level", choices = c(-1,1,2,3), selected = 1),
+                                   uiOutput("designInputs"),
                                    actionButton("designSimulate", "Simulate")
                             ),
                             column(8,
                                    withSpinner(plotlyOutput("designPlotly1"), type = 7, color = "#003087", size = 2)
                             )
                           )
-                  ),
+                 ),
                  tabPanel("Conduct"),
                  tabPanel("Help")
 )
 
 server <- function(input, output, session) {
-
+  
   # Rendering UI Select Input Based on Dose Labels
-  output$designStartLevel <- renderUI({
-    req(input$designSelector)
-    tagList(
-      selectInput("designStartLevel", "Starting Dose Level", choices = seq(1, length(as.vector(unlist(strsplit(input$designDoseLabels, ","))))), 
-                  selected = seq(1, length(as.vector(unlist(strsplit(input$designDoseLabels, ",")))))[2])
-    )
+  output$designInputs <- renderUI({
+    
+    # 3+3
+    if (input$designSelector == 1) {
+      tagList(
+        sliderInput("designTargetTox", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.1),
+        sliderInput("designNumTrials", "Number of Simulated Trials", min = 0, max = 10000, value = 100),
+        textInput("designTrueTox", "True Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3"),
+        sliderInput("designArrivalRate", "Patient Enrollment Rate", min = 0, max = 180, value = 15),
+        sliderInput("designPropB", "Proportion of Patients from Cohort B", min = 0, max = 1, value = 0.1, step = 0.1),
+        sliderInput("designCycleLength", "Duration of DLT Observation Period", min = 0, max = 365, value = 28)
+        
+      )
+    }
+    # TARGET-CRM or Both
+    else {
+      tagList(
+        textInput("designPriorTox", "Prior Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3"),
+        sliderInput("designTargetTox2", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.1),
+        sliderInput("designNumTrials2", "Number of Simulated Trials", min = 0, max = 10000, value = 100),
+        textInput("designTrueTox2", "True Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3"),
+        sliderInput("designArrivalRate2", "Patient Enrollment Rate", min = 0, max = 180, value = 15),
+        sliderInput("designPropB2", "Proportion of Patients from Cohort B", min = 0, max = 1, value = 0.1, step = 0.1),
+        selectInput("designTargetCRM", "Target-CRM Option", choices = c(0,1,2), selected = 1),
+        sliderInput("designMaxN", "Maximum Sample Size", min = 1, max = 200, value = 18),
+        sliderInput("designMinCohortB", "Minimum Enrollment of Cohort B Patients (Optional)", min = 0, max = 100, value = 2),
+        sliderInput("designCycleLength2", "Duration of DLT Observation Period", min = 0, max = 365, value = 28),
+        selectInput("designCohortSize", "Cohort Size", choices = c(seq(1,9)), selected = 3)
+      )
+    }
   })
   
+  # Update Start Level Based on Dose Labels
+  observe({
+    updateSelectInput(session, "designStartLevel", choices = numerizer(input$designDoseLabels), selected = numerizer(input$designDoseLabels)[2])
+  })
+  
+  # Update Max Depending on Previous Input
   observe({
     updateSliderInput(session, "designMinCohortB", max = input$designMaxN)
   })
   
   
   # Running the Design(s)
-  designTargetCRM <- eventReactive(input$designSimulate, {
-    if (input$designSelector == 'TARGET-CRM') {
-      target.crm(prior = as.numeric(unlist(strsplit(input$designPriorTox, ","))), target.tox = input$designTargetTox, number.trials = input$designNumTrials, 
-                 true.tox = as.numeric(unlist(strsplit(input$designTrueTox, ","))), arrival.rate = input$designArrivalRate, prop.B = input$designPropB, 
-                 target.crm = as.numeric(input$designTargetCRM), min.cohortB = input$designMinCohortB, cycle.length = input$designCycleLength, 
-                 cohort.size = input$designCohortSize, max.N = input$designMaxN, start.level = as.numeric(input$designStartLevel))
+  designDesign <- eventReactive(input$designSimulate, {
+    
+    # 3+3
+    if (input$designSelector == 1) {
+      
+      tpt <- three.plus.three(target.tox = input$designTargetTox, number.trials = input$designNumTrials, 
+                              true.tox = numerizer(input$designTrueTox), arrival.rate = input$designArrivalRate, 
+                              prop.B = input$designPropB, cycle.length = input$designCycleLength, start.level = as.numeric(input$designStartLevel))
+      return(tpt)
     }
-    if (input$designSelector == '3+3') {
-      three.plus.three(target.tox = input$designTargetTox, number.trials = input$designNumTrials, 
-                       true.tox = as.numeric(unlist(strsplit(input$designTrueTox, ","))), arrival.rate = input$designArrivalRate, 
-                       input$designPropB, cycle.length = input$designCycleLength, start.level = as.numeric(input$designStartLevel))
+    
+    # TARGET-CRM
+    else if(input$designSelector == 2) {
+      
+      tcrm <- target.crm(prior = numerizer(input$designPriorTox), target.tox = input$designTargetTox2, 
+                         number.trials = input$designNumTrials2, true.tox = numerizer(input$designTrueTox2), 
+                         arrival.rate = input$designArrivalRate2, prop.B = input$designPropB2, target.crm = as.numeric(input$designTargetCRM), 
+                         min.cohortB = input$designMinCohortB, cycle.length = input$designCycleLength2, 
+                         cohort.size = as.numeric(input$designCohortSize), max.N = input$designMaxN, start.level = as.numeric(input$designStartLevel))
+      
+      return(tcrm)
     }
+    
+    # Both
+    else {
+      
+      designTPT <- three.plus.three(target.tox = input$designTargetTox2, number.trials = input$designNumTrials2, 
+                                    true.tox = numerizer(input$designTrueTox2), arrival.rate = input$designArrivalRate2, 
+                                    prop.B = input$designPropB2, cycle.length = input$designCycleLength2, 
+                                    start.level = as.numeric(input$designStartLevel))
+      
+      designTCRM <- target.crm(prior = numerizer(input$designPriorTox), target.tox = input$designTargetTox2, 
+                               number.trials = input$designNumTrials2, true.tox = numerizer(input$designTrueTox2), 
+                               arrival.rate = input$designArrivalRate2, prop.B = input$designPropB2, target.crm = as.numeric(input$designTargetCRM), 
+                               min.cohortB = input$designMinCohortB, cycle.length = input$designCycleLength2, 
+                               cohort.size = as.numeric(input$designCohortSize), max.N = input$designMaxN, 
+                               start.level = as.numeric(input$designStartLevel))
+      
+      return(list(designTPT, designTCRM))
+    }
+    
   })
   
-   #Displaying the Plots
-   output$designPlotly1 <- renderPlotly({
-     p1 <- designTargetCRM()$df %>% mutate(MTD.Selection = MTD.Selection/100) %>%
-       ggplot(aes(x=Dose.Number, y=MTD.Selection)) + geom_bar(stat = 'identity')
-     
-     ggplotly(p1) %>% config(displayModeBar = FALSE)
+  
+  # Displaying the Plots
+  output$designPlotly1 <- renderPlotly({
+    
+    p1 <- designDesign()$df %>% mutate(MTD.Prop = MTD.Freq/designDesign()$number.trials) %>%
+      ggplot(aes(x=seq(1,length(MTD.Freq)), y=MTD.Prop)) + geom_bar(stat = 'identity')
+    
+    ggplotly(p1) %>% config(displayModeBar = FALSE)
   })
   
 }
