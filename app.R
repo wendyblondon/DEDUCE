@@ -150,7 +150,7 @@ server <- function(input, output, session) {
       
       p1 <- designDesign()$df %>% mutate(MTD.Prop = MTD.Freq/designDesign()$number.trials) %>%
         ggplot(aes(x=seq(1,length(MTD.Freq)), y=MTD.Prop)) + geom_bar(stat = 'identity') + xlab("Dose Level") + 
-        ylab("Proportion of Simulated Trials") + + ggtitle("Proportion of Simulated Trials Selecting Each Dose Level as True MTD")
+        ylab("Proportion of Simulated Trials") + ggtitle("Proportion of Simulated Trials Selecting Each Dose Level as True MTD")
       
       ggplotly(p1) %>% config(displayModeBar = FALSE)
     }
