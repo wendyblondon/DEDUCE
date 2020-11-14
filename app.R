@@ -140,7 +140,8 @@ server <- function(input, output, session) {
       p1df$Design <- as.factor(p1df$Design)
       
       p1 <- p1df %>% mutate(MTD.Prop = MTD.Freq/designDesign()[[1]]$number.trials) %>%
-        ggplot(aes(x=DoseLevel, y=MTD.Prop, fill = Design)) + geom_bar(stat = "identity", position = "dodge")
+        ggplot(aes(x=DoseLevel, y=MTD.Prop, fill = Design)) + geom_bar(stat = "identity", position = "dodge") + 
+        xlab("Dose Level") + ylab("Proportion of Simulated Trials") + ggtitle("Proportion of Simulated Trials Selecting Each Dose Level as True MTD")
       
       ggplotly(p1) %>% config(displayModeBar = FALSE)
     }
@@ -148,7 +149,8 @@ server <- function(input, output, session) {
     else{
       
       p1 <- designDesign()$df %>% mutate(MTD.Prop = MTD.Freq/designDesign()$number.trials) %>%
-        ggplot(aes(x=seq(1,length(MTD.Freq)), y=MTD.Prop)) + geom_bar(stat = 'identity')
+        ggplot(aes(x=seq(1,length(MTD.Freq)), y=MTD.Prop)) + geom_bar(stat = 'identity') + xlab("Dose Level") + 
+        ylab("Proportion of Simulated Trials") + + ggtitle("Proportion of Simulated Trials Selecting Each Dose Level as True MTD")
       
       ggplotly(p1) %>% config(displayModeBar = FALSE)
     }
