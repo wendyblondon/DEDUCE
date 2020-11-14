@@ -127,10 +127,32 @@ server <- function(input, output, session) {
   # Displaying the Plots
   output$designPlotly1 <- renderPlotly({
     
-    p1 <- designDesign()$df %>% mutate(MTD.Prop = MTD.Freq/designDesign()$number.trials) %>%
-      ggplot(aes(x=seq(1,length(MTD.Freq)), y=MTD.Prop)) + geom_bar(stat = 'identity')
+    if(input$designSelector == 3){
+      
+      p1df1 <- designDesign()[[1]]$df
+      p1df1$Design <- "3+3"
+      p1df1$prior <- NA
+      p1df1$DoseLevel <- seq(1, nrow(p1df1))
+      p1df2 <- designDesign()[[2]]$df
+      p1df2$Design <- "TARGET-CRM"
+      p1df2$DoseLevel <- seq(1, nrow(p1df2))
+      p1df <- rbind(p1df1, p1df2)
+      p1df$Design <- as.factor(p1df$Design)
+      
+      p1 <- p1df %>% mutate(MTD.Prop = MTD.Freq/designDesign()[[1]]$number.trials) %>%
+        ggplot(aes(x=DoseLevel, y=MTD.Prop, fill = Design)) + geom_bar(stat = "identity", position = "dodge")
+      
+      ggplotly(p1) %>% config(displayModeBar = FALSE)
+    }
     
-    ggplotly(p1) %>% config(displayModeBar = FALSE)
+    else{
+      
+      p1 <- designDesign()$df %>% mutate(MTD.Prop = MTD.Freq/designDesign()$number.trials) %>%
+        ggplot(aes(x=seq(1,length(MTD.Freq)), y=MTD.Prop)) + geom_bar(stat = 'identity')
+      
+      ggplotly(p1) %>% config(displayModeBar = FALSE)
+    }
+    
   })
   
 }
