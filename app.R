@@ -30,6 +30,8 @@ ui <- navbarPage("DELPHI",
                                    tabPanel("DLT Plot", withSpinner(plotlyOutput("designPlotly2"), type = 7, color = "#003087", size = 2)
                                    ),
                                    tabPanel("Patient Allocation Plot", withSpinner(plotlyOutput("designPlotly3"), type = 7, color = "#003087", size = 2)
+                                   ),
+                                   tabPanel("Study Duration Plot", withSpinner(plotlyOutput("designPlotly4"), type = 7, color = "#003087", size = 2)
                                    )
                             )
                           )
