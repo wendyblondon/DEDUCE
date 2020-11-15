@@ -239,7 +239,7 @@ server <- function(input, output, session) {
       p4df <- data.frame("meanDuration"=designDesign()$mean.duration, "sdDuration"=designDesign()$sd.duration, "Design"="x")
       
       p4 <- p4df %>%
-        ggplot(aes(x=Design, y=meanDuration, text=paste("Design: ", Design, "\n", "Mean Study Duration: ", round(meanDuration, 2), "\n", "SD Study Duration: ", round(sdDuration, 2)))) + 
+        ggplot(aes(x=Design, y=meanDuration, text=paste("Mean Study Duration: ", round(meanDuration, 2), "\n", "SD Study Duration: ", round(sdDuration, 2)))) + 
         geom_bar(stat="identity") + geom_errorbar(aes(ymin=meanDuration-sdDuration, ymax=meanDuration+sdDuration)) + 
         ylab("Mean Study Duration (Days)") + xlab("") + ggtitle("Mean Study Duration in Days (+/- 1 SD)")
       
