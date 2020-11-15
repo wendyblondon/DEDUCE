@@ -174,7 +174,7 @@ server <- function(input, output, session) {
         ggplot(aes(x=DoseLevel, y=obs.tox.table, fill = Design)) + geom_bar(stat = "identity", position = "dodge") + 
         geom_hline(aes(yintercept=input$designTargetTox2), linetype="dashed") +
         xlab("Dose Level") + ylab("Proportion of Patients Experiencing a DLT ") + 
-        ggtitle("Proportion of Simulated Trials Selecting Each Dose Level as True MTD")
+        ggtitle("Proportion of Patients Experiencing a DLT Per Dose Level")
       
       ggplotly(p2) %>% config(displayModeBar = FALSE)
     }
@@ -184,7 +184,7 @@ server <- function(input, output, session) {
         ggplot(aes(x=seq(1,length(MTD.Freq)), y=obs.tox.table)) + geom_bar(stat = "identity") + 
         geom_hline(aes(yintercept=input$designTargetTox), linetype="dashed") +
         xlab("Dose Level") + ylab("Proportion of Patients Experiencing a DLT ") + 
-        ggtitle("Proportion of Simulated Trials Selecting Each Dose Level as True MTD")
+        ggtitle("Proportion of Patients Experiencing a DLT Per Dose Level")
       
       ggplotly(p2) %>% config(displayModeBar = FALSE)
     }
