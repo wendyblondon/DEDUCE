@@ -24,8 +24,11 @@ ui <- navbarPage("DELPHI",
                                    uiOutput("designInputs"),
                                    actionButton("designSimulate", "Simulate")
                             ),
-                            column(8,
-                                   withSpinner(plotlyOutput("designPlotly1"), type = 7, color = "#003087", size = 2)
+                            tabBox(width=8,
+                                   tabPanel("MTD Plot", withSpinner(plotlyOutput("designPlotly1"), type = 7, color = "#003087", size = 2)
+                                   ),
+                                   tabPanel("DLT Plot", withSpinner(plotlyOutput("designPlotly2"), type = 7, color = "#003087", size = 2)
+                                   )
                             )
                           )
                  ),
@@ -123,23 +126,29 @@ server <- function(input, output, session) {
     
   })
   
+  # DF w/ Both Designs for Plotly
+  designDFPlotly <- reactive({
+    req(input$designSelector == 3)
+    
+    p1df1 <- designDesign()[[1]]$df
+    p1df1$Design <- "3+3"
+    p1df1$prior <- NA
+    p1df1$DoseLevel <- seq(1, nrow(p1df1))
+    p1df2 <- designDesign()[[2]]$df
+    p1df2$Design <- "TARGET-CRM"
+    p1df2$DoseLevel <- seq(1, nrow(p1df2))
+    p1df <- rbind(p1df1, p1df2)
+    p1df$Design <- as.factor(p1df$Design)
+    return(p1df)
+    
+  })
   
-  # Displaying the Plots
+  # Plot1
   output$designPlotly1 <- renderPlotly({
     
     if(input$designSelector == 3){
       
-      p1df1 <- designDesign()[[1]]$df
-      p1df1$Design <- "3+3"
-      p1df1$prior <- NA
-      p1df1$DoseLevel <- seq(1, nrow(p1df1))
-      p1df2 <- designDesign()[[2]]$df
-      p1df2$Design <- "TARGET-CRM"
-      p1df2$DoseLevel <- seq(1, nrow(p1df2))
-      p1df <- rbind(p1df1, p1df2)
-      p1df$Design <- as.factor(p1df$Design)
-      
-      p1 <- p1df %>% mutate(MTD.Prop = MTD.Freq/designDesign()[[1]]$number.trials) %>%
+      p1 <- designDFPlotly() %>% mutate(MTD.Prop = MTD.Freq/designDesign()[[1]]$number.trials) %>%
         ggplot(aes(x=DoseLevel, y=MTD.Prop, fill = Design)) + geom_bar(stat = "identity", position = "dodge") + 
         xlab("Dose Level") + ylab("Proportion of Simulated Trials") + ggtitle("Proportion of Simulated Trials Selecting Each Dose Level as True MTD")
       
@@ -155,6 +164,30 @@ server <- function(input, output, session) {
       ggplotly(p1) %>% config(displayModeBar = FALSE)
     }
     
+  })
+  
+  # Plot2
+  output$designPlotly2 <- renderPlotly({
+    
+    if (input$designSelector ==3){
+      p2 <- designDFPlotly() %>%
+        ggplot(aes(x=DoseLevel, y=obs.tox.table, fill = Design)) + geom_bar(stat = "identity", position = "dodge") + 
+        geom_hline(aes(yintercept=input$designTargetTox2), linetype="dashed") +
+        xlab("Dose Level") + ylab("Proportion of Patients Experiencing a DLT ") + 
+        ggtitle("Proportion of Simulated Trials Selecting Each Dose Level as True MTD")
+      
+      ggplotly(p2) %>% config(displayModeBar = FALSE)
+    }
+    
+    else{
+      p2 <- designDesign()$df %>%
+        ggplot(aes(x=seq(1,length(MTD.Freq)), y=obs.tox.table)) + geom_bar(stat = "identity") + 
+        geom_hline(aes(yintercept=input$designTargetTox), linetype="dashed") +
+        xlab("Dose Level") + ylab("Proportion of Patients Experiencing a DLT ") + 
+        ggtitle("Proportion of Simulated Trials Selecting Each Dose Level as True MTD")
+      
+      ggplotly(p2) %>% config(displayModeBar = FALSE)
+    }
   })
   
 }
