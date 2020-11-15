@@ -241,7 +241,8 @@ server <- function(input, output, session) {
       p4 <- p4df %>%
         ggplot(aes(x=Design, y=meanDuration, text=paste("Mean Study Duration: ", round(meanDuration, 2), "\n", "SD Study Duration: ", round(sdDuration, 2)))) + 
         geom_bar(stat="identity") + geom_errorbar(aes(ymin=meanDuration-sdDuration, ymax=meanDuration+sdDuration)) + 
-        ylab("Mean Study Duration (Days)") + xlab("") + ggtitle("Mean Study Duration in Days (+/- 1 SD)")
+        ylab("Mean Study Duration (Days)") + ggtitle("Mean Study Duration in Days (+/- 1 SD)") + 
+        theme(axis.title.x=element_blank(), axis.text.x=element_blank(), axis.ticks.x=element_blank())
       
       ggplotly(p4, tooltip="text") %>% config(displayModeBar = FALSE)
     }
