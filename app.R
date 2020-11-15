@@ -148,20 +148,22 @@ server <- function(input, output, session) {
     
     if(input$designSelector == 3){
       
-      p1 <- designDFPlotly() %>% mutate(MTD.Prop = MTD.Freq/designDesign()[[1]]$number.trials) %>%
-        ggplot(aes(x=DoseLevel, y=MTD.Prop, fill = Design)) + geom_bar(stat = "identity", position = "dodge") + 
-        xlab("Dose Level") + ylab("Proportion of Simulated Trials") + ggtitle("Proportion of Simulated Trials Selecting Each Dose Level as True MTD")
+      p1 <- designDFPlotly() %>% mutate(MTD.Prop=MTD.Freq/designDesign()[[1]]$number.trials) %>%
+        ggplot(aes(x=DoseLevel, y=MTD.Prop, fill=Design, text=paste0("Dose Level: ", DoseLevel, "\n", "MTD Proportion: ", MTD.Prop, "\n", "Design: ", Design))) + 
+        geom_bar(stat="identity", position="dodge") + xlab("Dose Level") + ylab("Proportion of Simulated Trials") +
+        ggtitle("Proportion of Simulated Trials Selecting Each Dose Level as True MTD")
       
-      ggplotly(p1) %>% config(displayModeBar = FALSE)
+      ggplotly(p1, tooltip="text") %>% config(displayModeBar = FALSE)
     }
     
     else{
       
       p1 <- designDesign()$df %>% mutate(MTD.Prop = MTD.Freq/designDesign()$number.trials) %>%
-        ggplot(aes(x=seq(1,length(MTD.Freq)), y=MTD.Prop)) + geom_bar(stat = 'identity') + xlab("Dose Level") + 
+        ggplot(aes(x=seq(1,length(MTD.Freq)), y=MTD.Prop, text=paste0("Dose Level: ", seq(1,length(MTD.Freq)), "\n", "MTD Proportion: ", MTD.Prop))) + 
+        geom_bar(stat='identity') + xlab("Dose Level") + 
         ylab("Proportion of Simulated Trials") + ggtitle("Proportion of Simulated Trials Selecting Each Dose Level as True MTD")
       
-      ggplotly(p1) %>% config(displayModeBar = FALSE)
+      ggplotly(p1, tooltip="text") %>% config(displayModeBar = FALSE)
     }
     
   })
@@ -171,8 +173,8 @@ server <- function(input, output, session) {
     
     if (input$designSelector ==3){
       p2 <- designDFPlotly() %>%
-        ggplot(aes(x=DoseLevel, y=obs.tox.table, fill = Design)) + geom_bar(stat = "identity", position = "dodge") + 
-        geom_hline(aes(yintercept=input$designTargetTox2), linetype="dashed") +
+        ggplot(aes(x=DoseLevel, y=obs.tox.table, fill=Design, text=paste("Dose Level: ", DoseLevel, "\n", "DLT Proportion: ", obs.tox.table, "\n", "Design: ", Design))) + 
+        geom_bar(stat="identity", position="dodge") + geom_hline(aes(yintercept=input$designTargetTox2), linetype="dashed") +
         xlab("Dose Level") + ylab("Proportion of Patients Experiencing a DLT ") + 
         ggtitle("Proportion of Patients Experiencing a DLT Per Dose Level")
       
@@ -181,8 +183,8 @@ server <- function(input, output, session) {
     
     else{
       p2 <- designDesign()$df %>%
-        ggplot(aes(x=seq(1,length(MTD.Freq)), y=obs.tox.table)) + geom_bar(stat = "identity") + 
-        geom_hline(aes(yintercept=input$designTargetTox), linetype="dashed") +
+        ggplot(aes(x=seq(1,length(MTD.Freq)), y=obs.tox.table, text=paste("Dose Level: ", seq(1,length(MTD.Freq)), "\n", "DLT Proportion: ", obs.tox.table))) + 
+        geom_bar(stat="identity") + geom_hline(aes(yintercept=input$designTargetTox), linetype="dashed") +
         xlab("Dose Level") + ylab("Proportion of Patients Experiencing a DLT ") + 
         ggtitle("Proportion of Patients Experiencing a DLT Per Dose Level")
       
