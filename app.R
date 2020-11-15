@@ -28,6 +28,8 @@ ui <- navbarPage("DELPHI",
                                    tabPanel("MTD Plot", withSpinner(plotlyOutput("designPlotly1"), type = 7, color = "#003087", size = 2)
                                    ),
                                    tabPanel("DLT Plot", withSpinner(plotlyOutput("designPlotly2"), type = 7, color = "#003087", size = 2)
+                                   ),
+                                   tabPanel("Patient Allocation Plot", withSpinner(plotlyOutput("designPlotly3"), type = 7, color = "#003087", size = 2)
                                    )
                             )
                           )
@@ -189,6 +191,28 @@ server <- function(input, output, session) {
         ggtitle("Proportion of Patients Experiencing a DLT Per Dose Level")
       
       ggplotly(p2, tooltip="text") %>% config(displayModeBar = FALSE)
+    }
+  })
+  
+  # Plot3
+  output$designPlotly3 <- renderPlotly({
+    
+    if (input$designSelector ==3){
+      p3 <- designDFPlotly() %>%
+        ggplot(aes(x=DoseLevel, y=patient.allocation.table, fill=Design, text=paste("Dose Level: ", DoseLevel, "\n", "Patient Allocation: ", round(patient.allocation.table, 4), "\n", "Design: ", Design))) + 
+        geom_bar(stat="identity", position="dodge") + xlab("Dose Level") + ylab("Proportion of Patients Allocated") + 
+        ggtitle("Proportion of Patients Allocated to Each Dose Level")
+      
+      ggplotly(p3, tooltip="text") %>% config(displayModeBar = FALSE)
+    }
+    
+    else{
+      p3 <- designDesign()$df %>%
+        ggplot(aes(x=seq(1,length(MTD.Freq)), y=patient.allocation.table, text=paste("Dose Level: ", seq(1,length(MTD.Freq)), "\n", "Patient Allocation: ", round(patient.allocation.table, 4)))) + 
+        geom_bar(stat="identity") + xlab("Dose Level") + ylab("Proportion of Patients Allocated") + 
+        ggtitle("Proportion of Patients Allocated to Each Dose Level")
+      
+      ggplotly(p3, tooltip="text") %>% config(displayModeBar = FALSE)
     }
   })
   
