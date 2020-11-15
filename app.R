@@ -178,7 +178,7 @@ server <- function(input, output, session) {
         xlab("Dose Level") + ylab("Proportion of Patients Experiencing a DLT ") + 
         ggtitle("Proportion of Patients Experiencing a DLT Per Dose Level")
       
-      ggplotly(p2) %>% config(displayModeBar = FALSE)
+      ggplotly(p2, tooltip="text") %>% config(displayModeBar = FALSE)
     }
     
     else{
@@ -188,7 +188,7 @@ server <- function(input, output, session) {
         xlab("Dose Level") + ylab("Proportion of Patients Experiencing a DLT ") + 
         ggtitle("Proportion of Patients Experiencing a DLT Per Dose Level")
       
-      ggplotly(p2) %>% config(displayModeBar = FALSE)
+      ggplotly(p2, tooltip="text") %>% config(displayModeBar = FALSE)
     }
   })
   
