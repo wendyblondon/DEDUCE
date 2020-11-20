@@ -1,4 +1,5 @@
 library(shiny)
+library(shinyWidgets)
 library(shinydashboard)
 library(shinycssloaders)
 library(tidyverse)
@@ -17,12 +18,14 @@ ui <- navbarPage("DELPHI",
                  tabPanel("Design",
                           fluidRow(
                             column(4,
-                                   radioButtons("designSelector", "Dose-Escalation Design", choices = c("3+3"=1, "TARGET-CRM"=2, "Both"=3), 
-                                                selected = 1, inline = TRUE),
-                                   textInput("designDoseLabels", "Dose Level Labels", value = "-1,1,2,3"),
-                                   selectInput("designStartLevel", "Starting Dose Level", choices = c(-1,1,2,3), selected = 1),
-                                   uiOutput("designInputs"),
-                                   actionButton("designSimulate", "Simulate")
+                                   panel(style="overflow-y:scroll; max-height: 500px;",
+                                         radioButtons("designSelector", "Dose-Escalation Design", choices = c("3+3"=1, "TARGET-CRM"=2, "Both"=3), 
+                                                      selected = 1, inline = TRUE),
+                                         textInput("designDoseLabels", "Dose Level Labels", value = "-1,1,2,3"),
+                                         selectInput("designStartLevel", "Starting Dose Level", choices = c(-1,1,2,3), selected = 1),
+                                         uiOutput("designInputs"),
+                                         actionButton("designSimulate", "Simulate")
+                                   )
                             ),
                             tabBox(width=8,
                                    tabPanel("MTD Plot", withSpinner(plotlyOutput("designPlotly1"), type = 7, color = "#003087", size = 2)
