@@ -35,12 +35,12 @@ ui <- navbarPage("DELPHI",
                             column(8,
                               fluidRow(
                                 column(6,
-                                       withSpinner(plotlyOutput("designPlotly1"), type = 7, color = "#003087", size = 2),
-                                       withSpinner(plotlyOutput("designPlotly2"), type = 7, color = "#003087", size = 2)
+                                       withSpinner(plotlyOutput("designPlotly1", height="auto"), type = 7, color = "#003087", size = 2),
+                                       withSpinner(plotlyOutput("designPlotly2", height="auto"), type = 7, color = "#003087", size = 2)
                                 ),
                                 column(6,
-                                       withSpinner(plotlyOutput("designPlotly3"), type = 7, color = "#003087", size = 2),
-                                       withSpinner(plotlyOutput("designPlotly4"), type = 7, color = "#003087", size = 2)
+                                       withSpinner(plotlyOutput("designPlotly3", height="auto"), type = 7, color = "#003087", size = 2),
+                                       withSpinner(plotlyOutput("designPlotly4", height="auto"), type = 7, color = "#003087", size = 2)
                                 )
                               )
                             )
