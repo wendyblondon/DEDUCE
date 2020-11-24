@@ -1,4 +1,5 @@
 library(shiny)
+library(shinyBS)
 library(shinyWidgets)
 library(shinydashboard)
 library(shinycssloaders)
@@ -18,7 +19,7 @@ ui <- navbarPage("DELPHI",
                  tabPanel("Design",
                           fluidRow(
                             column(4,
-                                   panel(style="overflow-y:scroll; max-height: 575px;",
+                                   column(width=5, style="overflow-y:scroll; max-height: 500px;",
                                          radioButtons("designSelector", "Dose-Escalation Design", choices = c("3+3"=1, "TARGET-CRM"=2, "Both"=3), 
                                                       selected = 1, inline = TRUE),
                                          textInput("designDoseLabels", "Dose Level Labels", value = "-1,1,2,3"),
