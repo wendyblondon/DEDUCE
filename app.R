@@ -57,11 +57,23 @@ server <- function(input, output, session) {
     if (input$designSelector == 1) {
       tagList(
         sliderInput("designTargetTox", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.1),
+        bsTooltip("designTargetTox", "Please enter the target toxicity probability of the study agent", 
+                  "top", options = list(container = "body")),
         sliderInput("designNumTrials", "Number of Simulated Trials", min = 0, max = 10000, value = 100),
+        bsTooltip("designNumTrials", "Please enter the number of simulated trials. A larger number of simulations increases the precision of simulation results and computation time", 
+                  "top", options = list(container = "body")),
         textInput("designTrueTox", "True Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3"),
+        bsTooltip("designTrueTox", "Please enter the true toxicity probabilities for each dose level evaluated in the trial. Toxicity probabilities must increase with each subsequent dose level", 
+                  "top", options = list(container = "body")),
         sliderInput("designArrivalRate", "Patient Enrollment Rate", min = 0, max = 180, value = 15),
+        bsTooltip("designArrivalRate", "Please enter the average time between enrolling patients (in days)", 
+                  "top", options = list(container = "body")),
         sliderInput("designPropB", "Proportion of Patients from Cohort B", min = 0, max = 1, value = 0.1, step = 0.1),
-        sliderInput("designCycleLength", "Duration of DLT Observation Period", min = 0, max = 365, value = 28)
+        bsTooltip("designPropB", "Please enter the proportion of enrolled patients belonging to the “enrichment” Cohort B", 
+                  "top", options = list(container = "body")),
+        sliderInput("designCycleLength", "Duration of DLT Observation Period", min = 0, max = 365, value = 28),
+        bsTooltip("designCycleLength", "Please enter the duration of the DLT observation period (in days)", 
+                  "top", options = list(container = "body"))
         
       )
     }
@@ -69,16 +81,38 @@ server <- function(input, output, session) {
     else {
       tagList(
         textInput("designPriorTox", "Prior Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3"),
+        bsTooltip("designPriorTox", "Please enter the prior toxicity probabilities for each dose level evaluated in the trial. Toxicity probabilities must increase with each subsequent dose level", 
+                  "top", options = list(container = "body")),
         sliderInput("designTargetTox2", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.1),
+        bsTooltip("designTargetTox2", "Please enter the target toxicity probability of the study agent", 
+                  "top", options = list(container = "body")),
         sliderInput("designNumTrials2", "Number of Simulated Trials", min = 0, max = 10000, value = 100),
+        bsTooltip("designNumTrials2", "Please enter the number of simulated trials. A larger number of simulations increases the precision of simulation results and computation time", 
+                  "top", options = list(container = "body")),
         textInput("designTrueTox2", "True Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3"),
+        bsTooltip("designTrueTox2", "Please enter the true toxicity probabilities for each dose level evaluated in the trial. Toxicity probabilities must increase with each subsequent dose level", 
+                  "top", options = list(container = "body")),
         sliderInput("designArrivalRate2", "Patient Enrollment Rate", min = 0, max = 180, value = 15),
+        bsTooltip("designArrivalRate2", "Please enter the average time between enrolling patients (in days)", 
+                  "top", options = list(container = "body")),
         sliderInput("designPropB2", "Proportion of Patients from Cohort B", min = 0, max = 1, value = 0.1, step = 0.1),
+        bsTooltip("designPropB2", "Please enter the proportion of enrolled patients belonging to the “enrichment” Cohort B", 
+                  "top", options = list(container = "body")),
         selectInput("designTargetCRM", "Target-CRM Option", choices = c(0,1,2), selected = 1),
+        bsTooltip("designTargetCRM", "Please enter the desired variation of the TARGET-CRM design", 
+                  "top", options = list(container = "body")),
         sliderInput("designMaxN", "Maximum Sample Size", min = 1, max = 200, value = 18),
+        bsTooltip("designMaxN", "Please enter the maximum number of patients to be enrolled per trial", 
+                  "top", options = list(container = "body")),
         sliderInput("designMinCohortB", "Minimum Enrollment of Cohort B Patients (Optional)", min = 0, max = 100, value = 2),
+        bsTooltip("designMinCohortB", "Please enter the minimum number of Cohort B patients to be enrolled in the trial", 
+                  "top", options = list(container = "body")),
         sliderInput("designCycleLength2", "Duration of DLT Observation Period", min = 0, max = 365, value = 28),
-        selectInput("designCohortSize", "Cohort Size", choices = c(seq(1,9)), selected = 3)
+        bsTooltip("designCycleLength2", "Please enter the duration of the DLT observation period (in days)", 
+                  "top", options = list(container = "body")),
+        selectInput("designCohortSize", "Cohort Size", choices = c(seq(1,9)), selected = 3),
+        bsTooltip("designCohortSize", "Please enter the cohort size. The cohort size is the number of patients to be treated at the current dose level before a dose escalation decision is made", 
+                  "top", options = list(container = "body"))
       )
     }
   })
