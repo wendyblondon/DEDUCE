@@ -28,7 +28,7 @@ ui <- navbarPage("DELPHI",
                                          actionButton("designSimulate", "Simulate")
                                    )
                             ),
-                            tabBox(width=8,
+                            tabBox(width=7,
                                    tabPanel("MTD Plot", withSpinner(plotlyOutput("designPlotly1"), type = 7, color = "#003087", size = 2)
                                    ),
                                    tabPanel("DLT Plot", withSpinner(plotlyOutput("designPlotly2"), type = 7, color = "#003087", size = 2)
