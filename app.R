@@ -17,7 +17,7 @@ ui <- navbarPage("DELPHI",
                  tabPanel("Home"),
                  tabPanel("Design",
                           fluidRow(
-                            column(6,
+                            column(4,
                               actionButton("inputBtn", "", icon = icon("expand-arrows-alt"), style='font-size:150%'),
                               bsTooltip("inputBtn", "Inputs for running the design(s)", "top", 
                                         options = list(container = "body")),
@@ -36,9 +36,11 @@ ui <- navbarPage("DELPHI",
                               ),
                               actionButton("designSimulate", "Simulate")
                             ),
-                            column(6,
+                            column(4,
                                    withSpinner(plotlyOutput("designPlotly1"), type = 7, color = "#003087", size = 2),
-                                   withSpinner(plotlyOutput("designPlotly2"), type = 7, color = "#003087", size = 2),
+                                   withSpinner(plotlyOutput("designPlotly2"), type = 7, color = "#003087", size = 2)
+                            ),
+                            column(4,
                                    withSpinner(plotlyOutput("designPlotly3"), type = 7, color = "#003087", size = 2),
                                    withSpinner(plotlyOutput("designPlotly4"), type = 7, color = "#003087", size = 2)
                             )
