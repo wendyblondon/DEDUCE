@@ -36,13 +36,15 @@ ui <- navbarPage("DELPHI",
                               ),
                               actionButton("designSimulate", "Simulate")
                             ),
-                            column(4,
-                                   withSpinner(plotlyOutput("designPlotly1"), type = 7, color = "#003087", size = 2),
-                                   withSpinner(plotlyOutput("designPlotly2"), type = 7, color = "#003087", size = 2)
-                            ),
-                            column(4,
-                                   withSpinner(plotlyOutput("designPlotly3"), type = 7, color = "#003087", size = 2),
-                                   withSpinner(plotlyOutput("designPlotly4"), type = 7, color = "#003087", size = 2)
+                            wellPanel(style = "overflow-y:scroll; max-height: 600px",
+                              column(4,
+                                     withSpinner(plotlyOutput("designPlotly1"), type = 7, color = "#003087", size = 2),
+                                     withSpinner(plotlyOutput("designPlotly2"), type = 7, color = "#003087", size = 2)
+                              ),
+                              column(4,
+                                     withSpinner(plotlyOutput("designPlotly3"), type = 7, color = "#003087", size = 2),
+                                     withSpinner(plotlyOutput("designPlotly4"), type = 7, color = "#003087", size = 2)
+                              )
                             )
                           )
                  ),
