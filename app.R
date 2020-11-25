@@ -17,33 +17,32 @@ ui <- navbarPage("DELPHI",
                  tabPanel("Home"),
                  tabPanel("Design",
                           fluidRow(
-                            actionButton("inputBtn", "", icon = icon("expand-arrows-alt"), style='font-size:150%'),
-                            bsTooltip("inputBtn", "Inputs for running the design(s)", "top", 
-                                      options = list(container = "body")),
-                            bsModal("bm1", "Inputs", "inputBtn",
-                                    radioButtons("designSelector", "Dose-Escalation Design", choices = c("3+3"=1, "TARGET-CRM"=2, "Both"=3), 
-                                                 selected = 1, inline = TRUE),
-                                    bsTooltip("designSelector", "Please select the dose escalation design(s) of interest", "top", 
-                                              options = list(container = "body")),
-                                    textInput("designDoseLabels", "Dose Level Labels", value = "-1,1,2,3"),
-                                    bsTooltip("designDoseLabels", "Please enter the dose level labels for each dose level evaluated in the trial", 
-                                              "top", options = list(container = "body")),
-                                    selectInput("designStartLevel", "Starting Dose Level", choices = c(-1,1,2,3), selected = 1),
-                                    bsTooltip("designStartLevel", "Please enter the starting dose level using the dose level labels above", 
-                                              "top", options = list(container = "body")),
-                                    uiOutput("designInputs")
-                            ),
-                            actionButton("designSimulate", "Simulate")
-                          ),
-                          fluidRow(
                             column(6,
-                              withSpinner(plotlyOutput("designPlotly1", height="auto"), type = 7, color = "#003087", size = 2),
-                              withSpinner(plotlyOutput("designPlotly2", height="auto"), type = 7, color = "#003087", size = 2)
+                              actionButton("inputBtn", "", icon = icon("expand-arrows-alt"), style='font-size:150%'),
+                              bsTooltip("inputBtn", "Inputs for running the design(s)", "top", 
+                                        options = list(container = "body")),
+                              bsModal("bm1", "Inputs", "inputBtn",
+                                      radioButtons("designSelector", "Dose-Escalation Design", choices = c("3+3"=1, "TARGET-CRM"=2, "Both"=3), 
+                                                   selected = 1, inline = TRUE),
+                                      bsTooltip("designSelector", "Please select the dose escalation design(s) of interest", "top", 
+                                                options = list(container = "body")),
+                                      textInput("designDoseLabels", "Dose Level Labels", value = "-1,1,2,3"),
+                                      bsTooltip("designDoseLabels", "Please enter the dose level labels for each dose level evaluated in the trial", 
+                                                "top", options = list(container = "body")),
+                                      selectInput("designStartLevel", "Starting Dose Level", choices = c(-1,1,2,3), selected = 1),
+                                      bsTooltip("designStartLevel", "Please enter the starting dose level using the dose level labels above", 
+                                                "top", options = list(container = "body")),
+                                      uiOutput("designInputs")
+                              ),
+                              actionButton("designSimulate", "Simulate")
                             ),
-                            column(6,
-                               withSpinner(plotlyOutput("designPlotly3", height="auto"), type = 7, color = "#003087", size = 2),
-                               withSpinner(plotlyOutput("designPlotly4", height="auto"), type = 7, color = "#003087", size = 2)
-                            )
+                            wellPanel(6,
+                                   withSpinner(plotlyOutput("designPlotly1", height="auto"), type = 7, color = "#003087", size = 2),
+                                   withSpinner(plotlyOutput("designPlotly2", height="auto"), type = 7, color = "#003087", size = 2),
+                                   withSpinner(plotlyOutput("designPlotly3", height="auto"), type = 7, color = "#003087", size = 2),
+                                   withSpinner(plotlyOutput("designPlotly4", height="auto"), type = 7, color = "#003087", size = 2)
+                            ),
+                          
                           )
                  ),
                  tabPanel("Conduct"),
