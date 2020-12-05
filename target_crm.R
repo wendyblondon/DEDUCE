@@ -300,7 +300,7 @@ target.crm <- function(prior, target.tox, number.trials, true.tox, arrival.rate,
   mean.duration = mean(study.duration)
   sd.duration = sd(study.duration)
   
-  df <- data.frame("prior"=prior, "true.tox"=true.tox, "MTD"=MTD.selection.table, "patient.allocation.table"=patient.allocation.table, "obs.tox.table"=obs.tox.table)
+  df <- data.frame("design"="TARGET-CRM", "prior"=prior, "true.tox"=true.tox, "MTD"=MTD.selection.table, "patient.allocation.table"=patient.allocation.table, "obs.tox.table"=obs.tox.table)
   
   finish <- Sys.time()
   time.taken <- finish - start
