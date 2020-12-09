@@ -32,9 +32,8 @@ ui <- navbarPage("DELPHI",
                                    actionButton("DTSimulate", "Simulate")
                             ),
                             column(9,
-                                   uiOutput("DTNoneUI"),
-                                   uiOutput("DTPlotsUI")
-                                   
+                                   uiOutput("DTPlotsUI"),
+                                   uiOutput("DTNoneUI")
                             )
                           )
                  ),
@@ -160,21 +159,13 @@ server <- function(input, output, session) {
   output$DTPlotsUI <- renderUI({
     req(DTSelectedDesignsLength() > 0)
     tagList(
-      fluidRow(
-        column(6,
-               withSpinner(plotOutput("DTPlot1"), type = 7, color = "#003087", size = 2)
-        ),
-        column(6,
-               withSpinner(plotOutput("DTPlot2"), type = 7, color = "#003087", size = 2)
-        )
+      column(6,
+             withSpinner(plotOutput("DTPlot1"), type = 7, color = "#003087", size = 2),
+             withSpinner(plotOutput("DTPlot2"), type = 7, color = "#003087", size = 2)
       ),
-      fluidRow(
-        column(6,
-               withSpinner(plotOutput("DTPlot3"), type = 7, color = "#003087", size = 2)
-        ),
-        column(6,
-               withSpinner(plotOutput("DTPlot4"), type = 7, color = "#003087", size = 2)
-        )
+      column(6,
+             withSpinner(plotOutput("DTPlot3"), type = 7, color = "#003087", size = 2),
+             withSpinner(plotOutput("DTPlot4"), type = 7, color = "#003087", size = 2)
       )
     )
   })
