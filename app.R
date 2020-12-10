@@ -185,12 +185,12 @@ server <- function(input, output, session) {
     req(DTSelectedDesignsLength() > 0)
     tagList(
       column(6,
-             withSpinner(plotOutput("DTPlot1", width = "100%", height = "100%"), type = 7, color = "#003087", size = 2),
-             withSpinner(plotOutput("DTPlot2", width = "100%", height = "100%"), type = 7, color = "#003087", size = 2)
+             withSpinner(plotOutput("DTPlot1", width = "100%", height = "100%"), type = 1, color = "#003087", size = 2),
+             withSpinner(plotOutput("DTPlot2", width = "100%", height = "100%"), type = 1, color = "#003087", size = 2)
       ),
       column(6,
-             withSpinner(plotOutput("DTPlot3", width = "100%", height = "100%"), type = 7, color = "#003087", size = 2),
-             withSpinner(plotOutput("DTPlot4", width = "100%", height = "100%"), type = 7, color = "#003087", size = 2)
+             withSpinner(plotOutput("DTPlot3", width = "100%", height = "100%"), type = 1, color = "#003087", size = 2),
+             withSpinner(plotOutput("DTPlot4", width = "100%", height = "100%"), type = 1, color = "#003087", size = 2)
       )
     )
   })
