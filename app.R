@@ -1,5 +1,6 @@
 library(shiny)
 library(shinyBS)
+library(shinyjs)
 library(shinyWidgets)
 library(shinydashboard)
 library(shinycssloaders)
@@ -13,32 +14,66 @@ numerizer <- function(x){
   as.numeric(unlist(strsplit(x, ",")))
 }
 
-ui <- navbarPage("DELPHI",
-                 tabPanel("Home"),
-                 tabPanel("Design",
-                          fluidRow(
-                            column(3, style="overflow-y:scroll; max-height: 500px;",
-                                   h3("Dose Escalation Designs:"),
-                                   prettyCheckbox("DTSelectorTPT", "3+3", value = TRUE, status = "success", shape = "round", fill = TRUE, inline = TRUE),
-                                   prettyCheckbox("DTSelectorTCRM", "TARGET-CRM", value = FALSE, status = "success", shape = "round", fill = TRUE, inline = TRUE),
-                                   prettyCheckbox("DTSelectorOther", "Other", value = FALSE, status = "success", shape = "round", fill = TRUE, inline = TRUE),
-                                   textInput("DTDoseLabels", "Dose Level Labels", value = "-1,1,2,3"),
-                                   bsTooltip("DTDoseLabels", "Please enter the dose level labels (seperated by commas) for each dose level evaluated in the trial", 
-                                             "top", options = list(container = "body")),
-                                   selectInput("DTStartLevel", "Starting Dose Level", choices = c(-1,1,2,3), selected = 1),
-                                   bsTooltip("DTStartLevel", "Please enter the starting dose level using the dose level labels above", 
-                                             "top", options = list(container = "body")),
-                                   uiOutput("DTInputs"),
-                                   actionButton("DTSimulate", "Simulate")
-                            ),
-                            column(9,
-                                   uiOutput("DTPlotsUI"),
-                                   uiOutput("DTNoneUI")
-                            )
-                          )
-                 ),
-                 tabPanel("Conduct"),
-                 tabPanel("Help")
+# CSS
+CSS <- "#DTPlot1 {
+height: calc(50vh - 50px) !important;} 
+
+#DTPlot2 {
+height: calc(50vh - 50px) !important;} 
+
+#DTPlot3 {
+height: calc(50vh - 50px) !important;} 
+
+#DTPlot4 {
+height: calc(50vh - 50px) !important;} 
+"
+
+ui <- dashboardPage(title = "DELPHI", skin = "black",
+                    dashboardHeader(title = strong("DELPHI")),
+                    dashboardSidebar(
+                      sidebarMenu(
+                        menuItem("Home", tabName = "Home"),
+                        menuItem("Design", tabName = "Design"),
+                        menuItem("Conduct", tabName = "Conduct"),
+                        menuItem("Help", tabName = "Help")
+                      )
+                    ),
+                    dashboardBody(
+                      useShinyjs(), inlineCSS(CSS),
+                      tabItems(
+                        tabItem(tabName = "Home",
+                                h1("Something Here")
+                        ),
+                        tabItem(tabName = "Design",
+                                fluidRow(
+                                  column(3, style="overflow-y:scroll; height: 70vh;",
+                                         h3("Dose Escalation Designs:"),
+                                         prettyCheckbox("DTSelectorTPT", "3+3", value = TRUE, status = "success", shape = "round", fill = TRUE, inline = TRUE),
+                                         prettyCheckbox("DTSelectorTCRM", "TARGET-CRM", value = FALSE, status = "success", shape = "round", fill = TRUE, inline = TRUE),
+                                         prettyCheckbox("DTSelectorOther", "Other", value = FALSE, status = "success", shape = "round", fill = TRUE, inline = TRUE),
+                                         textInput("DTDoseLabels", "Dose Level Labels", value = "-1,1,2,3"),
+                                         bsTooltip("DTDoseLabels", "Please enter the dose level labels (seperated by commas) for each dose level evaluated in the trial", 
+                                                   "top", options = list(container = "body")),
+                                         selectInput("DTStartLevel", "Starting Dose Level", choices = c(-1,1,2,3), selected = 1),
+                                         bsTooltip("DTStartLevel", "Please enter the starting dose level using the dose level labels above", 
+                                                   "top", options = list(container = "body")),
+                                         uiOutput("DTInputs"),
+                                         actionButton("DTSimulate", "Simulate")
+                                  ),
+                                  column(9,
+                                         uiOutput("DTPlotsUI"),
+                                         uiOutput("DTNoneUI")
+                                  )
+                                )
+                        ),
+                        tabItem(tabName = "Conduct",
+                                h1("Something Here")
+                        ),
+                        tabItem(tabName = "Help",
+                                h1("Something Here")
+                        )
+                      )
+                    )
 )
 
 server <- function(input, output, session) {
@@ -145,27 +180,27 @@ server <- function(input, output, session) {
     updateSliderInput(session, "DTMinCohortB", max = input$DTMaxN)
   })
   
+  # Main Plotting UI
+  output$DTPlotsUI <- renderUI({
+    req(DTSelectedDesignsLength() > 0)
+    tagList(
+      column(6,
+             withSpinner(plotOutput("DTPlot1", width = "100%", height = "100%"), type = 7, color = "#003087", size = 2),
+             withSpinner(plotOutput("DTPlot2", width = "100%", height = "100%"), type = 7, color = "#003087", size = 2)
+      ),
+      column(6,
+             withSpinner(plotOutput("DTPlot3", width = "100%", height = "100%"), type = 7, color = "#003087", size = 2),
+             withSpinner(plotOutput("DTPlot4", width = "100%", height = "100%"), type = 7, color = "#003087", size = 2)
+      )
+    )
+  })
+  
   # UI if No Design Selected
   output$DTNoneUI <- renderUI({
     req(DTSelectedDesignsLength() == 0)
     tagList(
       fluidRow(
         h2("Please select a design to begin", style="color: #ff0033")
-      )
-    )
-  })
-  
-  # Main Plotting UI
-  output$DTPlotsUI <- renderUI({
-    req(DTSelectedDesignsLength() > 0)
-    tagList(
-      column(6,
-             withSpinner(plotOutput("DTPlot1"), type = 7, color = "#003087", size = 2),
-             withSpinner(plotOutput("DTPlot2"), type = 7, color = "#003087", size = 2)
-      ),
-      column(6,
-             withSpinner(plotOutput("DTPlot3"), type = 7, color = "#003087", size = 2),
-             withSpinner(plotOutput("DTPlot4"), type = 7, color = "#003087", size = 2)
       )
     )
   })
