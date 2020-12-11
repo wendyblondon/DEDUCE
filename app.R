@@ -14,6 +14,10 @@ numerizer <- function(x){
   as.numeric(unlist(strsplit(x, ",")))
 }
 
+sequencer <- function(x){
+  seq(1,length(unlist(strsplit(x, ","))))
+}
+
 # CSS
 CSS <- "#DTPlot1 {
 height: calc(50vh - 50px) !important;} 
@@ -172,7 +176,7 @@ server <- function(input, output, session) {
   
   # Update Start Level Based on Dose Labels
   observe({
-    updateSelectInput(session, "DTStartLevel", choices = numerizer(input$DTDoseLabels), selected = numerizer(input$DTDoseLabels)[2])
+    updateSelectInput(session, "DTStartLevel", choices = sequencer(input$DTDoseLabels), selected = sequencer(input$DTDoseLabels)[2])
   })
   
   # Update Max Depending on Previous Input
@@ -185,12 +189,12 @@ server <- function(input, output, session) {
     req(DTSelectedDesignsLength() > 0)
     tagList(
       column(6,
-             withSpinner(plotOutput("DTPlot1", width = "100%", height = "100%"), type = 1, color = "#003087", size = 2),
-             withSpinner(plotOutput("DTPlot2", width = "100%", height = "100%"), type = 1, color = "#003087", size = 2)
+             withSpinner(plotOutput("DTPlot1", width = "100%", height = "100%"), type = 7, color = "#003087", size = 2),
+             withSpinner(plotOutput("DTPlot2", width = "100%", height = "100%"), type = 7, color = "#003087", size = 2)
       ),
       column(6,
-             withSpinner(plotOutput("DTPlot3", width = "100%", height = "100%"), type = 1, color = "#003087", size = 2),
-             withSpinner(plotOutput("DTPlot4", width = "100%", height = "100%"), type = 1, color = "#003087", size = 2)
+             withSpinner(plotOutput("DTPlot3", width = "100%", height = "100%"), type = 7, color = "#003087", size = 2),
+             withSpinner(plotOutput("DTPlot4", width = "100%", height = "100%"), type = 7, color = "#003087", size = 2)
       )
     )
   })
