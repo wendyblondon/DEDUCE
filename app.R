@@ -4,7 +4,6 @@ library(shinyjs)
 library(shinyWidgets)
 library(shinydashboard)
 library(shinycssloaders)
-library(pushbar)
 library(tidyverse)
 
 source("target_crm.R")
