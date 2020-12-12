@@ -4,6 +4,7 @@ library(shinyjs)
 library(shinyWidgets)
 library(shinydashboard)
 library(shinycssloaders)
+library(pushbar)
 library(tidyverse)
 
 source("target_crm.R")
@@ -19,7 +20,18 @@ sequencer <- function(x){
 }
 
 # CSS
-CSS <- "#DTPlot1 {
+CSS <- "
+#DTSimulate:hover{
+  background-color: #4CAF50;
+  color: white;
+}
+
+#DTReset:hover{
+  background-color: #f44336;
+  color: white;
+}
+
+#DTPlot1 {
 height: calc(50vh - 50px) !important;} 
 
 #DTPlot2 {
@@ -35,11 +47,11 @@ height: calc(50vh - 50px) !important;}
 ui <- dashboardPage(title = "DELPHI", skin = "black",
                     dashboardHeader(title = strong("DELPHI")),
                     dashboardSidebar(
-                      sidebarMenu(
-                        menuItem("Home", tabName = "Home"),
-                        menuItem("Design", tabName = "Design"),
-                        menuItem("Conduct", tabName = "Conduct"),
-                        menuItem("Help", tabName = "Help")
+                      sidebarMenu(id='tabs',
+                                  menuItem("Home", tabName = "Home", icon = icon("home")),
+                                  menuItem("Design", tabName = "Design", icon = icon("pen")),
+                                  menuItem("Conduct", tabName = "Conduct", icon = icon("dolly-flatbed")),
+                                  menuItem("Help", tabName = "Help", icon = icon("question-circle"))
                       )
                     ),
                     dashboardBody(
@@ -59,10 +71,18 @@ ui <- dashboardPage(title = "DELPHI", skin = "black",
                                          bsTooltip("DTDoseLabels", "Please enter the dose level labels (seperated by commas) for each dose level evaluated in the trial", 
                                                    "top", options = list(container = "body")),
                                          selectInput("DTStartLevel", "Starting Dose Level", choices = c(-1,1,2,3), selected = 1),
-                                         bsTooltip("DTStartLevel", "Please enter the starting dose level using the dose level labels above", 
+                                         bsTooltip("DTStartLevel", "Please enter the starting dose level from the dose level labels above", 
                                                    "top", options = list(container = "body")),
                                          uiOutput("DTInputs"),
-                                         actionButton("DTSimulate", "Simulate")
+                                         actionButton("DTSimulate", "Simulate", width = "50%", style = "font-weight: bold;"),
+                                         bsTooltip("DTSimulate", "Simulates the selected design(s) using the values of the above inputs", 
+                                                   "top", options = list(container = "body")),
+                                         actionButton("DTResults", "Results", width = "20%", style = "font-weight: bold;"),
+                                         bsTooltip("DTResults", "Shows the table and summary of results", 
+                                                   "top", options = list(container = "body")),
+                                         actionButton("DTReset", "Reset", width = "20%", style = "font-weight: bold;"),
+                                         bsTooltip("DTReset", "WARNING: Resets all of the inputs and results, cannot be undone", 
+                                                   "top", options = list(container = "body"))
                                   ),
                                   column(9,
                                          uiOutput("DTPlotsUI"),
@@ -112,64 +132,64 @@ server <- function(input, output, session) {
     
     # 3+3
     if (DTSelectedDesigns() == "some") {
-      tagList(
-        sliderInput("DTTargetTox", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.1),
-        bsTooltip("DTTargetTox", "Please enter the target toxicity probability of the study agent", 
-                  "top", options = list(container = "body")),
-        sliderInput("DTNumTrials", "Number of Simulated Trials", min = 0, max = 10000, value = 100),
-        bsTooltip("DTNumTrials", "Please enter the number of simulated trials. A larger number of simulations increases the precision of simulation results and computation time", 
-                  "top", options = list(container = "body")),
-        textInput("DTTrueTox", "True Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3"),
-        bsTooltip("DTTrueTox", "Please enter the true toxicity probabilities for each dose level evaluated in the trial. Toxicity probabilities must increase with each subsequent dose level", 
-                  "top", options = list(container = "body")),
-        sliderInput("DTArrivalRate", "Patient Enrollment Rate", min = 0, max = 180, value = 15),
-        bsTooltip("DTArrivalRate", "Please enter the average time between enrolling patients (in days)", 
-                  "top", options = list(container = "body")),
-        sliderInput("DTPropB", "Proportion of Patients from Cohort B", min = 0, max = 1, value = 0.1, step = 0.1),
-        bsTooltip("DTPropB", "Please enter the proportion of enrolled patients belonging to the “enrichment” Cohort B", 
-                  "top", options = list(container = "body")),
-        sliderInput("DTCycleLength", "Duration of DLT Observation Period", min = 0, max = 365, value = 28),
-        bsTooltip("DTCycleLength", "Please enter the duration of the DLT observation period (in days)", 
-                  "top", options = list(container = "body"))
-        
+      div(id="DTUISome",
+          sliderInput("DTTargetTox", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.1),
+          bsTooltip("DTTargetTox", "Please enter the target toxicity probability of the study agent", 
+                    "top", options = list(container = "body")),
+          sliderInput("DTNumTrials", "Number of Simulated Trials", min = 0, max = 10000, value = 100),
+          bsTooltip("DTNumTrials", "Please enter the number of simulated trials. A larger number of simulations increases the precision of simulation results and computation time", 
+                    "top", options = list(container = "body")),
+          textInput("DTTrueTox", "True Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3"),
+          bsTooltip("DTTrueTox", "Please enter the true toxicity probabilities for each dose level evaluated in the trial. Toxicity probabilities must increase with each subsequent dose level", 
+                    "top", options = list(container = "body")),
+          sliderInput("DTArrivalRate", "Patient Enrollment Rate", min = 0, max = 180, value = 15),
+          bsTooltip("DTArrivalRate", "Please enter the average time between enrolling patients (in days)", 
+                    "top", options = list(container = "body")),
+          sliderInput("DTPropB", "Proportion of Patients from Cohort B", min = 0, max = 1, value = 0.1, step = 0.1),
+          bsTooltip("DTPropB", "Please enter the proportion of enrolled patients belonging to the “enrichment” Cohort B", 
+                    "top", options = list(container = "body")),
+          sliderInput("DTCycleLength", "Duration of DLT Observation Period", min = 0, max = 365, value = 28),
+          bsTooltip("DTCycleLength", "Please enter the duration of the DLT observation period (in days)", 
+                    "top", options = list(container = "body"))
+          
       )
     }
     # TARGET-CRM or Both
     else if (DTSelectedDesigns() == "all") {
-      tagList(
-        textInput("DTPriorTox", "Prior Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3"),
-        bsTooltip("DTPriorTox", "Please enter the prior toxicity probabilities for each dose level evaluated in the trial. Toxicity probabilities must increase with each subsequent dose level", 
-                  "top", options = list(container = "body")),
-        sliderInput("DTTargetTox2", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.1),
-        bsTooltip("DTTargetTox2", "Please enter the target toxicity probability of the study agent", 
-                  "top", options = list(container = "body")),
-        sliderInput("DTNumTrials2", "Number of Simulated Trials", min = 0, max = 10000, value = 100),
-        bsTooltip("DTNumTrials2", "Please enter the number of simulated trials. A larger number of simulations increases the precision of simulation results and computation time", 
-                  "top", options = list(container = "body")),
-        textInput("DTTrueTox2", "True Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3"),
-        bsTooltip("DTTrueTox2", "Please enter the true toxicity probabilities for each dose level evaluated in the trial. Toxicity probabilities must increase with each subsequent dose level", 
-                  "top", options = list(container = "body")),
-        sliderInput("DTArrivalRate2", "Patient Enrollment Rate", min = 0, max = 180, value = 15),
-        bsTooltip("DTArrivalRate2", "Please enter the average time between enrolling patients (in days)", 
-                  "top", options = list(container = "body")),
-        sliderInput("DTPropB2", "Proportion of Patients from Cohort B", min = 0, max = 1, value = 0.1, step = 0.1),
-        bsTooltip("DTPropB2", "Please enter the proportion of enrolled patients belonging to the “enrichment” Cohort B", 
-                  "top", options = list(container = "body")),
-        selectInput("DTTargetCRM", "Target-CRM Option", choices = c(0,1,2), selected = 1),
-        bsTooltip("DTTargetCRM", "Please enter the desired variation of the TARGET-CRM design", 
-                  "top", options = list(container = "body")),
-        sliderInput("DTMaxN", "Maximum Sample Size", min = 1, max = 200, value = 18),
-        bsTooltip("DTMaxN", "Please enter the maximum number of patients to be enrolled per trial", 
-                  "top", options = list(container = "body")),
-        sliderInput("DTMinCohortB", "Minimum Enrollment of Cohort B Patients (Optional)", min = 0, max = 100, value = 2),
-        bsTooltip("DTMinCohortB", "Please enter the minimum number of Cohort B patients to be enrolled in the trial", 
-                  "top", options = list(container = "body")),
-        sliderInput("DTCycleLength2", "Duration of DLT Observation Period", min = 0, max = 365, value = 28),
-        bsTooltip("DTCycleLength2", "Please enter the duration of the DLT observation period (in days)", 
-                  "top", options = list(container = "body")),
-        selectInput("DTCohortSize", "Cohort Size", choices = c(seq(1,9)), selected = 3),
-        bsTooltip("DTCohortSize", "Please enter the cohort size. The cohort size is the number of patients to be treated at the current dose level before a dose escalation decision is made", 
-                  "top", options = list(container = "body"))
+      div(id="DTUIAll",
+          textInput("DTPriorTox", "Prior Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3"),
+          bsTooltip("DTPriorTox", "Please enter the prior toxicity probabilities for each dose level evaluated in the trial. Toxicity probabilities must increase with each subsequent dose level", 
+                    "top", options = list(container = "body")),
+          sliderInput("DTTargetTox2", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.1),
+          bsTooltip("DTTargetTox2", "Please enter the target toxicity probability of the study agent", 
+                    "top", options = list(container = "body")),
+          sliderInput("DTNumTrials2", "Number of Simulated Trials", min = 0, max = 10000, value = 100),
+          bsTooltip("DTNumTrials2", "Please enter the number of simulated trials. A larger number of simulations increases the precision of simulation results and computation time", 
+                    "top", options = list(container = "body")),
+          textInput("DTTrueTox2", "True Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3"),
+          bsTooltip("DTTrueTox2", "Please enter the true toxicity probabilities for each dose level evaluated in the trial. Toxicity probabilities must increase with each subsequent dose level", 
+                    "top", options = list(container = "body")),
+          sliderInput("DTArrivalRate2", "Patient Enrollment Rate", min = 0, max = 180, value = 15),
+          bsTooltip("DTArrivalRate2", "Please enter the average time between enrolling patients (in days)", 
+                    "top", options = list(container = "body")),
+          sliderInput("DTPropB2", "Proportion of Patients from Cohort B", min = 0, max = 1, value = 0.1, step = 0.1),
+          bsTooltip("DTPropB2", "Please enter the proportion of enrolled patients belonging to the “enrichment” Cohort B", 
+                    "top", options = list(container = "body")),
+          selectInput("DTTargetCRM", "Target-CRM Option", choices = c(0,1,2), selected = 1),
+          bsTooltip("DTTargetCRM", "Please enter the desired variation of the TARGET-CRM design", 
+                    "top", options = list(container = "body")),
+          sliderInput("DTMaxN", "Maximum Sample Size", min = 1, max = 200, value = 18),
+          bsTooltip("DTMaxN", "Please enter the maximum number of patients to be enrolled per trial", 
+                    "top", options = list(container = "body")),
+          sliderInput("DTMinCohortB", "Minimum Enrollment of Cohort B Patients (Optional)", min = 0, max = 100, value = 2),
+          bsTooltip("DTMinCohortB", "Please enter the minimum number of Cohort B patients to be enrolled in the trial", 
+                    "top", options = list(container = "body")),
+          sliderInput("DTCycleLength2", "Duration of DLT Observation Period", min = 0, max = 365, value = 28),
+          bsTooltip("DTCycleLength2", "Please enter the duration of the DLT observation period (in days)", 
+                    "top", options = list(container = "body")),
+          selectInput("DTCohortSize", "Cohort Size", choices = c(seq(1,9)), selected = 3),
+          bsTooltip("DTCohortSize", "Please enter the cohort size. The cohort size is the number of patients to be treated at the current dose level before a dose escalation decision is made", 
+                    "top", options = list(container = "body"))
       )
     }
   })
@@ -187,16 +207,35 @@ server <- function(input, output, session) {
   # Main Plotting UI
   output$DTPlotsUI <- renderUI({
     req(DTSelectedDesignsLength() > 0)
-    tagList(
-      column(6,
-             withSpinner(plotOutput("DTPlot1", width = "100%", height = "100%"), type = 7, color = "#003087", size = 2),
-             withSpinner(plotOutput("DTPlot2", width = "100%", height = "100%"), type = 7, color = "#003087", size = 2)
-      ),
-      column(6,
-             withSpinner(plotOutput("DTPlot3", width = "100%", height = "100%"), type = 7, color = "#003087", size = 2),
-             withSpinner(plotOutput("DTPlot4", width = "100%", height = "100%"), type = 7, color = "#003087", size = 2)
+    hidden(
+      div(id="DTUIPlots",
+          column(6,
+                 withSpinner(plotOutput("DTPlot1", width = "100%", height = "100%"), type = 7, color = "#003087", size = 2),
+                 withSpinner(plotOutput("DTPlot2", width = "100%", height = "100%"), type = 7, color = "#003087", size = 2)
+          ),
+          column(6,
+                 withSpinner(plotOutput("DTPlot3", width = "100%", height = "100%"), type = 7, color = "#003087", size = 2),
+                 withSpinner(plotOutput("DTPlot4", width = "100%", height = "100%"), type = 7, color = "#003087", size = 2)
+          )
       )
     )
+  })
+  
+  # Shows the Plots UI After Clicking Simulate
+  observeEvent(input$DTSimulate, {
+    show("DTUIPlots")
+  })
+  
+  # Hide/Reset the UI Elements
+  observeEvent(input$DTReset, {
+    hide("DTUIPlots")
+    reset("DTSelectorTPT")
+    reset("DTSelectorTCRM")
+    reset("DTSelectorOther")
+    reset("DTDoseLabels")
+    reset("DTStartLevel")
+    reset("DTUISome")
+    reset("DTUIAll")
   })
   
   # UI if No Design Selected
