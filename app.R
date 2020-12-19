@@ -21,6 +21,59 @@ sequencer <- function(x){
 
 # CSS
 CSS <- "
+.sidebar-menu{
+  font-size: 20px;
+}
+
+.pretty{
+  font-size: 18px;
+}
+
+#DTDoseLabels{
+  font-size: 18px;
+}
+
+#DTTrueTox{
+  font-size: 18px;
+}
+
+#DTTrueTox2{
+  font-size: 18px;
+}
+
+#DTPriorTox{
+  font-size: 18px;
+}
+
+.control-label{
+  font-size: 18px;
+}
+
+.irs-min{
+  font-size: 16px;
+  line-height: 16px;
+}
+
+.irs-max{
+  font-size: 16px;
+  line-height: 16px;
+}
+
+.irs-single{
+  font-size: 16px;
+  line-height: 16px;
+}
+
+.selectize-input { 
+  font-size: 18px; 
+  line-height: 18px;
+}
+
+.selectize-dropdown {
+  font-size: 18px; 
+  line-height: 18px;
+}
+
 #DTSimulate:hover{
   background-color: #4CAF50;
   color: white;
@@ -47,6 +100,7 @@ height: calc(50vh - 50px) !important;}
 ui <- dashboardPage(title = "DELPHI", skin = "black",
                     dashboardHeader(title = strong("DELPHI")),
                     dashboardSidebar(
+                      waiter_show_on_load(logo = "logo.PNG", color = "white"),
                       sidebarMenu(id='tabs',
                                   menuItem("Home", tabName = "Home", icon = icon("home")),
                                   menuItem("Design", tabName = "Design", icon = icon("pen")),
@@ -56,7 +110,6 @@ ui <- dashboardPage(title = "DELPHI", skin = "black",
                     ),
                     dashboardBody(
                       useShinyjs(), inlineCSS(CSS), useShinyFeedback(), use_waiter(),
-                      waiter_show_on_load(logo = "logo.PNG", color = "white"),
                       tabItems(
                         tabItem(tabName = "Home",
                                 h1("Something Here")
@@ -66,11 +119,19 @@ ui <- dashboardPage(title = "DELPHI", skin = "black",
                                   column(3, style="overflow-y:scroll; height: 70vh;",
                                          h1("Inputs", style="text-align: center; text-decoration: underline;"),
                                          br(),
-                                         h4("Designs:", style = "font-weight: bold;"),
-                                         prettyCheckbox("DTSelectorTPT", "3+3", value = TRUE, status = "success", shape = "round", fill = TRUE, inline = TRUE),
-                                         prettyCheckbox("DTSelectorTCRM", "TARGET-CRM", value = FALSE, status = "success", shape = "round", fill = TRUE, inline = TRUE),
-                                         prettyCheckbox("DTSelectorOther", "Other", value = FALSE, status = "success", shape = "round", fill = TRUE, inline = TRUE),
+                                         p("Designs:", style = "font-weight: 700; font-size: 18px;"),
+                                         prettyCheckbox("DTSelectorTPT", "3+3", value = TRUE, icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
+                                         bsTooltip("DTSelectorTPT", "Select to run the 3+3 Design", 
+                                                   "top", options = list(container = "body")),
+                                         prettyCheckbox("DTSelectorTCRM", "TARGET-CRM", value = FALSE, icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
+                                         bsTooltip("DTSelectorTCRM", "Select to run the TARGET-CRM Design", 
+                                                   "top", options = list(container = "body")),
+                                         prettyCheckbox("DTSelectorOther", "Other", value = FALSE, icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
+                                         bsTooltip("DTSelectorOther", "Select to run the Other Design", 
+                                                   "top", options = list(container = "body")),
                                          sliderInput("DTNumDoses", "How Many Doses Will There Be?", min = 3, max = 10, value = 4, width = "100%", ticks = FALSE),
+                                         bsTooltip("DTNumDoses", "Please enter the number of doses that will be used", 
+                                                   "top", options = list(container = "body")),
                                          textInput("DTDoseLabels", "Dose Level Labels", value = "-1,1,2,3", width = "100%"),
                                          bsTooltip("DTDoseLabels", "Please enter the dose level labels (seperated by commas) for each dose level evaluated in the trial", 
                                                    "top", options = list(container = "body")),
@@ -193,7 +254,7 @@ server <- function(input, output, session) {
           sliderInput("DTCycleLength2", "Duration of DLT Observation Period", min = 0, max = 365, value = 28, width = "100%", ticks = FALSE),
           bsTooltip("DTCycleLength2", "Please enter the duration of the DLT observation period (in days)", 
                     "top", options = list(container = "body")),
-          selectInput("DTCohortSize", "Cohort Size", choices = c(seq(1,9)), selected = 3, width = "100%"),
+          sliderInput("DTCohortSize", "Cohort Size", min = 1, max = 9, value = 3, width = "100%", ticks = FALSE),
           bsTooltip("DTCohortSize", "Please enter the cohort size. The cohort size is the number of patients to be treated at the current dose level before a dose escalation decision is made", 
                     "top", options = list(container = "body"))
       )
@@ -312,7 +373,7 @@ server <- function(input, output, session) {
                          number.trials = input$DTNumTrials2, true.tox = numerizer(input$DTTrueTox2), 
                          arrival.rate = input$DTArrivalRate2, prop.B = input$DTPropB2, target.crm = as.numeric(input$DTTargetCRM), 
                          min.cohortB = input$DTMinCohortB, cycle.length = input$DTCycleLength2, 
-                         cohort.size = as.numeric(input$DTCohortSize), max.N = input$DTMaxN, start.level = as.numeric(input$DTStartLevel))
+                         cohort.size = input$DTCohortSize, max.N = input$DTMaxN, start.level = as.numeric(input$DTStartLevel))
       
     }
     
@@ -323,7 +384,7 @@ server <- function(input, output, session) {
                           number.trials = input$DTNumTrials2, true.tox = numerizer(input$DTTrueTox2), 
                           arrival.rate = input$DTArrivalRate2, prop.B = input$DTPropB2, target.crm = as.numeric(input$DTTargetCRM), 
                           min.cohortB = input$DTMinCohortB, cycle.length = input$DTCycleLength2, 
-                          cohort.size = as.numeric(input$DTCohortSize), max.N = input$DTMaxN, start.level = as.numeric(input$DTStartLevel))
+                          cohort.size = input$DTCohortSize, max.N = input$DTMaxN, start.level = as.numeric(input$DTStartLevel))
     }
     
     all <- list(get0("TPT"), get0("TCRM"), get0("Other"))
