@@ -19,6 +19,33 @@ sequencer <- function(x){
   seq(1,length(unlist(strsplit(x, ","))))
 }
 
+incrementCheck <- function(x) {
+  if (is.character(x)) {
+    
+    lengthX <- length(unlist(strsplit(x, ",")))
+    
+    if (lengthX > 1) {
+      vecX <- unlist(strsplit(x, ","))
+      
+      for (i in 1:(lengthX - 1)) {
+        if (vecX[i + 1] > vecX[i]) {
+          next
+        }
+        else{
+          return(TRUE)
+        }
+      }
+      return(FALSE)
+    }
+    else{
+      return(FALSE)
+    }
+  }
+  else{
+    stop("The input must be a character")
+  }
+}
+
 # CSS
 CSS <- "
 .sidebar-menu{
@@ -271,42 +298,52 @@ server <- function(input, output, session) {
     updateSliderInput(session, "DTMinCohortB", max = input$DTMaxN)
   })
   
-  ## Warning for Invalid Inputs
+  ## Warnings for Invalid Inputs
+  
   # Dose Labels
   observeEvent(list(input$DTDoseLabels, input$DTNumDoses), {
     req(input$DTDoseLabels)
-    feedbackDanger(
-      inputId = "DTDoseLabels",
-      show = length(unlist(strsplit(input$DTDoseLabels, ",")))!= input$DTNumDoses,
-      text = "The length must match the # of doses chosen above"
-    )
+    hideFeedback("DTDoseLabels")
+    if (length(unlist(strsplit(input$DTDoseLabels, ",")))!= input$DTNumDoses) {
+      showFeedbackDanger("DTDoseLabels", "The length must match the number of doses chosen above")
+    }
   })
+  
+  
   # True Tox
   observeEvent(list(input$DTTrueTox, input$DTNumDoses), {
     req(input$DTTrueTox)
-    feedbackDanger(
-      inputId = "DTTrueTox",
-      show = length(unlist(strsplit(input$DTTrueTox, ",")))!= input$DTNumDoses,
-      text = "The length must match the # of doses chosen above"
-    )
+    hideFeedback("DTTrueTox")
+    if (length(unlist(strsplit(input$DTTrueTox, ",")))!= input$DTNumDoses) {
+      showFeedbackDanger("DTTrueTox", "The length must match the number of doses chosen above")
+    }
+    else if (incrementCheck(input$DTTrueTox)==TRUE) {
+      showFeedbackDanger("DTTrueTox", "The probabilities must increase with each subsequent dose")
+    }
   })
-  # True Tox 2
+  
+  # True Tox 2 
   observeEvent(list(input$DTTrueTox2, input$DTNumDoses), {
     req(input$DTTrueTox2)
-    feedbackDanger(
-      inputId = "DTTrueTox2",
-      show = length(unlist(strsplit(input$DTTrueTox2, ",")))!= input$DTNumDoses,
-      text = "The length must match the # of doses chosen above"
-    )
+    hideFeedback("DTTrueTox2")
+    if (length(unlist(strsplit(input$DTTrueTox2, ",")))!= input$DTNumDoses) {
+      showFeedbackDanger("DTTrueTox2", "The length must match the number of doses chosen above")
+    }
+    else if (incrementCheck(input$DTTrueTox2)==TRUE) {
+      showFeedbackDanger("DTTrueTox2", "The probabilities must increase with each subsequent dose")
+    }
   })
+  
   # Prior Tox
   observeEvent(list(input$DTPriorTox, input$DTNumDoses), {
     req(input$DTPriorTox)
-    feedbackDanger(
-      inputId = "DTPriorTox",
-      show = length(unlist(strsplit(input$DTPriorTox, ",")))!= input$DTNumDoses,
-      text = "The length must match the # of doses chosen above"
-    )
+    hideFeedback("DTPriorTox")
+    if (length(unlist(strsplit(input$DTPriorTox, ",")))!= input$DTNumDoses) {
+      showFeedbackDanger("DTPriorTox", "The length must match the number of doses chosen above")
+    }
+    else if (incrementCheck(input$DTPriorTox)==TRUE) {
+      showFeedbackDanger("DTPriorTox", "The probabilities must increase with each subsequent dose")
+    }
   })
   
   # Main Plotting UI
