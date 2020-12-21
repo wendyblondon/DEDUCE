@@ -32,10 +32,37 @@ incrementCheck <- function(x) {
           next
         }
         else{
-          return(TRUE)
+          return(FALSE)
         }
       }
+      return(TRUE)
+    }
+    else{
       return(FALSE)
+    }
+  }
+  else{
+    stop("The input must be a character")
+  }
+}
+
+decimalCheck <- function(x){
+  if (is.character(x)) {
+    
+    lengthX <- length(unlist(strsplit(x, ",")))
+    
+    if (lengthX > 1) {
+      vecX <- unlist(strsplit(x, ","))
+      
+      for (i in 1:lengthX) {
+        if (grepl("[.]", vecX[i]) == FALSE) {
+          return(FALSE)
+        }
+        else{
+          next
+        }
+      }
+      return(TRUE)
     }
     else{
       return(FALSE)
@@ -317,8 +344,11 @@ server <- function(input, output, session) {
     if (length(unlist(strsplit(input$DTTrueTox, ",")))!= input$DTNumDoses) {
       showFeedbackDanger("DTTrueTox", "The length must match the number of doses chosen above")
     }
-    else if (incrementCheck(input$DTTrueTox)==TRUE) {
+    else if (incrementCheck(input$DTTrueTox)==FALSE) {
       showFeedbackDanger("DTTrueTox", "The probabilities must increase with each subsequent dose")
+    }
+    else if (decimalCheck(input$DTTrueTox)==FALSE) {
+      showFeedbackDanger("DTTrueTox", "The probabilities must be a decimal")
     }
   })
   
@@ -329,8 +359,11 @@ server <- function(input, output, session) {
     if (length(unlist(strsplit(input$DTTrueTox2, ",")))!= input$DTNumDoses) {
       showFeedbackDanger("DTTrueTox2", "The length must match the number of doses chosen above")
     }
-    else if (incrementCheck(input$DTTrueTox2)==TRUE) {
+    else if (incrementCheck(input$DTTrueTox2)==FALSE) {
       showFeedbackDanger("DTTrueTox2", "The probabilities must increase with each subsequent dose")
+    }
+    else if (decimalCheck(input$DTTrueTox2)==FALSE) {
+      showFeedbackDanger("DTTrueTox2", "The probabilities must be a decimal")
     }
   })
   
@@ -341,8 +374,11 @@ server <- function(input, output, session) {
     if (length(unlist(strsplit(input$DTPriorTox, ",")))!= input$DTNumDoses) {
       showFeedbackDanger("DTPriorTox", "The length must match the number of doses chosen above")
     }
-    else if (incrementCheck(input$DTPriorTox)==TRUE) {
+    else if (incrementCheck(input$DTPriorTox)==FALSE) {
       showFeedbackDanger("DTPriorTox", "The probabilities must increase with each subsequent dose")
+    }
+    else if (decimalCheck(input$DTPriorTox)==FALSE) {
+      showFeedbackDanger("DTPriorTox", "The probabilities must be a decimal")
     }
   })
   
