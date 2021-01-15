@@ -133,12 +133,17 @@ CSS <- "
 }
 
 #DTSimulate:hover{
-  background-color: #4CAF50;
+  background-color: #1b9e77;
+  color: white;
+}
+
+#DTResults:hover{
+  background-color: #7570b3;
   color: white;
 }
 
 #DTReset:hover{
-  background-color: #f44336;
+  background-color: #d95f02;
   color: white;
 }
 
