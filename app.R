@@ -73,6 +73,10 @@ decimalCheck <- function(x){
   }
 }
 
+nullToNA <- function(x){
+  ifelse(is.null(x), NA, x)
+}
+
 # CSS
 CSS <- "
 .sidebar-menu{
@@ -202,6 +206,7 @@ ui <- dashboardPage(title = "DELPHI", skin = "black",
                                                    "top", options = list(container = "body")),
                                          bsTooltip("DTResults", "Shows the table and summary of results", 
                                                    "top", options = list(container = "body")),
+                                         bsModal("modalTable1", "Summary of Simulation Results", "DTResults", dataTableOutput("DTTable1")),
                                          bsTooltip("DTReset", "WARNING: Resets all of the inputs and results, cannot be undone", 
                                                    "top", options = list(container = "body"))
                                   ),
@@ -582,6 +587,52 @@ server <- function(input, output, session) {
       geom_bar(stat="identity") + geom_errorbar(aes(ymin= MeanDuration - SDDuration, ymax = MeanDuration + SDDuration)) + xlab("Design") +
       ylab("Mean Study Duration (Days)") + ggtitle("Mean Study Duration in Days (+/- 1 SD)")
   })
+  
+  # Table DF
+  DTTable1DF <- reactive({
+    
+    tableList <- list()
+    
+    for (v in seq(1, DTSelectedDesignsLength())) {
+      if (DTFunctionOutputs()[[v]]$df$design[1] == "3+3") {
+        
+        x <- round(unname(c(nullToNA(DTFunctionOutputs()[[v]]$PCS), nullToNA(DTFunctionOutputs()[[v]]$true.MTD), 
+                            DTFunctionOutputs()[[v]]$MTD.selection.table/DTFunctionOutputs()[[v]]$number.trials, 
+                            nullToNA(DTFunctionOutputs()[[v]]$obs.tox.overall), DTFunctionOutputs()[[v]]$obs.tox.table, 
+                            nullToNA(DTFunctionOutputs()[[v]]$mean.obs.N), nullToNA(DTFunctionOutputs()[[v]]$min.obs.N), 
+                            nullToNA(DTFunctionOutputs()[[v]]$max.obs.N), DTFunctionOutputs()[[v]]$patient.allocation.table, 
+                            DTFunctionOutputs()[[v]]$mean.duration, DTFunctionOutputs()[[v]]$sd.duration, NA, NA)), 3)
+        xName <- DTFunctionOutputs()[[v]]$df$design[1]
+      }
+      else {
+        x <- round(unname(c(nullToNA(DTFunctionOutputs()[[v]]$PCS), nullToNA(DTFunctionOutputs()[[v]]$true.MTD), 
+                            DTFunctionOutputs()[[v]]$MTD.selection.table/DTFunctionOutputs()[[v]]$number.trials, 
+                            nullToNA(DTFunctionOutputs()[[v]]$obs.tox.overall), DTFunctionOutputs()[[v]]$obs.tox.table, 
+                            nullToNA(DTFunctionOutputs()[[v]]$mean.obs.N), nullToNA(DTFunctionOutputs()[[v]]$min.obs.N), 
+                            nullToNA(DTFunctionOutputs()[[v]]$max.obs.N), DTFunctionOutputs()[[v]]$patient.allocation.table, 
+                            DTFunctionOutputs()[[v]]$mean.duration, DTFunctionOutputs()[[v]]$sd.duration, 
+                            nullToNA(DTFunctionOutputs()[[v]]$mean.cohortB), nullToNA(DTFunctionOutputs()[[v]]$sd.cohortB))), 3)
+        xName <- DTFunctionOutputs()[[v]]$df$design[1]
+      }
+      
+      tableList[[v]] <- x
+      names(tableList)[v] <- xName
+      
+    }
+    df <- as.data.frame(do.call(cbind, tableList))
+    opChars <- c("Proportion of correct selection (PCS)", "True MTD", sprintf("Proportion of trials selecting dose %d as true MTD", 1:length(numerizer(input$DTDoseLabels))),
+                 "Proportion of patients experiencing a DLT overall", sprintf("Proportion of patients experiencing a DLT at dose %d", 1:length(numerizer(input$DTDoseLabels))),
+                 "Mean total sample size", "Minimmum total sample size", "Maximum total sample size", 
+                 sprintf("Proportion of patients enrolled at dose %d", 1:length(numerizer(input$DTDoseLabels))), "Mean study duration in days", 
+                 "Standard deviation of study duration in days", "Mean # of cohort B patients enrolled during DTL observation period (TARGET-CRM only)",
+                 "Standard deviation of # of cohort B patients enrolled during DLT observation period (TARGET-CRM only)")
+    df <- cbind(opChars, df)
+    colnames(df)[1] <- "Operating Characteristic"
+    return(df)
+  })
+  
+  # Table Output
+  output$DTTable1 <- renderDataTable(DTTable1DF())
 }
 
 shinyApp(ui, server)
