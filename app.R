@@ -206,7 +206,7 @@ ui <- dashboardPage(title = "DELPHI", skin = "black",
                                                    "top", options = list(container = "body")),
                                          bsTooltip("DTResults", "Shows the table and summary of results", 
                                                    "top", options = list(container = "body")),
-                                         bsModal("modalTable1", "Summary of Simulation Results", "DTResults", dataTableOutput("DTTable1")),
+                                         bsModal("modalTable1", "Summary of Simulation Results", "DTResults", DT::dataTableOutput("DTTable1")),
                                          bsTooltip("DTReset", "WARNING: Resets all of the inputs and results, cannot be undone", 
                                                    "top", options = list(container = "body"))
                                   ),
@@ -632,7 +632,8 @@ server <- function(input, output, session) {
   })
   
   # Table Output
-  output$DTTable1 <- renderDataTable(DTTable1DF())
+  output$DTTable1 <- DT::renderDataTable(DTTable1DF(), extensions = c('Buttons', 'Scroller', 'Responsive'), 
+                                         options = list(dom = 'Brtip', scrollY = 400, scroller = TRUE, deferRender = TRUE, buttons = c('csv', 'excel', 'pdf')))
 }
 
 shinyApp(ui, server)
