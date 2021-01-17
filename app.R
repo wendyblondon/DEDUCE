@@ -10,6 +10,8 @@ library(tidyverse)
 source("target_crm.R")
 source("three_plus_three.R")
 
+theme_set(theme_minimal(base_size = 15))
+
 # Functions
 numerizer <- function(x){
   as.numeric(unlist(strsplit(x, ",")))
@@ -148,16 +150,20 @@ CSS <- "
 }
 
 #DTPlot1 {
-height: calc(50vh - 50px) !important;} 
+  height: calc(50vh - 50px) !important;
+} 
 
 #DTPlot2 {
-height: calc(50vh - 50px) !important;} 
+  height: calc(50vh - 50px) !important;
+} 
 
 #DTPlot3 {
-height: calc(50vh - 50px) !important;} 
+  height: calc(50vh - 50px) !important;
+} 
 
 #DTPlot4 {
-height: calc(50vh - 50px) !important;} 
+  height: calc(50vh - 50px) !important;
+} 
 "
 
 ui <- dashboardPage(title = "DELPHI", skin = "black",
@@ -399,11 +405,13 @@ server <- function(input, output, session) {
       div(id="DTUIPlots",
           column(6,
                  plotOutput("DTPlot1", width = "100%", height = "100%"),
-                 plotOutput("DTPlot2", width = "100%", height = "100%"),
+                 br(),
+                 plotOutput("DTPlot2", width = "100%", height = "100%")
           ),
           column(6,
                  plotOutput("DTPlot3", width = "100%", height = "100%"),
-                 plotOutput("DTPlot4", width = "100%", height = "100%"),
+                 br(),
+                 plotOutput("DTPlot4", width = "100%", height = "100%")
           )
       )
     )
@@ -533,15 +541,15 @@ server <- function(input, output, session) {
       DTPlotDF() %>% mutate(MTD.Prop=MTD.Freq/input$DTNumTrials2) %>%
         ggplot(aes(x=DoseLevel, y=MTD.Prop, fill=design)) + 
         geom_bar(stat="identity", position="dodge") + xlab("Dose Level") + ylab("Proportion of Simulated Trials") +
-        ggtitle("Proportion of Simulated Trials Selecting Each Dose Level as True MTD")
+        ggtitle("Proportion of Simulated Trials Selecting\nEach Dose Level as True MTD") + theme(plot.title = element_text(hjust = 0.5))
     }
     
     else if (DTSelectedDesignsLength() == 1){
       
       DTPlotDF() %>% mutate(MTD.Prop = MTD.Freq/input$DTNumTrials) %>%
         ggplot(aes(x=DoseLevel, y=MTD.Prop)) + 
-        geom_bar(stat='identity') + xlab("Dose Level") + 
-        ylab("Proportion of Simulated Trials") + ggtitle("Proportion of Simulated Trials Selecting Each Dose Level as True MTD")
+        geom_bar(stat='identity') + xlab("Dose Level") + ylab("Proportion of Simulated Trials") + 
+        ggtitle("Proportion of Simulated Trials Selecting\nEach Dose Level as True MTD") + theme(plot.title = element_text(hjust = 0.5))
     }
     
   })
@@ -554,7 +562,7 @@ server <- function(input, output, session) {
         ggplot(aes(x=DoseLevel, y=obs.tox.table, fill=design)) + 
         geom_bar(stat="identity", position="dodge") + geom_hline(aes(yintercept=input$DTTargetTox2), linetype="dashed") +
         xlab("Dose Level") + ylab("Proportion of Patients Experiencing a DLT ") + 
-        ggtitle("Proportion of Patients Experiencing a DLT Per Dose Level")
+        ggtitle("Proportion of Patients Experiencing\na DLT Per Dose Level") + theme(plot.title = element_text(hjust = 0.5))
     }
     
     else if (DTSelectedDesignsLength() == 1){
@@ -562,7 +570,7 @@ server <- function(input, output, session) {
         ggplot(aes(x=DoseLevel, y=obs.tox.table)) + 
         geom_bar(stat="identity") + geom_hline(aes(yintercept=input$DTTargetTox), linetype="dashed") +
         xlab("Dose Level") + ylab("Proportion of Patients Experiencing a DLT ") + 
-        ggtitle("Proportion of Patients Experiencing a DLT Per Dose Level")
+        ggtitle("Proportion of Patients Experiencing\na DLT Per Dose Level") + theme(plot.title = element_text(hjust = 0.5))
     }
   })
   
@@ -573,14 +581,14 @@ server <- function(input, output, session) {
       DTPlotDF() %>%
         ggplot(aes(x=DoseLevel, y=patient.allocation.table, fill=design)) + 
         geom_bar(stat="identity", position="dodge") + xlab("Dose Level") + ylab("Proportion of Patients Allocated") + 
-        ggtitle("Proportion of Patients Allocated to Each Dose Level")
+        ggtitle("Proportion of Patients Allocated\nto Each Dose Level") + theme(plot.title = element_text(hjust = 0.5))
     }
     
     else if (DTSelectedDesignsLength() == 1){
       DTPlotDF() %>%
         ggplot(aes(x=DoseLevel, y=patient.allocation.table)) + 
         geom_bar(stat="identity") + xlab("Dose Level") + ylab("Proportion of Patients Allocated") + 
-        ggtitle("Proportion of Patients Allocated to Each Dose Level")
+        ggtitle("Proportion of Patients Allocated\nto Each Dose Level") + theme(plot.title = element_text(hjust = 0.5))
     }
   })
   
@@ -590,7 +598,7 @@ server <- function(input, output, session) {
     DTPlotDF2() %>%
       ggplot(aes(x=design, y=MeanDuration)) + 
       geom_bar(stat="identity") + geom_errorbar(aes(ymin= MeanDuration - SDDuration, ymax = MeanDuration + SDDuration)) + xlab("Design") +
-      ylab("Mean Study Duration (Days)") + ggtitle("Mean Study Duration in Days (+/- 1 SD)")
+      ylab("Mean Study Duration (Days)") + ggtitle("Mean Study Duration in Days (+/- 1 SD)") + theme(plot.title = element_text(hjust = 0.5))
   })
   
   # Table DF
