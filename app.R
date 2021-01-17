@@ -168,17 +168,16 @@ CSS <- "
 
 ui <- dashboardPage(title = "DELPHI", skin = "black",
                     dashboardHeader(title = strong("DELPHI")),
-                    dashboardSidebar(
-                      sidebarMenu(id='tabs',
-                                  menuItem("Home", tabName = "Home", icon = icon("home")),
-                                  menuItem("Design", tabName = "Design", icon = icon("pen")),
-                                  menuItem("Conduct", tabName = "Conduct", icon = icon("dolly-flatbed")),
-                                  menuItem("Help", tabName = "Help", icon = icon("question-circle"))
-                      )
+                    dashboardSidebar(useShinyjs(), inlineCSS(CSS), useShinyFeedback(), use_waiter(),
+                                     waiter_show_on_load(html = img(src="logo.PNG"), color = "white"),
+                                     sidebarMenu(id='tabs',
+                                                 menuItem("Home", tabName = "Home", icon = icon("home")),
+                                                 menuItem("Design", tabName = "Design", icon = icon("pen")),
+                                                 menuItem("Conduct", tabName = "Conduct", icon = icon("dolly-flatbed")),
+                                                 menuItem("Help", tabName = "Help", icon = icon("question-circle"))
+                                     )
                     ),
                     dashboardBody(
-                      useShinyjs(), inlineCSS(CSS), useShinyFeedback(), use_waiter(),
-                      waiter_show_on_load(html = img(src="logo.PNG"), color = "white"),
                       tabItems(
                         tabItem(tabName = "Home",
                                 h1("Something Here")
