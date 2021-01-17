@@ -169,7 +169,7 @@ CSS <- "
 ui <- dashboardPage(title = "DELPHI", skin = "black",
                     dashboardHeader(title = strong("DELPHI")),
                     dashboardSidebar(
-                      waiter_show_on_load(logo = "logo.PNG", color = "white"),
+                      
                       sidebarMenu(id='tabs',
                                   menuItem("Home", tabName = "Home", icon = icon("home")),
                                   menuItem("Design", tabName = "Design", icon = icon("pen")),
@@ -179,6 +179,7 @@ ui <- dashboardPage(title = "DELPHI", skin = "black",
                     ),
                     dashboardBody(
                       useShinyjs(), inlineCSS(CSS), useShinyFeedback(), use_waiter(),
+                      waiter_show_on_load(html = img(src="logo.PNG"), color = "white"),
                       tabItems(
                         tabItem(tabName = "Home",
                                 h1("Something Here")
@@ -238,6 +239,7 @@ ui <- dashboardPage(title = "DELPHI", skin = "black",
 )
 
 server <- function(input, output, session) {
+  Sys.sleep(2)
   waiter_hide()
   # Get Selected Designs for Rendering UI Guidance
   DTSelectedDesigns <- reactive({
