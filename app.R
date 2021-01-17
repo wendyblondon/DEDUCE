@@ -169,7 +169,6 @@ CSS <- "
 ui <- dashboardPage(title = "DELPHI", skin = "black",
                     dashboardHeader(title = strong("DELPHI")),
                     dashboardSidebar(
-                      
                       sidebarMenu(id='tabs',
                                   menuItem("Home", tabName = "Home", icon = icon("home")),
                                   menuItem("Design", tabName = "Design", icon = icon("pen")),
