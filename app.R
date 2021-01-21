@@ -597,7 +597,7 @@ server <- function(input, output, session) {
     
     DTPlotDF2() %>%
       ggplot(aes(x=design, y=MeanDuration)) + 
-      geom_bar(stat="identity") + geom_errorbar(aes(ymin= MeanDuration - SDDuration, ymax = MeanDuration + SDDuration)) + xlab("Design") +
+      geom_point() + geom_errorbar(aes(ymin= MeanDuration - SDDuration, ymax = MeanDuration + SDDuration)) + xlab("Design") +
       ylab("Mean Study Duration (Days)") + ggtitle("Mean Study Duration in Days (+/- 1 SD)") + theme(plot.title = element_text(hjust = 0.5))
   })
   
