@@ -646,7 +646,8 @@ server <- function(input, output, session) {
   
   # Table Output
   output$DTTable1 <- DT::renderDataTable(DTTable1DF(), extensions = c('Buttons', 'Scroller', 'Responsive'), 
-                                         options = list(dom = 'Brtip', scrollY = 400, scroller = TRUE, deferRender = TRUE, buttons = c('csv', 'excel', 'pdf')))
+                                         options = list(dom = 'Brtip', scrollY = 400, scroller = TRUE, deferRender = TRUE, buttons = c('csv', 'excel', 'pdf')),
+                                         rownames = FALSE)
 }
 
 shinyApp(ui, server)
