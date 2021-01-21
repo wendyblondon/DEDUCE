@@ -645,7 +645,7 @@ server <- function(input, output, session) {
   })
   
   # Table Output
-  output$DTTable1 <- DT::renderDataTable(DTTable1DF(), extensions = c('Buttons', 'Scroller', 'Responsive'), 
+  output$DTTable1 <- DT::renderDataTable(DTTable1DF(), extensions = c('Buttons', 'Scroller'), 
                                          options = list(dom = 'Brtip', scrollY = 400, scroller = TRUE, deferRender = TRUE, buttons = c('csv', 'excel', 'pdf')),
                                          rownames = FALSE)
 }
