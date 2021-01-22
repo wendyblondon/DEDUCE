@@ -7,6 +7,7 @@ library(shinyFeedback)
 library(waiter)
 library(tidyverse)
 
+source("crm.R")
 source("target_crm.R")
 source("three_plus_three.R")
 
@@ -194,8 +195,8 @@ ui <- dashboardPage(title = "DELPHI", skin = "black",
                                          prettyCheckbox("DTSelectorTCRM", "TARGET-CRM", value = FALSE, icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
                                          bsTooltip("DTSelectorTCRM", "Select to run the TARGET-CRM Design", 
                                                    "top", options = list(container = "body")),
-                                         prettyCheckbox("DTSelectorOther", "Other", value = FALSE, icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
-                                         bsTooltip("DTSelectorOther", "Select to run the Other Design", 
+                                         prettyCheckbox("DTSelectorCRM", "CRM", value = FALSE, icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
+                                         bsTooltip("DTSelectorOther", "Select to run the CRM Design", 
                                                    "top", options = list(container = "body")),
                                          sliderInput("DTNumDoses", "How Many Doses Will There Be?", min = 3, max = 10, value = 4, width = "100%", ticks = FALSE),
                                          bsTooltip("DTNumDoses", "Please enter the number of doses that will be used", 
@@ -243,12 +244,12 @@ server <- function(input, output, session) {
   DTSelectedDesigns <- reactive({
     
     # Only 3+3 Selected
-    if(input$DTSelectorTPT == 1 & input$DTSelectorTCRM == 0 & input$DTSelectorOther == 0){
+    if(input$DTSelectorTPT == 1 & input$DTSelectorTCRM == 0 & input$DTSelectorCRM == 0){
       return("some")
     }
     
     # Nothing Selected
-    else if(input$DTSelectorTPT == 0 & input$DTSelectorTCRM == 0 & input$DTSelectorOther == 0){
+    else if(input$DTSelectorTPT == 0 & input$DTSelectorTCRM == 0 & input$DTSelectorCRM == 0){
       return(NULL)
     }
     
@@ -259,7 +260,7 @@ server <- function(input, output, session) {
   
   # Get Length of Selected Designs for Plotting Guidance
   DTSelectedDesignsLength <- reactive({
-    return(sum(c(input$DTSelectorTPT, input$DTSelectorTCRM, input$DTSelectorOther)))
+    return(sum(c(input$DTSelectorTPT, input$DTSelectorTCRM, input$DTSelectorCRM)))
   })
   
   # Rendering UI Select Input Based on Dose Labels
@@ -311,9 +312,6 @@ server <- function(input, output, session) {
                     "top", options = list(container = "body")),
           sliderInput("DTPropB2", "Proportion of Patients from Cohort B", min = 0, max = 1, value = 0.1, step = 0.1, width = "100%", ticks = FALSE),
           bsTooltip("DTPropB2", "Please enter the proportion of enrolled patients belonging to the 'enrichment' Cohort B", 
-                    "top", options = list(container = "body")),
-          selectInput("DTTargetCRM", "Target-CRM Option", choices = c(0,1,2), selected = 1, width = "100%"),
-          bsTooltip("DTTargetCRM", "Please enter the desired variation of the TARGET-CRM design", 
                     "top", options = list(container = "body")),
           sliderInput("DTMaxN", "Maximum Sample Size", min = 1, max = 200, value = 18, width = "100%", ticks = FALSE),
           bsTooltip("DTMaxN", "Please enter the maximum number of patients to be enrolled per trial", 
@@ -427,7 +425,7 @@ server <- function(input, output, session) {
     hide("DTUIPlots")
     reset("DTSelectorTPT")
     reset("DTSelectorTCRM")
-    reset("DTSelectorOther")
+    reset("DTSelectorCRM")
     reset("DTDoseLabels")
     reset("DTStartLevel")
     reset("DTUISome")
@@ -460,25 +458,23 @@ server <- function(input, output, session) {
     # TARGET-CRM
     if(input$DTSelectorTCRM == TRUE) {
       
-      TCRM <- target.crm(prior = numerizer(input$DTPriorTox), target.tox = input$DTTargetTox2, 
+      TCRM <- my.target.crm(prior = numerizer(input$DTPriorTox), target.tox = input$DTTargetTox2, 
                          number.trials = input$DTNumTrials2, true.tox = numerizer(input$DTTrueTox2), 
-                         arrival.rate = input$DTArrivalRate2, prop.B = input$DTPropB2, target.crm = as.numeric(input$DTTargetCRM), 
-                         min.cohortB = input$DTMinCohortB, cycle.length = input$DTCycleLength2, 
+                         arrival.rate = input$DTArrivalRate2, prop.B = input$DTPropB2, min.cohortB = input$DTMinCohortB, cycle.length = input$DTCycleLength2, 
                          cohort.size = input$DTCohortSize, max.N = input$DTMaxN, start.level = as.numeric(input$DTStartLevel))
       
     }
     
     # Other
-    if(input$DTSelectorOther == TRUE) {
+    if(input$DTSelectorCRM == TRUE) {
       
-      Other <- target.crm(prior = numerizer(input$DTPriorTox), target.tox = input$DTTargetTox2, 
+      CRM <- my.crm(prior = numerizer(input$DTPriorTox), target.tox = input$DTTargetTox2, 
                           number.trials = input$DTNumTrials2, true.tox = numerizer(input$DTTrueTox2), 
-                          arrival.rate = input$DTArrivalRate2, prop.B = input$DTPropB2, target.crm = as.numeric(input$DTTargetCRM), 
-                          min.cohortB = input$DTMinCohortB, cycle.length = input$DTCycleLength2, 
+                          arrival.rate = input$DTArrivalRate2, prop.B = input$DTPropB2, min.cohortB = input$DTMinCohortB, cycle.length = input$DTCycleLength2, 
                           cohort.size = input$DTCohortSize, max.N = input$DTMaxN, start.level = as.numeric(input$DTStartLevel))
     }
     
-    all <- list(get0("TPT"), get0("TCRM"), get0("Other"))
+    all <- list(get0("TPT"), get0("TCRM"), get0("CRM"))
     w$hide()
     return(all[lengths(all) != 0])
     
@@ -521,7 +517,7 @@ server <- function(input, output, session) {
     funList <- list()
     
     for (v in seq(1, funLength)) {
-      df <- data.frame("design"=DTFunctionOutputs()[[v]]$df$design[1], "MeanDuration"=DTFunctionOutputs()[[v]]$mean.duration, 
+      df <- data.frame("Design"=DTFunctionOutputs()[[v]]$df$design[1], "MeanDuration"=DTFunctionOutputs()[[v]]$mean.duration, 
                        "SDDuration"=DTFunctionOutputs()[[v]]$sd.duration)
       funList[[v]] <- df
       
@@ -539,7 +535,7 @@ server <- function(input, output, session) {
     if(DTSelectedDesignsLength() > 1){
       
       DTPlotDF() %>% mutate(MTD.Prop=MTD.Freq/input$DTNumTrials2) %>%
-        ggplot(aes(x=DoseLevel, y=MTD.Prop, fill=design)) + 
+        ggplot(aes(x=DoseLevel, y=MTD.Prop, fill=Design)) + 
         geom_bar(stat="identity", position="dodge") + xlab("Dose Level") + ylab("Proportion of Simulated Trials") +
         ggtitle("Proportion of Simulated Trials Selecting\nEach Dose Level as True MTD") + theme(plot.title = element_text(hjust = 0.5))
     }
@@ -559,7 +555,7 @@ server <- function(input, output, session) {
     
     if (DTSelectedDesignsLength() > 1){
       DTPlotDF() %>%
-        ggplot(aes(x=DoseLevel, y=obs.tox.table, fill=design)) + 
+        ggplot(aes(x=DoseLevel, y=obs.tox.table, fill=Design)) + 
         geom_bar(stat="identity", position="dodge") + geom_hline(aes(yintercept=input$DTTargetTox2), linetype="dashed") +
         xlab("Dose Level") + ylab("Proportion of Patients Experiencing a DLT ") + 
         ggtitle("Proportion of Patients Experiencing\na DLT Per Dose Level") + theme(plot.title = element_text(hjust = 0.5))
@@ -579,7 +575,7 @@ server <- function(input, output, session) {
     
     if (DTSelectedDesignsLength() > 1){
       DTPlotDF() %>%
-        ggplot(aes(x=DoseLevel, y=patient.allocation.table, fill=design)) + 
+        ggplot(aes(x=DoseLevel, y=patient.allocation.table, fill=Design)) + 
         geom_bar(stat="identity", position="dodge") + xlab("Dose Level") + ylab("Proportion of Patients Allocated") + 
         ggtitle("Proportion of Patients Allocated\nto Each Dose Level") + theme(plot.title = element_text(hjust = 0.5))
     }
@@ -596,7 +592,7 @@ server <- function(input, output, session) {
   output$DTPlot4 <- renderPlot({
     
     DTPlotDF2() %>%
-      ggplot(aes(x=design, y=MeanDuration)) + 
+      ggplot(aes(x=Design, y=MeanDuration)) + 
       geom_point(size = 5) + geom_errorbar(aes(ymin= MeanDuration - SDDuration, ymax = MeanDuration + SDDuration), width = 0.3) + xlab("Design") +
       ylab("Mean Study Duration (Days)") + ggtitle("Mean Study Duration in Days (+/- 1 SD)") + theme(plot.title = element_text(hjust = 0.5))
   })
