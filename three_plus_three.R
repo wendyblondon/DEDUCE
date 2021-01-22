@@ -60,6 +60,8 @@ recommend.3plus3 <- function(current.dose, true.tox, pt) {
 # Main simulation function
 three.plus.three <- function (target.tox, number.trials, true.tox, arrival.rate, prop.B, cycle.length, start.level) {
   
+  start <- Sys.time()
+  
   # information of interest
   total.patients <- rep(0, number.trials)
   num.cohortA.patients <- rep(0, number.trials)
@@ -71,8 +73,6 @@ three.plus.three <- function (target.tox, number.trials, true.tox, arrival.rate,
   
   observe.tox <- mat.or.vec(nr=length(true.tox), nc=number.trials)
   patient.allocation <- mat.or.vec(nr=length(true.tox), nc=number.trials)
-  
-  start <- Sys.time()
   
   for (i in 1:number.trials) {
     # print (c("Trial ", i))
@@ -215,66 +215,4 @@ three.plus.three <- function (target.tox, number.trials, true.tox, arrival.rate,
 
 
 ###################################
-## Scenario 1
-# set.seed(7652)
-# out1 <- three.plus.three(target.tox=0.2, 
-#                          number.trials=1000, true.tox=c(0.05,0.12,0.20,0.30), 
-#                          arrival.rate=15, prop.B=0.1, cycle.length=28, start.level=2)
-# 
-# out1$MTD.selection.table
-# out1$true.MTD
-# out1$PCS
-# out1$patient.allocation.table
-# out1$obs.tox.table
-# out1$mean.duration
-# out1$sd.duration
-# 
-# 
-# ## Scenario 2
-# set.seed(7652)
-# out2 <- three.plus.three(target.tox=0.2, 
-#                          number.trials=1000, true.tox=c(0.20,0.30,0.40,0.50), 
-#                          arrival.rate=15, prop.B=0.1, cycle.length=28, start.level=1)
-# 
-# out2$MTD.selection.table
-# out2$true.MTD
-# out2$PCS
-# out2$patient.allocation.table
-# out2$obs.tox.table
-# out2$mean.duration
-# out2$sd.duration
-# 
-# 
-# 
-# ## Scenario 3
-# set.seed(45453)
-# out3 <- three.plus.three(target.tox=0.2, 
-#                          number.trials=100, true.tox=c(0.05, 0.08, 0.15, 0.22, 0.30), 
-#                          arrival.rate=30, prop.B=0.2, cycle.length=28, start.level=2)
-# 
-# out3$MTD.selection.table
-# out3$true.MTD
-# out3$PCS
-# out3$patient.allocation.table
-# out3$mean.obs.N
-# out3$min.obs.N
-# out3$max.obs.N
-# out3$obs.tox.overall
-# out3$obs.tox.table
-# out3$mean.duration
-# out3$sd.duration
-# 
-# 
-# ## Scenario 4
-# set.seed(9453)
-# out4 <- three.plus.three(target.tox=0.2, 
-#                          number.trials=1000, true.tox=c(0.01, 0.15, 0.20), 
-#                          arrival.rate=15, prop.B=0.2, cycle.length=28, start.level=1)
-# 
-# out4$MTD.selection.table
-# out4$true.MTD
-# out4$PCS
-# out4$patient.allocation.table
-# out4$obs.tox.table
-# out4$mean.duration
-# out4$sd.duration
+# tptOut <- three.plus.three(target.tox=0.2, number.trials=1000, true.tox=c(0.05,0.12,0.20,0.30), arrival.rate=15, prop.B=0.1, cycle.length=28, start.level=2)
