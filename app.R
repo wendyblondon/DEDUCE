@@ -496,7 +496,7 @@ server <- function(input, output, session) {
       
       finaldf <- bind_rows(funList)
       finaldf$DoseLevel <- rep(unlist(strsplit(input$DTDoseLabels, ",")), funLength)
-      finaldf$design <- as.factor(finaldf$design)
+      finaldf$Design <- as.factor(finaldf$design)
       
       return(finaldf)
     }
@@ -506,7 +506,7 @@ server <- function(input, output, session) {
       
       df <- DTFunctionOutputs()[[1]]$df
       df$DoseLevel <- unlist(strsplit(input$DTDoseLabels, ","))
-      df$design <- as.factor(df$design)
+      df$Design <- as.factor(df$design)
       return(df)
     }
   })
@@ -523,7 +523,7 @@ server <- function(input, output, session) {
       
     }
     finaldf <- bind_rows(funList)
-    finaldf$design <- as.factor(finaldf$design)
+    finaldf$Design <- as.factor(finaldf$design)
     return(finaldf)
   })
   
