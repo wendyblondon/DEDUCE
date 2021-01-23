@@ -426,6 +426,7 @@ server <- function(input, output, session) {
     reset("DTSelectorTPT")
     reset("DTSelectorTCRM")
     reset("DTSelectorCRM")
+    reset("DTNumDoses")
     reset("DTDoseLabels")
     reset("DTStartLevel")
     reset("DTUISome")
