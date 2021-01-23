@@ -523,7 +523,7 @@ server <- function(input, output, session) {
       
     }
     finaldf <- bind_rows(funList)
-    finaldf$Design <- as.factor(finaldf$design)
+    finaldf$Design <- as.factor(finaldf$Design)
     return(finaldf)
   })
   
