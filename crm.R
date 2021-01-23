@@ -299,6 +299,9 @@ MTD.selection.table <- table(MTD.selection)
 true.MTD <- which.min(round(abs(target.tox-true.tox),10))
 PCS <- MTD.selection.table[true.MTD] / sum(MTD.selection.table)
 obs.tox.overall <- sum(observe.tox)/sum(patient.allocation)
+mean.obs.N <- mean(colSums(patient.allocation))
+min.obs.N <- min(colSums(patient.allocation))
+max.obs.N <- max(colSums(patient.allocation))
 
 patient.allocation.table <- rowSums(patient.allocation)/sum(patient.allocation)
 obs.tox.table <- rowSums(observe.tox)/sum(patient.allocation)
@@ -319,7 +322,7 @@ result <- list(df=df, prior=prior, target.tox=target.tox, number.trials=number.t
 prop.B=prop.B, min.cohortB=min.cohortB, cycle.length=cycle.length, cohort.size=cohort.size, max.N=max.N, start.level=start.level, 
 total.patients=total.patients, num.cohortA.patients=num.cohortA.patients, num.cohortB.patients=num.cohortB.patients,
 num.group1.patients=num.group1.patients, num.group2.patients=num.group2.patients, results.num.dose.changes=result.num.dose.changes, MTD.selection=MTD.selection,
-study.duration=study.duration, observe.tox=observe.tox, patient.allocation=patient.allocation,
+study.duration=study.duration, observe.tox=observe.tox, patient.allocation=patient.allocation, mean.obs.N=mean.obs.N, min.obs.N=min.obs.N, max.obs.N=max.obs.N,
 
 MTD.selection.table = MTD.selection.table, true.MTD=true.MTD, PCS=PCS, obs.tox.overall=obs.tox.overall, patient.allocation.table=patient.allocation.table, obs.tox.table=obs.tox.table,
 mean.cohortB=mean.cohortB, sd.cohortB=sd.cohortB, mean.duration=mean.duration, sd.duration=sd.duration, time.taken=time.taken)
