@@ -6,6 +6,7 @@ library(shinyWidgets)
 library(shinyFeedback)
 library(waiter)
 library(tidyverse)
+library(rmarkdown)
 
 source("crm.R")
 source("target_crm.R")
