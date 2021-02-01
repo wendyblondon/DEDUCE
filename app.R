@@ -432,6 +432,7 @@ server <- function(input, output, session) {
     reset("DTStartLevel")
     reset("DTUISome")
     reset("DTUIAll")
+    disable("DTResults")
   })
   
   # UI if No Design Selected
