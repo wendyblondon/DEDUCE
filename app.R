@@ -210,14 +210,13 @@ ui <- dashboardPage(title = "DELPHI", skin = "black",
                                          uiOutput("DTInputs"),
                                          splitLayout(cellWidths = c("50%", "25%", "25%"),
                                                      actionButton("DTSimulate", "Simulate", width = "100%", style = "font-weight: bold;"),
-                                                     actionButton("DTResults", "Results", width = "100%", style = "font-weight: bold;"),
+                                                     downloadButton("DTResults", "", style = "font-weight: bold; width: 100%;"),
                                                      actionButton("DTReset", "Reset", width = "100%", style = "font-weight: bold;")
                                          ),
                                          bsTooltip("DTSimulate", "Simulates the selected design(s) using the values of the above inputs", 
                                                    "top", options = list(container = "body")),
-                                         bsTooltip("DTResults", "Shows the table and summary of results", 
+                                         bsTooltip("DTResults", "Download the full report of plots, tables, and summaries", 
                                                    "top", options = list(container = "body")),
-                                         bsModal("modalTable1", "Summary of Simulation Results", "DTResults", DT::dataTableOutput("DTTable1")),
                                          bsTooltip("DTReset", "WARNING: Resets all of the inputs and results, cannot be undone", 
                                                    "top", options = list(container = "body"))
                                   ),
@@ -240,6 +239,7 @@ ui <- dashboardPage(title = "DELPHI", skin = "black",
 server <- function(input, output, session) {
   Sys.sleep(2)
   waiter_hide()
+  disable("DTResults")
   # Get Selected Designs for Rendering UI Guidance
   DTSelectedDesigns <- reactive({
     
@@ -460,9 +460,9 @@ server <- function(input, output, session) {
     if(input$DTSelectorTCRM == TRUE) {
       
       TCRM <- my.target.crm(prior = numerizer(input$DTPriorTox), target.tox = input$DTTargetTox2, 
-                         number.trials = input$DTNumTrials2, true.tox = numerizer(input$DTTrueTox2), 
-                         arrival.rate = input$DTArrivalRate2, prop.B = input$DTPropB2, min.cohortB = input$DTMinCohortB, cycle.length = input$DTCycleLength2, 
-                         cohort.size = input$DTCohortSize, max.N = input$DTMaxN, start.level = as.numeric(input$DTStartLevel))
+                            number.trials = input$DTNumTrials2, true.tox = numerizer(input$DTTrueTox2), 
+                            arrival.rate = input$DTArrivalRate2, prop.B = input$DTPropB2, min.cohortB = input$DTMinCohortB, cycle.length = input$DTCycleLength2, 
+                            cohort.size = input$DTCohortSize, max.N = input$DTMaxN, start.level = as.numeric(input$DTStartLevel))
       
     }
     
@@ -470,9 +470,9 @@ server <- function(input, output, session) {
     if(input$DTSelectorCRM == TRUE) {
       
       CRM <- my.crm(prior = numerizer(input$DTPriorTox), target.tox = input$DTTargetTox2, 
-                          number.trials = input$DTNumTrials2, true.tox = numerizer(input$DTTrueTox2), 
-                          arrival.rate = input$DTArrivalRate2, prop.B = input$DTPropB2, min.cohortB = input$DTMinCohortB, cycle.length = input$DTCycleLength2, 
-                          cohort.size = input$DTCohortSize, max.N = input$DTMaxN, start.level = as.numeric(input$DTStartLevel))
+                    number.trials = input$DTNumTrials2, true.tox = numerizer(input$DTTrueTox2), 
+                    arrival.rate = input$DTArrivalRate2, prop.B = input$DTPropB2, min.cohortB = input$DTMinCohortB, cycle.length = input$DTCycleLength2, 
+                    cohort.size = input$DTCohortSize, max.N = input$DTMaxN, start.level = as.numeric(input$DTStartLevel))
     }
     
     all <- list(get0("TPT"), get0("TCRM"), get0("CRM"))
@@ -531,8 +531,7 @@ server <- function(input, output, session) {
   
   
   # Plot1
-  output$DTPlot1 <- renderPlot({
-    
+  DTPlot1 <- reactive({
     if(DTSelectedDesignsLength() > 1){
       
       DTPlotDF() %>% mutate(MTD.Prop=MTD.Freq/input$DTNumTrials2) %>%
@@ -548,12 +547,13 @@ server <- function(input, output, session) {
         geom_bar(stat='identity') + xlab("Dose Level") + ylab("Proportion of Simulated Trials") + 
         ggtitle("Proportion of Simulated Trials Selecting\nEach Dose Level as True MTD") + theme(plot.title = element_text(hjust = 0.5))
     }
-    
+  })
+  output$DTPlot1 <- renderPlot({
+    DTPlot1()
   })
   
   # Plot2
-  output$DTPlot2 <- renderPlot({
-    
+  DTPlot2 <- reactive({
     if (DTSelectedDesignsLength() > 1){
       DTPlotDF() %>%
         ggplot(aes(x=DoseLevel, y=obs.tox.table, fill=Design)) + 
@@ -571,9 +571,12 @@ server <- function(input, output, session) {
     }
   })
   
+  output$DTPlot2 <- renderPlot({
+    DTPlot2()
+  })
+  
   # Plot3
-  output$DTPlot3 <- renderPlot({
-    
+  DTPlot3 <- reactive({
     if (DTSelectedDesignsLength() > 1){
       DTPlotDF() %>%
         ggplot(aes(x=DoseLevel, y=patient.allocation.table, fill=Design)) + 
@@ -589,13 +592,21 @@ server <- function(input, output, session) {
     }
   })
   
-  # Plot4
-  output$DTPlot4 <- renderPlot({
+  output$DTPlot3 <- renderPlot({
+    DTPlot3()
     
+  })
+  
+  # Plot4
+  DTPlot4 <- reactive({
     DTPlotDF2() %>%
       ggplot(aes(x=Design, y=MeanDuration)) + 
       geom_point(size = 5) + geom_errorbar(aes(ymin= MeanDuration - SDDuration, ymax = MeanDuration + SDDuration), width = 0.3) + xlab("Design") +
       ylab("Mean Study Duration (Days)") + ggtitle("Mean Study Duration in Days (+/- 1 SD)") + theme(plot.title = element_text(hjust = 0.5))
+  })
+  
+  output$DTPlot4 <- renderPlot({
+    DTPlot4()
   })
   
   # Table DF
@@ -641,10 +652,30 @@ server <- function(input, output, session) {
     return(df)
   })
   
-  # Table Output
-  output$DTTable1 <- DT::renderDataTable(DTTable1DF(), extensions = c('Buttons', 'Scroller'), 
-                                         options = list(dom = 'Brtip', scrollY = 400, scroller = TRUE, deferRender = TRUE, buttons = c('csv', 'excel', 'pdf')),
-                                         rownames = FALSE)
+  # Observer to Activate Download Button
+  observe({
+    if (input$DTSimulate > 0) {
+      enable("DTResults")
+    }
+  })
+  
+  # Download Results
+  output$DTResults <- downloadHandler(
+    filename = function(){
+      paste0("DELPHI Results ", Sys.time(), ".docx")
+    },
+    content = function(file){
+      tempReport <- file.path(tempdir(), "report.Rmd")
+      file.copy("report.Rmd", tempReport, overwrite = TRUE)
+      
+      params <- list(t = DTTable1DF(), p1 = DTPlot1(), p2 = DTPlot2(), p3 = DTPlot3(), p4 = DTPlot4())
+      
+      render(tempReport, output_file = file,
+             params = params,
+             envir = new.env(parent = globalenv())
+      )
+    }
+  )
 }
 
 shinyApp(ui, server)
