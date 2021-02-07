@@ -484,7 +484,7 @@ server <- function(input, output, session) {
     
   })
   
-  # DF for Plot
+  # DF for Plots
   DTPlotDF <- reactive({
     
     # Multiple Designs Selected
@@ -498,7 +498,7 @@ server <- function(input, output, session) {
       }
       
       finaldf <- bind_rows(funList)
-      finaldf$DoseLevel <- rep(unlist(strsplit(input$DTDoseLabels, ",")), funLength)
+      finaldf$DoseLevel <- unlist(strsplit(input$DTDoseLabels, ","))
       finaldf$Design <- as.factor(finaldf$design)
       
       return(finaldf)
@@ -535,18 +535,24 @@ server <- function(input, output, session) {
   # Plot1
   DTPlot1 <- reactive({
     if(DTSelectedDesignsLength() > 1){
-      
-      DTPlotDF() %>% mutate(MTD.Prop=MTD.Freq/input$DTNumTrials2) %>%
-        ggplot(aes(x=DoseLevel, y=MTD.Prop, fill=Design)) + 
-        geom_bar(stat="identity", position="dodge") + xlab("Dose Level") + ylab("Proportion of Simulated Trials") +
+        ggplot() + 
+        geom_bar(data = DTPlotDF() %>% 
+                   mutate(MTD.Prop=MTD.Freq/input$DTNumTrials2), aes(x=DoseLevel, y=MTD.Prop, fill=Design), stat="identity", position="dodge") + 
+        geom_bar(data = DTPlotDF() %>% 
+                   mutate(MTD.Prop=MTD.Freq/input$DTNumTrials2) %>% 
+                   filter(DoseLevel == trueMTD[1]), aes(x=DoseLevel, y=MTD.Prop, fill=Design), stat="identity", position="dodge", color="red") +
+        xlab("Dose Level") + ylab("Proportion of Simulated Trials") + 
         ggtitle("Proportion of Simulated Trials Selecting\nEach Dose Level as True MTD") + theme(plot.title = element_text(hjust = 0.5))
     }
     
     else if (DTSelectedDesignsLength() == 1){
-      
-      DTPlotDF() %>% mutate(MTD.Prop = MTD.Freq/input$DTNumTrials) %>%
-        ggplot(aes(x=DoseLevel, y=MTD.Prop)) + 
-        geom_bar(stat='identity') + xlab("Dose Level") + ylab("Proportion of Simulated Trials") + 
+        ggplot() + 
+        geom_bar(data=DTPlotDF() %>% 
+                   mutate(MTD.Prop = MTD.Freq/input$DTNumTrials), aes(x=DoseLevel, y=MTD.Prop), stat='identity') + 
+        geom_bar(data=DTPlotDF() %>% 
+                   mutate(MTD.Prop = MTD.Freq/input$DTNumTrials) %>% 
+                   filter(DoseLevel == trueMTD[1]), aes(x=DoseLevel, y=MTD.Prop), stat='identity', color="red") +
+        xlab("Dose Level") + ylab("Proportion of Simulated Trials") + 
         ggtitle("Proportion of Simulated Trials Selecting\nEach Dose Level as True MTD") + theme(plot.title = element_text(hjust = 0.5))
     }
   })
