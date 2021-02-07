@@ -551,7 +551,7 @@ server <- function(input, output, session) {
                    mutate(MTD.Prop = MTD.Freq/input$DTNumTrials), aes(x=DoseLevel, y=MTD.Prop), stat='identity') + 
         geom_bar(data=DTPlotDF() %>% 
                    mutate(MTD.Prop = MTD.Freq/input$DTNumTrials) %>% 
-                   filter(DoseLevel == trueMTD[1]), aes(x=DoseLevel, y=MTD.Prop), stat='identity', color="red", size=2) +
+                   filter(DoseLevel == trueMTD[1]), aes(x=DoseLevel, y=MTD.Prop), stat='identity', color="black", size=2) +
         xlab("Dose Level") + ylab("Proportion of Simulated Trials") + 
         ggtitle("Proportion of Simulated Trials Selecting\nEach Dose Level as True MTD") + theme(plot.title = element_text(hjust = 0.5))
     }
@@ -563,19 +563,23 @@ server <- function(input, output, session) {
   # Plot2
   DTPlot2 <- reactive({
     if (DTSelectedDesignsLength() > 1){
-      DTPlotDF() %>%
-        ggplot(aes(x=DoseLevel, y=obs.tox.table, fill=Design)) + 
-        geom_bar(stat="identity", position="dodge") + geom_hline(aes(yintercept=input$DTTargetTox2), linetype="dashed") +
-        xlab("Dose Level") + ylab("Proportion of Patients Experiencing a DLT ") + 
-        ggtitle("Proportion of Patients Experiencing\na DLT Per Dose Level") + theme(plot.title = element_text(hjust = 0.5))
+      ggplot() + 
+      geom_bar(data = DTPlotDF(), aes(x=DoseLevel, y=obs.tox.table, fill=Design), stat="identity", position="dodge") + 
+      geom_bar(data = DTPlotDF() %>% 
+                 filter(DoseLevel == trueMTD[1]), aes(x=DoseLevel, y=obs.tox.table, fill=Design), stat="identity", position="dodge", color="black", size=2) +
+      geom_hline(aes(yintercept=input$DTTargetTox2), linetype="dashed") +
+      xlab("Dose Level") + ylab("Proportion of Patients Experiencing a DLT ") + 
+      ggtitle("Proportion of Patients Experiencing\na DLT Per Dose Level") + theme(plot.title = element_text(hjust = 0.5))
     }
     
     else if (DTSelectedDesignsLength() == 1){
-      DTPlotDF() %>%
-        ggplot(aes(x=DoseLevel, y=obs.tox.table)) + 
-        geom_bar(stat="identity") + geom_hline(aes(yintercept=input$DTTargetTox), linetype="dashed") +
-        xlab("Dose Level") + ylab("Proportion of Patients Experiencing a DLT ") + 
-        ggtitle("Proportion of Patients Experiencing\na DLT Per Dose Level") + theme(plot.title = element_text(hjust = 0.5))
+      ggplot() + 
+      geom_bar(data = DTPlotDF(), aes(x=DoseLevel, y=obs.tox.table), stat="identity", position="dodge") + 
+      geom_bar(data = DTPlotDF() %>% 
+                 filter(DoseLevel == trueMTD[1]), aes(x=DoseLevel, y=obs.tox.table), stat="identity", position="dodge", color="black", size=2) +
+      geom_hline(aes(yintercept=input$DTTargetTox2), linetype="dashed") +
+      xlab("Dose Level") + ylab("Proportion of Patients Experiencing a DLT ") + 
+      ggtitle("Proportion of Patients Experiencing\na DLT Per Dose Level") + theme(plot.title = element_text(hjust = 0.5))
     }
   })
   
