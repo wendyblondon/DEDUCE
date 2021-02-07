@@ -311,7 +311,7 @@ sd.cohortB = sd(num.group2.patients)
 mean.duration = mean(study.duration)
 sd.duration = sd(study.duration)
 
-df <- data.frame("design"="CRM", "true.tox"=true.tox, "MTD"=MTD.selection.table, "patient.allocation.table"=patient.allocation.table, "obs.tox.table"=obs.tox.table)
+df <- data.frame("design"="CRM", "true.tox"=true.tox, "trueMTD"=true.MTD, "MTD"=MTD.selection.table, "patient.allocation.table"=patient.allocation.table, "obs.tox.table"=obs.tox.table)
 
 finish <- Sys.time()
 time.taken <- finish - start
