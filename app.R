@@ -537,7 +537,7 @@ server <- function(input, output, session) {
     if(DTSelectedDesignsLength() > 1){
         ggplot() + 
         geom_bar(data = DTPlotDF() %>% 
-                   mutate(MTD.Prop=MTD.Freq/input$DTNumTrials2), aes(x=DoseLevel, y=MTD.Prop, fill=Design), stat="identity", position="dodge") + 
+                   mutate(MTD.Prop=MTD.Freq/input$DTNumTrials2), aes(x=DoseLevel, y=MTD.Prop, fill=Design), stat="identity", position="dodge", color="#C0C0C0") + 
         geom_bar(data = DTPlotDF() %>% 
                    mutate(MTD.Prop=MTD.Freq/input$DTNumTrials2) %>% 
                    filter(DoseLevel == trueMTD), aes(x=DoseLevel, y=MTD.Prop, fill=Design), stat="identity", position="dodge", color="black", size=2) +
@@ -548,7 +548,7 @@ server <- function(input, output, session) {
     else if (DTSelectedDesignsLength() == 1){
         ggplot() + 
         geom_bar(data=DTPlotDF() %>% 
-                   mutate(MTD.Prop = MTD.Freq/input$DTNumTrials), aes(x=DoseLevel, y=MTD.Prop), stat='identity') + 
+                   mutate(MTD.Prop = MTD.Freq/input$DTNumTrials), aes(x=DoseLevel, y=MTD.Prop), stat='identity', color="#C0C0C0") + 
         geom_bar(data=DTPlotDF() %>% 
                    mutate(MTD.Prop = MTD.Freq/input$DTNumTrials) %>% 
                    filter(DoseLevel == trueMTD), aes(x=DoseLevel, y=MTD.Prop), stat='identity', color="black", size=2) +
@@ -564,7 +564,7 @@ server <- function(input, output, session) {
   DTPlot2 <- reactive({
     if (DTSelectedDesignsLength() > 1){
       ggplot() + 
-      geom_bar(data = DTPlotDF(), aes(x=DoseLevel, y=obs.tox.table, fill=Design), stat="identity", position="dodge") + 
+      geom_bar(data = DTPlotDF(), aes(x=DoseLevel, y=obs.tox.table, fill=Design), stat="identity", position="dodge", color="#C0C0C0") + 
       geom_bar(data = DTPlotDF() %>% 
                  filter(DoseLevel == trueMTD), aes(x=DoseLevel, y=obs.tox.table, fill=Design), stat="identity", position="dodge", color="black", size=2) +
       geom_hline(aes(yintercept=input$DTTargetTox2), linetype="dashed") +
@@ -574,7 +574,7 @@ server <- function(input, output, session) {
     
     else if (DTSelectedDesignsLength() == 1){
       ggplot() + 
-      geom_bar(data = DTPlotDF(), aes(x=DoseLevel, y=obs.tox.table), stat="identity", position="dodge") + 
+      geom_bar(data = DTPlotDF(), aes(x=DoseLevel, y=obs.tox.table), stat="identity", position="dodge", color="#C0C0C0") + 
       geom_bar(data = DTPlotDF() %>% 
                  filter(DoseLevel == trueMTD), aes(x=DoseLevel, y=obs.tox.table), stat="identity", position="dodge", color="black", size=2) +
       geom_hline(aes(yintercept=input$DTTargetTox2), linetype="dashed") +
@@ -590,16 +590,20 @@ server <- function(input, output, session) {
   # Plot3
   DTPlot3 <- reactive({
     if (DTSelectedDesignsLength() > 1){
-      DTPlotDF() %>%
-        ggplot(aes(x=DoseLevel, y=patient.allocation.table, fill=Design)) + 
-        geom_bar(stat="identity", position="dodge") + xlab("Dose Level") + ylab("Proportion of Patients Allocated") + 
+        ggplot() + 
+        geom_bar(data=DTPlotDF(), aes(x=DoseLevel, y=patient.allocation.table, fill=Design), stat="identity", position="dodge", color="#C0C0C0") +
+        geom_bar(data=DTPlotDF() %>% 
+                   filter(DoseLevel == trueMTD), aes(x=DoseLevel, y=patient.allocation.table, fill=Design), stat="identity", position="dodge", color="black", size=2) +
+        xlab("Dose Level") + ylab("Proportion of Patients Allocated") + 
         ggtitle("Proportion of Patients Allocated\nto Each Dose Level") + theme(plot.title = element_text(hjust = 0.5))
     }
     
     else if (DTSelectedDesignsLength() == 1){
-      DTPlotDF() %>%
-        ggplot(aes(x=DoseLevel, y=patient.allocation.table)) + 
-        geom_bar(stat="identity") + xlab("Dose Level") + ylab("Proportion of Patients Allocated") + 
+      ggplot() + 
+        geom_bar(data=DTPlotDF(), aes(x=DoseLevel, y=patient.allocation.table), stat="identity", position="dodge", color="#C0C0C0") +
+        geom_bar(data=DTPlotDF() %>% 
+                   filter(DoseLevel == trueMTD), aes(x=DoseLevel, y=patient.allocation.table), stat="identity", position="dodge", color="black", size=2) +
+        xlab("Dose Level") + ylab("Proportion of Patients Allocated") + 
         ggtitle("Proportion of Patients Allocated\nto Each Dose Level") + theme(plot.title = element_text(hjust = 0.5))
     }
   })
