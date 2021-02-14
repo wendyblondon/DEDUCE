@@ -251,6 +251,10 @@ server <- function(input, output, session) {
       return("some")
     }
     
+    else if(input$DTSelectorTPT == 0 & input$DTSelectorTCRM == 0 & input$DTSelectorCRM == 0){
+      return(NULL)
+    }
+    
     else{
       return("all")
     }
