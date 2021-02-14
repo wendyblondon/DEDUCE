@@ -238,9 +238,11 @@ ui <- dashboardPage(title = "DELPHI", skin = "black",
 )
 
 server <- function(input, output, session) {
+  
   Sys.sleep(2)
   waiter_hide()
   disable("DTResults")
+  
   # Get Selected Designs for Rendering UI Guidance
   DTSelectedDesigns <- reactive({
     
@@ -258,7 +260,8 @@ server <- function(input, output, session) {
       crm <- "CRM"
     }
     
-    return(list(get0("tpt", get0("tcrm"), get0("crm"))))
+    l <- list(get0("tpt", get0("tcrm"), get0("crm")))
+    return(l[lengths(l) != 0])
   })
   
   # Get Length of Selected Designs for Plotting Guidance
