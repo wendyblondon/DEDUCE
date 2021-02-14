@@ -291,7 +291,7 @@ server <- function(input, output, session) {
       )
     }
     # TARGET-CRM or Both
-    else{
+    else if DTSelectedDesigns() == "all{
       div(id="DTUIAll",
           textInput("DTPriorTox", "Prior Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3", width = "100%"),
           bsTooltip("DTPriorTox", "Please enter the prior toxicity probabilities for each dose level evaluated in the trial. Toxicity probabilities must increase with each subsequent dose level", 
