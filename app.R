@@ -255,7 +255,7 @@ server <- function(input, output, session) {
     }
     
     else if(input$DTSelectorCRM == 1){
-      crm <= "CRM"
+      crm <- "CRM"
     }
     
     return(list(get0("tpt", get0("tcrm"), get0("crm"))))
