@@ -442,6 +442,16 @@ server <- function(input, output, session) {
     )
   })
   
+  # Disable Simulate Button if No Designs Selected
+  observe({
+    if(input$DTSelectorTPT == 0 & input$DTSelectorTCRM == 0 & input$DTSelectorCRM == 0){
+      disable("DTSimulate")
+    }
+    else{
+      enable("DTSimulate")
+    }
+  })
+  
   # Running the Design(s)
   DTFunctionOutputs <- eventReactive(input$DTSimulate, {
     w <- Waiter$new(html = spin_heartbeat(), color = "black")
