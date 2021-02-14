@@ -245,18 +245,20 @@ server <- function(input, output, session) {
   DTSelectedDesigns <- reactive({
     
     # Only 3+3 Selected
-    if(input$DTSelectorTPT == 1 & input$DTSelectorTCRM == 0 & input$DTSelectorCRM == 0){
-      return("some")
+    if(input$DTSelectorTPT == 1){
+      tpt <- "3+3"
     }
     
     # Nothing Selected
-    else if(input$DTSelectorTPT == 0 & input$DTSelectorTCRM == 0 & input$DTSelectorCRM == 0){
-      return(NULL)
+    else if(input$DTSelectorTCRM == 1){
+      tcrm <- "TARGET-CRM"
     }
     
-    else{
-      return("all")
+    else if(input$DTSelectorCRM == 1){
+      crm <= "CRM"
     }
+    
+    return(list(get0("tpt", get0("tcrm"), get0("crm"))))
   })
   
   # Get Length of Selected Designs for Plotting Guidance
@@ -270,7 +272,7 @@ server <- function(input, output, session) {
     req(!is.null(DTSelectedDesigns()))
     
     # 3+3
-    if (DTSelectedDesigns() == "some") {
+    if ("3+3" %in% DTSelectedDesigns() == TRUE && DTSelectedDesignsLength() == 1) {
       div(id="DTUISome",
           sliderInput("DTTargetTox", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.1, width = "100%", ticks = FALSE),
           bsTooltip("DTTargetTox", "Please enter the target toxicity probability of the study agent", 
@@ -294,7 +296,7 @@ server <- function(input, output, session) {
       )
     }
     # TARGET-CRM or Both
-    else if (DTSelectedDesigns() == "all") {
+    else{
       div(id="DTUIAll",
           textInput("DTPriorTox", "Prior Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3", width = "100%"),
           bsTooltip("DTPriorTox", "Please enter the prior toxicity probabilities for each dose level evaluated in the trial. Toxicity probabilities must increase with each subsequent dose level", 
