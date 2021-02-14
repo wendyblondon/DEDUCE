@@ -248,19 +248,19 @@ server <- function(input, output, session) {
     
     # Only 3+3 Selected
     if(input$DTSelectorTPT == 1){
-      tpt <- "3+3"
+      dtpt <- "3+3"
     }
     
     # Nothing Selected
-    else if(input$DTSelectorTCRM == 1){
-      tcrm <- "TARGET-CRM"
+    if(input$DTSelectorTCRM == 1){
+      dtcrm <- "TARGET-CRM"
     }
     
-    else if(input$DTSelectorCRM == 1){
-      crm <- "CRM"
+    if(input$DTSelectorCRM == 1){
+      dcrm <- "CRM"
     }
     
-    l <- list(get0("tpt", get0("tcrm"), get0("crm")))
+    l <- list(get0("dtpt", get0("dtcrm"), get0("dcrm")))
     return(l[lengths(l) != 0])
   })
   
