@@ -247,21 +247,18 @@ server <- function(input, output, session) {
   DTSelectedDesigns <- reactive({
     
     # Only 3+3 Selected
-    if(input$DTSelectorTPT == 1){
-      dtpt <- "3+3"
+    if(input$DTSelectorTPT == 1 & input$DTSelectorTCRM == 0 & input$DTSelectorCRM == 0){
+      return("some")
     }
     
     # Nothing Selected
-    if(input$DTSelectorTCRM == 1){
-      dtcrm <- "TARGET-CRM"
+    else if(input$DTSelectorTPT == 0 & input$DTSelectorTCRM == 0 & input$DTSelectorCRM == 0){
+      return(NULL)
     }
     
-    if(input$DTSelectorCRM == 1){
-      dcrm <- "CRM"
+    else{
+      return("all")
     }
-    
-    l <- list(get0("dtpt", get0("dtcrm"), get0("dcrm")))
-    return(l[lengths(l) != 0])
   })
   
   # Get Length of Selected Designs for Plotting Guidance
@@ -275,7 +272,7 @@ server <- function(input, output, session) {
     req(!is.null(DTSelectedDesigns()))
     
     # 3+3
-    if ("3+3" %in% DTSelectedDesigns() == TRUE && DTSelectedDesignsLength() == 1) {
+    if (DTSelectedDesigns() == "some") {
       div(id="DTUISome",
           sliderInput("DTTargetTox", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.1, width = "100%", ticks = FALSE),
           bsTooltip("DTTargetTox", "Please enter the target toxicity probability of the study agent", 
