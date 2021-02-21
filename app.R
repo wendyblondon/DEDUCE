@@ -81,6 +81,27 @@ nullToNA <- function(x){
   ifelse(is.null(x), NA, x)
 }
 
+designInputs <- function(x){
+  
+  trues <- which(x==TRUE)
+  
+  for (i in trues) {
+    if (i == 1) {
+      x[i] <-"3+3"
+    }
+    else if (i == 2) {
+      x[i] <- "TARGET-CRM"
+    }
+    
+    else{
+      x[i] <- "CRM"
+    }
+  }
+  
+  x <- x[trues]
+  return(x)
+}
+
 # CSS
 CSS <- "
 .sidebar-menu{
@@ -260,6 +281,11 @@ server <- function(input, output, session) {
   # Get Length of Selected Designs for Plotting Guidance
   DTSelectedDesignsLength <- reactive({
     return(sum(c(input$DTSelectorTPT, input$DTSelectorTCRM, input$DTSelectorCRM)))
+  })
+  
+  # Get the Design Names That Are Selected
+  DTSelectedDesignNames <- reactive({
+    designInputs(c(input$DTSelectorTPT, input$DTSelectorTCRM, input$DTSelectorCRM))
   })
   
   # Rendering UI Select Input Based on Dose Labels
@@ -699,7 +725,7 @@ server <- function(input, output, session) {
       tempReport <- file.path(tempdir(), "report.Rmd")
       file.copy("report.Rmd", tempReport, overwrite = TRUE)
       
-      params <- list(t = DTTable1DF(), p1 = DTPlot1(), p2 = DTPlot2(), p3 = DTPlot3(), p4 = DTPlot4())
+      params <- list(d = DTSelectedDesignNames(), t = DTTable1DF(), p1 = DTPlot1(), p2 = DTPlot2(), p3 = DTPlot3(), p4 = DTPlot4())
       
       render(tempReport, output_file = file,
              params = params,
