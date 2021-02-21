@@ -562,8 +562,8 @@ server <- function(input, output, session) {
                    mutate(MTD.Prop = MTD.Freq/input$DTNumTrials), aes(x=DoseLevel, y=MTD.Prop), stat='identity', fill="#BEBEBE") + 
         geom_bar(data=DTPlotDF() %>% 
                    mutate(MTD.Prop = MTD.Freq/input$DTNumTrials) %>% 
-                   filter(doseNum == trueMTD), aes(x=DoseLevel, y=MTD.Prop, color=as.factor(trueMTD)), stat='identity', fill="#BEBEBE", size=2) +
-        xlab("Dose Level") + ylab("Proportion of Simulated Trials") + scale_color_manual(name="True MTD", values=c("black"), labels=NULL)
+                   filter(doseNum == trueMTD), aes(x=DoseLevel, y=MTD.Prop, color=as.factor(trueMTD)), stat="identity", fill="#BEBEBE", size=2) +
+        xlab("Dose Level") + ylab("Proportion of Simulated Trials") + scale_color_manual(name="True MTD", values=c("black"), labels=NULL) +
         ggtitle("Proportion of Simulated Trials Selecting\nEach Dose Level as True MTD") + theme(plot.title = element_text(hjust = 0.5)) +
         guides(color = guide_legend(override.aes = list(fill = "white")))
     }
