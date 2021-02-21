@@ -506,7 +506,7 @@ server <- function(input, output, session) {
       }
       
       finaldf <- bind_rows(funList)
-      finaldf$DoseLevel <- unlist(strsplit(input$DTDoseLabels, ","))
+      finaldf$DoseLevel <- factor(unlist(strsplit(input$DTDoseLabels, ",")), levels=unlist(strsplit(input$DTDoseLabels, ",")))
       finaldf$Design <- as.factor(finaldf$design)
       finaldf$doseNum <- rep(seq(1, length(unlist(strsplit(input$DTDoseLabels, ",")))), DTSelectedDesignsLength())
       
@@ -517,7 +517,7 @@ server <- function(input, output, session) {
     else if(DTSelectedDesignsLength() == 1){
       
       df <- DTFunctionOutputs()[[1]]$df
-      df$DoseLevel <- unlist(strsplit(input$DTDoseLabels, ","))
+      df$DoseLevel <- factor(unlist(strsplit(input$DTDoseLabels, ",")), levels=unlist(strsplit(input$DTDoseLabels, ",")))
       df$Design <- as.factor(df$design)
       df$doseNum <- seq(1, length(unlist(strsplit(input$DTDoseLabels, ","))))
       return(df)
