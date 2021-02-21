@@ -553,7 +553,7 @@ server <- function(input, output, session) {
                    filter(doseNum == trueMTD), aes(x=DoseLevel, y=MTD.Prop, fill=Design, color=as.factor(trueMTD)), stat="identity", position="dodge", size=2) +
         xlab("Dose Level") + ylab("Proportion of Simulated Trials") + scale_color_manual(name="True MTD", values=c("black"), labels=NULL) +
         ggtitle("Proportion of Simulated Trials Selecting\nEach Dose Level as True MTD") + theme(plot.title = element_text(hjust = 0.5)) +
-        guides(fill=guide_legend(order=1), color = guide_legend(override.aes = list(fill = "white"), order=2)) + scale_x_discrete(limits=DTPlotDF()$DoseLevel)
+        guides(fill=guide_legend(order=1), color = guide_legend(override.aes = list(fill = "white"), order=2))
     }
     
     else if (DTSelectedDesignsLength() == 1){
@@ -565,7 +565,7 @@ server <- function(input, output, session) {
                    filter(doseNum == trueMTD), aes(x=DoseLevel, y=MTD.Prop, color=as.factor(trueMTD)), stat="identity", fill="#BEBEBE", size=2) +
         xlab("Dose Level") + ylab("Proportion of Simulated Trials") + scale_color_manual(name="True MTD", values=c("black"), labels=NULL) +
         ggtitle("Proportion of Simulated Trials Selecting\nEach Dose Level as True MTD") + theme(plot.title = element_text(hjust = 0.5)) +
-        guides(color = guide_legend(override.aes = list(fill = "white"))) + scale_x_discrete(limits=DTPlotDF()$DoseLevel)
+        guides(color = guide_legend(override.aes = list(fill = "white")))
     }
   })
   output$DTPlot1 <- renderPlot({
@@ -582,7 +582,7 @@ server <- function(input, output, session) {
       geom_hline(aes(yintercept=input$DTTargetTox2), linetype="dashed") + guides(color = FALSE) +
       xlab("Dose Level") + ylab("Proportion of Patients Experiencing a DLT ") + scale_color_manual(name="True MTD", values=c("black"), labels=NULL) +
       ggtitle("Proportion of Patients Experiencing\na DLT Per Dose Level") + theme(plot.title = element_text(hjust = 0.5)) +
-        guides(fill=guide_legend(order=1), color = guide_legend(override.aes = list(fill = "white"), order=2)) + scale_x_discrete(limits=DTPlotDF()$DoseLevel)
+        guides(fill=guide_legend(order=1), color = guide_legend(override.aes = list(fill = "white"), order=2))
     }
     
     else if (DTSelectedDesignsLength() == 1){
@@ -592,8 +592,7 @@ server <- function(input, output, session) {
                  filter(doseNum == trueMTD), aes(x=DoseLevel, y=obs.tox.table, color=as.factor(trueMTD)), stat="identity", position="dodge", fill="#BEBEBE", size=2) +
       geom_hline(aes(yintercept=input$DTTargetTox2), linetype="dashed") + scale_color_manual(name="True MTD", values=c("black"), labels=NULL) +
       xlab("Dose Level") + ylab("Proportion of Patients Experiencing a DLT ") + ggtitle("Proportion of Patients Experiencing\na DLT Per Dose Level") + 
-        theme(plot.title = element_text(hjust = 0.5)) + guides(color = guide_legend(override.aes = list(fill = "white"))) + 
-        scale_x_discrete(limits=DTPlotDF()$DoseLevel)
+        theme(plot.title = element_text(hjust = 0.5)) + guides(color = guide_legend(override.aes = list(fill = "white")))
     }
   })
   
@@ -610,7 +609,7 @@ server <- function(input, output, session) {
                    filter(doseNum == trueMTD), aes(x=DoseLevel, y=patient.allocation.table, fill=Design, color=as.factor(trueMTD)), stat="identity", position="dodge", size=2) +
         xlab("Dose Level") + ylab("Proportion of Patients Allocated") + scale_color_manual(name="True MTD", values=c("black"), labels=NULL) +
         ggtitle("Proportion of Patients Allocated\nto Each Dose Level") + theme(plot.title = element_text(hjust = 0.5)) +
-        guides(fill=guide_legend(order=1), color = guide_legend(override.aes = list(fill = "white"), order=2)) + scale_x_discrete(limits=DTPlotDF()$DoseLevel)
+        guides(fill=guide_legend(order=1), color = guide_legend(override.aes = list(fill = "white"), order=2))
     }
     
     else if (DTSelectedDesignsLength() == 1){
@@ -620,7 +619,7 @@ server <- function(input, output, session) {
                    filter(doseNum == trueMTD), aes(x=DoseLevel, y=patient.allocation.table, color=as.factor(trueMTD)), stat="identity", position="dodge", fill="#BEBEBE", size=2) +
         xlab("Dose Level") + ylab("Proportion of Patients Allocated") + scale_color_manual(name="True MTD", values=c("black"), labels=NULL) + 
         ggtitle("Proportion of Patients Allocated\nto Each Dose Level") + theme(plot.title = element_text(hjust = 0.5)) + 
-        guides(color = guide_legend(override.aes = list(fill = "white"))) + scale_x_discrete(limits=DTPlotDF()$DoseLevel)
+        guides(color = guide_legend(override.aes = list(fill = "white")))
     }
   })
   
