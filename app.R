@@ -577,7 +577,7 @@ server <- function(input, output, session) {
       geom_bar(data = DTPlotDF(), aes(x=DoseLevel, y=obs.tox.table, fill=Design), stat="identity", position="dodge") + 
       geom_bar(data = DTPlotDF() %>% 
                  filter(doseNum == trueMTD), aes(x=DoseLevel, y=obs.tox.table, fill=Design), stat="identity", position="dodge", color="black", size=2) +
-      geom_hline(aes(yintercept=input$DTTargetTox2), linetype="dashed") +
+      geom_hline(aes(yintercept=input$DTTargetTox2), linetype="dashed") + guides(color = FALSE) +
       xlab("Dose Level") + ylab("Proportion of Patients Experiencing a DLT ") + 
       ggtitle("Proportion of Patients Experiencing\na DLT Per Dose Level") + theme(plot.title = element_text(hjust = 0.5))
     }
@@ -587,7 +587,7 @@ server <- function(input, output, session) {
       geom_bar(data = DTPlotDF(), aes(x=DoseLevel, y=obs.tox.table), stat="identity", position="dodge", fill="#BEBEBE") + 
       geom_bar(data = DTPlotDF() %>% 
                  filter(doseNum == trueMTD), aes(x=DoseLevel, y=obs.tox.table), stat="identity", position="dodge", fill="#BEBEBE", color="black", size=2) +
-      geom_hline(aes(yintercept=input$DTTargetTox2), linetype="dashed") +
+      geom_hline(aes(yintercept=input$DTTargetTox2), linetype="dashed") + guides(color = FALSE) +
       xlab("Dose Level") + ylab("Proportion of Patients Experiencing a DLT ") + 
       ggtitle("Proportion of Patients Experiencing\na DLT Per Dose Level") + theme(plot.title = element_text(hjust = 0.5))
     }
@@ -604,7 +604,7 @@ server <- function(input, output, session) {
         geom_bar(data=DTPlotDF(), aes(x=DoseLevel, y=patient.allocation.table, fill=Design), stat="identity", position="dodge") +
         geom_bar(data=DTPlotDF() %>% 
                    filter(doseNum == trueMTD), aes(x=DoseLevel, y=patient.allocation.table, fill=Design), stat="identity", position="dodge", color="black", size=2) +
-        xlab("Dose Level") + ylab("Proportion of Patients Allocated") + 
+        xlab("Dose Level") + ylab("Proportion of Patients Allocated") + guides(color = FALSE) +
         ggtitle("Proportion of Patients Allocated\nto Each Dose Level") + theme(plot.title = element_text(hjust = 0.5))
     }
     
@@ -613,7 +613,7 @@ server <- function(input, output, session) {
         geom_bar(data=DTPlotDF(), aes(x=DoseLevel, y=patient.allocation.table), stat="identity", position="dodge", fill="#BEBEBE") +
         geom_bar(data=DTPlotDF() %>% 
                    filter(doseNum == trueMTD), aes(x=DoseLevel, y=patient.allocation.table), stat="identity", position="dodge", fill="#BEBEBE", color="black", size=2) +
-        xlab("Dose Level") + ylab("Proportion of Patients Allocated") + 
+        xlab("Dose Level") + ylab("Proportion of Patients Allocated") + guides(color = FALSE) +
         ggtitle("Proportion of Patients Allocated\nto Each Dose Level") + theme(plot.title = element_text(hjust = 0.5))
     }
   })
