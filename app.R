@@ -709,6 +709,43 @@ server <- function(input, output, session) {
     return(df)
   })
   
+  # Values for Report Document
+  DTReportMethods <- reactive({
+    req(input$DTSimulate > 0)
+    
+    if (input$DTSelectorTPT == 1 & input$DTSelectorTCRM == 0 & input$DTSelectorCRM == 0) {
+      
+      x1 <- input$DTNumTrials
+      x2 <- input$DTNumDoses
+      x3 <- input$DTDoseLabels
+      x4 <- input$DTStartLevel
+      x5 <- input$DTTrueTox
+      x6 <- input$DTTargetTox
+      x7 <- input$DTArrivalRate
+      x8 <- input$DTCycleLength
+      
+    }
+    else if(input$DTSelectorTPT == 0 & input$DTSelectorTCRM == 0 & input$DTSelectorCRM == 0){
+      return(NULL)
+    }
+    else{
+      x1 <- input$DTNumTrials
+      x2 <- input$DTNumDoses
+      x3 <- input$DTDoseLabels
+      x4 <- input$DTStartLevel
+      x5 <- input$DTTrueTox
+      x6 <- input$DTTargetTox
+      x7 <- input$DTArrivalRate
+      x8 <- input$DTCycleLength
+      x9 <- input$DTPriorTox
+      x10 <- input$DTCohortSize
+      x11 <- input$DTMaxN
+      x12 <- input$DTPropB
+      x13 <- input$DTMinCohortB
+    }
+  })
+  
+  
   # Observer to Activate Download Button
   observe({
     if (input$DTSimulate > 0) {
