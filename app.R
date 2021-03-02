@@ -120,10 +120,6 @@ CSS <- "
   font-size: 18px;
 }
 
-#DTTrueTox2{
-  font-size: 18px;
-}
-
 #DTPriorTox{
   font-size: 18px;
 }
@@ -189,8 +185,8 @@ CSS <- "
 } 
 "
 
-ui <- dashboardPage(title = "DELPHI", skin = "black",
-                    dashboardHeader(title = strong("DELPHI")),
+ui <- dashboardPage(title = "DEDUCE", skin = "black",
+                    dashboardHeader(title = strong("DEDUCE")),
                     dashboardSidebar(useShinyjs(), inlineCSS(CSS), useShinyFeedback(), use_waiter(),
                                      sidebarMenu(id='tabs',
                                                  menuItem("Home", tabName = "Home", icon = icon("home")),
@@ -217,7 +213,7 @@ ui <- dashboardPage(title = "DELPHI", skin = "black",
                                          bsTooltip("DTSelectorTCRM", "Select to run the TARGET-CRM Design", 
                                                    "top", options = list(container = "body")),
                                          prettyCheckbox("DTSelectorCRM", "CRM", value = FALSE, icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
-                                         bsTooltip("DTSelectorOther", "Select to run the CRM Design", 
+                                         bsTooltip("DTSelectorCRM", "Select to run the CRM Design", 
                                                    "top", options = list(container = "body")),
                                          sliderInput("DTNumDoses", "How Many Doses Will There Be?", min = 3, max = 10, value = 4, width = "100%", ticks = FALSE),
                                          bsTooltip("DTNumDoses", "Please enter the number of doses that will be used", 
@@ -228,7 +224,39 @@ ui <- dashboardPage(title = "DELPHI", skin = "black",
                                          selectInput("DTStartLevel", "Starting Dose Level", choices = c(-1,1,2,3), selected = 1, width = "100%"),
                                          bsTooltip("DTStartLevel", "Please enter the starting dose level from the dose level labels above", 
                                                    "top", options = list(container = "body")),
-                                         uiOutput("DTInputs"),
+                                         sliderInput("DTNumTrials", "Number of Simulated Trials", min = 0, max = 10000, value = 100, width = "100%", ticks = FALSE),
+                                         bsTooltip("DTNumTrials", "Please enter the number of simulated trials. A larger number of simulations increases the precision of simulation results and computation time", 
+                                                   "top", options = list(container = "body")),
+                                         sliderInput("DTTargetTox", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.1, width = "100%", ticks = FALSE),
+                                         bsTooltip("DTTargetTox", "Please enter the target toxicity probability of the study agent", 
+                                                   "top", options = list(container = "body")),
+                                         textInput("DTTrueTox", "True Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3", width = "100%"),
+                                         bsTooltip("DTTrueTox", "Please enter the true toxicity probabilities for each dose level evaluated in the trial. Toxicity probabilities must increase with each subsequent dose level", 
+                                                   "top", options = list(container = "body")),
+                                         sliderInput("DTArrivalRate", "Patient Enrollment Rate", min = 0, max = 180, value = 15, width = "100%", ticks = FALSE),
+                                         bsTooltip("DTArrivalRate", "Please enter the average time between enrolling patients (in days)", 
+                                                   "top", options = list(container = "body")),
+                                         sliderInput("DTPropB", "Proportion of Patients from Cohort B", min = 0, max = 1, value = 0.1, step = 0.1, width = "100%", ticks = FALSE),
+                                         bsTooltip("DTPropB", "Please enter the proportion of enrolled patients belonging to the 'enrichment' Cohort B", 
+                                                   "top", options = list(container = "body")),
+                                         sliderInput("DTCycleLength", "Duration of DLT Observation Period", min = 0, max = 365, value = 28, width = "100%", ticks = FALSE),
+                                         bsTooltip("DTCycleLength", "Please enter the duration of the DLT observation period (in days)", 
+                                                   "top", options = list(container = "body")),
+                                         conditionalPanel(
+                                           condition = "input.DTSelectorTCRM == 1 || input.DTSelectorCRM == 1",
+                                           textInput("DTPriorTox", "Prior Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3", width = "100%"),
+                                           bsTooltip("DTPriorTox", "Please enter the prior toxicity probabilities for each dose level evaluated in the trial. Toxicity probabilities must increase with each subsequent dose level", 
+                                                     "top", options = list(container = "body")),
+                                           sliderInput("DTMaxN", "Maximum Sample Size", min = 1, max = 200, value = 18, width = "100%", ticks = FALSE),
+                                           bsTooltip("DTMaxN", "Please enter the maximum number of patients to be enrolled per trial", 
+                                                     "top", options = list(container = "body")),
+                                           sliderInput("DTMinCohortB", "Minimum Enrollment of Cohort B Patients (Optional)", min = 0, max = 100, value = 2, width = "100%", ticks = FALSE),
+                                           bsTooltip("DTMinCohortB", "Please enter the minimum number of Cohort B patients to be enrolled in the trial", 
+                                                     "top", options = list(container = "body")),
+                                           sliderInput("DTCohortSize", "Cohort Size", min = 1, max = 9, value = 3, width = "100%", ticks = FALSE),
+                                           bsTooltip("DTCohortSize", "Please enter the cohort size. The cohort size is the number of patients to be treated at the current dose level before a dose escalation decision is made", 
+                                                     "top", options = list(container = "body"))
+                                         ),
                                          splitLayout(cellWidths = c("50%", "25%", "25%"),
                                                      actionButton("DTSimulate", "Simulate", width = "100%", style = "font-weight: bold;"),
                                                      downloadButton("DTResults", "", style = "font-weight: bold; width: 100%;"),
@@ -259,99 +287,12 @@ ui <- dashboardPage(title = "DELPHI", skin = "black",
 
 server <- function(input, output, session) {
   
+  # Disable Results Button Until Design(s) Ran
   disable("DTResults")
-  
-  # Get Selected Designs for Rendering UI Guidance
-  DTSelectedDesigns <- reactive({
-    
-    # Only 3+3 Selected
-    if(input$DTSelectorTPT == 1 & input$DTSelectorTCRM == 0 & input$DTSelectorCRM == 0){
-      return("some")
-    }
-    
-    else if(input$DTSelectorTPT == 0 & input$DTSelectorTCRM == 0 & input$DTSelectorCRM == 0){
-      return(NULL)
-    }
-    
-    else{
-      return("all")
-    }
-  })
-  
-  # Get Length of Selected Designs for Plotting Guidance
-  DTSelectedDesignsLength <- reactive({
-    return(sum(c(input$DTSelectorTPT, input$DTSelectorTCRM, input$DTSelectorCRM)))
-  })
   
   # Get the Design Names That Are Selected
   DTSelectedDesignNames <- reactive({
     designInputs(c(input$DTSelectorTPT, input$DTSelectorTCRM, input$DTSelectorCRM))
-  })
-  
-  # Rendering UI Select Input Based on Dose Labels
-  output$DTInputs <- renderUI({
-    
-    req(!is.null(DTSelectedDesigns()))
-    
-    # 3+3
-    if (DTSelectedDesigns() == "some") {
-      div(id="DTUISome",
-          sliderInput("DTTargetTox", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.1, width = "100%", ticks = FALSE),
-          bsTooltip("DTTargetTox", "Please enter the target toxicity probability of the study agent", 
-                    "top", options = list(container = "body")),
-          sliderInput("DTNumTrials", "Number of Simulated Trials", min = 0, max = 10000, value = 100, width = "100%", ticks = FALSE),
-          bsTooltip("DTNumTrials", "Please enter the number of simulated trials. A larger number of simulations increases the precision of simulation results and computation time", 
-                    "top", options = list(container = "body")),
-          textInput("DTTrueTox", "True Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3", width = "100%"),
-          bsTooltip("DTTrueTox", "Please enter the true toxicity probabilities for each dose level evaluated in the trial. Toxicity probabilities must increase with each subsequent dose level", 
-                    "top", options = list(container = "body")),
-          sliderInput("DTArrivalRate", "Patient Enrollment Rate", min = 0, max = 180, value = 15, width = "100%", ticks = FALSE),
-          bsTooltip("DTArrivalRate", "Please enter the average time between enrolling patients (in days)", 
-                    "top", options = list(container = "body")),
-          sliderInput("DTPropB", "Proportion of Patients from Cohort B", min = 0, max = 1, value = 0.1, step = 0.1, width = "100%", ticks = FALSE),
-          bsTooltip("DTPropB", "Please enter the proportion of enrolled patients belonging to the 'enrichment' Cohort B", 
-                    "top", options = list(container = "body")),
-          sliderInput("DTCycleLength", "Duration of DLT Observation Period", min = 0, max = 365, value = 28, width = "100%", ticks = FALSE),
-          bsTooltip("DTCycleLength", "Please enter the duration of the DLT observation period (in days)", 
-                    "top", options = list(container = "body"))
-          
-      )
-    }
-    # TARGET-CRM or Both
-    else if (DTSelectedDesigns() == "all"){
-      div(id="DTUIAll",
-          textInput("DTPriorTox", "Prior Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3", width = "100%"),
-          bsTooltip("DTPriorTox", "Please enter the prior toxicity probabilities for each dose level evaluated in the trial. Toxicity probabilities must increase with each subsequent dose level", 
-                    "top", options = list(container = "body")),
-          sliderInput("DTTargetTox2", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.1, width = "100%", ticks = FALSE),
-          bsTooltip("DTTargetTox2", "Please enter the target toxicity probability of the study agent", 
-                    "top", options = list(container = "body")),
-          sliderInput("DTNumTrials2", "Number of Simulated Trials", min = 0, max = 10000, value = 100, width = "100%", ticks = FALSE),
-          bsTooltip("DTNumTrials2", "Please enter the number of simulated trials. A larger number of simulations increases the precision of simulation results and computation time", 
-                    "top", options = list(container = "body")),
-          textInput("DTTrueTox2", "True Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3", width = "100%"),
-          bsTooltip("DTTrueTox2", "Please enter the true toxicity probabilities for each dose level evaluated in the trial. Toxicity probabilities must increase with each subsequent dose level", 
-                    "top", options = list(container = "body")),
-          sliderInput("DTArrivalRate2", "Patient Enrollment Rate", min = 0, max = 180, value = 15, width = "100%", ticks = FALSE),
-          bsTooltip("DTArrivalRate2", "Please enter the average time between enrolling patients (in days)", 
-                    "top", options = list(container = "body")),
-          sliderInput("DTPropB2", "Proportion of Patients from Cohort B", min = 0, max = 1, value = 0.1, step = 0.1, width = "100%", ticks = FALSE),
-          bsTooltip("DTPropB2", "Please enter the proportion of enrolled patients belonging to the 'enrichment' Cohort B", 
-                    "top", options = list(container = "body")),
-          sliderInput("DTMaxN", "Maximum Sample Size", min = 1, max = 200, value = 18, width = "100%", ticks = FALSE),
-          bsTooltip("DTMaxN", "Please enter the maximum number of patients to be enrolled per trial", 
-                    "top", options = list(container = "body")),
-          sliderInput("DTMinCohortB", "Minimum Enrollment of Cohort B Patients (Optional)", min = 0, max = 100, value = 2, width = "100%", ticks = FALSE),
-          bsTooltip("DTMinCohortB", "Please enter the minimum number of Cohort B patients to be enrolled in the trial", 
-                    "top", options = list(container = "body")),
-          sliderInput("DTCycleLength2", "Duration of DLT Observation Period", min = 0, max = 365, value = 28, width = "100%", ticks = FALSE),
-          bsTooltip("DTCycleLength2", "Please enter the duration of the DLT observation period (in days)", 
-                    "top", options = list(container = "body")),
-          sliderInput("DTCohortSize", "Cohort Size", min = 1, max = 9, value = 3, width = "100%", ticks = FALSE),
-          bsTooltip("DTCohortSize", "Please enter the cohort size. The cohort size is the number of patients to be treated at the current dose level before a dose escalation decision is made", 
-                    "top", options = list(container = "body"))
-      )
-    }
   })
   
   # Update Start Level Based on Dose Labels
@@ -391,21 +332,6 @@ server <- function(input, output, session) {
     }
   })
   
-  # True Tox 2 
-  observeEvent(list(input$DTTrueTox2, input$DTNumDoses), {
-    req(input$DTTrueTox2)
-    hideFeedback("DTTrueTox2")
-    if (length(unlist(strsplit(input$DTTrueTox2, ",")))!= input$DTNumDoses) {
-      showFeedbackDanger("DTTrueTox2", "The length must match the number of doses chosen above")
-    }
-    else if (incrementCheck(input$DTTrueTox2)==FALSE) {
-      showFeedbackDanger("DTTrueTox2", "The probabilities must increase with each subsequent dose")
-    }
-    else if (decimalCheck(input$DTTrueTox2)==FALSE) {
-      showFeedbackDanger("DTTrueTox2", "The probabilities must be a decimal")
-    }
-  })
-  
   # Prior Tox
   observeEvent(list(input$DTPriorTox, input$DTNumDoses), {
     req(input$DTPriorTox)
@@ -423,7 +349,7 @@ server <- function(input, output, session) {
   
   # Main Plotting UI
   output$DTPlotsUI <- renderUI({
-    req(DTSelectedDesignsLength() > 0)
+    req(length(DTSelectedDesignNames()) > 0)
     hidden(
       div(id="DTUIPlots",
           column(6,
@@ -454,14 +380,22 @@ server <- function(input, output, session) {
     reset("DTNumDoses")
     reset("DTDoseLabels")
     reset("DTStartLevel")
-    reset("DTUISome")
-    reset("DTUIAll")
+    reset("DTNumTrials")
+    reset("DTTargetTox")
+    reset("DTTrueTox")
+    reset("DTArrivalRate")
+    reset("DTPropB")
+    reset("DTCycleLength")
+    reset("DTPriorTox")
+    reset("DTMaxN")
+    reset("DTMinCohortB")
+    reset("DTCohortSize")
     disable("DTResults")
   })
   
   # UI if No Design Selected
   output$DTNoneUI <- renderUI({
-    req(DTSelectedDesignsLength() == 0)
+    req(length(DTSelectedDesignNames()) == 0)
     tagList(
       fluidRow(
         h2("Please select a design to begin", style="color: #ff0033")
@@ -495,9 +429,9 @@ server <- function(input, output, session) {
     # TARGET-CRM
     if(input$DTSelectorTCRM == TRUE) {
       
-      TCRM <- my.target.crm(prior = numerizer(input$DTPriorTox), target.tox = input$DTTargetTox2, 
-                            number.trials = input$DTNumTrials2, true.tox = numerizer(input$DTTrueTox2), 
-                            arrival.rate = input$DTArrivalRate2, prop.B = input$DTPropB2, min.cohortB = input$DTMinCohortB, cycle.length = input$DTCycleLength2, 
+      TCRM <- my.target.crm(prior = numerizer(input$DTPriorTox), target.tox = input$DTTargetTox, 
+                            number.trials = input$DTNumTrials, true.tox = numerizer(input$DTTrueTox), 
+                            arrival.rate = input$DTArrivalRate, prop.B = input$DTPropB, min.cohortB = input$DTMinCohortB, cycle.length = input$DTCycleLength, 
                             cohort.size = input$DTCohortSize, max.N = input$DTMaxN, start.level = as.numeric(input$DTStartLevel))
       
     }
@@ -505,9 +439,9 @@ server <- function(input, output, session) {
     # Other
     if(input$DTSelectorCRM == TRUE) {
       
-      CRM <- my.crm(prior = numerizer(input$DTPriorTox), target.tox = input$DTTargetTox2, 
-                    number.trials = input$DTNumTrials2, true.tox = numerizer(input$DTTrueTox2), 
-                    arrival.rate = input$DTArrivalRate2, prop.B = input$DTPropB2, min.cohortB = input$DTMinCohortB, cycle.length = input$DTCycleLength2, 
+      CRM <- my.crm(prior = numerizer(input$DTPriorTox), target.tox = input$DTTargetTox, 
+                    number.trials = input$DTNumTrials, true.tox = numerizer(input$DTTrueTox), 
+                    arrival.rate = input$DTArrivalRate, prop.B = input$DTPropB, min.cohortB = input$DTMinCohortB, cycle.length = input$DTCycleLength, 
                     cohort.size = input$DTCohortSize, max.N = input$DTMaxN, start.level = as.numeric(input$DTStartLevel))
     }
     
@@ -522,8 +456,8 @@ server <- function(input, output, session) {
   DTPlotDF <- reactive({
     
     # Multiple Designs Selected
-    if (DTSelectedDesignsLength() > 1) {
-      funLength <- DTSelectedDesignsLength()
+    if (length(DTSelectedDesignNames()) > 1) {
+      funLength <- length(DTSelectedDesignNames())
       funList <- list()
       
       for (v in seq(1, funLength)) {
@@ -534,13 +468,13 @@ server <- function(input, output, session) {
       finaldf <- bind_rows(funList)
       finaldf$DoseLevel <- factor(unlist(strsplit(input$DTDoseLabels, ",")), levels=unlist(strsplit(input$DTDoseLabels, ",")))
       finaldf$Design <- as.factor(finaldf$design)
-      finaldf$doseNum <- rep(seq(1, length(unlist(strsplit(input$DTDoseLabels, ",")))), DTSelectedDesignsLength())
+      finaldf$doseNum <- rep(seq(1, length(unlist(strsplit(input$DTDoseLabels, ",")))), length(DTSelectedDesignNames()))
       
       return(finaldf)
     }
     
     # Only 1 Design Selected
-    else if(DTSelectedDesignsLength() == 1){
+    else if(length(DTSelectedDesignNames()) == 1){
       
       df <- DTFunctionOutputs()[[1]]$df
       df$DoseLevel <- factor(unlist(strsplit(input$DTDoseLabels, ",")), levels=unlist(strsplit(input$DTDoseLabels, ",")))
@@ -552,7 +486,7 @@ server <- function(input, output, session) {
   
   # DF2 for Plot
   DTPlotDF2 <- reactive({
-    funLength <- DTSelectedDesignsLength()
+    funLength <- length(DTSelectedDesignNames())
     funList <- list()
     
     for (v in seq(1, funLength)) {
@@ -570,20 +504,20 @@ server <- function(input, output, session) {
   
   # Plot1
   DTPlot1 <- reactive({
-    if(DTSelectedDesignsLength() > 1){
-        ggplot() + 
+    if(length(DTSelectedDesignNames()) > 1){
+      ggplot() + 
         geom_bar(data = DTPlotDF() %>% 
-                   mutate(MTD.Prop=MTD.Freq/input$DTNumTrials2), aes(x=DoseLevel, y=MTD.Prop, fill=Design), stat="identity", position="dodge") + 
+                   mutate(MTD.Prop=MTD.Freq/input$DTNumTrials), aes(x=DoseLevel, y=MTD.Prop, fill=Design), stat="identity", position="dodge") + 
         geom_bar(data = DTPlotDF() %>% 
-                   mutate(MTD.Prop=MTD.Freq/input$DTNumTrials2) %>% 
+                   mutate(MTD.Prop=MTD.Freq/input$DTNumTrials) %>% 
                    filter(doseNum == trueMTD), aes(x=DoseLevel, y=MTD.Prop, fill=Design, color=as.factor(trueMTD)), stat="identity", position="dodge", size=2) +
         xlab("Dose Level") + ylab("Proportion of Simulated Trials") + scale_color_manual(name="True MTD", values=c("black"), labels=NULL) +
         ggtitle("Proportion of Simulated Trials Selecting\nEach Dose Level as True MTD") + theme(plot.title = element_text(hjust = 0.5)) +
         guides(fill=guide_legend(order=1), color = guide_legend(override.aes = list(fill = "white"), order=2))
     }
     
-    else if (DTSelectedDesignsLength() == 1){
-        ggplot() + 
+    else if (length(DTSelectedDesignNames()) == 1){
+      ggplot() + 
         geom_bar(data=DTPlotDF() %>% 
                    mutate(MTD.Prop = MTD.Freq/input$DTNumTrials), aes(x=DoseLevel, y=MTD.Prop), stat='identity', fill="#BEBEBE") + 
         geom_bar(data=DTPlotDF() %>% 
@@ -600,24 +534,24 @@ server <- function(input, output, session) {
   
   # Plot2
   DTPlot2 <- reactive({
-    if (DTSelectedDesignsLength() > 1){
+    if (length(DTSelectedDesignNames()) > 1){
       ggplot() + 
-      geom_bar(data = DTPlotDF(), aes(x=DoseLevel, y=obs.tox.table, fill=Design), stat="identity", position="dodge") + 
-      geom_bar(data = DTPlotDF() %>% 
-                 filter(doseNum == trueMTD), aes(x=DoseLevel, y=obs.tox.table, fill=Design, color=as.factor(trueMTD)), stat="identity", position="dodge", size=2) +
-      geom_hline(aes(yintercept=input$DTTargetTox2), linetype="dashed") + guides(color = FALSE) +
-      xlab("Dose Level") + ylab("Proportion of Patients Experiencing a DLT ") + scale_color_manual(name="True MTD", values=c("black"), labels=NULL) +
-      ggtitle("Proportion of Patients Experiencing\na DLT Per Dose Level") + theme(plot.title = element_text(hjust = 0.5)) +
+        geom_bar(data = DTPlotDF(), aes(x=DoseLevel, y=obs.tox.table, fill=Design), stat="identity", position="dodge") + 
+        geom_bar(data = DTPlotDF() %>% 
+                   filter(doseNum == trueMTD), aes(x=DoseLevel, y=obs.tox.table, fill=Design, color=as.factor(trueMTD)), stat="identity", position="dodge", size=2) +
+        geom_hline(aes(yintercept=input$DTTargetTox), linetype="dashed") + guides(color = FALSE) +
+        xlab("Dose Level") + ylab("Proportion of Patients Experiencing a DLT ") + scale_color_manual(name="True MTD", values=c("black"), labels=NULL) +
+        ggtitle("Proportion of Patients Experiencing\na DLT Per Dose Level") + theme(plot.title = element_text(hjust = 0.5)) +
         guides(fill=guide_legend(order=1), color = guide_legend(override.aes = list(fill = "white"), order=2))
     }
     
-    else if (DTSelectedDesignsLength() == 1){
+    else if (length(DTSelectedDesignNames()) == 1){
       ggplot() + 
-      geom_bar(data = DTPlotDF(), aes(x=DoseLevel, y=obs.tox.table), stat="identity", position="dodge", fill="#BEBEBE") + 
-      geom_bar(data = DTPlotDF() %>% 
-                 filter(doseNum == trueMTD), aes(x=DoseLevel, y=obs.tox.table, color=as.factor(trueMTD)), stat="identity", position="dodge", fill="#BEBEBE", size=2) +
-      geom_hline(aes(yintercept=input$DTTargetTox2), linetype="dashed") + scale_color_manual(name="True MTD", values=c("black"), labels=NULL) +
-      xlab("Dose Level") + ylab("Proportion of Patients Experiencing a DLT ") + ggtitle("Proportion of Patients Experiencing\na DLT Per Dose Level") + 
+        geom_bar(data = DTPlotDF(), aes(x=DoseLevel, y=obs.tox.table), stat="identity", position="dodge", fill="#BEBEBE") + 
+        geom_bar(data = DTPlotDF() %>% 
+                   filter(doseNum == trueMTD), aes(x=DoseLevel, y=obs.tox.table, color=as.factor(trueMTD)), stat="identity", position="dodge", fill="#BEBEBE", size=2) +
+        geom_hline(aes(yintercept=input$DTTargetTox), linetype="dashed") + scale_color_manual(name="True MTD", values=c("black"), labels=NULL) +
+        xlab("Dose Level") + ylab("Proportion of Patients Experiencing a DLT ") + ggtitle("Proportion of Patients Experiencing\na DLT Per Dose Level") + 
         theme(plot.title = element_text(hjust = 0.5)) + guides(color = guide_legend(override.aes = list(fill = "white")))
     }
   })
@@ -628,8 +562,8 @@ server <- function(input, output, session) {
   
   # Plot3
   DTPlot3 <- reactive({
-    if (DTSelectedDesignsLength() > 1){
-        ggplot() + 
+    if (length(DTSelectedDesignNames()) > 1){
+      ggplot() + 
         geom_bar(data=DTPlotDF(), aes(x=DoseLevel, y=patient.allocation.table, fill=Design), stat="identity", position="dodge") +
         geom_bar(data=DTPlotDF() %>% 
                    filter(doseNum == trueMTD), aes(x=DoseLevel, y=patient.allocation.table, fill=Design, color=as.factor(trueMTD)), stat="identity", position="dodge", size=2) +
@@ -638,7 +572,7 @@ server <- function(input, output, session) {
         guides(fill=guide_legend(order=1), color = guide_legend(override.aes = list(fill = "white"), order=2))
     }
     
-    else if (DTSelectedDesignsLength() == 1){
+    else if (length(DTSelectedDesignNames()) == 1){
       ggplot() + 
         geom_bar(data=DTPlotDF(), aes(x=DoseLevel, y=patient.allocation.table), stat="identity", position="dodge", fill="#BEBEBE") +
         geom_bar(data=DTPlotDF() %>% 
@@ -671,7 +605,7 @@ server <- function(input, output, session) {
     
     tableList <- list()
     
-    for (v in seq(1, DTSelectedDesignsLength())) {
+    for (v in seq(1, length(DTSelectedDesignNames()))) {
       if (DTFunctionOutputs()[[v]]$df$design[1] == "3+3") {
         
         x <- round(unname(c(nullToNA(DTFunctionOutputs()[[v]]$PCS), nullToNA(DTFunctionOutputs()[[v]]$true.MTD), 
@@ -709,26 +643,12 @@ server <- function(input, output, session) {
     return(df)
   })
   
-  # Values for Report Document
+  # Values for Rmd - Methods Section
   DTReportMethods <- reactive({
     req(input$DTSimulate > 0)
     
-    if (input$DTSelectorTPT == 1 & input$DTSelectorTCRM == 0 & input$DTSelectorCRM == 0) {
+    if (input$DTSelectorTCRM == 1 | input$DTSelectorCRM == 1) {
       
-      x1 <- input$DTNumTrials
-      x2 <- input$DTNumDoses
-      x3 <- input$DTDoseLabels
-      x4 <- input$DTStartLevel
-      x5 <- input$DTTrueTox
-      x6 <- input$DTTargetTox
-      x7 <- input$DTArrivalRate
-      x8 <- input$DTCycleLength
-      
-    }
-    else if(input$DTSelectorTPT == 0 & input$DTSelectorTCRM == 0 & input$DTSelectorCRM == 0){
-      return(NULL)
-    }
-    else{
       x1 <- input$DTNumTrials
       x2 <- input$DTNumDoses
       x3 <- input$DTDoseLabels
@@ -742,9 +662,54 @@ server <- function(input, output, session) {
       x11 <- input$DTMaxN
       x12 <- input$DTPropB
       x13 <- input$DTMinCohortB
+      return(c(x1,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11,x12,x13))
+      
+    }
+    else{
+      x1 <- input$DTNumTrials
+      x2 <- input$DTNumDoses
+      x3 <- input$DTDoseLabels
+      x4 <- input$DTStartLevel
+      x5 <- input$DTTrueTox
+      x6 <- input$DTTargetTox
+      x7 <- input$DTArrivalRate
+      x8 <- input$DTCycleLength
+      return(c(x1,x2,x3,x4,x5,x6,x7,x8))
+      
     }
   })
   
+  # Values for Rmd - Results Section
+  DTReportResults <- reactive({
+    req(DTFunctionOutputs())
+    if(length(DTSelectedDesignNames()) == 1){
+      x1 <- DTFunctionOutputs()[[1]]$PCS
+      x2 <- DTFunctionOutputs()[[1]]$obs.tox.overall
+      x3 <- DTFunctionOutputs()[[1]]$target.tox
+      x4 <- ifelse(x2 > x3, "greater", "lower")
+      x5 <- DTFunctionOutputs()[[1]]$true.MTD
+      x6 <- DTFunctionOutputs()[[1]]$patient.allocation.table[x5]
+      x7 <- DTFunctionOutputs()[[1]]$mean.duration
+      x8 <- DTFunctionOutputs()[[1]]$sd.duration
+      x9 <- DTFunctionOutputs()[[1]]$mean.obs.N
+      x10 <- DTFunctionOutputs()[[1]]$min.obs.N
+      x11 <- DTFunctionOutputs()[[1]]$max.obs.N
+      return(c(x1,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11))
+    }
+    else if(length(DTSelectedDesignNames()) > 1){
+      l <- list()
+      for (v in seq(1, length(DTSelectedDesignNames()))){
+        df <- data.frame("Design" = DTFunctionOutputs()[[v]]$df$design[1], "PCS" = DTFunctionOutputs()[[v]]$PCS, "obs.tox.overall" = DTFunctionOutputs()[[v]]$obs.tox.overall,
+                         "Target Tox" = DTFunctionOutputs()[[v]]$target.tox, "True MTD" = DTFunctionOutputs()[[v]]$true.MTD, 
+                         "Patient Allocation" = DTFunctionOutputs()[[v]]$patient.allocation.table[DTFunctionOutputs()[[v]]$true.MTD], 
+                         "Mean Duration" = DTFunctionOutputs()[[v]]$mean.duration, "SD Duration" = DTFunctionOutputs()[[v]]$sd.duration,
+                         "Mean Obs" = DTFunctionOutputs()[[v]]$mean.obs.N, "Min Obs" = DTFunctionOutputs()[[v]]$min.obs.N,
+                         "Max Obs" = DTFunctionOutputs()[[v]]$max.obs.N)
+        l[[v]] <- df
+      }
+      df2 <- bind_rows(l)
+    }
+  })
   
   # Observer to Activate Download Button
   observe({
@@ -762,7 +727,8 @@ server <- function(input, output, session) {
       tempReport <- file.path(tempdir(), "report.Rmd")
       file.copy("report.Rmd", tempReport, overwrite = TRUE)
       
-      params <- list(d = DTSelectedDesignNames(), t = DTTable1DF(), p1 = DTPlot1(), p2 = DTPlot2(), p3 = DTPlot3(), p4 = DTPlot4())
+      params <- list(d = DTSelectedDesignNames(), m = DTReportMethods(), r = DTReportResults(), 
+                     p1 = DTPlot1(), p2 = DTPlot2(), p3 = DTPlot3(), p4 = DTPlot4(), t = DTTable1DF())
       
       render(tempReport, output_file = file,
              params = params,
