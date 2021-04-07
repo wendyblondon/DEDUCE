@@ -697,7 +697,7 @@ server <- function(input, output, session) {
       # Only Needed for TARGET-CRM
       x12 <- DTFunctionOutputs()[[1]]$prop.B
       x13 <- DTFunctionOutputs()[[1]]$mean.cohortB
-      x14 <- round(DTFunctionOutputs()[[1]]$sd.cohortB, 2)
+      x14 <- DTFunctionOutputs()[[1]]$sd.cohortB
       return(c(x1,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11,x12,x13,x14))
   })
   
