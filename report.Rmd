@@ -43,6 +43,15 @@ For the TARGET-CRM and/or CRM design, the prior toxicity probabilities per dose 
 
 # Results:
 
+<!-- Test if TARGET-CRM is a Design Used -->
+```{r, echo=FALSE}
+if("TARGET-CRM" %in% params$d) {
+  show_text_reports <- TRUE
+}else{
+  show_text_reports <- FALSE
+}
+```
+
 **Accuracy:** For each dose level, Figure 1 presents the proportion of simulated trials that a given dose level was selected as the true MTD. The proportion of correct selection (PCS) of the MTD for the **`r params$d`** design is **`r params$r[1]`**.
 
 **Safety:** Figure 2 presents the proportion of patients experiencing a DLT for each dose level. The proportion of patients experiencing a DLT for the **`r params$d`** design is **`r params$r[2]`** which is **`r params$r[4]`** than the target toxicity probability of **`r params$r[3]`**
@@ -54,6 +63,13 @@ For the TARGET-CRM and/or CRM design, the prior toxicity probabilities per dose 
 Table 1 presents a summary of the operating characteristics for each design.
 
 **Sample Size:** The mean total sample size for the **`r params$d`** design is **`r params$r[9]`** (range = **`r params$r[10]`**-**`r params$r[11]`**).
+
+<!-- Only Show if TARGET-CRM is a Design Used -->
+`r if(!show_text_methods) {"<!--"}`
+
+**Enrollment of Cohort B Patients:** The proportion of patients in the population belonging to Cohort B is **`r params$r[12]`**. The mean number of Cohort B patients enrolled during the DLT observation period is **`r params$r[13]`**. (SD=**`r params$r[14]`**)
+
+`r if(!show_text_methods) {"-->"}`
 
 # Figures:
 
