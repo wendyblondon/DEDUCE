@@ -65,11 +65,11 @@ Table 1 presents a summary of the operating characteristics for each design.
 **Sample Size:** The mean total sample size for the **`r params$d`** design is **`r params$r[9]`** (range = **`r params$r[10]`**-**`r params$r[11]`**).
 
 <!-- Only Show if TARGET-CRM is a Design Used -->
-`r if(!show_text_methods) {"<!--"}`
+`r if(!show_text_reports) {"<!--"}`
 
 **Enrollment of Cohort B Patients:** The proportion of patients in the population belonging to Cohort B is **`r params$r[12]`**. The mean number of Cohort B patients enrolled during the DLT observation period is **`r params$r[13]`**. (SD=**`r params$r[14]`**)
 
-`r if(!show_text_methods) {"-->"}`
+`r if(!show_text_reports) {"-->"}`
 
 # Figures:
 
