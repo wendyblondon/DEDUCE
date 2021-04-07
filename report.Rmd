@@ -18,7 +18,7 @@ params:
 
 # Objective:
 
-To evaluate the operating characteristics of the following dose escalation designs: **`r params$d`**
+To evaluate the operating characteristics of the following dose escalation design(s): **`r params$d`**
 
 # Methods:
 
@@ -36,7 +36,7 @@ if("TARGET-CRM" %in% params$d | "CRM" %in% params$d) {
 <!-- Only Show if TARGET-CRM/CRM is Selected -->
 `r if(!show_text_methods) {"<!--"}`
 
-For the TARGET-CRM and/or CRM design, the prior toxicity probabilities per dose level are **`r params$m[9]`**. The cohort size is **`r params$m[10]`** and the maximum sample size is **`r params$m[11]`**. Patients belong to one of two cohorts: Cohort A or Cohort B. Patients with pre-specified characteristics (e.g. tumor type, tumor mutation) belong to Cohort B; all other patients belong to Cohort A. The TARGET-CRM design allows enrollment of Cohort B patients at one dose level below the current dose during the DLT observation period of the current cohort of patients. The proportion of patients from Cohort B is **`r params$m[12]`**.\n Simulated trials using the TARGET-CRM and/or CRM designs are required to have a minimum enrollment of **`r params$m[13]`** Cohort B patients.
+For the TARGET-CRM and/or CRM design, the prior toxicity probabilities per dose level are **`r params$m[9]`**. The cohort size is **`r params$m[10]`** and the maximum sample size is **`r params$m[11]`**. Patients belong to one of two cohorts: Cohort A or Cohort B. Patients with pre-specified characteristics (e.g. tumor type, tumor mutation) belong to Cohort B; all other patients belong to Cohort A. The TARGET-CRM design allows enrollment of Cohort B patients at one dose level below the current dose during the DLT observation period of the current cohort of patients. The proportion of patients from Cohort B is **`r params$m[12]`**. Simulated trials using the TARGET-CRM and/or CRM designs are required to have a minimum enrollment of **`r params$m[13]`** Cohort B patients.
 
 
 `r if(!show_text_methods) {"-->"}`
