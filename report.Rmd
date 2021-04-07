@@ -13,7 +13,7 @@ params:
 ---
 *Report Date and Time: "`r Sys.time()`"*
 
-*Software:* DEDUCE app version 1.0 available [here](https://bengarski.shinyapps.io/DELPHI/) 
+*Software:* DEDUCE app version 1.0 available [here](https://bengarski.shinyapps.io/DEDUCE/) 
 
 
 # Objective:
