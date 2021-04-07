@@ -682,7 +682,6 @@ server <- function(input, output, session) {
   # Values for Rmd - Results Section
   DTReportResults <- reactive({
     req(DTFunctionOutputs())
-    if(length(DTSelectedDesignNames()) == 1){
       x1 <- DTFunctionOutputs()[[1]]$PCS
       x2 <- DTFunctionOutputs()[[1]]$obs.tox.overall
       x3 <- DTFunctionOutputs()[[1]]$target.tox
@@ -695,20 +694,6 @@ server <- function(input, output, session) {
       x10 <- DTFunctionOutputs()[[1]]$min.obs.N
       x11 <- DTFunctionOutputs()[[1]]$max.obs.N
       return(c(x1,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11))
-    }
-    else if(length(DTSelectedDesignNames()) > 1){
-      l <- list()
-      for (v in seq(1, length(DTSelectedDesignNames()))){
-        df <- data.frame("Design" = DTFunctionOutputs()[[v]]$df$design[1], "PCS" = DTFunctionOutputs()[[v]]$PCS, "obs.tox.overall" = DTFunctionOutputs()[[v]]$obs.tox.overall,
-                         "Target Tox" = DTFunctionOutputs()[[v]]$target.tox, "True MTD" = DTFunctionOutputs()[[v]]$true.MTD, 
-                         "Patient Allocation" = DTFunctionOutputs()[[v]]$patient.allocation.table[DTFunctionOutputs()[[v]]$true.MTD], 
-                         "Mean Duration" = DTFunctionOutputs()[[v]]$mean.duration, "SD Duration" = DTFunctionOutputs()[[v]]$sd.duration,
-                         "Mean Obs" = DTFunctionOutputs()[[v]]$mean.obs.N, "Min Obs" = DTFunctionOutputs()[[v]]$min.obs.N,
-                         "Max Obs" = DTFunctionOutputs()[[v]]$max.obs.N)
-        l[[v]] <- df
-      }
-      df2 <- bind_rows(l)
-    }
   })
   
   # Observer to Activate Download Button
