@@ -683,13 +683,13 @@ server <- function(input, output, session) {
   DTReportResults <- reactive({
     req(DTFunctionOutputs())
       x1 <- DTFunctionOutputs()[[1]]$PCS
-      x2 <- DTFunctionOutputs()[[1]]$obs.tox.overall
+      x2 <- round(DTFunctionOutputs()[[1]]$obs.tox.overall, 2)
       x3 <- DTFunctionOutputs()[[1]]$target.tox
       x4 <- ifelse(x2 > x3, "greater", "lower")
       x5 <- DTFunctionOutputs()[[1]]$true.MTD
-      x6 <- DTFunctionOutputs()[[1]]$patient.allocation.table[x5]
-      x7 <- DTFunctionOutputs()[[1]]$mean.duration
-      x8 <- DTFunctionOutputs()[[1]]$sd.duration
+      x6 <- round(DTFunctionOutputs()[[1]]$patient.allocation.table[x5], 2)
+      x7 <- round(DTFunctionOutputs()[[1]]$mean.duration, 2)
+      x8 <- round(DTFunctionOutputs()[[1]]$sd.duration, 2)
       x9 <- DTFunctionOutputs()[[1]]$mean.obs.N
       x10 <- DTFunctionOutputs()[[1]]$min.obs.N
       x11 <- DTFunctionOutputs()[[1]]$max.obs.N
