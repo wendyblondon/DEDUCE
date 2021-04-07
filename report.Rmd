@@ -67,7 +67,7 @@ Table 1 presents a summary of the operating characteristics for each design.
 <!-- Only Show if TARGET-CRM is a Design Used -->
 `r if(!show_text_reports) {"<!--"}`
 
-**Enrollment of Cohort B Patients:** The proportion of patients in the population belonging to Cohort B is **`r params$r[12]`**. The mean number of Cohort B patients enrolled during the DLT observation period is **`r params$r[13]`**. (SD=**`r round(params$r[14],2)`**)
+**Enrollment of Cohort B Patients:** The proportion of patients in the population belonging to Cohort B is **`r params$r[12]`**. The mean number of Cohort B patients enrolled during the DLT observation period is **`r params$r[13]`**. (SD=**`r params$r[14]`**)
 
 `r if(!show_text_reports) {"-->"}`
 
