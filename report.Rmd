@@ -62,7 +62,7 @@ if(length(params$d)==1) {
 ```
 
 <!-- Only Show if 1 Design Used -->
-`r if(!show_text_reports2) {"<!--"}`
+`r if(!show_text_results2) {"<!--"}`
 **Accuracy:** For each dose level, Figure 1 presents the proportion of simulated trials that a given dose level was selected as the true MTD. The proportion of correct selection (PCS) of the MTD for the **`r params$d`** design is **`r params$r[1]`**.
 
 **Safety:** Figure 2 presents the proportion of patients experiencing a DLT for each dose level. The proportion of patients experiencing a DLT for the **`r params$d`** design is **`r params$r[2]`** which is **`r params$r[4]`** than the target toxicity probability of **`r params$r[3]`**
@@ -85,7 +85,8 @@ Table 1 presents a summary of the operating characteristics for each design.
 `r if(!show_text_results2) {"-->"}`
 
 <!-- Only Show if 2+ Designs Used -->
-`r if(show_text_reports2) {"<!--"}`
+`r if(show_text_results2) {"<!--"}`
+
 **Accuracy:** For each dose level, Figure 1 presents the proportion of simulated trials that a given dose level was selected as the true MTD. The **`r params$r[1]`** design has the greatest probability of selecting the true MTD (dose level **`r params$r[2]`**). `r params$r[3]`
 
 **Safety:** Figure 2 presents the proportion of patients experiencing a DLT for each dose level. `r params$r[4]`
@@ -106,7 +107,6 @@ Table 1 presents a summary of the operating characteristics for each design.
 `r if(!show_text_results) {"-->"}`
 
 `r if(show_text_results2) {"-->"}`
-
 
 # Figures:
 
