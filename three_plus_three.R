@@ -2,23 +2,6 @@
 # Clement Ma
 # Revised: November 2, 2020
 
-# Inputs
-
-#prior <- NA
-target.tox <- 0.2
-number.trials <- 10
-true.tox<-c(0.05,0.12,0.20,0.30)
-arrival.rate<-15
-prop.B<-0.1
-#target.crm<-1
-#min.cohortB<-0 
-cycle.length<-28
-#cohort.size<-3
-#max.N<-18
-start.level<-2
-
-########################
-
 ###################################################################
 # Helper function - provides recommendations for 3+3 design
 recommend.3plus3 <- function(current.dose, true.tox, pt) {
