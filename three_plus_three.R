@@ -174,6 +174,8 @@ three.plus.three <- function (target.tox, number.trials, true.tox, arrival.rate,
   patient.allocation.table <- rowSums(patient.allocation)/sum(patient.allocation)
   
   obs.tox.table <- rowSums(observe.tox)/sum(patient.allocation)
+  mean.cohortB <- 0
+  sd.cohortB <- 0
   mean.duration = mean(study.duration)
   sd.duration = sd(study.duration)
   
@@ -190,7 +192,7 @@ three.plus.three <- function (target.tox, number.trials, true.tox, arrival.rate,
                
                MTD.selection.table = MTD.selection.table, true.MTD=true.MTD, PCS=PCS, obs.tox.overall=obs.tox.overall,
                mean.obs.N=mean.obs.N, min.obs.N=min.obs.N, max.obs.N=max.obs.N,
-               patient.allocation.table=patient.allocation.table, obs.tox.table=obs.tox.table,
+               patient.allocation.table=patient.allocation.table, obs.tox.table=obs.tox.table, mean.cohortB=mean.cohortB, sd.cohortB=sd.cohortB,
                mean.duration=mean.duration, sd.duration=sd.duration, time.taken=time.taken)
   return(result)
   
