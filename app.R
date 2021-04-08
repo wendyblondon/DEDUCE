@@ -701,22 +701,22 @@ server <- function(input, output, session) {
   # Values for Rmd - Results Section
   DTReportResults <- reactive({
     req(DTFunctionOutputs())
-      x1 <- DTFunctionOutputs()[[1]]$PCS
-      x2 <- round(DTFunctionOutputs()[[1]]$obs.tox.overall, 2)
-      x3 <- DTFunctionOutputs()[[1]]$target.tox
+      x1 <- DTResultsDF()$PCS
+      x2 <- round(DTResultsDF()$ObsTox, 2)
+      x3 <- DTResultsDF()$TargetTox
       x4 <- ifelse(x2 > x3, "greater", "lower")
-      x5 <- DTFunctionOutputs()[[1]]$true.MTD
-      x6 <- round(DTFunctionOutputs()[[1]]$patient.allocation.table[x5], 2)
-      x7 <- round(DTFunctionOutputs()[[1]]$mean.duration, 2)
-      x8 <- round(DTFunctionOutputs()[[1]]$sd.duration, 2)
-      x9 <- DTFunctionOutputs()[[1]]$mean.obs.N
-      x10 <- DTFunctionOutputs()[[1]]$min.obs.N
-      x11 <- DTFunctionOutputs()[[1]]$max.obs.N
+      x5 <- DTResultsDF()$TrueMTD
+      x6 <- round(DTResultsDF()$PATMTD, 2)
+      x7 <- round(DTResultsDF()$MeanDuration, 2)
+      x8 <- round(DTResultsDF()$SDDuration, 2)
+      x9 <- DTResultsDF()$MeanObsN
+      x10 <- DTResultsDF()$MinObsN
+      x11 <- DTResultsDF()$MaxObsN
       
       # Only Needed for TARGET-CRM
-      x12 <- DTFunctionOutputs()[[1]]$prop.B
-      x13 <- DTFunctionOutputs()[[1]]$mean.cohortB
-      x14 <- DTFunctionOutputs()[[1]]$sd.cohortB
+      x12 <- DTResultsDF()$PropB
+      x13 <- DTResultsDF()$MeanCohortB
+      x14 <- DTResultsDF()$SDCohortB
       return(c(x1,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11,x12,x13,x14))
   })
   
