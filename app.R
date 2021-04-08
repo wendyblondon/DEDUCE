@@ -700,6 +700,8 @@ server <- function(input, output, session) {
   
   # Values for Rmd - Results Section
   DTReportResults <- reactive({
+    
+      # 1 Design
       if (length(DTSelectedDesignNames()) == 1) {
         x1 <- DTResultsDF()$PCS
         x2 <- round(DTResultsDF()$ObsTox, 2)
@@ -719,9 +721,11 @@ server <- function(input, output, session) {
         x14 <- DTResultsDF()$SDCohortB
         return(c(x1,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11,x12,x13,x14))
       }
+    
+    # 2+ Designs
     else{
       x1 <- DTResultsDF() %>% slice_max(PCS) %>% select(Design) %>% pull()
-      x2 <- DTResultsDF() %>% slice_max(PCS) %>% select(PCS) %>% pull()
+      x2 <- DTResultsDF()$TrueMTD[1]
       x3 <- sprintf("The proportion of correct selection (PCS) of the MTD for the %s design is %g.", DTResultsDF()$Design, DTResultsDF()$PCS)
       x4 <- sprintf("The proportion of patients experiencing a DLT for the %s design is %g, which is %s than the target toxicity probability of %g.", 
                     DTResultsDF()$Design, DTResultsDF()$ObsTox, ifelse(DTResultsDF()$ObsTox > DTResultsDF()$TargetTox, "greater", "lower"), 
