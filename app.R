@@ -460,10 +460,10 @@ server <- function(input, output, session) {
     for (v in seq(1, length(DTSelectedDesignNames()))) {
       df <- data.frame("Design"=DTSelectedDesignNames()[v], "PCS"=DTFunctionOutputs()[[v]]$PCS, "TrueMTD"=DTFunctionOutputs()[[v]]$true.MTD, 
                        "ObsTox"=DTFunctionOutputs()[[v]]$obs.tox.overall, "TargetTox"=DTFunctionOutputs()[[v]]$target.tox, 
-                       "PATMTD"=DTFunctionOutputs()[[v]]$patient.allocation.table[true.MTD], "MeanDuration"=DTFunctionOutputs()[[v]]$mean.duration, 
-                       "SDDuration"=DTFunctionOutputs()[[v]]$sd.duration, "MeanObsN"=DTFunctionOutputs()[[v]]$mean.obs.N, 
-                       "MinObsN"=DTFunctionOutputs()[[v]]$min.obs.N, "MaxObsN"=DTFunctionOutputs()[[v]]$max.obs.N, "PropB"=DTFunctionOutputs()[[v]]$prop.B, 
-                       "MeanCohortB"=DTFunctionOutputs()[[v]]$mean.cohortB, "SDCohortB"=DTFunctionOutputs()[[v]]$sd.cohortB)
+                       "PATMTD"=DTFunctionOutputs()[[v]]$patient.allocation.table[DTFunctionOutputs()[[v]]$true.MTD], 
+                       "MeanDuration"=DTFunctionOutputs()[[v]]$mean.duration, "SDDuration"=DTFunctionOutputs()[[v]]$sd.duration, 
+                       "MeanObsN"=DTFunctionOutputs()[[v]]$mean.obs.N, "MinObsN"=DTFunctionOutputs()[[v]]$min.obs.N, "MaxObsN"=DTFunctionOutputs()[[v]]$max.obs.N, 
+                       "PropB"=DTFunctionOutputs()[[v]]$prop.B, "MeanCohortB"=DTFunctionOutputs()[[v]]$mean.cohortB, "SDCohortB"=DTFunctionOutputs()[[v]]$sd.cohortB)
       funList[[v]] <- df
     }
     
