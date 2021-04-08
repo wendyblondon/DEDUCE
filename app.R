@@ -700,24 +700,48 @@ server <- function(input, output, session) {
   
   # Values for Rmd - Results Section
   DTReportResults <- reactive({
-    req(DTFunctionOutputs())
-      x1 <- DTResultsDF()$PCS
-      x2 <- round(DTResultsDF()$ObsTox, 2)
-      x3 <- DTResultsDF()$TargetTox
-      x4 <- ifelse(x2 > x3, "greater", "lower")
-      x5 <- DTResultsDF()$TrueMTD
-      x6 <- round(DTResultsDF()$PATMTD, 2)
-      x7 <- round(DTResultsDF()$MeanDuration, 2)
-      x8 <- round(DTResultsDF()$SDDuration, 2)
-      x9 <- DTResultsDF()$MeanObsN
-      x10 <- DTResultsDF()$MinObsN
-      x11 <- DTResultsDF()$MaxObsN
+      if (length(DTSelectedDesignNames()) == 1) {
+        x1 <- DTResultsDF()$PCS
+        x2 <- round(DTResultsDF()$ObsTox, 2)
+        x3 <- DTResultsDF()$TargetTox
+        x4 <- ifelse(x2 > x3, "greater", "lower")
+        x5 <- DTResultsDF()$TrueMTD
+        x6 <- round(DTResultsDF()$PATMTD, 2)
+        x7 <- round(DTResultsDF()$MeanDuration, 2)
+        x8 <- round(DTResultsDF()$SDDuration, 2)
+        x9 <- DTResultsDF()$MeanObsN
+        x10 <- DTResultsDF()$MinObsN
+        x11 <- DTResultsDF()$MaxObsN
+        
+        # Only Needed for TARGET-CRM
+        x12 <- DTResultsDF()$PropB
+        x13 <- DTResultsDF()$MeanCohortB
+        x14 <- DTResultsDF()$SDCohortB
+        return(c(x1,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11,x12,x13,x14))
+      }
+    else{
+      x1 <- DTResultsDF() %>% slice_max(PCS) %>% select(Design) %>% pull()
+      x2 <- DTResultsDF() %>% slice_max(PCS) %>% select(PCS) %>% pull()
+      x3 <- sprintf("The proportion of correct selection (PCS) of the MTD for the %s design is %g.", DTResultsDF()$Design, DTResultsDF()$PCS)
+      x4 <- sprintf("The proportion of patients experiencing a DLT for the %s design is %g, which is %s than the target toxicity probability of %g.", 
+                    DTResultsDF()$Design, DTResultsDF()$ObsTox, ifelse(DTResultsDF()$ObsTox > DTResultsDF()$TargetTox, "greater", "lower"), 
+                    DTResultsDF()$TargetTox[1])
+      x5 <- DTResultsDF() %>% slice_max(PATMTD) %>% select(Design) %>% pull()
+      x6 <- sprintf("The proportion of patients assigned to the true MTD for the %s design is %g.", DTResultsDF()$Design, DTResultsDF()$PATMTD)
+      x7 <- DTResultsDF() %>% slice_min(MeanDuration) %>% select(Design) %>% pull()
+      x8 <- sprintf("The mean study duration for the %s design is %g days(SD=%g).", DTResultsDF()$Design, DTResultsDF()$MeanDuration, DTResultsDF()$SDDuration)
+      x9 <- sprintf("The mean total sample size for the %s design is %g (range=%g-%g).", DTResultsDF()$Design, 
+                    DTResultsDF()$MeanObsN, DTResultsDF()$MinObsN, DTResultsDF()$MaxObsN)
       
       # Only Needed for TARGET-CRM
-      x12 <- DTResultsDF()$PropB
-      x13 <- DTResultsDF()$MeanCohortB
-      x14 <- DTResultsDF()$SDCohortB
-      return(c(x1,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11,x12,x13,x14))
+      x10 <- DTResultsDF()$PropB[1]
+      x11 <- ifelse(nrow(DTResultsDF() %>% filter(Design == 'TARGET-CRM'))==0, NULL, 
+                    DTResultsDF() %>% filter(Design == 'TARGET-CRM') %>% select(MeanCohortB) %>% pull())
+      x12 <- ifelse(nrow(DTResultsDF() %>% filter(Design == 'TARGET-CRM'))==0, NULL, 
+                    DTResultsDF() %>% filter(Design == 'TARGET-CRM') %>% select(SDCohortB) %>% pull())
+      
+      return(c(x1,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11,x12))
+    } 
   })
   
   # Observer to Activate Download Button
