@@ -452,6 +452,25 @@ server <- function(input, output, session) {
     
   })
   
+  # DF for Design Results Used in Report
+  DTResultsDF <- reactive({
+    req(DTFunctionOutputs())
+    funList <- list()
+    
+    for (v in seq(1, length(DTSelectedDesignNames()))) {
+      df <- data.frame("Design"=DTSelectedDesignNames()[v], "PCS"=DTFunctionOutputs()[[v]]$PCS, "TrueMTD"=DTFunctionOutputs()[[v]]$true.MTD, 
+                       "ObsTox"=DTFunctionOutputs()[[v]]$obs.tox.overall, "TargetTox"=DTFunctionOutputs()[[v]]$target.tox, 
+                       "TrueMTD"=DTFunctionOutputs()[[v]]$true.MTD, "PATMTD"=DTFunctionOutputs()[[v]]$patient.allocation.table[true.MTD], 
+                       "MeanDuration"=DTFunctionOutputs()[[v]]$mean.duration, "SDDuration"=DTFunctionOutputs()[[v]]$sd.duration, 
+                       "MeanObsN"=DTFunctionOutputs()[[v]]$mean.obs.N, "MinObsN"=DTFunctionOutputs()[[v]]$min.obs.N, "MaxObsN"=DTFunctionOutputs()[[v]]$max.obs.N, 
+                       "PropB"=DTFunctionOutputs()[[v]]$prop.B, "MeanCohortB"=DTFunctionOutputs()[[v]]$mean.cohortB, "SDCohortB"=DTFunctionOutputs()[[v]]$sd.cohortB)
+      funList[[v]] <- df
+    }
+    
+    finaldf <- bind_rows(funList)
+    return(finaldf)
+  })
+  
   # DF for Plots
   DTPlotDF <- reactive({
     
