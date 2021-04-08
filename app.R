@@ -744,7 +744,7 @@ server <- function(input, output, session) {
       x12 <- ifelse(nrow(DTResultsDF() %>% filter(Design == 'TARGET-CRM'))==0, NULL, 
                     DTResultsDF() %>% filter(Design == 'TARGET-CRM') %>% select(SDCohortB) %>% pull())
       
-      return(c(x1,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11,x12))
+      return(list(x1,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11,x12))
     } 
   })
   
