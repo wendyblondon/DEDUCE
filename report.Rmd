@@ -81,17 +81,17 @@ Table 1 presents a summary of the operating characteristics for each design.
 <!-- Only Show if 2+ Designs Used -->
 `r if(show_text_results2) {"<!--"}`
 
-**Accuracy:** For each dose level, Figure 1 presents the proportion of simulated trials that a given dose level was selected as the true MTD. The **`r params$r[[1]]`** design has the greatest probability of selecting the true MTD (dose level **`r params$r[[2]]`**). `r params$r[[3]]`
+**Accuracy:** For each dose level, Figure 1 presents the proportion of simulated trials that a given dose level was selected as the true MTD. The **`r params$r[1]`** design has the greatest probability of selecting the true MTD (dose level **`r params$r[2]`**). `r params$r[3]`
 
-**Safety:** Figure 2 presents the proportion of patients experiencing a DLT for each dose level. `r params$r[[4]]`
+**Safety:** Figure 2 presents the proportion of patients experiencing a DLT for each dose level. `r params$r[4]`
 
-**Patient Allocation:** Figure 3 presents the proportion of patients assigned to each dose level. The **`r params$r[[5]]`** design has the greatest probability of assigning patients at the true MTD (dose level **`r params$r[[2]]`**). `r params$r[[6]]`
+**Patient Allocation:** Figure 3 presents the proportion of patients assigned to each dose level. The **`r params$r[5]`** design has the greatest probability of assigning patients at the true MTD (dose level **`r params$r[2]`**). `r params$r[6]`
 
-**Study Duration:** Figure 4 presents the mean (+/- standard deviation) study duration in days for each design. The **`r params$r[[7]]`** design has the shortest mean study duration. `r params$r[[8]]`
+**Study Duration:** Figure 4 presents the mean (+/- standard deviation) study duration in days for each design. The **`r params$r[7]`** design has the shortest mean study duration. `r params$r[8]`
 
 Table 1 presents a summary of the operating characteristics for each design.
 
-**Sample Size:** `r params$r[[9]]`
+**Sample Size:** `r params$r[9]`
 
 `r if(show_text_results2) {"-->"}`
 
