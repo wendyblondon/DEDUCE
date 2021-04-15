@@ -651,10 +651,10 @@ server <- function(input, output, session) {
       
     }
     df <- as.data.frame(do.call(cbind, tableList))
-    opChars <- c("Proportion of correct selection (PCS)", "True MTD", sprintf("Proportion of trials selecting dose %d as true MTD", 1:length(numerizer(input$DTDoseLabels))),
-                 "Proportion of patients experiencing a DLT overall", sprintf("Proportion of patients experiencing a DLT at dose %d", 1:length(numerizer(input$DTDoseLabels))),
+    opChars <- c("Proportion of correct selection (PCS)", "True MTD", sprintf("Proportion of trials selecting dose %s as true MTD", unlist(strsplit(input$DTDoseLabels, ","))),
+                 "Proportion of patients experiencing a DLT overall", sprintf("Proportion of patients experiencing a DLT at dose %s", unlist(strsplit(input$DTDoseLabels, ","))),
                  "Mean total sample size", "Minimmum total sample size", "Maximum total sample size", 
-                 sprintf("Proportion of patients enrolled at dose %d", 1:length(numerizer(input$DTDoseLabels))), "Mean study duration in days", 
+                 sprintf("Proportion of patients enrolled at dose %s", unlist(strsplit(input$DTDoseLabels, ","))), "Mean study duration in days", 
                  "Standard deviation of study duration in days", "Mean # of cohort B patients enrolled during DTL observation period (TARGET-CRM only)",
                  "Standard deviation of # of cohort B patients enrolled during DLT observation period (TARGET-CRM only)")
     df <- cbind(opChars, df)
