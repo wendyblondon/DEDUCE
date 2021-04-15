@@ -729,7 +729,7 @@ server <- function(input, output, session) {
       x3 <- paste(sprintf("The proportion of correct selection (PCS) of the MTD for the %s design is %g.", DTResultsDF()$Design, DTResultsDF()$PCS), collapse = " ")
       x4 <- paste(sprintf("The proportion of patients experiencing a DLT for the %s design is %g, which %s the target toxicity probability of %g.", 
                     DTResultsDF()$Design, DTResultsDF()$ObsTox, ifelse(DTResultsDF()$ObsTox > DTResultsDF()$TargetTox, "is greater than", 
-                    ifelse(DTResultsDF()$ObsTox == DTResultsDF()$TargetTox, "is lower than")), DTResultsDF()$TargetTox[1]), collapse = " ")
+                    ifelse(DTResultsDF()$ObsTox == DTResultsDF()$TargetTox, "equals", "is lower than")), DTResultsDF()$TargetTox[1]), collapse = " ")
       x5 <- DTResultsDF() %>% slice_max(PATMTD) %>% select(Design) %>% pull()
       x6 <- paste(sprintf("The proportion of patients assigned to the true MTD for the %s design is %g.", DTResultsDF()$Design, DTResultsDF()$PATMTD), collapse = " ")
       x7 <- DTResultsDF() %>% slice_min(MeanDuration) %>% select(Design) %>% pull()
