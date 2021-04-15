@@ -727,9 +727,9 @@ server <- function(input, output, session) {
       x1 <- DTResultsDF() %>% slice_max(PCS) %>% select(Design) %>% pull()
       x2 <- DTResultsDF()$TrueMTD[1]
       x3 <- paste(sprintf("The proportion of correct selection (PCS) of the MTD for the %s design is %g.", DTResultsDF()$Design, DTResultsDF()$PCS), collapse = " ")
-      x4 <- paste(sprintf("The proportion of patients experiencing a DLT for the %s design is %g, which is %s than the target toxicity probability of %g.", 
-                    DTResultsDF()$Design, DTResultsDF()$ObsTox, ifelse(DTResultsDF()$ObsTox > DTResultsDF()$TargetTox, "greater", "lower"), 
-                    DTResultsDF()$TargetTox[1]), collapse = " ")
+      x4 <- paste(sprintf("The proportion of patients experiencing a DLT for the %s design is %g, which %s the target toxicity probability of %g.", 
+                    DTResultsDF()$Design, DTResultsDF()$ObsTox, ifelse(DTResultsDF()$ObsTox > DTResultsDF()$TargetTox, "is greater than", 
+                    ifelse(DTResultsDF()$ObsTox == DTResultsDF()$TargetTox, "is lower than")), DTResultsDF()$TargetTox[1]), collapse = " ")
       x5 <- DTResultsDF() %>% slice_max(PATMTD) %>% select(Design) %>% pull()
       x6 <- paste(sprintf("The proportion of patients assigned to the true MTD for the %s design is %g.", DTResultsDF()$Design, DTResultsDF()$PATMTD), collapse = " ")
       x7 <- DTResultsDF() %>% slice_min(MeanDuration) %>% select(Design) %>% pull()
@@ -740,9 +740,9 @@ server <- function(input, output, session) {
       
       # Only Needed for TARGET-CRM
       x10 <- DTResultsDF()$PropB[1]
-      x11 <- ifelse(nrow(DTResultsDF() %>% filter(Design == 'TARGET-CRM'))==0, NULL, 
+      x11 <- ifelse(nrow(DTResultsDF() %>% filter(Design == 'TARGET-CRM'))==0, NA, 
                     DTResultsDF() %>% filter(Design == 'TARGET-CRM') %>% select(MeanCohortB) %>% pull())
-      x12 <- ifelse(nrow(DTResultsDF() %>% filter(Design == 'TARGET-CRM'))==0, NULL, 
+      x12 <- ifelse(nrow(DTResultsDF() %>% filter(Design == 'TARGET-CRM'))==0, NA, 
                     DTResultsDF() %>% filter(Design == 'TARGET-CRM') %>% select(SDCohortB) %>% pull())
       
       return(c(x1,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11,x12))
