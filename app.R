@@ -198,7 +198,55 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                     dashboardBody(
                       tabItems(
                         tabItem(tabName = "Home",
-                                h1("Something Here")
+                                a(href="https://www.google.com/", img(id="homeimg", src = "home.png")),
+                                p(id="buttons",
+                                  actionButton('jumpToDesign', "Design", tabName = "Design", class = "btn-primary btn-lg", id="btn-design"),
+                                  actionButton("jumpToConduct", "Conduct", tabName = "Design", class = "btn-primary btn-lg", id="btn-conduct")
+                                ),
+                                p(id="hometagline", "The DEDUCE platform - a unified resource for clinical investigators and statisticians to design and conduct 
+                                  safer, more efficient, and more accurate phase 1 trials."),
+                                h4(id="homeh4", "Overview"),
+                                p("The DEsign and conDUCt of dose Escalation trials (DEDUCE) platform is an interactive, web-based resource to design and conduct 
+                                  phase 1 dose escalation trials using rule-based and Bayesian adaptive designs. Our goal in developing this application is to raise 
+                                  awareness, educate, and provide open access to investigators for alternative, improved methods and tools to design and conduct phase 
+                                  1 dose escalation trials."),
+                                h4(id="homeh4", "DEDUCE Modules:"),
+                                ul(
+                                  li(
+                                    h5(class="home", "Trial Design"),
+                                    p("Users can specify and compare the operating characteristics for hypothetical phase 1 designs through trial simulations, 
+                                    and select an optimal design for the needs of the trial.")
+                                  ),
+                                  li(
+                                    h5(class="home", "Trial Conduct"),
+                                    p("Users can implement the adaptive trial, and determine the recommended dose level each time a new patient enrolls.")
+                                  )    
+                                ),
+                                
+                                h4("Available Designs:"),
+                                ul(
+                                  li(
+                                    p("Continual reassessment method (CRM) [O'Quigley et al. Biometrics, 1990]")
+                                  ),
+                                  li(
+                                    p("TARGETed-agent Continual Reassessment Method (TARGET-CRM)")
+                                  ), 
+                                  li(
+                                    p("3+3 [Storer. Biometrics, 1989]")
+                                  )   
+                                ),
+                                
+                                h4("Key Features of DEDUCE:"),
+                                ul(
+                                  li(
+                                    p("Permits simultaneous comparison of multiple trial designs for the same set of simulation parameters")
+                                  ),
+                                  li(
+                                    p("Dynamically generates a written report summarizing simulation results")
+                                  )
+                                ),
+                                a(href="https://www.dana-farber.org", img(id="DFlogo", src = "danafarber_bostonchildrens_logo.png")),
+                                a(href="https://www.NorthwesternMutual.com", img(id="NMlogo", src = "NMlogo.png"))
                         ),
                         tabItem(tabName = "Design",
                                 fluidRow(
