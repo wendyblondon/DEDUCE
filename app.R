@@ -117,7 +117,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                       tabItems(
                         tabItem(tabName = "Home",
                                 tags$script(HTML("$('body').addClass('fixed');")),
-                                img(id="homeimg", src = "home.png", style="cursor: pointer;"),
+                                img(id="homeimg", src = "home.png"),
                                 p(id="buttons",
                                   actionButton('jumpToDesign', "Design", tabName = "Design", class = "btn-primary btn-lg", id="btn-design"),
                                   actionButton("jumpToConduct", "Conduct", tabName = "Design", class = "btn-primary btn-lg", id="btn-conduct")
@@ -164,8 +164,8 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                     p("Dynamically generates a written report summarizing simulation results")
                                   )
                                 ),
-                                a(href="https://www.dana-farber.org", img(id="DFlogo", src = "danafarber_bostonchildrens_logo.png")),
-                                a(href="https://www.NorthwesternMutual.com", img(id="NMlogo", src = "NMlogo.png"))
+                                a(href="https://www.dana-farber.org", img(id="DFlogo", src = "danafarber_bostonchildrens_logo.png", style="cursor: pointer;")),
+                                a(href="https://www.NorthwesternMutual.com", img(id="NMlogo", src = "NMlogo.png", style="cursor: pointer;"))
                         ),
                         tabItem(tabName = "Design",
                                 fluidRow(
