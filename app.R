@@ -255,9 +255,6 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
 
 server <- function(input, output, session) {
   
-  # Hide Sidebar on Load
-  addClass(selector = "body", class = "sidebar-collapse")
-  
   # Disable Results Button Until Design(s) Ran
   disable("DTResults")
   
