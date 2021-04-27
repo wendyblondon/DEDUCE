@@ -104,7 +104,7 @@ designInputs <- function(x){
 
 ui <- dashboardPage(title = "DEDUCE", skin = "black",
                     dashboardHeader(title = strong("DEDUCE")),
-                    dashboardSidebar(collapsed = TRUE,
+                    dashboardSidebar(
                       useShinyjs(), includeCSS("www/style.css"), useShinyFeedback(), use_waiter(),
                                      sidebarMenu(id='tabs',
                                                  menuItem("Home", tabName = "Home", icon = icon("home")),
@@ -118,10 +118,6 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                         tabItem(tabName = "Home",
                                 tags$script(HTML("$('body').addClass('fixed');")),
                                 img(id="homeimg", src = "home.png"),
-                                p(id="buttons",
-                                  actionButton('jumpToDesign', "Design", tabName = "Design", class = "btn-primary btn-lg", id="btn-design"),
-                                  actionButton("jumpToConduct", "Conduct", tabName = "Design", class = "btn-primary btn-lg", id="btn-conduct")
-                                ),
                                 p(id="hometagline", "The DEDUCE platform - a unified resource for clinical investigators and statisticians to design and conduct 
                                   safer, more efficient, and more accurate phase 1 trials."),
                                 h4(id="homeh4", "Overview"),
