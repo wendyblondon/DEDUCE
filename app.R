@@ -128,37 +128,37 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                   awareness, educate, and provide open access to investigators for alternative, improved methods and tools to design and conduct phase 
                                   1 dose escalation trials."),
                                 h4(id="homeh4", "DEDUCE Modules:"),
-                                ul(
-                                  li(
+                                tags$ul(
+                                  tags$li(
                                     h5(class="home", "Trial Design"),
                                     p("Users can specify and compare the operating characteristics for hypothetical phase 1 designs through trial simulations, 
                                     and select an optimal design for the needs of the trial.")
                                   ),
-                                  li(
+                                  tags$li(
                                     h5(class="home", "Trial Conduct"),
                                     p("Users can implement the adaptive trial, and determine the recommended dose level each time a new patient enrolls.")
                                   )    
                                 ),
                                 
                                 h4("Available Designs:"),
-                                ul(
-                                  li(
+                                tags$ul(
+                                  tags$li(
                                     p("Continual reassessment method (CRM) [O'Quigley et al. Biometrics, 1990]")
                                   ),
-                                  li(
+                                  tags$li(
                                     p("TARGETed-agent Continual Reassessment Method (TARGET-CRM)")
                                   ), 
-                                  li(
+                                  tags$li(
                                     p("3+3 [Storer. Biometrics, 1989]")
                                   )   
                                 ),
                                 
                                 h4("Key Features of DEDUCE:"),
-                                ul(
-                                  li(
+                                tags$ul(
+                                  tags$li(
                                     p("Permits simultaneous comparison of multiple trial designs for the same set of simulation parameters")
                                   ),
-                                  li(
+                                  tags$li(
                                     p("Dynamically generates a written report summarizing simulation results")
                                   )
                                 ),
