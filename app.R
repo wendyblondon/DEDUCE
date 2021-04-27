@@ -161,7 +161,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                   )
                                 ),
                                 a(href="https://www.dana-farber.org", img(id="DFlogo", src = "danafarber_bostonchildrens_logo.png", style="cursor: pointer;")),
-                                a(href="https://www.NorthwesternMutual.com", img(id="NMlogo", src = "NMLogo.png", style="cursor: pointer;"))
+                                a(href="https://www.NorthwesternMutual.com", img(id="NMLogo", src = "NMLogo.png", style="cursor: pointer;"))
                         ),
                         tabItem(tabName = "Design",
                                 fluidRow(
