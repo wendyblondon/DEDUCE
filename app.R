@@ -116,6 +116,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                     dashboardBody(
                       tabItems(
                         tabItem(tabName = "Home",
+                                tags$script(HTML("$('body').addClass('fixed');")),
                                 img(id="homeimg", src = "home.png", style="cursor: pointer;"),
                                 p(id="buttons",
                                   actionButton('jumpToDesign', "Design", tabName = "Design", class = "btn-primary btn-lg", id="btn-design"),
