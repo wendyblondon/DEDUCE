@@ -116,7 +116,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                     dashboardBody(
                       tabItems(
                         tabItem(tabName = "Home",
-                                column(12, style="overflow-y:scroll; height: 90vh;",
+                                column(12, style="overflow-y:scroll; height: 85vh;",
                                   a(href="https://www.google.com/", img(id="homeimg", src = "home.png")),
                                   p(id="buttons",
                                     actionButton('jumpToDesign', "Design", tabName = "Design", class = "btn-primary btn-lg", id="btn-design"),
