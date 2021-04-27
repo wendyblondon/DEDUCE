@@ -255,6 +255,9 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
 
 server <- function(input, output, session) {
   
+  # When Home Image Clicked Go To Home
+  onclick("homeimg", updateTabsetPanel(session, inputId = "tabs", selected = "Home"))
+  
   # Disable Results Button Until Design(s) Ran
   disable("DTResults")
   
