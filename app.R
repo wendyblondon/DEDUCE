@@ -318,14 +318,14 @@ server <- function(input, output, session) {
     hidden(
       div(id="DTUIPlots",
           column(6,
-                 plotOutput("DTPlot1", width = "100%", height = "100%"),
+                 plotOutput("DTPlot1"),
                  br(),
-                 plotOutput("DTPlot2", width = "100%", height = "100%")
+                 plotOutput("DTPlot2")
           ),
           column(6,
-                 plotOutput("DTPlot3", width = "100%", height = "100%"),
+                 plotOutput("DTPlot3"),
                  br(),
-                 plotOutput("DTPlot4", width = "100%", height = "100%")
+                 plotOutput("DTPlot4")
           )
       )
     )
