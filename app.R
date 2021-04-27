@@ -145,7 +145,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                   h4("Available Designs:"),
                                   tags$ul(
                                     tags$li(
-                                      p("Continual reassessment method (CRM) [O'Quigley et al. Biometrics, 1990]")
+                                      p("Continual Reassessment Method (CRM) [O'Quigley et al. Biometrics, 1990]")
                                     ),
                                     tags$li(
                                       p("TARGETed-agent Continual Reassessment Method (TARGET-CRM)")
