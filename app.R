@@ -102,92 +102,9 @@ designInputs <- function(x){
   return(x)
 }
 
-# CSS
-CSS <- "
-.sidebar-menu{
-  font-size: 20px;
-}
-
-.pretty{
-  font-size: 18px;
-}
-
-#DTDoseLabels{
-  font-size: 18px;
-}
-
-#DTTrueTox{
-  font-size: 18px;
-}
-
-#DTPriorTox{
-  font-size: 18px;
-}
-
-.control-label{
-  font-size: 18px;
-}
-
-.irs-min{
-  font-size: 16px;
-  line-height: 16px;
-}
-
-.irs-max{
-  font-size: 16px;
-  line-height: 16px;
-}
-
-.irs-single{
-  font-size: 16px;
-  line-height: 16px;
-}
-
-.selectize-input { 
-  font-size: 18px; 
-  line-height: 18px;
-}
-
-.selectize-dropdown {
-  font-size: 18px; 
-  line-height: 18px;
-}
-
-#DTSimulate:hover{
-  background-color: #1b9e77;
-  color: white;
-}
-
-#DTResults:hover{
-  background-color: #7570b3;
-  color: white;
-}
-
-#DTReset:hover{
-  background-color: #d95f02;
-  color: white;
-}
-
-#DTPlot1 {
-  height: calc(50vh - 50px) !important;
-} 
-
-#DTPlot2 {
-  height: calc(50vh - 50px) !important;
-} 
-
-#DTPlot3 {
-  height: calc(50vh - 50px) !important;
-} 
-
-#DTPlot4 {
-  height: calc(50vh - 50px) !important;
-} 
-"
-
 ui <- dashboardPage(title = "DEDUCE", skin = "black",
                     dashboardHeader(title = strong("DEDUCE")),
-                    dashboardSidebar(useShinyjs(), inlineCSS(CSS), useShinyFeedback(), use_waiter(),
+                    dashboardSidebar(useShinyjs(), includeCSS("www/style.css"), useShinyFeedback(), use_waiter(),
                                      sidebarMenu(id='tabs',
                                                  menuItem("Home", tabName = "Home", icon = icon("home")),
                                                  menuItem("Design", tabName = "Design", icon = icon("pen")),
