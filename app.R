@@ -104,7 +104,8 @@ designInputs <- function(x){
 
 ui <- dashboardPage(title = "DEDUCE", skin = "black",
                     dashboardHeader(title = strong("DEDUCE")),
-                    dashboardSidebar(useShinyjs(), includeCSS("www/style.css"), useShinyFeedback(), use_waiter(),
+                    dashboardSidebar(collapsed = TRUE,
+                      useShinyjs(), includeCSS("www/style.css"), useShinyFeedback(), use_waiter(),
                                      sidebarMenu(id='tabs',
                                                  menuItem("Home", tabName = "Home", icon = icon("home")),
                                                  menuItem("Design", tabName = "Design", icon = icon("pen")),
