@@ -168,7 +168,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                         tabItem(tabName = "About",
                                 h4(id="homeh4", "About DEDUCE"),
                                 h4("DEDUCE Leadership: Dana-Farber/Boston Children's Cancer and Blood Disorders Center"),
-                                tags$tags$ul(
+                                tags$ul(
                                   tags$li("Clement Ma, PhD"),
                                   tags$li("Wendy B. London, PhD")
                                 ),
@@ -192,7 +192,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                 h4("Citation:"),
                                 p("To cite the DEDUCE platform please use:"),
                                 tags$ul(
-                                  tags$li("[Insert citation to pubtags$lished paper]")
+                                  tags$li("[Insert citation to published paper]")
                                 ),
                                 h4(id="homeh4", "Acknowledgements:"),
                                 p("We would like to thank the Northwestern Mutual Tech for Good team for their pro-bono development, design, and project management 
@@ -210,9 +210,9 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                              in cancer. Biometrics. 1990;46(1):33-48."))
                                   )
                                 ),
-                                a(href="https://www.danafarberbostonchildrens.org", img(id="DFLogo",src = "danafarber_bostonchildrens_logo.png")),
-                                a(href="https://www.NorthwesternMutual.com", img(id="NMLogo",src = "NMLogo.png")),
-                                a(href="https://hms.harvard.edu/", img(id="HMSLogo",src = "HMS.png"))
+                                a(href="https://www.danafarberbostonchildrens.org", img(id="DFLogo", src = "danafarber_bostonchildrens_logo.png")),
+                                a(href="https://www.NorthwesternMutual.com", img(id="NMLogo", src = "NMLogo.png")),
+                                a(href="https://hms.harvard.edu/", img(id="HMSLogo", src = "HMS.png"))
                                 
                         ),
                         tabItem(tabName = "Design",
