@@ -111,7 +111,8 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                                  menuItem("About", tabName = "About", icon = icon("info-circle")),
                                                  menuItem("Design", tabName = "Design", icon = icon("pen")),
                                                  menuItem("Conduct", tabName = "Conduct", icon = icon("dolly-flatbed")),
-                                                 menuItem("Help", tabName = "Help", icon = icon("question-circle"))
+                                                 menuItem("Help", href="https://drive.google.com/file/d/18MGkaaIYFfJ5gqi1vGqnf7Myy0QjLs-i/view", 
+                                                          icon = icon("question-circle"))
                                      )
                     ),
                     dashboardBody(
@@ -293,7 +294,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                         tabItem(tabName = "Conduct",
                                 h1("Something Here")
                         ),
-                        tabItem(tabName = "Help", href="https://drive.google.com/file/d/18MGkaaIYFfJ5gqi1vGqnf7Myy0QjLs-i/view"
+                        tabItem(tabName = "Help"
                         )
                       )
                     )
