@@ -265,7 +265,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                            sliderInput("DTMaxN", "Maximum Sample Size", min = 1, max = 200, value = 18, width = "100%", ticks = FALSE),
                                            bsTooltip("DTMaxN", "Please enter the maximum number of patients to be enrolled per trial", 
                                                      "top", options = list(container = "body")),
-                                           sliderInput("DTMinCohortB", "Minimum Enrollment of Cohort B Patients (Optional)", min = 0, max = 100, value = 2, width = "100%", ticks = FALSE),
+                                           sliderInput("DTMinCohortB", "Minimum Enrollment of Cohort B Patients (Optional)", min = 0, max = 100, value = 0, width = "100%", ticks = FALSE),
                                            bsTooltip("DTMinCohortB", "Please enter the minimum number of Cohort B patients to be enrolled in the trial", 
                                                      "top", options = list(container = "body")),
                                            sliderInput("DTCohortSize", "Cohort Size", min = 1, max = 9, value = 3, width = "100%", ticks = FALSE),
@@ -293,8 +293,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                         tabItem(tabName = "Conduct",
                                 h1("Something Here")
                         ),
-                        tabItem(tabName = "Help",
-                                h1("Something Here")
+                        tabItem(tabName = "Help", href="https://drive.google.com/file/d/18MGkaaIYFfJ5gqi1vGqnf7Myy0QjLs-i/view"
                         )
                       )
                     )
