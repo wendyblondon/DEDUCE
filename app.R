@@ -162,9 +162,9 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                     p("Dynamically generates a written report summarizing simulation results")
                                   )
                                 ),
-                                a(href="https://www.danafarberbostonchildrens.org", img(id="DFLogo", src = "danafarber_bostonchildrens_logo.png", style="cursor: pointer;", target="_blank", rel="noopener noreferrer")),
-                                a(href="https://www.NorthwesternMutual.com", img(id="NMLogo", src = "NMLogo.png", style="cursor: pointer;", target="_blank", rel="noopener noreferrer")),
-                                a(href="https://hms.harvard.edu/", img(id="HMSLogo", src = "HMS.png", style="cursor: pointer;", target="_blank", rel="noopener noreferrer"))
+                                a(href="https://www.danafarberbostonchildrens.org", img(id="DFLogo", src = "danafarber_bostonchildrens_logo.png", style="cursor: pointer;"), target="_blank", rel="noopener noreferrer"),
+                                a(href="https://www.NorthwesternMutual.com", img(id="NMLogo", src = "NMLogo.png", style="cursor: pointer;"), target="_blank", rel="noopener noreferrer"),
+                                a(href="https://hms.harvard.edu/", img(id="HMSLogo", src = "HMS.png", style="cursor: pointer;"), target="_blank", rel="noopener noreferrer")
                         ),
                         tabItem(tabName = "About",
                                 h4(id="homeh4", "About DEDUCE"),
@@ -211,9 +211,9 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                              in cancer. Biometrics. 1990;46(1):33-48."))
                                   )
                                 ),
-                                a(href="https://www.danafarberbostonchildrens.org", img(id="DFLogo", src = "danafarber_bostonchildrens_logo.png", target="_blank", rel="noopener noreferrer")),
-                                a(href="https://www.NorthwesternMutual.com", img(id="NMLogo", src = "NMLogo.png", target="_blank", rel="noopener noreferrer")),
-                                a(href="https://hms.harvard.edu/", img(id="HMSLogo", src = "HMS.png", target="_blank", rel="noopener noreferrer"))
+                                a(href="https://www.danafarberbostonchildrens.org", img(id="DFLogo", src = "danafarber_bostonchildrens_logo.png"), target="_blank", rel="noopener noreferrer"),
+                                a(href="https://www.NorthwesternMutual.com", img(id="NMLogo", src = "NMLogo.png"), target="_blank", rel="noopener noreferrer"),
+                                a(href="https://hms.harvard.edu/", img(id="HMSLogo", src = "HMS.png"), target="_blank", rel="noopener noreferrer")
                                 
                         ),
                         tabItem(tabName = "Design",
