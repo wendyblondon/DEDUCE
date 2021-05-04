@@ -108,11 +108,11 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                       useShinyjs(), includeCSS("www/style.css"), useShinyFeedback(), use_waiter(),
                                      sidebarMenu(id='tabs',
                                                  menuItem("Home", tabName = "Home", icon = icon("home")),
-                                                 menuItem("About", tabName = "About", icon = icon("info-circle")),
                                                  menuItem("Design", tabName = "Design", icon = icon("pen")),
                                                  menuItem("Conduct", tabName = "Conduct", icon = icon("dolly-flatbed")),
+                                                 menuItem("About", tabName = "About", icon = icon("info-circle")),
                                                  menuItem("Help", href="https://drive.google.com/file/d/18MGkaaIYFfJ5gqi1vGqnf7Myy0QjLs-i/view", 
-                                                          icon = icon("question-circle"))
+                                                          icon = icon("external-link-alt"))
                                      )
                     ),
                     dashboardBody(
@@ -165,56 +165,6 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                 a(href="https://www.danafarberbostonchildrens.org", img(id="DFLogo", src = "danafarber_bostonchildrens_logo.png", style="cursor: pointer;"), target="_blank", rel="noopener noreferrer"),
                                 a(href="https://www.NorthwesternMutual.com", img(id="NMLogo", src = "NMLogo.png", style="cursor: pointer;"), target="_blank", rel="noopener noreferrer"),
                                 a(href="https://hms.harvard.edu/", img(id="HMSLogo", src = "HMS.png", style="cursor: pointer;"), target="_blank", rel="noopener noreferrer")
-                        ),
-                        tabItem(tabName = "About",
-                                h4(id="homeh4", "About DEDUCE"),
-                                h4("DEDUCE Leadership: Dana-Farber/Boston Children's Cancer and Blood Disorders Center"),
-                                tags$ul(
-                                  tags$li("Clement Ma, PhD"),
-                                  tags$li("Wendy B. London, PhD")
-                                ),
-                                h4("Development Team: Northwestern Mutual"),
-                                tags$ul(
-                                  tags$li("Judy Berdan"),
-                                  tags$li("Laure Borchardt"),
-                                  tags$li("Audra Brennan"),
-                                  tags$li("Stan Crane"),
-                                  tags$li("Ben Garski"),
-                                  tags$li("Nanette Jamel"),
-                                  tags$li("Lori Kiraly"),
-                                  tags$li("Danielle Pankey"),
-                                  tags$li("Susan Stegman, MD")
-                                ),
-                                h4("Contact:"),
-                                p("For assistance, please contact:"),
-                                tags$ul(
-                                  tags$li("Drs. Clement Ma and Wendy B. London")
-                                ),
-                                h4("Citation:"),
-                                p("To cite the DEDUCE platform please use:"),
-                                tags$ul(
-                                  tags$li("[Insert citation to published paper]")
-                                ),
-                                h4(id="homeh4", "Acknowledgements:"),
-                                p("We would like to thank the Northwestern Mutual Tech for Good team for their pro-bono development, design, and project management 
-                                support for the DEDUCE platform. We would also like to thank our test users, Drs. Steven G. DuBois, Karen D. Wright, 
-                                and David S. Shulman for their helpful feedback."),
-                                h4("References:"),
-                                tags$ul(
-                                  tags$li(
-                                    a(href="https://pubmed.ncbi.nlm.nih.gov/2790129/", 
-                                      ("Storer BE. Design and Analysis of Phase I Clinical Trials. Biometrics. 1989;45(3):925-37."))
-                                  ),
-                                  tags$li(
-                                    a(href="https://pubmed.ncbi.nlm.nih.gov/2350571/", 
-                                      ("O'Quigley J, Pepe M, Fisher L. Continual reassessment method: a practical design for phase 1 ctags$linical trials 
-                                             in cancer. Biometrics. 1990;46(1):33-48."))
-                                  )
-                                ),
-                                a(href="https://www.danafarberbostonchildrens.org", img(id="DFLogo", src = "danafarber_bostonchildrens_logo.png"), target="_blank", rel="noopener noreferrer"),
-                                a(href="https://www.NorthwesternMutual.com", img(id="NMLogo", src = "NMLogo.png"), target="_blank", rel="noopener noreferrer"),
-                                a(href="https://hms.harvard.edu/", img(id="HMSLogo", src = "HMS.png"), target="_blank", rel="noopener noreferrer")
-                                
                         ),
                         tabItem(tabName = "Design",
                                 fluidRow(
@@ -293,6 +243,56 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                         ),
                         tabItem(tabName = "Conduct",
                                 h1("Something Here")
+                        ),
+                        tabItem(tabName = "About",
+                                h4(id="homeh4", "About DEDUCE"),
+                                h4("DEDUCE Leadership: Dana-Farber/Boston Children's Cancer and Blood Disorders Center"),
+                                tags$ul(
+                                  tags$li("Clement Ma, PhD"),
+                                  tags$li("Wendy B. London, PhD")
+                                ),
+                                h4("Development Team: Northwestern Mutual"),
+                                tags$ul(
+                                  tags$li("Judy Berdan"),
+                                  tags$li("Laure Borchardt"),
+                                  tags$li("Audra Brennan"),
+                                  tags$li("Stan Crane"),
+                                  tags$li("Ben Garski"),
+                                  tags$li("Nanette Jamel"),
+                                  tags$li("Lori Kiraly"),
+                                  tags$li("Danielle Pankey"),
+                                  tags$li("Susan Stegman, MD")
+                                ),
+                                h4("Contact:"),
+                                p("For assistance, please contact:"),
+                                tags$ul(
+                                  tags$li("Drs. Clement Ma and Wendy B. London")
+                                ),
+                                h4("Citation:"),
+                                p("To cite the DEDUCE platform please use:"),
+                                tags$ul(
+                                  tags$li("[Insert citation to published paper]")
+                                ),
+                                h4(id="homeh4", "Acknowledgements:"),
+                                p("We would like to thank the Northwestern Mutual Tech for Good team for their pro-bono development, design, and project management 
+                                support for the DEDUCE platform. We would also like to thank our test users, Drs. Steven G. DuBois, Karen D. Wright, 
+                                and David S. Shulman for their helpful feedback."),
+                                h4("References:"),
+                                tags$ul(
+                                  tags$li(
+                                    a(href="https://pubmed.ncbi.nlm.nih.gov/2790129/", 
+                                      ("Storer BE. Design and Analysis of Phase I Clinical Trials. Biometrics. 1989;45(3):925-37."))
+                                  ),
+                                  tags$li(
+                                    a(href="https://pubmed.ncbi.nlm.nih.gov/2350571/", 
+                                      ("O'Quigley J, Pepe M, Fisher L. Continual reassessment method: a practical design for phase 1 ctags$linical trials 
+                                             in cancer. Biometrics. 1990;46(1):33-48."))
+                                  )
+                                ),
+                                a(href="https://www.danafarberbostonchildrens.org", img(id="DFLogo", src = "danafarber_bostonchildrens_logo.png"), target="_blank", rel="noopener noreferrer"),
+                                a(href="https://www.NorthwesternMutual.com", img(id="NMLogo", src = "NMLogo.png"), target="_blank", rel="noopener noreferrer"),
+                                a(href="https://hms.harvard.edu/", img(id="HMSLogo", src = "HMS.png"), target="_blank", rel="noopener noreferrer")
+                                
                         ),
                         tabItem(tabName = "Help"
                         )
