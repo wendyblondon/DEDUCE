@@ -110,9 +110,9 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                                  menuItem("Home", tabName = "Home", icon = icon("home")),
                                                  menuItem("Design", tabName = "Design", icon = icon("pen")),
                                                  menuItem("Conduct", tabName = "Conduct", icon = icon("dolly-flatbed")),
-                                                 menuItem("About", tabName = "About", icon = icon("info-circle")),
                                                  menuItem("Help", href="https://drive.google.com/file/d/18MGkaaIYFfJ5gqi1vGqnf7Myy0QjLs-i/view", 
-                                                          icon = icon("external-link-alt"))
+                                                          icon = icon("external-link-alt")),
+                                                 menuItem("About", tabName = "About", icon = icon("info-circle"))
                                      )
                     ),
                     dashboardBody(
@@ -166,6 +166,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                 a(href="https://www.NorthwesternMutual.com", img(id="NMLogo", src = "NMLogo.png", style="cursor: pointer;"), target="_blank", rel="noopener noreferrer"),
                                 a(href="https://hms.harvard.edu/", img(id="HMSLogo", src = "HMS.png", style="cursor: pointer;"), target="_blank", rel="noopener noreferrer")
                         ),
+                        
                         tabItem(tabName = "Design",
                                 fluidRow(
                                   column(3, style="overflow-y:scroll; height: 70vh;",
@@ -241,9 +242,14 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                   )
                                 )
                         ),
+                        
                         tabItem(tabName = "Conduct",
                                 h1("Something Here")
                         ),
+                        
+                        tabItem(tabName = "Help"
+                        ),
+                        
                         tabItem(tabName = "About",
                                 h4(id="homeh4", "About DEDUCE"),
                                 h4("DEDUCE Leadership: Dana-Farber/Boston Children's Cancer and Blood Disorders Center"),
@@ -293,8 +299,6 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                 a(href="https://www.NorthwesternMutual.com", img(id="NMLogo", src = "NMLogo.png"), target="_blank", rel="noopener noreferrer"),
                                 a(href="https://hms.harvard.edu/", img(id="HMSLogo", src = "HMS.png"), target="_blank", rel="noopener noreferrer")
                                 
-                        ),
-                        tabItem(tabName = "Help"
                         )
                       )
                     )
