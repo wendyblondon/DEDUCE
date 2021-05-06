@@ -286,13 +286,13 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                 h4("References:"),
                                 tags$ul(
                                   tags$li(
-                                    a(href="https://pubmed.ncbi.nlm.nih.gov/2790129/", 
-                                      ("Storer BE. Design and Analysis of Phase I Clinical Trials. Biometrics. 1989;45(3):925-37."), target="_blank", rel="noopener noreferrer")
+                                    a("Storer BE. Design and Analysis of Phase I Clinical Trials. ", em("Biometrics. "), "1989;45(3):925-37.",
+                                      href="https://pubmed.ncbi.nlm.nih.gov/2790129/", target="_blank", rel="noopener noreferrer")
                                   ),
                                   tags$li(
-                                    a(href="https://pubmed.ncbi.nlm.nih.gov/2350571/", 
-                                      ("O'Quigley J, Pepe M, Fisher L. Continual reassessment method: a practical design for phase 1 Clinical trials 
-                                             in cancer. Biometrics. 1990;46(1):33-48."), target="_blank", rel="noopener noreferrer")
+                                    a("O'Quigley J, Pepe M, Fisher L. Continual reassessment method: a practical design for phase 1 Clinical trials in cancer. ", 
+                                      em("Biometrics. "), "1990;46(1):33-48.", href="https://pubmed.ncbi.nlm.nih.gov/2350571/", 
+                                      target="_blank", rel="noopener noreferrer")
                                   )
                                 ),
                                 a(href="https://www.danafarberbostonchildrens.org", img(id="DFLogo", src = "danafarber_bostonchildrens_logo.png"), target="_blank", rel="noopener noreferrer"),
