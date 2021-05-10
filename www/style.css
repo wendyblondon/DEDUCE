@@ -1,0 +1,179 @@
+.sidebar-menu{
+  font-size: 20px;
+}
+
+.pretty{
+  font-size: 18px;
+}
+
+#DTDoseLabels{
+  font-size: 18px;
+}
+
+#DTTrueTox{
+  font-size: 18px;
+}
+
+#DTPriorTox{
+  font-size: 18px;
+}
+
+.control-label{
+  font-size: 18px;
+}
+
+.irs-min{
+  font-size: 16px;
+  line-height: 16px;
+}
+
+.irs-max{
+  font-size: 16px;
+  line-height: 16px;
+}
+
+.irs-single{
+  font-size: 16px;
+  line-height: 16px;
+}
+
+.selectize-input{ 
+  font-size: 18px; 
+  line-height: 18px;
+}
+
+.selectize-dropdown{
+  font-size: 18px; 
+  line-height: 18px;
+}
+
+#DTSimulate:hover{
+  background-color: #1b9e77;
+  color: white;
+}
+
+#DTResults:hover{
+  background-color: #7570b3;
+  color: white;
+}
+
+#DTReset:hover{
+  background-color: #d95f02;
+  color: white;
+}
+
+#DTPlot1{
+  height: calc(50vh - 50px) !important;
+  width: 100%;
+    
+} 
+
+#DTPlot2{
+  height: calc(50vh - 50px) !important;
+  width: 100%;
+} 
+
+#DTPlot3{
+  height: calc(50vh - 50px) !important;
+  width: 100%;
+} 
+
+#DTPlot4{
+  height: calc(50vh - 50px) !important;
+  width: 100%;
+}
+
+#Home{
+  background-image: url(kids.png);
+}
+
+h3{
+  color: #000080;
+  font-weight: bold;
+  text-align: center;
+}
+
+h4.home{
+  color: #000080;
+  font-weight: bold;
+  margin-bottom: 0.1em
+}
+
+#homeh4{
+  margin-top: 1em;
+}
+
+h5{
+  color: #000080;
+  font-weight: bold;
+}  
+
+.home{
+  color: #000080;
+  font-weight: bold;
+  margin-bottom: 0.1em  
+}
+
+h6{
+  color: #000080;
+  font-weight: bold;  
+}
+
+#homeimg{
+  width: 100%;
+  max-width: 100%;
+}
+
+#DFLogo{
+  width: 25%;
+  max-width: 100%;
+  margin-top: 2.5em;
+  margin-right: 1.7em;
+  margin-left: 1.7em;
+}
+
+#NMLogo{
+  width: 25%;
+  max-width: 100%;
+  margin-top: 2.5em;
+  margin-right: 1.7em;
+  margin-left: 1.7em;
+}
+
+#HMSLogo{
+  width: 25%;
+  max-width: 100%;
+  margin-top: 2.5em;
+  margin-right: 1.7em;
+  margin-left: 1.7em;
+}
+
+#hometagline{
+  text-align: center;
+  margin-top: 2.5em;
+  margin-bottom: 2.5em;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+#buttons{
+  text-align: center;
+  margin-top: 2.5em;
+  margin-bottom: 2.5em;
+}
+
+#btn-design{
+  background-color: lightblue;
+  margin-top: 2.5em;
+  margin-bottom: 2.5em;
+  margin-left: 2.7em;
+  margin-right: 2.7em;
+}
+
+#btn-conduct{
+  background-color: lightgreen;
+  margin-top: 2.5em;
+  margin-bottom: 2.5em;
+  margin-left: 2.7em;
+  margin-right: 2.7em;
+}
