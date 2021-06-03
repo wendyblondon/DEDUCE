@@ -315,17 +315,8 @@ server <- function(input, output, session) {
   })
   
   # Update Start Level Based on Dose Labels
-  DTStartLevelVar <- reactive({
-    choices <- data.frame(var = input$DTDoseLabels, num = sequencer(input$DTDoseLabels))
-    
-    choicesList <- as.list(choices$num)
-    names(choicesList) <- choices$var
-    
-    return(choicesList)
-  })
-  
   observe({
-    updateSelectInput(session, "DTStartLevel", choices = DTStartLevelVar(), selected = DTStartLevelVar()[2])
+    updateSelectInput(session, "DTStartLevel", choices = input$DTDoseLabels, selected = sequencer(input$DTDoseLabels)[2])
   })
   
   # Update Max Depending on Previous Input
