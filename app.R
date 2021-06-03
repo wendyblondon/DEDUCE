@@ -316,7 +316,7 @@ server <- function(input, output, session) {
   
   # Update Start Level Based on Dose Labels
   DTStartLevelVar <- reactive({
-    choices <- data.frame(var = input$DTDoseLabel, num = sequencer(input$DTDoseLabel))
+    choices <- data.frame(var = input$DTDoseLabels, num = sequencer(input$DTDoseLabels))
     
     choicesList <- as.list(choices$num)
     names(choicesList) <- choices$var
