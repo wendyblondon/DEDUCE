@@ -442,7 +442,7 @@ server <- function(input, output, session) {
       
       TPT <- three.plus.three(target.tox = input$DTTargetTox, number.trials = input$DTNumTrials, 
                               true.tox = numerizer(input$DTTrueTox), arrival.rate = input$DTArrivalRate, 
-                              prop.B = input$DTPropB, cycle.length = input$DTCycleLength, start.level = as.numeric(input$DTStartLevel))
+                              prop.B = input$DTPropB, cycle.length = input$DTCycleLength, start.level = match(input$DTStartLevel, unlist(strsplit(input$DTDoseLabels, ","))))
     }
     
     # TARGET-CRM
@@ -451,7 +451,7 @@ server <- function(input, output, session) {
       TCRM <- my.target.crm(prior = numerizer(input$DTPriorTox), target.tox = input$DTTargetTox, 
                             number.trials = input$DTNumTrials, true.tox = numerizer(input$DTTrueTox), 
                             arrival.rate = input$DTArrivalRate, prop.B = input$DTPropB, min.cohortB = input$DTMinCohortB, cycle.length = input$DTCycleLength, 
-                            cohort.size = input$DTCohortSize, max.N = input$DTMaxN, start.level = as.numeric(input$DTStartLevel))
+                            cohort.size = input$DTCohortSize, max.N = input$DTMaxN, start.level = match(input$DTStartLevel, unlist(strsplit(input$DTDoseLabels, ","))))
       
     }
     
@@ -461,7 +461,7 @@ server <- function(input, output, session) {
       CRM <- my.crm(prior = numerizer(input$DTPriorTox), target.tox = input$DTTargetTox, 
                     number.trials = input$DTNumTrials, true.tox = numerizer(input$DTTrueTox), 
                     arrival.rate = input$DTArrivalRate, prop.B = input$DTPropB, min.cohortB = input$DTMinCohortB, cycle.length = input$DTCycleLength, 
-                    cohort.size = input$DTCohortSize, max.N = input$DTMaxN, start.level = as.numeric(input$DTStartLevel))
+                    cohort.size = input$DTCohortSize, max.N = input$DTMaxN, start.level = match(input$DTStartLevel, unlist(strsplit(input$DTDoseLabels, ","))))
     }
     
     all <- list(get0("TPT"), get0("TCRM"), get0("CRM"))
