@@ -316,7 +316,7 @@ server <- function(input, output, session) {
   
   # Update Start Level Based on Dose Labels
   observe({
-    updateSelectInput(session, "DTStartLevel", choices = input$DTDoseLabels, selected = sequencer(input$DTDoseLabels)[2])
+    updateSelectInput(session, "DTStartLevel", choices = sequencer(input$DTDoseLabels), selected = sequencer(input$DTDoseLabels)[2])
   })
   
   # Update Max Depending on Previous Input
