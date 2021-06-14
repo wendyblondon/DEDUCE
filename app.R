@@ -122,12 +122,12 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                 img(id="homeimg", src = "home.png"),
                                 p(id="hometagline", "The DEsign and conDUCt of dose Escalation trials (DEDUCE) platform - a unified resource for clinical investigators and statisticians to design and conduct more efficient 
                                   and accurate phase 1 trials."),
-                                h4(id="homeh4", "Overview"),
+                                h2(id="homeh4", "Overview"),
                                 p("The DEDUCE platform is an interactive, web-based resource to design and conduct 
                                   phase 1 dose escalation trials using rule-based and Bayesian adaptive designs. Our goal in developing this application is to raise 
                                   awareness, educate, and provide open access to investigators for alternative, improved methods and tools to design and conduct phase 
                                   1 dose escalation trials."),
-                                h4(id="homeh4", "DEDUCE Modules:"),
+                                h2(id="homeh4", "DEDUCE Modules:"),
                                 tags$ul(
                                   tags$li(
                                     h5(class="home", "Trial Design"),
@@ -140,7 +140,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                   )    
                                 ),
                                 
-                                h4("Available Designs:"),
+                                h2("Available Designs:"),
                                 tags$ul(
                                   tags$li(
                                     a("Continual Reassessment Method (CRM) [O'Quigley et al. Biometrics, 1990]", href="https://pubmed.ncbi.nlm.nih.gov/2350571/", 
@@ -153,7 +153,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                   )   
                                 ),
                                 
-                                h4("Key Features of DEDUCE:"),
+                                h2("Key Features of DEDUCE:"),
                                 tags$ul(
                                   tags$li("Permits simultaneous comparison of multiple trial designs for the same set of simulation parameters"
                                   ),
@@ -242,20 +242,20 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                         ),
                         
                         tabItem(tabName = "Conduct",
-                                h1("Something Here")
+                                h1("Coming Soon...")
                         ),
                         
                         tabItem(tabName = "Help"
                         ),
                         
                         tabItem(tabName = "About",
-                                h4(id="homeh4", "About DEDUCE"),
-                                h4("DEDUCE Leadership: Dana-Farber/Boston Children's Cancer and Blood Disorders Center"),
+                                h2(id="homeh4", "About DEDUCE"),
+                                h2("DEDUCE Leadership: Dana-Farber/Boston Children's Cancer and Blood Disorders Center"),
                                 tags$ul(
                                   tags$li("Clement Ma, PhD"),
                                   tags$li("Wendy B. London, PhD")
                                 ),
-                                h4("Development Team: Northwestern Mutual"),
+                                h2("Development Team: Northwestern Mutual"),
                                 tags$ul(
                                   tags$li("Judy Berdan"),
                                   tags$li("Laure Borchardt"),
@@ -267,21 +267,21 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                   tags$li("Danielle Pankey"),
                                   tags$li("Susan Stegman, MD")
                                 ),
-                                h4("Contact:"),
+                                h2("Contact:"),
                                 p("For assistance, please contact:"),
                                 tags$ul(
                                   tags$li("Drs. Clement Ma and Wendy B. London")
                                 ),
-                                h4("Citation:"),
+                                h2("Citation:"),
                                 p("To cite the DEDUCE platform please use:"),
                                 tags$ul(
                                   tags$li("[Insert citation to published paper]")
                                 ),
-                                h4(id="homeh4", "Acknowledgements:"),
+                                h2(id="homeh4", "Acknowledgements:"),
                                 p("We would like to thank the Northwestern Mutual Tech for Good team for their pro-bono development, design, and project management 
                                 support for the DEDUCE platform. We would also like to thank our test users, Drs. Steven G. DuBois, Karen D. Wright, 
                                 and David S. Shulman for their helpful feedback."),
-                                h4("References:"),
+                                h2("References:"),
                                 tags$ul(
                                   tags$li(
                                     a("Storer BE. Design and Analysis of Phase I Clinical Trials. ", em("Biometrics. "), "1989;45(3):925-37.",
