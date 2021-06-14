@@ -155,11 +155,9 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                 
                                 h4("Key Features of DEDUCE:"),
                                 tags$ul(
-                                  tags$li(
-                                    p("Permits simultaneous comparison of multiple trial designs for the same set of simulation parameters")
+                                  tags$li("Permits simultaneous comparison of multiple trial designs for the same set of simulation parameters"
                                   ),
-                                  tags$li(
-                                    p("Dynamically generates a written report summarizing simulation results")
+                                  tags$li("Dynamically generates a written report summarizing simulation results"
                                   )
                                 ),
                                 a(href="https://www.danafarberbostonchildrens.org", img(id="DFLogo", src = "danafarber_bostonchildrens_logo.png", style="cursor: pointer;"), target="_blank", rel="noopener noreferrer"),
