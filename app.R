@@ -120,10 +120,10 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                         tabItem(tabName = "Home",
                                 tags$script(HTML("$('body').addClass('fixed');")),
                                 img(id="homeimg", src = "home.png"),
-                                p(id="hometagline", "The ", b("DE"), "sign and con", b("DUC"), "t of dose ", b("E"), "scalation trials (DEDUCE) platform - a unified resource for clinical investigators and statisticians to design and conduct more efficient 
+                                p(id="hometagline", "The DEsign and conDUCt of dose Escalation trials (DEDUCE) platform - a unified resource for clinical investigators and statisticians to design and conduct more efficient 
                                   and accurate phase 1 trials."),
                                 h4(id="homeh4", "Overview"),
-                                p("The DEsign and conDUCt of dose Escalation trials (DEDUCE) platform is an interactive, web-based resource to design and conduct 
+                                p("The DEDUCE platform is an interactive, web-based resource to design and conduct 
                                   phase 1 dose escalation trials using rule-based and Bayesian adaptive designs. Our goal in developing this application is to raise 
                                   awareness, educate, and provide open access to investigators for alternative, improved methods and tools to design and conduct phase 
                                   1 dose escalation trials."),
