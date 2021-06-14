@@ -120,7 +120,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                         tabItem(tabName = "Home",
                                 tags$script(HTML("$('body').addClass('fixed');")),
                                 img(id="homeimg", src = "home.png"),
-                                p(id="hometagline", "The DEsign and conDUCt of dose Escalation trials (DEDUCE) platform - a unified resource for clinical investigators and statisticians to design and conduct more efficient 
+                                p(id="hometagline", "DEsign and conDUCt of dose Escalation trials (DEDUCE) platform - a unified resource for clinical investigators and statisticians to design and conduct more efficient 
                                   and accurate phase 1 trials."),
                                 h2(id="homeh4", "Overview"),
                                 p("The DEDUCE platform is an interactive, web-based resource to design and conduct 
