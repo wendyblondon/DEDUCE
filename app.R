@@ -212,7 +212,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                          conditionalPanel(
                                            condition = "input.DTSelectorTCRM == 1 || input.DTSelectorCRM == 1",
                                            textInput("DTPriorTox", "Prior Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3", width = "100%"),
-                                           bsTooltip("DTPriorTox", "Please enter the prior toxicity probabilities for each dose level evaluated in the trial. Toxicity probabilities must increase with each subsequent dose level", 
+                                           bsTooltip("DTPriorTox", "Please enter the prior toxicity probabilities for each dose level, separated by commas. Toxicity probabilities must increase with each subsequent dose level.", 
                                                      "top", options = list(container = "body")),
                                            sliderInput("DTMaxN", "Maximum Sample Size", min = 1, max = 200, value = 18, width = "100%", ticks = FALSE),
                                            bsTooltip("DTMaxN", "Please enter the maximum number of patients to be enrolled per trial", 
