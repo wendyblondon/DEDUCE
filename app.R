@@ -143,13 +143,14 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                 h4("Available Designs:"),
                                 tags$ul(
                                   tags$li(
-                                    p("Continual Reassessment Method (CRM) [O'Quigley et al. Biometrics, 1990]")
+                                    a("Continual Reassessment Method (CRM) [O'Quigley et al. Biometrics, 1990]", href="https://pubmed.ncbi.nlm.nih.gov/2350571/", 
+                                      target="_blank", rel="noopener noreferrer")
                                   ),
                                   tags$li(
-                                    p("TARGETed-agent Continual Reassessment Method (TARGET-CRM)")
+                                    p("TARGETed-Agent Continual Reassessment Method (TARGET-CRM)")
                                   ), 
                                   tags$li(
-                                    p("3+3 [Storer. Biometrics, 1989]")
+                                    a("3+3 [Storer. Biometrics, 1989]", href="https://pubmed.ncbi.nlm.nih.gov/2790129/", target="_blank", rel="noopener noreferrer")
                                   )   
                                 ),
                                 
