@@ -120,46 +120,46 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                         tabItem(tabName = "Home",
                                 tags$script(HTML("$('body').addClass('fixed');")),
                                 img(id="homeimg", src = "home.png"),
-                                p(id="hometagline", "The DEDUCE platform - a unified resource for clinical investigators and statisticians to design and conduct 
-                                  safer, more efficient, and more accurate phase 1 trials."),
+                                p(id="hometagline", "The DEsign and conDUCt of dose Escalation trials (DEDUCE) platform - a unified resource for clinical investigators 
+                                            and statisticians to design and conduct more efficient and more accurate phase 1 trials."),
                                 h4(id="homeh4", "Overview"),
-                                p("The DEsign and conDUCt of dose Escalation trials (DEDUCE) platform is an interactive, web-based resource to design and conduct 
+                                p(id="homepov", "The DEDUCE platform is an interactive, web-based resource to design and conduct 
                                   phase 1 dose escalation trials using rule-based and Bayesian adaptive designs. Our goal in developing this application is to raise 
                                   awareness, educate, and provide open access to investigators for alternative, improved methods and tools to design and conduct phase 
                                   1 dose escalation trials."),
                                 h4(id="homeh4", "DEDUCE Modules:"),
                                 tags$ul(
                                   tags$li(
-                                    h5(class="home", "Trial Design"),
-                                    p("Users can specify and compare the operating characteristics for hypothetical phase 1 designs through trial simulations, 
+                                    h4(class="home", "Trial Design"),
+                                    p(id="homep", "Users can specify and compare the operating characteristics for hypothetical phase 1 designs through trial simulations, 
                                     and select an optimal design for the needs of the trial.")
                                   ),
                                   tags$li(
-                                    h5(class="home", "Trial Conduct"),
-                                    p("Users can implement the adaptive trial, and determine the recommended dose level each time a new patient enrolls.")
+                                    h4(class="home", "Trial Conduct"),
+                                    p(id="homep", "Users can implement the adaptive trial, and determine the recommended dose level each time a new patient enrolls.")
                                   )    
                                 ),
                                 
-                                h4("Available Designs:"),
+                                h4(id="homeh4", "Available Designs:"),
                                 tags$ul(
                                   tags$li(
-                                    p("Continual Reassessment Method (CRM) [O'Quigley et al. Biometrics, 1990]")
+                                    p(id="homep", "Continual Reassessment Method (CRM) ", tags$a(href="https://pubmed.ncbi.nlm.nih.gov/2350571/", "[O'Quigley et al. Biometrics, 1990]", target="_blank", rel="noopener noreferrer"))
                                   ),
                                   tags$li(
-                                    p("TARGETed-agent Continual Reassessment Method (TARGET-CRM)")
+                                    p(id="homep", "TARGETed-agent Continual Reassessment Method (TARGET-CRM)")
                                   ), 
                                   tags$li(
-                                    p("3+3 [Storer. Biometrics, 1989]")
+                                    p(id="homep", "3+3 ",tags$a(href="https://pubmed.ncbi.nlm.nih.gov/2790129/", "[Storer. Biometrics, 1989]", target="_blank", rel="noopener noreferrer"))
                                   )   
                                 ),
                                 
-                                h4("Key Features of DEDUCE:"),
+                                h4(id="homeh4", "Key Features of DEDUCE:"),
                                 tags$ul(
                                   tags$li(
-                                    p("Permits simultaneous comparison of multiple trial designs for the same set of simulation parameters")
+                                    p(id="homep", "Permits simultaneous comparison of multiple trial designs for the same set of simulation parameters")
                                   ),
                                   tags$li(
-                                    p("Dynamically generates a written report summarizing simulation results")
+                                    p(id="homep", "Dynamically generates a written report summarizing simulation results")
                                   )
                                 ),
                                 a(href="https://www.danafarberbostonchildrens.org", img(id="DFLogo", src = "danafarber_bostonchildrens_logo.png", style="cursor: pointer;"), target="_blank", rel="noopener noreferrer"),
@@ -176,37 +176,37 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                          prettyCheckbox("DTSelectorTPT", "3+3", value = TRUE, icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
                                          bsTooltip("DTSelectorTPT", "Select to run the 3+3 Design", 
                                                    "top", options = list(container = "body")),
-                                         prettyCheckbox("DTSelectorCRM", "CRM", value = FALSE, icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
-                                         bsTooltip("DTSelectorCRM", "Select to run the CRM Design", 
-                                                   "top", options = list(container = "body")),
                                          prettyCheckbox("DTSelectorTCRM", "TARGET-CRM", value = FALSE, icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
                                          bsTooltip("DTSelectorTCRM", "Select to run the TARGET-CRM Design", 
                                                    "top", options = list(container = "body")),
-                                         sliderInput("DTNumDoses", "Number of Dose Levels", min = 3, max = 10, value = 4, width = "100%", ticks = FALSE),
+                                         prettyCheckbox("DTSelectorCRM", "CRM", value = FALSE, icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
+                                         bsTooltip("DTSelectorCRM", "Select to run the CRM Design", 
+                                                   "top", options = list(container = "body")),
+                                         sliderInput("DTNumDoses", "How Many Doses Will There Be?", min = 3, max = 10, value = 4, width = "100%", ticks = FALSE),
                                          bsTooltip("DTNumDoses", "Please enter the number of doses that will be used", 
                                                    "top", options = list(container = "body")),
                                          textInput("DTDoseLabels", "Dose Level Labels", value = "-1,1,2,3", width = "100%"),
-                                         bsTooltip("DTDoseLabels", "Please enter the dose level labels (separated by commas) for each dose level evaluated in the trial", 
+                                         bsTooltip("DTDoseLabels", "Please enter the dose level labels (seperated by commas) for each dose level evaluated in the trial", 
                                                    "top", options = list(container = "body")),
                                          selectInput("DTStartLevel", "Starting Dose Level", choices = c(-1,1,2,3), selected = 1, width = "100%"),
                                          bsTooltip("DTStartLevel", "Please enter the starting dose level from the dose level labels above", 
                                                    "top", options = list(container = "body")),
-                                         sliderInput("DTNumTrials", "Number of Simulated Trials", min = 0, max = 10000, value = 100, width = "100%", step = 100, ticks = FALSE),
+                                         sliderInput("DTNumTrials", "Number of Simulated Trials", min = 0, max = 10000, value = 100, width = "100%", ticks = FALSE),
                                          bsTooltip("DTNumTrials", "Please enter the number of simulated trials. A larger number of simulations increases the precision of simulation results and computation time", 
                                                    "top", options = list(container = "body")),
-                                         sliderInput("DTTargetTox", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.01, width = "100%", ticks = FALSE),
+                                         sliderInput("DTTargetTox", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.1, width = "100%", ticks = FALSE),
                                          bsTooltip("DTTargetTox", "Please enter the target toxicity probability of the study agent", 
                                                    "top", options = list(container = "body")),
                                          textInput("DTTrueTox", "True Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3", width = "100%"),
-                                         bsTooltip("DTTrueTox", "Please enter the true toxicity probabilities for each dose level (separated by commas). Toxicity probabilities must increase with each subsequent dose level", 
+                                         bsTooltip("DTTrueTox", "Please enter the true toxicity probabilities for each dose level evaluated in the trial. Toxicity probabilities must increase with each subsequent dose level", 
                                                    "top", options = list(container = "body")),
-                                         sliderInput("DTArrivalRate", "Average Time (Days) Between Patient Enrollments", min = 0, max = 180, value = 15, width = "100%", ticks = FALSE),
+                                         sliderInput("DTArrivalRate", "Patient Enrollment Rate", min = 0, max = 180, value = 15, width = "100%", ticks = FALSE),
                                          bsTooltip("DTArrivalRate", "Please enter the average time between enrolling patients (in days)", 
                                                    "top", options = list(container = "body")),
-                                         sliderInput("DTPropB", "Proportion of Patients from Cohort B", min = 0, max = 1, value = 0.1, step = 0.01, width = "100%", ticks = FALSE),
-                                         bsTooltip("DTPropB", "Patients belong to either Cohort A (general enrollment) or Cohort B (enrichment cohort). Please enter the proportion of enrolled patients belonging to Cohort B. Enter a proportion of 0 if no enrichment cohort is needed.", 
+                                         sliderInput("DTPropB", "Proportion of Patients from Cohort B", min = 0, max = 1, value = 0.1, step = 0.1, width = "100%", ticks = FALSE),
+                                         bsTooltip("DTPropB", "Please enter the proportion of enrolled patients belonging to the enrichment Cohort B", 
                                                    "top", options = list(container = "body")),
-                                         sliderInput("DTCycleLength", "Duration of DLT Observation Period (Days)", min = 0, max = 365, value = 28, width = "100%", ticks = FALSE),
+                                         sliderInput("DTCycleLength", "Duration of DLT Observation Period", min = 0, max = 365, value = 28, width = "100%", ticks = FALSE),
                                          bsTooltip("DTCycleLength", "Please enter the duration of the DLT observation period (in days)", 
                                                    "top", options = list(container = "body")),
                                          conditionalPanel(
@@ -218,7 +218,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                            bsTooltip("DTMaxN", "Please enter the maximum number of patients to be enrolled per trial", 
                                                      "top", options = list(container = "body")),
                                            sliderInput("DTMinCohortB", "Minimum Enrollment of Cohort B Patients (Optional)", min = 0, max = 100, value = 0, width = "100%", ticks = FALSE),
-                                           bsTooltip("DTMinCohortB", "An optional feature is to require a trial to enroll a minimum number of Cohort B patients. Once the maximum N is attained, enrollment of Cohort A patients will be suspended and only Cohort B patients may enroll until the minimum number has been attained. Please enter the minimum number of Cohort B patients to be enrolled in a trial. Enter 0 if no minimum number is required.", 
+                                           bsTooltip("DTMinCohortB", "Please enter the minimum number of Cohort B patients to be enrolled in the trial", 
                                                      "top", options = list(container = "body")),
                                            sliderInput("DTCohortSize", "Cohort Size", min = 1, max = 9, value = 3, width = "100%", ticks = FALSE),
                                            bsTooltip("DTCohortSize", "Please enter the cohort size. The cohort size is the number of patients to be treated at the current dose level before a dose escalation decision is made", 
@@ -316,7 +316,7 @@ server <- function(input, output, session) {
   
   # Update Start Level Based on Dose Labels
   observe({
-    updateSelectInput(session, "DTStartLevel", choices = unlist(strsplit(input$DTDoseLabels, ",")), selected = unlist(strsplit(input$DTDoseLabels, ","))[2])
+    updateSelectInput(session, "DTStartLevel", choices = sequencer(input$DTDoseLabels), selected = sequencer(input$DTDoseLabels)[2])
   })
   
   # Update Max Depending on Previous Input
@@ -442,7 +442,7 @@ server <- function(input, output, session) {
       
       TPT <- three.plus.three(target.tox = input$DTTargetTox, number.trials = input$DTNumTrials, 
                               true.tox = numerizer(input$DTTrueTox), arrival.rate = input$DTArrivalRate, 
-                              prop.B = input$DTPropB, cycle.length = input$DTCycleLength, start.level = match(input$DTStartLevel, unlist(strsplit(input$DTDoseLabels, ","))))
+                              prop.B = input$DTPropB, cycle.length = input$DTCycleLength, start.level = as.numeric(input$DTStartLevel))
     }
     
     # TARGET-CRM
@@ -451,7 +451,7 @@ server <- function(input, output, session) {
       TCRM <- my.target.crm(prior = numerizer(input$DTPriorTox), target.tox = input$DTTargetTox, 
                             number.trials = input$DTNumTrials, true.tox = numerizer(input$DTTrueTox), 
                             arrival.rate = input$DTArrivalRate, prop.B = input$DTPropB, min.cohortB = input$DTMinCohortB, cycle.length = input$DTCycleLength, 
-                            cohort.size = input$DTCohortSize, max.N = input$DTMaxN, start.level = match(input$DTStartLevel, unlist(strsplit(input$DTDoseLabels, ","))))
+                            cohort.size = input$DTCohortSize, max.N = input$DTMaxN, start.level = as.numeric(input$DTStartLevel))
       
     }
     
@@ -461,7 +461,7 @@ server <- function(input, output, session) {
       CRM <- my.crm(prior = numerizer(input$DTPriorTox), target.tox = input$DTTargetTox, 
                     number.trials = input$DTNumTrials, true.tox = numerizer(input$DTTrueTox), 
                     arrival.rate = input$DTArrivalRate, prop.B = input$DTPropB, min.cohortB = input$DTMinCohortB, cycle.length = input$DTCycleLength, 
-                    cohort.size = input$DTCohortSize, max.N = input$DTMaxN, start.level = match(input$DTStartLevel, unlist(strsplit(input$DTDoseLabels, ","))))
+                    cohort.size = input$DTCohortSize, max.N = input$DTMaxN, start.level = as.numeric(input$DTStartLevel))
     }
     
     all <- list(get0("TPT"), get0("TCRM"), get0("CRM"))
