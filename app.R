@@ -249,7 +249,6 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                         ),
                         
                         tabItem(tabName = "About",
-                                h2(id="homeh4", "About DEDUCE"),
                                 h2("DEDUCE Leadership: Dana-Farber/Boston Children's Cancer and Blood Disorders Center"),
                                 tags$ul(
                                   tags$li("Clement Ma, PhD"),
