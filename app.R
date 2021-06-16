@@ -313,13 +313,17 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                 h2("References:"),
                                 tags$ul(
                                   tags$li(
-                                    a("Storer BE. Design and Analysis of Phase I Clinical Trials. ", em("Biometrics. "), "1989;45(3):925-37.",
-                                      href="https://pubmed.ncbi.nlm.nih.gov/2790129/", target="_blank", rel="noopener noreferrer")
+                                    p(
+                                      a("Storer BE. Design and Analysis of Phase I Clinical Trials. ", em("Biometrics. "), "1989;45(3):925-37.",
+                                        href="https://pubmed.ncbi.nlm.nih.gov/2790129/", target="_blank", rel="noopener noreferrer")
+                                    )
                                   ),
                                   tags$li(
-                                    a("O'Quigley J, Pepe M, Fisher L. Continual reassessment method: a practical design for phase 1 Clinical trials in cancer. ", 
-                                      em("Biometrics. "), "1990;46(1):33-48.", href="https://pubmed.ncbi.nlm.nih.gov/2350571/", 
-                                      target="_blank", rel="noopener noreferrer")
+                                    p(
+                                      a("O'Quigley J, Pepe M, Fisher L. Continual reassessment method: a practical design for phase 1 Clinical trials in cancer. ", 
+                                        em("Biometrics. "), "1990;46(1):33-48.", href="https://pubmed.ncbi.nlm.nih.gov/2350571/", 
+                                        target="_blank", rel="noopener noreferrer")
+                                    )
                                   )
                                 ),
                                 fluidRow(
