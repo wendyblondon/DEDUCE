@@ -119,50 +119,54 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                       tabItems(
                         tabItem(tabName = "Home",
                                 tags$script(HTML("$('body').addClass('fixed');")),
-                                img(id="homeimg", src = "home.png"),
-                                p(id="hometagline", "DEsign and conDUCt of dose Escalation trials (DEDUCE) - A unified resource for clinical investigators and statisticians to design and conduct more efficient 
+                                fluidRow(
+                                  img(id="homeimg", src = "home.png"),
+                                  p(id="hometagline", "DEsign and conDUCt of dose Escalation trials (DEDUCE) - A unified resource for clinical investigators and statisticians to design and conduct more efficient 
                                   and accurate phase 1 trials."),
-                                h2("Overview"),
-                                p("The DEDUCE platform is an interactive, web-based resource to design and conduct 
+                                  h2("Overview"),
+                                  p("The DEDUCE platform is an interactive, web-based resource to design and conduct 
                                   phase 1 dose escalation trials using rule-based and Bayesian adaptive designs. Our goal in developing this application is to raise 
                                   awareness, educate, and provide open access to investigators for alternative, improved methods and tools to design and conduct phase 
                                   1 dose escalation trials."),
-                                h2("DEDUCE Modules:"),
-                                tags$ul(
-                                  tags$li(
-                                    h4(class="trialdc", "Trial Design"),
-                                    p("Users can specify and compare the operating characteristics for hypothetical phase 1 designs through trial simulations, 
+                                  h2("DEDUCE Modules:"),
+                                  tags$ul(
+                                    tags$li(
+                                      h4(class="trialdc", "Trial Design"),
+                                      p("Users can specify and compare the operating characteristics for hypothetical phase 1 designs through trial simulations, 
                                     and select an optimal design for the needs of the trial.")
+                                    ),
+                                    tags$li(
+                                      h4(class="trialdc", "Trial Conduct"),
+                                      p("Users can implement the adaptive trial, and determine the recommended dose level each time a new patient enrolls.")
+                                    )    
                                   ),
-                                  tags$li(
-                                    h4(class="trialdc", "Trial Conduct"),
-                                    p("Users can implement the adaptive trial, and determine the recommended dose level each time a new patient enrolls.")
-                                  )    
-                                ),
-                                
-                                h2("Available Designs:"),
-                                tags$ul(
-                                  tags$li(
-                                    a("Continual Reassessment Method (CRM) [O'Quigley et al. Biometrics, 1990]", href="https://pubmed.ncbi.nlm.nih.gov/2350571/", 
-                                      target="_blank", rel="noopener noreferrer")
+                                  
+                                  h2("Available Designs:"),
+                                  tags$ul(
+                                    tags$li(
+                                      a("Continual Reassessment Method (CRM) [O'Quigley et al. Biometrics, 1990]", href="https://pubmed.ncbi.nlm.nih.gov/2350571/", 
+                                        target="_blank", rel="noopener noreferrer")
+                                    ),
+                                    tags$li("TARGETed-Agent Continual Reassessment Method (TARGET-CRM)"
+                                    ), 
+                                    tags$li(
+                                      a("3+3 [Storer. Biometrics, 1989]", href="https://pubmed.ncbi.nlm.nih.gov/2790129/", target="_blank", rel="noopener noreferrer")
+                                    )   
                                   ),
-                                  tags$li("TARGETed-Agent Continual Reassessment Method (TARGET-CRM)"
-                                  ), 
-                                  tags$li(
-                                    a("3+3 [Storer. Biometrics, 1989]", href="https://pubmed.ncbi.nlm.nih.gov/2790129/", target="_blank", rel="noopener noreferrer")
-                                  )   
-                                ),
-                                
-                                h2("Key Features of DEDUCE:"),
-                                tags$ul(
-                                  tags$li("Permits simultaneous comparison of multiple trial designs for the same set of simulation parameters"
+                                  
+                                  h2("Key Features of DEDUCE:"),
+                                  tags$ul(
+                                    tags$li("Permits simultaneous comparison of multiple trial designs for the same set of simulation parameters"
+                                    ),
+                                    tags$li("Dynamically generates a written report summarizing simulation results"
+                                    )
                                   ),
-                                  tags$li("Dynamically generates a written report summarizing simulation results"
+                                  column(12, align="center",
+                                         a(href="https://www.danafarberbostonchildrens.org", img(id="DFLogo", src = "danafarber_bostonchildrens_logo.png", style="cursor: pointer;"), target="_blank", rel="noopener noreferrer"),
+                                         a(href="https://www.NorthwesternMutual.com", img(id="NMLogo", src = "NMLogo.png", style="cursor: pointer;"), target="_blank", rel="noopener noreferrer"),
+                                         a(href="https://hms.harvard.edu/", img(id="HMSLogo", src = "HMS.png", style="cursor: pointer;"), target="_blank", rel="noopener noreferrer")
                                   )
-                                ),
-                                a(href="https://www.danafarberbostonchildrens.org", img(id="DFLogo", src = "danafarber_bostonchildrens_logo.png", style="cursor: pointer;"), target="_blank", rel="noopener noreferrer"),
-                                a(href="https://www.NorthwesternMutual.com", img(id="NMLogo", src = "NMLogo.png", style="cursor: pointer;"), target="_blank", rel="noopener noreferrer"),
-                                a(href="https://hms.harvard.edu/", img(id="HMSLogo", src = "HMS.png", style="cursor: pointer;"), target="_blank", rel="noopener noreferrer")
+                                )
                         ),
                         
                         tabItem(tabName = "Design",
