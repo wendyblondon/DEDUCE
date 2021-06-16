@@ -296,9 +296,13 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                       target="_blank", rel="noopener noreferrer")
                                   )
                                 ),
-                                a(href="https://www.danafarberbostonchildrens.org", img(id="DFLogo", src = "danafarber_bostonchildrens_logo.png"), target="_blank", rel="noopener noreferrer"),
-                                a(href="https://www.NorthwesternMutual.com", img(id="NMLogo", src = "NMLogo.png"), target="_blank", rel="noopener noreferrer"),
-                                a(href="https://hms.harvard.edu/", img(id="HMSLogo", src = "HMS.png"), target="_blank", rel="noopener noreferrer")
+                                fluidRow(
+                                  column(12, align="center",
+                                         a(href="https://www.danafarberbostonchildrens.org", img(id="DFLogo", src = "danafarber_bostonchildrens_logo.png", style="cursor: pointer;"), target="_blank", rel="noopener noreferrer"),
+                                         a(href="https://www.NorthwesternMutual.com", img(id="NMLogo", src = "NMLogo.png", style="cursor: pointer;"), target="_blank", rel="noopener noreferrer"),
+                                         a(href="https://hms.harvard.edu/", img(id="HMSLogo", src = "HMS.png", style="cursor: pointer;"), target="_blank", rel="noopener noreferrer")
+                                  )
+                                )
                                 
                         )
                       )
