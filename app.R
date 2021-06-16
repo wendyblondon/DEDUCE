@@ -130,12 +130,12 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                 h2("DEDUCE Modules:"),
                                 tags$ul(
                                   tags$li(
-                                    h4(class="home", "Trial Design"),
+                                    h4(class="trialdc", "Trial Design"),
                                     p("Users can specify and compare the operating characteristics for hypothetical phase 1 designs through trial simulations, 
                                     and select an optimal design for the needs of the trial.")
                                   ),
                                   tags$li(
-                                    h4(class="home", "Trial Conduct"),
+                                    h4(class="trialdc", "Trial Conduct"),
                                     p("Users can implement the adaptive trial, and determine the recommended dose level each time a new patient enrolls.")
                                   )    
                                 ),
