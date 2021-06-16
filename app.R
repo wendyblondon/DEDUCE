@@ -338,7 +338,7 @@ server <- function(input, output, session) {
     req(input$DTTrueTox)
     hideFeedback("DTTrueTox")
     if (length(unlist(strsplit(input$DTTrueTox, ",")))!= input$DTNumDoses) {
-      showFeedbackDanger("DTTrueTox", "The length must match the number of dose levels selected above. Be sure to use commas to separate each decimal.")
+      showFeedbackDanger("DTTrueTox", "The length must match the number of dose levels selected at the top. Be sure to use commas to separate each decimal.")
     }
     else if (incrementCheck(input$DTTrueTox)==FALSE) {
       showFeedbackDanger("DTTrueTox", "The probabilities must increase with each subsequent dose")
@@ -353,7 +353,7 @@ server <- function(input, output, session) {
     req(input$DTPriorTox)
     hideFeedback("DTPriorTox")
     if (length(unlist(strsplit(input$DTPriorTox, ",")))!= input$DTNumDoses) {
-      showFeedbackDanger("DTPriorTox", "The length must match the number of dose levels selected above. Be sure to use commas to separate each decimal.")
+      showFeedbackDanger("DTPriorTox", "The length must match the number of dose levels selected at the top. Be sure to use commas to separate each decimal.")
     }
     else if (incrementCheck(input$DTPriorTox)==FALSE) {
       showFeedbackDanger("DTPriorTox", "The probabilities must increase with each subsequent dose")
