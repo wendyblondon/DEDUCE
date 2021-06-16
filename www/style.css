@@ -2,6 +2,72 @@
   font-size: 20px;
 }
 
+/* Home Tab */
+#homeimg{
+  width: 100%;
+  max-width: 100%;
+}
+
+#hometagline{
+  text-align: center;
+  margin-top: 2em;
+  margin-bottom: 2.5em;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+h2{
+  color: #000080;
+  font-weight: bold;
+}
+
+h4.home{
+  color: #000080;
+  font-weight: bold;
+  margin-bottom: 0.1em
+}
+
+h5{
+  color: #000080;
+  font-weight: bold;
+}  
+
+.trialdc{
+  font-weight: bold;
+  margin-bottom: 0.1em  
+}
+
+h6{
+  color: #000080;
+  font-weight: bold;  
+}
+
+/* Home & About Tab Footer Images */
+#DFLogo{
+  width: 25%;
+  max-width: 100%;
+  margin-top: 2.5em;
+  margin-right: 1.7em;
+  margin-left: 1.7em;
+}
+
+#NMLogo{
+  width: 25%;
+  max-width: 100%;
+  margin-top: 2.5em;
+  margin-right: 1.7em;
+  margin-left: 1.7em;
+}
+
+#HMSLogo{
+  width: 25%;
+  max-width: 100%;
+  margin-top: 2.5em;
+  margin-right: 1.7em;
+  margin-left: 1.7em;
+}
+
+/* Design Tab */
 .pretty{
   font-size: 18px;
 }
@@ -81,71 +147,4 @@
 #DTPlot4{
   height: calc(50vh - 50px) !important;
   width: 100%;
-}
-
-#Home{
-  background-image: url(kids.png);
-}
-
-h2{
-  color: #000080;
-  font-weight: bold;
-}
-
-h4.home{
-  color: #000080;
-  font-weight: bold;
-  margin-bottom: 0.1em
-}
-
-h5{
-  color: #000080;
-  font-weight: bold;
-}  
-
-.trialdc{
-  font-weight: bold;
-  margin-bottom: 0.1em  
-}
-
-h6{
-  color: #000080;
-  font-weight: bold;  
-}
-
-#homeimg{
-  width: 100%;
-  max-width: 100%;
-}
-
-#DFLogo{
-  width: 25%;
-  max-width: 100%;
-  margin-top: 2.5em;
-  margin-right: 1.7em;
-  margin-left: 1.7em;
-}
-
-#NMLogo{
-  width: 25%;
-  max-width: 100%;
-  margin-top: 2.5em;
-  margin-right: 1.7em;
-  margin-left: 1.7em;
-}
-
-#HMSLogo{
-  width: 25%;
-  max-width: 100%;
-  margin-top: 2.5em;
-  margin-right: 1.7em;
-  margin-left: 1.7em;
-}
-
-#hometagline{
-  text-align: center;
-  margin-top: 2em;
-  margin-bottom: 2.5em;
-  font-size: 24px;
-  font-weight: bold;
 }
