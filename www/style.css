@@ -34,6 +34,14 @@ h2{
   font-weight: bold;
 }
 
+#overview{
+  margin-left: 1.5em;
+}
+
+#acknowledgements{
+  margin-left: 1.5em;
+}
+
 #DFLogo{
   width: 25%;
   max-width: 100%;
