@@ -149,25 +149,3 @@ h6{
   font-size: 24px;
   font-weight: bold;
 }
-
-#buttons{
-  text-align: center;
-  margin-top: 2.5em;
-  margin-bottom: 2.5em;
-}
-
-#btn-design{
-  background-color: lightblue;
-  margin-top: 2.5em;
-  margin-bottom: 2.5em;
-  margin-left: 2.7em;
-  margin-right: 2.7em;
-}
-
-#btn-conduct{
-  background-color: lightgreen;
-  margin-top: 2.5em;
-  margin-bottom: 2.5em;
-  margin-left: 2.7em;
-  margin-right: 2.7em;
-}
