@@ -32,7 +32,8 @@ body{
 h2{
   color: #000080;
   font-weight: bold;
-  margin-top: 2.5em;
+  margin-top: 0.75em;
+  margin-bottom: 0.5em;
   margin-left: 1em;
 }
 
