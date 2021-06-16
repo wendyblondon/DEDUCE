@@ -1,8 +1,9 @@
+/* SIDEBAR */
 .sidebar-menu{
   font-size: 20px;
 }
 
-/* Home Tab */
+/* HOME TAB */
 #homeimg{
   width: 100%;
   max-width: 100%;
@@ -16,33 +17,17 @@
   font-weight: bold;
 }
 
-h2{
-  color: #000080;
-  font-weight: bold;
-}
-
-h4.home{
-  color: #000080;
-  font-weight: bold;
-  margin-bottom: 0.1em
-}
-
-h5{
-  color: #000080;
-  font-weight: bold;
-}  
-
 .trialdc{
   font-weight: bold;
   margin-bottom: 0.1em  
 }
 
-h6{
+/* HOME & ABOUT TAB */
+h2{
   color: #000080;
-  font-weight: bold;  
+  font-weight: bold;
 }
 
-/* Home & About Tab Footer Images */
 #DFLogo{
   width: 25%;
   max-width: 100%;
@@ -67,7 +52,7 @@ h6{
   margin-left: 1.7em;
 }
 
-/* Design Tab */
+/* DESIGN TAB */
 .pretty{
   font-size: 18px;
 }
