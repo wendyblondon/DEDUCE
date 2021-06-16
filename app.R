@@ -155,9 +155,11 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                 
                                 h2("Key Features of DEDUCE:"),
                                 tags$ul(
-                                  tags$li("Permits simultaneous comparison of multiple trial designs for the same set of simulation parameters"
+                                  tags$li(
+                                    p("Permits simultaneous comparison of multiple trial designs for the same set of simulation parameters")
                                   ),
-                                  tags$li("Dynamically generates a written report summarizing simulation results"
+                                  tags$li(
+                                    p("Dynamically generates a written report summarizing simulation results")
                                   )
                                 ),
                                 fluidRow(
