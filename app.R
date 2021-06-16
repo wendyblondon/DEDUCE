@@ -257,30 +257,54 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                         tabItem(tabName = "About",
                                 h2("DEDUCE Leadership: Dana-Farber/Boston Children's Cancer and Blood Disorders Center"),
                                 tags$ul(
-                                  tags$li("Clement Ma, PhD"),
-                                  tags$li("Wendy B. London, PhD")
+                                  tags$li(
+                                    p("Clement Ma, PhD")
+                                  ),
+                                  tags$li(
+                                    p("Wendy B. London, PhD")
+                                  )
                                 ),
                                 h2("Development Team: Northwestern Mutual"),
                                 tags$ul(
-                                  tags$li("Judy Berdan"),
-                                  tags$li("Laure Borchardt"),
-                                  tags$li("Audra Brennan"),
-                                  tags$li("Stan Crane"),
-                                  tags$li("Ben Garski"),
-                                  tags$li("Nanette Jamel"),
-                                  tags$li("Lori Kiraly"),
-                                  tags$li("Danielle Pankey"),
-                                  tags$li("Susan Stegman, MD")
+                                  tags$li(
+                                    p("Judy Berdan")
+                                  ),
+                                  tags$li(
+                                    p("Laure Borchardt")
+                                  ),
+                                  tags$li(
+                                    p("Audra Brennan")
+                                  ),
+                                  tags$li(
+                                    p("Stan Crane")
+                                  ),
+                                  tags$li(
+                                    p("Ben Garski")
+                                  ),
+                                  tags$li(
+                                    p("Nanette Jamel")
+                                  ),
+                                  tags$li(
+                                    p("Lori Kiraly")
+                                  ),
+                                  tags$li(
+                                    p("Danielle Pankey")
+                                  ),
+                                  tags$li(
+                                    p("Susan Stegman, MD")
+                                  )
                                 ),
                                 h2("Contact:"),
-                                p("For assistance, please contact:"),
                                 tags$ul(
-                                  tags$li("Drs. Clement Ma and Wendy B. London")
+                                  tags$li(
+                                    p("For Assistance Please Contact: Drs. Clement Ma and Wendy B. London")
+                                  )
                                 ),
                                 h2("Citation:"),
-                                p("To cite the DEDUCE platform please use:"),
                                 tags$ul(
-                                  tags$li("[Insert citation to published paper]")
+                                  tags$li(
+                                    p("To site DEDUCE please use: Insert link to citation")
+                                  )
                                 ),
                                 h2("Acknowledgements:"),
                                 p(id="acknowledgements", "We would like to thank the Northwestern Mutual Tech for Good team for their pro-bono development, design, and project management 
