@@ -12,7 +12,9 @@
 #hometagline{
   text-align: center;
   margin-top: 2em;
-  margin-bottom: 2.5em;
+  margin-bottom: 2em;
+  margin-left: 5em;
+  margin-right: 5em;
   font-size: 24px;
   font-weight: bold;
 }
