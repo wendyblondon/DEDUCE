@@ -25,6 +25,10 @@
 }
 
 /* HOME & ABOUT TAB */
+body{
+    font-size: 18px;  
+}
+
 h2{
   color: #000080;
   font-weight: bold;
