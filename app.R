@@ -122,12 +122,12 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                 img(id="homeimg", src = "home.png"),
                                 p(id="hometagline", "DEsign and conDUCt of dose Escalation trials (DEDUCE) - A unified resource for clinical investigators and statisticians to design and conduct more efficient 
                                   and accurate phase 1 trials."),
-                                h2(id="homeh4", "Overview"),
+                                h2("Overview"),
                                 p("The DEDUCE platform is an interactive, web-based resource to design and conduct 
                                   phase 1 dose escalation trials using rule-based and Bayesian adaptive designs. Our goal in developing this application is to raise 
                                   awareness, educate, and provide open access to investigators for alternative, improved methods and tools to design and conduct phase 
                                   1 dose escalation trials."),
-                                h2(id="homeh4", "DEDUCE Modules:"),
+                                h2("DEDUCE Modules:"),
                                 tags$ul(
                                   tags$li(
                                     h4(class="home", "Trial Design"),
@@ -276,7 +276,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                 tags$ul(
                                   tags$li("[Insert citation to published paper]")
                                 ),
-                                h2(id="homeh4", "Acknowledgements:"),
+                                h2("Acknowledgements:"),
                                 p("We would like to thank the Northwestern Mutual Tech for Good team for their pro-bono development, design, and project management 
                                 support for the DEDUCE platform. We would also like to thank our test users, Drs. Steven G. DuBois, Karen D. Wright, 
                                 and David S. Shulman for their helpful feedback."),
