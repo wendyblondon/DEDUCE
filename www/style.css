@@ -5,8 +5,10 @@
 
 /* HOME TAB */
 #homeimg{
-  width: 100%;
-  max-width: 100%;
+  margin-left: -30px;
+  margin-right: -30px;
+  margin-top: -15px;
+  width: 110%;
 }
 
 #hometagline{
