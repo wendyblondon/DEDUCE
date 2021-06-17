@@ -41,7 +41,7 @@ recommend.3plus3 <- function(current.dose, true.tox, pt) {
 
 
 # Main simulation function
-three.plus.three <- function (target.tox, number.trials, true.tox, arrival.rate, prop.B, cycle.length, start.level) {
+three.plus.three <- function (target.tox, number.trials, true.tox, arrival.rate, prop.B=0, cycle.length, start.level) {
   
   start <- Sys.time()
   
