@@ -3,6 +3,16 @@
   font-size: 30px;
 }
 
+.skin-black .sidebar-menu li.active a{
+  border-left-color: #003087;
+  border-left-width: 1em;
+}
+
+.skin-black .sidebar-menu li:hover a{
+  border-left-color: #41B6E6;
+  border-left-width: 1em;
+}
+
 /* HOME TAB */
 #homeimg{
   margin-left: -30px;
@@ -32,7 +42,7 @@ p{
 }
 
 h2{
-  color: #000080;
+  color: #003087;
   font-weight: bold;
   margin-top: 0.75em;
   margin-bottom: 0.5em;
