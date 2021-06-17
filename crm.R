@@ -24,7 +24,7 @@ library(dfcrm)
 # Jan 22, 2021: New CRM function based on TARGET-CRM function. Hard coded target.crm parameter = 0.
 
 
-my.crm <- function(prior, target.tox, number.trials, true.tox, arrival.rate, prop.B, 
+my.crm <- function(prior, target.tox, number.trials, true.tox, arrival.rate, prop.B=0, 
                        min.cohortB=0, cycle.length, cohort.size, max.N, start.level) {
   start <- Sys.time()
   
