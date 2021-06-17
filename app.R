@@ -206,26 +206,29 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                          sliderInput("DTArrivalRate", "Average Time Between Patient Enrollments (In Days)", min = 0, max = 180, value = 15, width = "100%", ticks = FALSE),
                                          bsTooltip("DTArrivalRate", "Please enter the average time between enrolling patients (In Days)", 
                                                    "top", options = list(container = "body")),
-                                         sliderInput("DTPropB", "Proportion of Patients from Cohort B", min = 0, max = 1, value = 0.1, step = 0.01, width = "100%", ticks = FALSE),
-                                         bsTooltip("DTPropB", "Patients belong to either Cohort A (general enrollment) or Cohort B (enrichment cohort). Please enter the proportion of enrolled patients belonging to Cohort B. Enter a proportion of 0 if no enrichment cohort is needed.", 
-                                                   "top", options = list(container = "body")),
                                          sliderInput("DTCycleLength", "Duration of DLT Observation Period (In Days)", min = 0, max = 365, value = 28, width = "100%", ticks = FALSE),
                                          bsTooltip("DTCycleLength", "Please enter the duration of the DLT observation period (In Days)", 
                                                    "top", options = list(container = "body")),
-                                         conditionalPanel(
-                                           condition = "input.DTSelectorTCRM == 1 || input.DTSelectorCRM == 1",
+                                         
+                                         conditionalPanel(condition = "input.DTSelectorTCRM == 1 || input.DTSelectorCRM == 1",
                                            textInput("DTPriorTox", "Prior Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3", width = "100%"),
                                            bsTooltip("DTPriorTox", "Please enter the prior toxicity probabilities for each dose level (separated by commas). Toxicity probabilities must increase with each subsequent dose level", 
                                                      "top", options = list(container = "body")),
                                            sliderInput("DTMaxN", "Maximum Sample Size", min = 1, max = 200, value = 18, width = "100%", ticks = FALSE),
                                            bsTooltip("DTMaxN", "Please enter the maximum number of patients to be enrolled per trial", 
                                                      "top", options = list(container = "body")),
-                                           sliderInput("DTMinCohortB", "Minimum Enrollment of Cohort B Patients (Optional)", min = 0, max = 100, value = 0, width = "100%", ticks = FALSE),
-                                           bsTooltip("DTMinCohortB", "An optional feature is to require a trial to enroll a minimum number of Cohort B patients. Once the maximum N is attained, enrollment of Cohort A patients will be suspended and only Cohort B patients may enroll until the minimum number has been attained. Please enter the minimum number of Cohort B patients to be enrolled in a trial. Enter 0 if no minimum number is required.", 
-                                                     "top", options = list(container = "body")),
                                            sliderInput("DTCohortSize", "Cohort Size", min = 1, max = 9, value = 3, width = "100%", ticks = FALSE),
                                            bsTooltip("DTCohortSize", "Please enter the cohort size. The cohort size is the number of patients to be treated at the current dose level before a dose escalation decision is made", 
                                                      "top", options = list(container = "body"))
+                                         ),
+                                         
+                                         conditionalPanel(condition = "input.DTSelectorTCRM == 1",
+                                            sliderInput("DTPropB", "Proportion of Patients from Cohort B", min = 0, max = 1, value = 0.1, step = 0.01, width = "100%", ticks = FALSE),
+                                            bsTooltip("DTPropB", "Patients belong to either Cohort A (general enrollment) or Cohort B (enrichment cohort). Please enter the proportion of enrolled patients belonging to Cohort B. Enter a proportion of 0 if no enrichment cohort is needed.", 
+                                                                    "top", options = list(container = "body")),
+                                            sliderInput("DTMinCohortB", "Minimum Enrollment of Cohort B Patients (Optional)", min = 0, max = 100, value = 0, width = "100%", ticks = FALSE),
+                                            bsTooltip("DTMinCohortB", "An optional feature is to require a trial to enroll a minimum number of Cohort B patients. Once the maximum N is attained, enrollment of Cohort A patients will be suspended and only Cohort B patients may enroll until the minimum number has been attained. Please enter the minimum number of Cohort B patients to be enrolled in a trial. Enter 0 if no minimum number is required.", 
+                                                      "top", options = list(container = "body"))
                                          ),
                                          splitLayout(cellWidths = c("50%", "25%", "25%"),
                                                      actionButton("DTSimulate", "Simulate", width = "100%", style = "font-weight: bold;"),
@@ -475,8 +478,8 @@ server <- function(input, output, session) {
     if (input$DTSelectorTPT == TRUE) {
       
       TPT <- three.plus.three(target.tox = input$DTTargetTox, number.trials = input$DTNumTrials, 
-                              true.tox = numerizer(input$DTTrueTox), arrival.rate = input$DTArrivalRate, 
-                              prop.B = input$DTPropB, cycle.length = input$DTCycleLength, start.level = match(input$DTStartLevel, unlist(strsplit(input$DTDoseLabels, ","))))
+                              true.tox = numerizer(input$DTTrueTox), arrival.rate = input$DTArrivalRate, cycle.length = input$DTCycleLength, 
+                              start.level = match(input$DTStartLevel, unlist(strsplit(input$DTDoseLabels, ","))))
     }
     
     # TARGET-CRM
@@ -494,7 +497,7 @@ server <- function(input, output, session) {
       
       CRM <- my.crm(prior = numerizer(input$DTPriorTox), target.tox = input$DTTargetTox, 
                     number.trials = input$DTNumTrials, true.tox = numerizer(input$DTTrueTox), 
-                    arrival.rate = input$DTArrivalRate, prop.B = input$DTPropB, min.cohortB = input$DTMinCohortB, cycle.length = input$DTCycleLength, 
+                    arrival.rate = input$DTArrivalRate, min.cohortB = input$DTMinCohortB, cycle.length = input$DTCycleLength, 
                     cohort.size = input$DTCohortSize, max.N = input$DTMaxN, start.level = match(input$DTStartLevel, unlist(strsplit(input$DTDoseLabels, ","))))
     }
     
