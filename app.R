@@ -762,7 +762,7 @@ server <- function(input, output, session) {
         x1 <- DTResultsDF()$PCS
         x2 <- round(DTResultsDF()$ObsTox, 2)
         x3 <- DTResultsDF()$TargetTox
-        x4 <- ifelse(x2 > x3, "greater", "lower")
+        x4 <- ifelse(x2 > x3, "greater than", ifelse(x2 < x3, "lower than", "equal to"))
         x5 <- unlist(strsplit(input$DTDoseLabels, ","))[DTResultsDF()$TrueMTD]
         x6 <- round(DTResultsDF()$PATMTD, 2)
         x7 <- round(DTResultsDF()$MeanDuration, 2)
