@@ -22,7 +22,7 @@ To evaluate the operating characteristics of the following dose escalation desig
 
 # Methods:
 
-Trial operating characteristics are averaged over **`r params$m[1]`** simulated trials. Simulated trials have **`r params$m[2]`** dose levels labeled **`r params$m[3]`**, starting on the dose labeled as **`r params$m[4]`**, and assuming true toxicity probabilities of **`r params$m[5]`**. The target toxicity probability is **`r params$m[6]`**. One patient arrives every **`r params$m[7]`** days on average. The DLT observation period is **`r params$m[8]`** days.
+Trial operating characteristics are averaged over **`r params$m[1]`** simulated trials. Simulated trials have **`r params$m[2]`** dose levels labeled **`r dQuote(params$m[3])`**, starting on dose level **`r dQuote(params$m[4])`**, and assuming true toxicity probabilities of **`r params$m[5]`**. The target toxicity probability is **`r params$m[6]`**. One patient arrives every **`r params$m[7]`** days on average. The DLT observation period is **`r params$m[8]`** days.
 
 <!-- Test if TARGET-CRM/CRM is a Design Used -->
 ```{r, echo=FALSE}
@@ -81,11 +81,11 @@ Table 1 presents a summary of the operating characteristics for each design.
 <!-- Only Show if 2+ Designs Used -->
 `r if(show_text_results2) {"<!--"}`
 
-**Accuracy:** For each dose level, Figure 1 presents the proportion of simulated trials that a given dose level was selected as the true MTD. The **`r params$r[1]`** design has the greatest probability of selecting the true MTD (dose level **`r params$r[2]`**). `r params$r[3]`
+**Accuracy:** For each dose level, Figure 1 presents the proportion of simulated trials that a given dose level was selected as the true MTD. The **`r params$r[1]`** design has the greatest probability of selecting the true MTD (dose level **`r dQuote(params$r[2])`**). `r params$r[3]`
 
 **Safety:** Figure 2 presents the proportion of patients experiencing a DLT for each dose level. `r params$r[4]`
 
-**Patient Allocation:** Figure 3 presents the proportion of patients assigned to each dose level. The **`r params$r[5]`** design has the greatest probability of assigning patients at the true MTD (dose level **`r params$r[2]`**). `r params$r[6]`
+**Patient Allocation:** Figure 3 presents the proportion of patients assigned to each dose level. The **`r params$r[5]`** design has the greatest probability of assigning patients at the true MTD (dose level **`r dQuote(params$r[2])`**). `r params$r[6]`
 
 **Study Duration:** Figure 4 presents the mean (+/- standard deviation) study duration in days for each design. The **`r params$r[7]`** design has the shortest mean study duration. `r params$r[8]`
 
