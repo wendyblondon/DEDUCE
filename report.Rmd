@@ -22,7 +22,7 @@ To evaluate the operating characteristics of the following dose escalation desig
 
 # Methods:
 
-Trial operating characteristics are averaged over **`r params$m[1]`** simulated trials. Simulated trials have **`r params$m[2]`** dose levels labeled **`r params$m[3]`**, starting on dose level **`r params$m[4]`**, and assuming true toxicity probabilities of **`r params$m[5]`**. The target toxicity probability is **`r params$m[6]`**. One patient arrives every **`r params$m[7]`** days on average. The DLT observation period is **`r params$m[8]`** days.
+Trial operating characteristics are averaged over **`r params$m[1]`** simulated trials. Simulated trials have **`r params$m[2]`** dose levels labeled **`r params$m[3]`**, starting on the dose labeled as **`r params$m[4]`**, and assuming true toxicity probabilities of **`r params$m[5]`**. The target toxicity probability is **`r params$m[6]`**. One patient arrives every **`r params$m[7]`** days on average. The DLT observation period is **`r params$m[8]`** days.
 
 <!-- Test if TARGET-CRM/CRM is a Design Used -->
 ```{r, echo=FALSE}
