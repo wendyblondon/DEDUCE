@@ -148,7 +148,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                     p("TARGETed-Agent Continual Reassessment Method (TARGET-CRM)")
                                   ), 
                                   tags$li(
-                                    p("3+3 ", a(href="https://pubmed.ncbi.nlm.nih.gov/2790129/", "[Storer. Biometrics, 1989]", target="_blank", rel="noopener noreferrer"))
+                                    p("3+3 ", a(href="https://pubmed.ncbi.nlm.nih.gov/2790129/", "[Storer. ", em("Biometrics"), ", 1989]", target="_blank", rel="noopener noreferrer"))
                                   )     
                                 ),
                                 
