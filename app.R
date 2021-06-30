@@ -763,7 +763,7 @@ server <- function(input, output, session) {
         x2 <- round(DTResultsDF()$ObsTox, 2)
         x3 <- DTResultsDF()$TargetTox
         x4 <- ifelse(x2 > x3, "greater", "lower")
-        x5 <- DTResultsDF()$TrueMTD
+        x5 <- unlist(strsplit(input$DTDoseLabels, ","))[DTResultsDF()$TrueMTD]
         x6 <- round(DTResultsDF()$PATMTD, 2)
         x7 <- round(DTResultsDF()$MeanDuration, 2)
         x8 <- round(DTResultsDF()$SDDuration, 2)
@@ -781,7 +781,7 @@ server <- function(input, output, session) {
     # 2+ Designs
     else{
       x1 <- DTResultsDF() %>% slice_max(PCS) %>% select(Design) %>% pull()
-      x2 <- DTResultsDF()$TrueMTD[1]
+      x2 <- unlist(strsplit(input$DTDoseLabels, ","))[DTResultsDF()$TrueMTD[1]]
       x3 <- paste(sprintf("The proportion of correct selection (PCS) of the MTD for the %s design is %g.", DTResultsDF()$Design, DTResultsDF()$PCS), collapse = " ")
       x4 <- paste(sprintf("The proportion of patients experiencing a DLT for the %s design is %g, which %s the target toxicity probability of %g.", 
                     DTResultsDF()$Design, DTResultsDF()$ObsTox, ifelse(DTResultsDF()$ObsTox > DTResultsDF()$TargetTox, "is greater than", 
