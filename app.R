@@ -84,7 +84,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                 )
                         ),
                         
-                        tabItem(tabName = "Design",
+                        tabItem(tabName = "Desig",
                                 fluidRow(
                                   column(3, style="overflow-y:scroll; height: 70vh;",
                                          h1("Inputs", style="text-align: center; text-decoration: underline;"),
