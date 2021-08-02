@@ -21,7 +21,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                     dashboardSidebar(
                       useShinyjs(), includeCSS("www/style.css"), useShinyFeedback(), use_waiter(),
                                      sidebarMenu(id='tabs',
-                                                 menuItem("Home", tabName = "Home"),
+                                                 menuItem("Home", tabName = "Hom"),
                                                  menuItem("Design", tabName = "Design"),
                                                  menuItem("Conduct", tabName = "Conduct"),
                                                  menuItem("Help", href="https://drive.google.com/file/d/18MGkaaIYFfJ5gqi1vGqnf7Myy0QjLs-i/view"),
