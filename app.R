@@ -114,7 +114,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                          sliderInput("DTTargetTox", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.01, width = "100%", ticks = FALSE),
                                          bsTooltip("DTTargetTox", "Please enter the target toxicity probability of the study agent", 
                                                    "top", options = list(container = "body")),
-                                         textInput("DTTrueTox", "True Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3", width = "100%"),
+                                         textInput("DTTrueTox", "True Toxicity Probability per Dose Level", value = "0.05,0.12,0.2,0.3", width = "100%"),
                                          bsTooltip("DTTrueTox", "Please enter the true toxicity probabilities for each dose level (separated by commas). Toxicity probabilities must increase with each subsequent dose level", 
                                                    "top", options = list(container = "body")),
                                          sliderInput("DTArrivalRate", "Average Time Between Patient Enrollments (In Days)", min = 0, max = 180, value = 15, width = "100%", ticks = FALSE),
@@ -125,11 +125,11 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                                    "top", options = list(container = "body")),
                                          
                                          conditionalPanel(condition = "input.DTSelectorTCRM == 1 || input.DTSelectorCRM == 1",
-                                           textInput("DTPriorTox", "Prior Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3", width = "100%"),
+                                           textInput("DTPriorTox", "Prior Toxicity Probability per Dose Level", value = "0.05,0.12,0.2,0.3", width = "100%"),
                                            bsTooltip("DTPriorTox", "Please enter the prior toxicity probabilities for each dose level (separated by commas). Toxicity probabilities must increase with each subsequent dose level", 
                                                      "top", options = list(container = "body")),
                                            sliderInput("DTMaxN", "Maximum Sample Size", min = 1, max = 200, value = 18, width = "100%", ticks = FALSE),
-                                           bsTooltip("DTMaxN", "Please enter the maximum number of patients to be enrolled per trial", 
+                                           bsTooltip("DTMaxN", "Please enter the maximum number of patients to be enrolled per trial. Trial accuracy increases with larger sample size. The selected sample size should balance trial accuracy with accrual feasibility.", 
                                                      "top", options = list(container = "body")),
                                            sliderInput("DTCohortSize", "Cohort Size", min = 1, max = 9, value = 3, width = "100%", ticks = FALSE),
                                            bsTooltip("DTCohortSize", "Please enter the cohort size. The cohort size is the number of patients to be treated at the current dose level before a dose escalation decision is made", 
@@ -213,13 +213,13 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                 h2("Contact:"),
                                 tags$ul(
                                   tags$li(
-                                    p("For Assistance Please Contact: Drs. Clement Ma and Wendy B. London")
+                                    p("For assistance please contact: Drs. Clement Ma and Wendy B. London")
                                   )
                                 ),
                                 h2("Citation:"),
                                 tags$ul(
                                   tags$li(
-                                    p("To site DEDUCE please use: Insert link to citation")
+                                    p("To cite DEDUCE, please use: Ma C, Berdan J, Borchardt L, Crane S, Garski B, Jamel N, Kiraly L, Pankey D, Stegman S, London WB (2021). DEsign and conDUCt of dose Escalation trials (DEDUCE). Available at: href="https://bargarski.shinyapps.io/DEDUCE/", target="_blank", rel="noopener noreferrer"")
                                   )
                                 ),
                                 h2("Acknowledgements:"),
