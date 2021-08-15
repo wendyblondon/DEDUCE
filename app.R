@@ -12,8 +12,10 @@ source("crm.R")
 source("target_crm.R")
 source("three_plus_three.R")
 source("funs.R")
+source("target_crm_conduct.R")
 
 theme_set(theme_minimal(base_size = 15))
+
 
 
 ui <- dashboardPage(title = "DEDUCE", skin = "black",
@@ -114,7 +116,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                          sliderInput("DTTargetTox", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.01, width = "100%", ticks = FALSE),
                                          bsTooltip("DTTargetTox", "Please enter the target toxicity probability of the study agent", 
                                                    "top", options = list(container = "body")),
-                                         textInput("DTTrueTox", "True Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3", width = "100%"),
+                                         textInput("DTTrueTox", "True Toxicity Probability per Dose Level", value = "0.05,0.12,0.2,0.3", width = "100%"),
                                          bsTooltip("DTTrueTox", "Please enter the true toxicity probabilities for each dose level (separated by commas). Toxicity probabilities must increase with each subsequent dose level", 
                                                    "top", options = list(container = "body")),
                                          sliderInput("DTArrivalRate", "Average Time Between Patient Enrollments (In Days)", min = 0, max = 180, value = 15, width = "100%", ticks = FALSE),
@@ -125,15 +127,15 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                                    "top", options = list(container = "body")),
                                          
                                          conditionalPanel(condition = "input.DTSelectorTCRM == 1 || input.DTSelectorCRM == 1",
-                                           textInput("DTPriorTox", "Prior Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3", width = "100%"),
-                                           bsTooltip("DTPriorTox", "Please enter the prior toxicity probabilities for each dose level (separated by commas). Toxicity probabilities must increase with each subsequent dose level", 
-                                                     "top", options = list(container = "body")),
-                                           sliderInput("DTMaxN", "Maximum Sample Size", min = 1, max = 200, value = 18, width = "100%", ticks = FALSE),
-                                           bsTooltip("DTMaxN", "Please enter the maximum number of patients to be enrolled per trial", 
-                                                     "top", options = list(container = "body")),
-                                           sliderInput("DTCohortSize", "Cohort Size", min = 1, max = 9, value = 3, width = "100%", ticks = FALSE),
-                                           bsTooltip("DTCohortSize", "Please enter the cohort size. The cohort size is the number of patients to be treated at the current dose level before a dose escalation decision is made", 
-                                                     "top", options = list(container = "body"))
+                                                          textInput("DTPriorTox", "Prior Toxicity Probability per Dose Level", value = "0.05,0.12,0.2,0.3", width = "100%"),
+                                                          bsTooltip("DTPriorTox", "Please enter the prior toxicity probabilities for each dose level (separated by commas). Toxicity probabilities must increase with each subsequent dose level", 
+                                                                    "top", options = list(container = "body")),
+                                                          sliderInput("DTMaxN", "Maximum Sample Size", min = 1, max = 200, value = 18, width = "100%", ticks = FALSE),
+                                                          bsTooltip("DTMaxN", "Please enter the maximum number of patients to be enrolled per trial. Trial accuracy increases with larger sample size. The selected sample size should balance trial accuracy with accrual feasibility.", 
+                                                                    "top", options = list(container = "body")),
+                                                          sliderInput("DTCohortSize", "Cohort Size", min = 1, max = 9, value = 3, width = "100%", ticks = FALSE),
+                                                          bsTooltip("DTCohortSize", "Please enter the cohort size. The cohort size is the number of patients to be treated at the current dose level before a dose escalation decision is made", 
+                                                                    "top", options = list(container = "body"))
                                          ),
                                          
                                          conditionalPanel(condition = "input.DTSelectorTCRM == 1",
@@ -164,7 +166,61 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                         ),
                         
                         tabItem(tabName = "Conduct",
-                                h1("Coming Soon...")
+                                fluidRow(
+                                  column(3, style="overflow-y:scroll; height: 70vh;",
+                                         h1("Inputs", style="text-align: center; text-decoration: underline;"),
+                                         br(),
+                                         p("Designs:", style = "font-weight: 700; font-size: 18px;"),
+                                         prettyCheckbox("CTSelectorCRM", "CRM", value = TRUE, icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
+                                         bsTooltip("CTSelectorCRM", "Select to run the CRM Design",
+                                                   "top", options = list(container = "body")),
+                                         prettyCheckbox("CTSelectorTCRM", "TARGET-CRM", value = FALSE, icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
+                                         bsTooltip("CTSelectorTCRM", "Select to run the TARGET-CRM Design",
+                                                   "top", options = list(container = "body")),
+                                         sliderInput("CTNumDoses", "Number of Dose Levels", min = 3, max = 10, value = 4, width = "100%", ticks = FALSE),
+                                         bsTooltip("CTNumDoses", "Please enter the number of doses that will be used", 
+                                                   "top", options = list(container = "body")),
+                                         textInput("CTDoseLabels", "Dose Level Labels", value = "-1,1,2,3", width = "100%"),
+                                         bsTooltip("CTDoseLabels", "Please enter the dose level labels (separated by commas) for each dose level evaluated in the trial", 
+                                                   "top", options = list(container = "body")),
+                                         sliderInput("CTTargetTox", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.01, width = "100%", ticks = FALSE),
+                                         bsTooltip("CTTargetTox", "Please enter the target toxicity probability of the study agent", 
+                                                   "top", options = list(container = "body")),
+                                         conditionalPanel(condition = "input.CTSelectorTCRM == 1 || input.CTSelectorCRM == 1",
+                                                          textInput("CTPriorTox", "Prior Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3", width = "100%"),
+                                                          bsTooltip("CTPriorTox", "Please enter the estimated prior toxicity probabilities for each dose level evaluated in the trial (separated by commas). Toxicity probabilities must increase with each subsequent dose level", 
+                                                                    "top", options = list(container = "body")),
+                                                          sliderInput("CTCohortSize", "Cohort Size", min = 1, max = 9, value = 3, width = "100%", ticks = FALSE),
+                                                          bsTooltip("CTCohortSize", "Please enter the cohort size. The cohort size is the number of patients to be treated at the current dose level before a dose escalation decision is made", 
+                                                                    "top", options = list(container = "body"))
+                                         ),
+                                         
+                                         # conditionalPanel(condition = "input.CTSelectorTCRM == 1",
+                                         #                  sliderInput("CTPropB", "Proportion of Patients from Cohort B", min = 0, max = 1, value = 0.1, step = 0.01, width = "100%", ticks = FALSE),
+                                         #                  bsTooltip("CTPropB", "Patients belong to either Cohort A (general enrollment) or Cohort B (enrichment cohort). Please enter the proportion of enrolled patients belonging to Cohort B. Enter a proportion of 0 if no enrichment cohort is needed.",
+                                         #                            "top", options = list(container = "body")),
+                                         #                  sliderInput("CTMinCohortB", "Minimum Enrollment of Cohort B Patients (Optional)", min = 0, max = 100, value = 0, width = "100%", ticks = FALSE),
+                                         #                  bsTooltip("CTMinCohortB", "An optional feature is to require a trial to enroll a minimum number of Cohort B patients. Once the maximum N is attained, enrollment of Cohort A patients will be suspended and only Cohort B patients may enroll until the minimum number has been attained. Please enter the minimum number of Cohort B patients to be enrolled in a trial. Enter 0 if no minimum number is required.",
+                                         #                            "top", options = list(container = "body"))
+                                         # ),
+                                         splitLayout(cellWidths = c("50%", "25%", "25%"),
+                                                     actionButton("CTSimulate", "Simulate", width = "100%", style = "font-weight: bold;"),
+                                                     downloadButton("CTResults", "", style = "font-weight: bold; width: 100%;"),
+                                                     actionButton("CTReset", "Reset", width = "100%", style = "font-weight: bold;")
+                                         ),
+                                         bsTooltip("CTSimulate", "Simulates the selected design(s) using the values of the above inputs", 
+                                                   "top", options = list(container = "body")),
+                                         bsTooltip("CTResults", "Download the full report of plots, tables, and summaries", 
+                                                   "top", options = list(container = "body")),
+                                         bsTooltip("CTReset", "WARNING: Resets all of the inputs and results, cannot be undone", 
+                                                   "top", options = list(container = "body"))
+                                  ),
+                                  column(9,
+                                         uiOutput("CTPlotsUI"),
+                                         uiOutput("CTNoneUI")
+                                  )
+                                )
+                        
                         ),
                         
                         tabItem(tabName = "Help"
@@ -213,13 +269,16 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                 h2("Contact:"),
                                 tags$ul(
                                   tags$li(
-                                    p("For Assistance Please Contact: Drs. Clement Ma and Wendy B. London")
+                                    p("For assistance, please contact: Drs. Clement Ma and Wendy B. London")
                                   )
                                 ),
                                 h2("Citation:"),
                                 tags$ul(
                                   tags$li(
-                                    p("To site DEDUCE please use: Insert link to citation")
+                                    p("To cite DEDUCE, please use: Ma C, Berdan J, Borchardt L, Crane S, Garski B, Jamel N, Kiraly L, Pankey D, Stegman S, London WB (2021). DEsign and conDUCt of dose Escalation trials (DEDUCE). Available at:", 
+                                      a(href="https://bengarski.shinyapps.io/DEDUCE/", 
+                                        "https://bengarski.shinyapps.io/DEDUCE/")
+                                    )
                                   )
                                 ),
                                 h2("Acknowledgements:"),
@@ -278,6 +337,22 @@ server <- function(input, output, session) {
   ## Warnings for Invalid Inputs
   
   # Dose Labels
+  
+  # Get the Conduct Names That Are Selected
+  CTSelectedDesignNames <- reactive({
+    conductInputs(c(input$CTSelectorTCRM, input$CTSelectorCRM))
+  })
+  
+  #Conduct Dose Labels
+  observeEvent(list(input$CTDoseLabels, input$CTNumDoses), {
+    req(input$CTDoseLabels)
+    hideFeedback("CTDoseLabels")
+    if (length(unlist(strsplit(input$CTDoseLabels, ",")))!= input$CTNumDoses) {
+      showFeedbackDanger("CTDoseLabels", "The length must match the number of dose levels selected above. Be sure to use commas to separate each label.")
+    }
+  })
+  
+  #Dose Levels
   observeEvent(list(input$DTDoseLabels, input$DTNumDoses), {
     req(input$DTDoseLabels)
     hideFeedback("DTDoseLabels")
@@ -314,6 +389,20 @@ server <- function(input, output, session) {
     }
     else if (decimalCheck(input$DTPriorTox)==FALSE) {
       showFeedbackDanger("DTPriorTox", "The probabilities must be a decimal")
+    }
+  })
+  # Conduct Prior Tox
+  observeEvent(list(input$CTPriorTox, input$CTNumDoses), {
+    req(input$CTPriorTox)
+    hideFeedback("CTPriorTox")
+    if (length(unlist(strsplit(input$CTPriorTox, ",")))!= input$CTNumDoses) {
+      showFeedbackDanger("CTPriorTox", "The length must match the number of dose levels selected at the top. Be sure to use commas to separate each decimal.")
+    }
+    else if (incrementCheck(input$CTPriorTox)==FALSE) {
+      showFeedbackDanger("CTPriorTox", "The probabilities must increase with each subsequent dose")
+    }
+    else if (decimalCheck(input$CTPriorTox)==FALSE) {
+      showFeedbackDanger("CTPriorTox", "The probabilities must be a decimal")
     }
   })
   
@@ -421,6 +510,44 @@ server <- function(input, output, session) {
     
     
   })
+  
+  # Running the Design(s) -CONDUCT PAGE
+  # CTFunctionOutputs <- eventReactive(input$CTSimulate, {
+  #   w <- Waiter$new(html = spin_heartbeat(), color = "black")
+  #   w$show()
+
+    # 3+3
+    # if (input$DTSelectorTPT == TRUE) {
+    #
+    #   TPT <- three.plus.three(target.tox = input$DTTargetTox, number.trials = input$DTNumTrials,
+    #                           true.tox = numerizer(input$DTTrueTox), arrival.rate = input$DTArrivalRate, cycle.length = input$DTCycleLength,
+    #                           start.level = match(input$DTStartLevel, unlist(strsplit(input$DTDoseLabels, ","))))
+    # }
+
+    # TARGET-CRM
+    # if(input$CTSelectorTCRM == TRUE) {
+    # 
+    #   CTCRM <- conduct.target.crm(prior = numerizer(input$CTPriorTox), target.tox = input$CTTargetTox,
+    # 
+    #                         cohort.size = input$CTCohortSize)
+    # 
+    # }
+
+    # Other
+    # if(input$CTSelectorCRM == TRUE) {
+    # 
+    #   CCRM <- my.crm(prior = numerizer(input$DTPriorTox), target.tox = input$DTTargetTox,
+    #                 number.trials = input$DTNumTrials, true.tox = numerizer(input$DTTrueTox),
+    #                 arrival.rate = input$DTArrivalRate, min.cohortB = input$DTMinCohortB, cycle.length = input$DTCycleLength,
+    #                 cohort.size = input$DTCohortSize, max.N = input$DTMaxN, start.level = match(input$DTStartLevel, unlist(strsplit(input$DTDoseLabels, ","))))
+    # }
+
+  #   all <- list(get0("CTCRM"), get0("CCRM"))
+  #   w$hide()
+  #   return(all[lengths(all) != 0])
+  # 
+  # 
+  # })
   
   # DF for Design Results Used in Report
   DTResultsDF <- reactive({
