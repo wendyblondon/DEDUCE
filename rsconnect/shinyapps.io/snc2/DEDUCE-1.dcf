@@ -1,0 +1,13 @@
+name: DEDUCE-1
+title: DEDUCE-1
+username:
+account: snc2
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 4513991
+bundleId: 4943046
+url: https://snc2.shinyapps.io/DEDUCE-1/
+when: 1629412291.92451
+lastSyncTime: 1629412291.92451
+asMultiple: FALSE
+asStatic: FALSE
