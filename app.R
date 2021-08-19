@@ -106,7 +106,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                     dashboardHeader(title = strong("DEDUCE")),
                     dashboardSidebar(
                       useShinyjs(), includeCSS("www/style.css"), useShinyFeedback(), use_waiter(),
-                                     sidebarMenu(id='tabs',
+                                     sidebarMenu(
                                                  menuItem("HOME", tabName = "Home"),
                                                  menuItem("DESIGN YOUR TRIAL", tabName = "Design"),
                                                  menuItem("CONDUCT YOUR TRIAL", tabName = "Conduct"),

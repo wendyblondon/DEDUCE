@@ -1,36 +1,27 @@
 /* HEADER and SIDEBAR */
 
 .skin-black .main-header .logo {
-  /*font-family: "Georgia", Times, "Times New Roman", serif;
-  font-weight: bold;
-  border-right:1px solid black;*/
+  border-bottom:0.0625em solid black;
   font-size: 1.5em;
   font-weight: bold;
   text-align: left;
-  border-bottom:0.0625em solid black;
 }
 .skin-black .navbar{
   border-bottom:0.0625em solid black;
 }
 .skin-black .main-sidebar {
+  border-right:0.0625em solid black;
   background-color:white;
   color: #003366;
   font-weight: bold;
-  border-right:0.0625em solid black;
 }
-/*#tabs{
-  font-size: 15px;
-  text-decoration-color: #003366;
-}*/
-
 .skin-black .sidebar-menu li a{
-  font-size: 1.25em;
+  border-bottom:0.0625em solid black;
   background-color: white;
+  font-size: 1.1em;
   color: #003366;
   font-weight: bold;
-  border-bottom:0.0625em solid black;
 }  
-
 .skin-black .sidebar-menu li.active a{
   border-left-color: #41B6E6;
   border-left-width: 0.75em;
@@ -38,58 +29,51 @@
   color: #003366;
   font-weight: bold;
 }
-
 .skin-black .sidebar-menu li:hover a{
-  border-left-color: #003366;
+  border-left-color: #41B6E6;
   border-left-width: 0.75em;
 }
-
 
 
 /* HOME TAB */
 #homeimg{
   margin-left: -1.875em;
   margin-right: -1.875em;
-  margin-top: -0.9375em;
+  margin-top: -1em;
   width: 110%;
 }
-
 #hometagline{
-  text-align: justify;
-  text-align: center;
   margin-top: 2em;
   margin-bottom: 0.1em;
   margin-right: 5em;
   margin-left: 5em;
+  text-align: justify;
+  text-align: center;
   font-size: 2em;
   font-weight: bold;
 }
-
 #hometagdesc1{
-  text-align: justify;
-  text-align: center;
   margin-top: 0.001em;
   margin-bottom: 0.001em;
   margin-right: 5em;
   margin-left: 5em;
-  font-size: 1.7em;
-}
-
-#hometagdesc2{
   text-align: justify;
   text-align: center;
+  font-size: 1.7em;
+}
+#hometagdesc2{
   margin-right: 5em;
   margin-top: 0.001em;
   margin-bottom: 2em;
   margin-left: 5em;
+  text-align: justify;
+  text-align: center;
   font-size: 1.7em;
 }
 .trialdc{
-  font-weight: bold;
   margin-bottom: 0.1em  
+  font-weight: bold;
 }
-
-
 #overview{
   margin-left: 1.5em;
   margin-right: 1.5em;
@@ -101,11 +85,11 @@ p{
 }
 
 h2{
-  color: #003366;
-  font-weight: bold;
   margin-top: 0.75em;
   margin-bottom: 0.5em;
   margin-left: 1em;
+  color: #003366;
+  font-weight: bold;
 }
 
 
