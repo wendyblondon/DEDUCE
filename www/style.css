@@ -1,39 +1,98 @@
-/* SIDEBAR */
-.sidebar-menu{
-  font-size: 30px;
+/* HEADER and SIDEBAR */
+
+.skin-black .main-header .logo {
+  /*font-family: "Georgia", Times, "Times New Roman", serif;
+  font-weight: bold;
+  border-right:1px solid black;*/
+  font-size: 1.5em;
+  font-weight: bold;
+  text-align: left;
+  border-bottom:0.0625em solid black;
 }
+.skin-black .navbar{
+  border-bottom:0.0625em solid black;
+}
+.skin-black .main-sidebar {
+  background-color:white;
+  color: #003366;
+  font-weight: bold;
+  border-right:0.0625em solid black;
+}
+/*#tabs{
+  font-size: 15px;
+  text-decoration-color: #003366;
+}*/
+
+.skin-black .sidebar-menu li a{
+  font-size: 1.25em;
+  background-color: white;
+  color: #003366;
+  font-weight: bold;
+  border-bottom:0.0625em solid black;
+}  
 
 .skin-black .sidebar-menu li.active a{
-  border-left-color: #003087;
+  border-left-color: #41B6E6;
   border-left-width: 0.75em;
+  background-color: white;
+  color: #003366;
+  font-weight: bold;
 }
 
 .skin-black .sidebar-menu li:hover a{
-  border-left-color: #41B6E6;
+  border-left-color: #003366;
   border-left-width: 0.75em;
 }
 
+
+
 /* HOME TAB */
 #homeimg{
-  margin-left: -30px;
-  margin-right: -30px;
-  margin-top: -15px;
+  margin-left: -1.875em;
+  margin-right: -1.875em;
+  margin-top: -0.9375em;
   width: 110%;
 }
 
 #hometagline{
+  text-align: justify;
   text-align: center;
   margin-top: 2em;
+  margin-bottom: 0.1em;
   margin-right: 5em;
-  margin-bottom: 2em;
   margin-left: 5em;
-  font-size: 24px;
+  font-size: 2em;
   font-weight: bold;
 }
 
+#hometagdesc1{
+  text-align: justify;
+  text-align: center;
+  margin-top: 0.001em;
+  margin-bottom: 0.001em;
+  margin-right: 5em;
+  margin-left: 5em;
+  font-size: 1.7em;
+}
+
+#hometagdesc2{
+  text-align: justify;
+  text-align: center;
+  margin-right: 5em;
+  margin-top: 0.001em;
+  margin-bottom: 2em;
+  margin-left: 5em;
+  font-size: 1.7em;
+}
 .trialdc{
   font-weight: bold;
   margin-bottom: 0.1em  
+}
+
+
+#overview{
+  margin-left: 1.5em;
+  margin-right: 1.5em;
 }
 
 /* HOME & ABOUT TAB */
@@ -42,17 +101,13 @@ p{
 }
 
 h2{
-  color: #003087;
+  color: #003366;
   font-weight: bold;
   margin-top: 0.75em;
   margin-bottom: 0.5em;
   margin-left: 1em;
 }
 
-#overview{
-  margin-left: 1.5em;
-  margin-right: 1.5em;
-}
 
 #acknowledgements{
   margin-left: 1.5em;

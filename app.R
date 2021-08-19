@@ -107,20 +107,21 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                     dashboardSidebar(
                       useShinyjs(), includeCSS("www/style.css"), useShinyFeedback(), use_waiter(),
                                      sidebarMenu(id='tabs',
-                                                 menuItem("Home", tabName = "Home"),
-                                                 menuItem("Design", tabName = "Design"),
-                                                 menuItem("Conduct", tabName = "Conduct"),
-                                                 menuItem("Help", href="https://drive.google.com/file/d/18MGkaaIYFfJ5gqi1vGqnf7Myy0QjLs-i/view"),
-                                                 menuItem("About", tabName = "About")
+                                                 menuItem("HOME", tabName = "Home"),
+                                                 menuItem("DESIGN YOUR TRIAL", tabName = "Design"),
+                                                 menuItem("CONDUCT YOUR TRIAL", tabName = "Conduct"),
+                                                 menuItem("HELP", href="https://drive.google.com/file/d/18MGkaaIYFfJ5gqi1vGqnf7Myy0QjLs-i/view"),
+                                                 menuItem("ABOUT", tabName = "About")
                                      )
                     ),
                     dashboardBody(
                       tabItems(
-                        tabItem(tabName = "Home",
+                        tabItem(tabName = "Home", 
                                 tags$script(HTML("$('body').addClass('fixed');")),
                                 img(id="homeimg", src = "home.jpg"),
-                                p(id="hometagline", "DEsign and conDUCt of dose Escalation trials (DEDUCE) - A unified resource for clinical investigators and statisticians to design and conduct more efficient 
-                                  and accurate phase 1 trials."),
+                                p(id="hometagline", "DEsign and conDUCt of dose Escalation trials (DEDUCE)"),
+                                p(id="hometagdesc1", "A unified resource for clinical investigators and statisticians to"),
+                                p(id="hometagdesc2", "design and conduct more efficient and accurate phase 1 trials."),
                                 h2("Overview"),
                                 p(id="overview", "The DEDUCE platform is an interactive, web-based resource to design and conduct 
                                   phase 1 dose escalation trials using rule-based and Bayesian adaptive designs. Our goal in developing this application is to raise 
