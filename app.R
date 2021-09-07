@@ -7,6 +7,7 @@ library(shinyFeedback)
 library(waiter)
 library(tidyverse)
 library(rmarkdown)
+library(DT)
 
 source("crm.R")
 source("target_crm.R")
@@ -17,18 +18,23 @@ source("target_crm_conduct.R")
 theme_set(theme_minimal(base_size = 15))
 
 
+# Conduct page table data frame
+df <- dplyr::tibble(PatientID = "C1",
+                    DoseAdministered = "1",
+                    DLTObserved= "0",
+                    IncludePatientInModel= "1")
 
 ui <- dashboardPage(title = "DEDUCE", skin = "black",
                     dashboardHeader(title = strong("DEDUCE")),
                     dashboardSidebar(
                       useShinyjs(), includeCSS("www/style.css"), useShinyFeedback(), use_waiter(),
-                                     sidebarMenu(id='tabs',
-                                                 menuItem("Home", tabName = "Home"),
-                                                 menuItem("Design", tabName = "Design"),
-                                                 menuItem("Conduct", tabName = "Conduct"),
-                                                 menuItem("Help", href="https://drive.google.com/file/d/18MGkaaIYFfJ5gqi1vGqnf7Myy0QjLs-i/view"),
-                                                 menuItem("About", tabName = "About")
-                                     )
+                      sidebarMenu(id='tabs',
+                                  menuItem("Home", tabName = "Home"),
+                                  menuItem("Design", tabName = "Design"),
+                                  menuItem("Conduct", tabName = "Conduct"),
+                                  menuItem("Help", href="https://drive.google.com/file/d/18MGkaaIYFfJ5gqi1vGqnf7Myy0QjLs-i/view"),
+                                  menuItem("About", tabName = "About")
+                      )
                     ),
                     dashboardBody(
                       tabItems(
@@ -139,12 +145,12 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                          ),
                                          
                                          conditionalPanel(condition = "input.DTSelectorTCRM == 1",
-                                            sliderInput("DTPropB", "Proportion of Patients from Cohort B", min = 0, max = 1, value = 0.1, step = 0.01, width = "100%", ticks = FALSE),
-                                            bsTooltip("DTPropB", "Patients belong to either Cohort A (general enrollment) or Cohort B (enrichment cohort). Please enter the proportion of enrolled patients belonging to Cohort B. Enter a proportion of 0 if no enrichment cohort is needed.", 
+                                                          sliderInput("DTPropB", "Proportion of Patients from Cohort B", min = 0, max = 1, value = 0.1, step = 0.01, width = "100%", ticks = FALSE),
+                                                          bsTooltip("DTPropB", "Patients belong to either Cohort A (general enrollment) or Cohort B (enrichment cohort). Please enter the proportion of enrolled patients belonging to Cohort B. Enter a proportion of 0 if no enrichment cohort is needed.", 
                                                                     "top", options = list(container = "body")),
-                                            sliderInput("DTMinCohortB", "Minimum Enrollment of Cohort B Patients (Optional)", min = 0, max = 100, value = 0, width = "100%", ticks = FALSE),
-                                            bsTooltip("DTMinCohortB", "An optional feature is to require a trial to enroll a minimum number of Cohort B patients. Once the maximum N is attained, enrollment of Cohort A patients will be suspended and only Cohort B patients may enroll until the minimum number has been attained. Please enter the minimum number of Cohort B patients to be enrolled in a trial. Enter 0 if no minimum number is required.", 
-                                                      "top", options = list(container = "body"))
+                                                          sliderInput("DTMinCohortB", "Minimum Enrollment of Cohort B Patients (Optional)", min = 0, max = 100, value = 0, width = "100%", ticks = FALSE),
+                                                          bsTooltip("DTMinCohortB", "An optional feature is to require a trial to enroll a minimum number of Cohort B patients. Once the maximum N is attained, enrollment of Cohort A patients will be suspended and only Cohort B patients may enroll until the minimum number has been attained. Please enter the minimum number of Cohort B patients to be enrolled in a trial. Enter 0 if no minimum number is required.", 
+                                                                    "top", options = list(container = "body"))
                                          ),
                                          splitLayout(cellWidths = c("50%", "25%", "25%"),
                                                      actionButton("DTSimulate", "Simulate", width = "100%", style = "font-weight: bold;"),
@@ -167,7 +173,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                         
                         tabItem(tabName = "Conduct",
                                 fluidRow(
-                                  column(3, style="overflow-y:scroll; height: 70vh;",
+                                  column(6, style="overflow-y:scroll; height: 70vh;",
                                          h1("Inputs", style="text-align: center; text-decoration: underline;"),
                                          br(),
                                          p("Designs:", style = "font-weight: 700; font-size: 18px;"),
@@ -213,14 +219,28 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                          bsTooltip("CTResults", "Download the full report of plots, tables, and summaries", 
                                                    "top", options = list(container = "body")),
                                          bsTooltip("CTReset", "WARNING: Resets all of the inputs and results, cannot be undone", 
-                                                   "top", options = list(container = "body"))
+                                                   "top", options = list(container = "body")),
+                                         shiny::textInput(inputId = "PID", label = "Patient ID"),
+                                         shiny::textInput(inputId = "DoseAdm", label = "Dose administered"),
+                                         shiny::textInput(inputId = "DLTobs", label = "DLT observed"),
+                                         shiny::textInput(inputId = "include", label = "Include patient in model"),
+                                         shiny::actionButton(inputId = "add", label = "Add Data"),
+                                         shiny::selectInput(inputId = "remove_row", label = "Remove Row",choices = nrow(df)),
+                                         shiny::actionButton(inputId = "remove", label = "Remove"),
+                                         
+                                         DT::DTOutput(outputId = "table"),
+                                         
+                                         shiny::actionButton(inputId = "PDoutput", label = "Generate Output")
+                                         
+                                         
+                                         
                                   ),
                                   column(9,
                                          uiOutput("CTPlotsUI"),
                                          uiOutput("CTNoneUI")
                                   )
                                 )
-                        
+                                
                         ),
                         
                         tabItem(tabName = "Help"
@@ -405,7 +425,72 @@ server <- function(input, output, session) {
       showFeedbackDanger("CTPriorTox", "The probabilities must be a decimal")
     }
   })
+  mod_df <- shiny::reactiveValues(x = df)
   
+  output$table <- DT::renderDT({
+    
+    isolate(mod_df$x)
+    
+  })
+  shiny::observe({
+    shiny::updateSelectInput(session, inputId = "remove_row",
+                             choices = 1:nrow(mod_df$x))
+  })
+  shiny::observeEvent(input$add, {
+    
+    mod_df$x <- mod_df$x %>%
+      dplyr::bind_rows(
+        dplyr::tibble(PatientID = input$PID,
+                      DoseAdministered = input$DoseAdm,
+                      DLTObserved= input$DLTobs,
+                      IncludePatientInModel= input$include
+                      )
+      )
+    
+  })
+  shiny::observeEvent(input$remove, {
+    
+    mod_df$x <- mod_df$x[-as.integer(input$remove_row), ]
+    
+  })
+  
+  proxy <- DT::dataTableProxy('table')
+  shiny::observe({
+    
+    DT::replaceData(proxy, mod_df$x)
+    
+  })
+  
+  # Running the Design(s) -CONDUCT PAGE
+  shiny::observeEvent(input$PDoutput, {
+  #   w <- Waiter$new(html = spin_heartbeat(), color = "black")
+  #   w$show()
+  
+  
+  
+  # TARGET-CRM
+  if(input$CTSelectorTCRM == TRUE) {
+
+    CTCRM <- conduct.target.crm(prior = numerizer(input$CTPriorTox), target.tox = input$CTTargetTox,tox= input$DLTobs, level=input$DoseAdm,n=length(level),dose.labels =input$CTDoseLabels,include=input$include, pid=input$pid,
+  cohort.size = input$CTCohortSize, num.slots.remain=2,current.dose=3)
+
+  }
+  
+  # Other
+  # if(input$CTSelectorCRM == TRUE) {
+  # 
+  #   CCRM <- my.crm(prior = numerizer(input$DTPriorTox), target.tox = input$DTTargetTox,
+  #                 number.trials = input$DTNumTrials, true.tox = numerizer(input$DTTrueTox),
+  #                 arrival.rate = input$DTArrivalRate, min.cohortB = input$DTMinCohortB, cycle.length = input$DTCycleLength,
+  #                 cohort.size = input$DTCohortSize, max.N = input$DTMaxN, start.level = match(input$DTStartLevel, unlist(strsplit(input$DTDoseLabels, ","))))
+  # }
+  
+  #   all <- list(get0("CTCRM"), get0("CCRM"))
+  #   w$hide()
+  #   return(all[lengths(all) != 0])
+  # 
+  # 
+  })
   # Main Plotting UI
   output$DTPlotsUI <- renderUI({
     req(length(DTSelectedDesignNames()) > 0)
@@ -515,33 +600,27 @@ server <- function(input, output, session) {
   # CTFunctionOutputs <- eventReactive(input$CTSimulate, {
   #   w <- Waiter$new(html = spin_heartbeat(), color = "black")
   #   w$show()
+  
 
-    # 3+3
-    # if (input$DTSelectorTPT == TRUE) {
-    #
-    #   TPT <- three.plus.three(target.tox = input$DTTargetTox, number.trials = input$DTNumTrials,
-    #                           true.tox = numerizer(input$DTTrueTox), arrival.rate = input$DTArrivalRate, cycle.length = input$DTCycleLength,
-    #                           start.level = match(input$DTStartLevel, unlist(strsplit(input$DTDoseLabels, ","))))
-    # }
-
-    # TARGET-CRM
-    # if(input$CTSelectorTCRM == TRUE) {
-    # 
-    #   CTCRM <- conduct.target.crm(prior = numerizer(input$CTPriorTox), target.tox = input$CTTargetTox,
-    # 
-    #                         cohort.size = input$CTCohortSize)
-    # 
-    # }
-
-    # Other
-    # if(input$CTSelectorCRM == TRUE) {
-    # 
-    #   CCRM <- my.crm(prior = numerizer(input$DTPriorTox), target.tox = input$DTTargetTox,
-    #                 number.trials = input$DTNumTrials, true.tox = numerizer(input$DTTrueTox),
-    #                 arrival.rate = input$DTArrivalRate, min.cohortB = input$DTMinCohortB, cycle.length = input$DTCycleLength,
-    #                 cohort.size = input$DTCohortSize, max.N = input$DTMaxN, start.level = match(input$DTStartLevel, unlist(strsplit(input$DTDoseLabels, ","))))
-    # }
-
+  
+  # TARGET-CRM
+  # if(input$CTSelectorTCRM == TRUE) {
+  # 
+  #   CTCRM <- conduct.target.crm(prior = numerizer(input$CTPriorTox), target.tox = input$CTTargetTox,
+  # 
+  #                         cohort.size = input$CTCohortSize)
+  # 
+  # }
+  
+  # Other
+  # if(input$CTSelectorCRM == TRUE) {
+  # 
+  #   CCRM <- my.crm(prior = numerizer(input$DTPriorTox), target.tox = input$DTTargetTox,
+  #                 number.trials = input$DTNumTrials, true.tox = numerizer(input$DTTrueTox),
+  #                 arrival.rate = input$DTArrivalRate, min.cohortB = input$DTMinCohortB, cycle.length = input$DTCycleLength,
+  #                 cohort.size = input$DTCohortSize, max.N = input$DTMaxN, start.level = match(input$DTStartLevel, unlist(strsplit(input$DTDoseLabels, ","))))
+  # }
+  
   #   all <- list(get0("CTCRM"), get0("CCRM"))
   #   w$hide()
   #   return(all[lengths(all) != 0])
@@ -798,26 +877,26 @@ server <- function(input, output, session) {
   # Values for Rmd - Results Section
   DTReportResults <- reactive({
     
-      # 1 Design
-      if (length(DTSelectedDesignNames()) == 1) {
-        x1 <- DTResultsDF()$PCS
-        x2 <- round(DTResultsDF()$ObsTox, 2)
-        x3 <- DTResultsDF()$TargetTox
-        x4 <- ifelse(x2 > x3, "greater than", ifelse(x2 < x3, "lower than", "equal to"))
-        x5 <- unlist(strsplit(input$DTDoseLabels, ","))[DTResultsDF()$TrueMTD]
-        x6 <- round(DTResultsDF()$PATMTD, 2)
-        x7 <- round(DTResultsDF()$MeanDuration, 2)
-        x8 <- round(DTResultsDF()$SDDuration, 2)
-        x9 <- DTResultsDF()$MeanObsN
-        x10 <- DTResultsDF()$MinObsN
-        x11 <- DTResultsDF()$MaxObsN
-        
-        # Only Needed for TARGET-CRM
-        x12 <- DTResultsDF()$PropB
-        x13 <- DTResultsDF()$MeanCohortB
-        x14 <- DTResultsDF()$SDCohortB
-        return(c(x1,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11,x12,x13,x14))
-      }
+    # 1 Design
+    if (length(DTSelectedDesignNames()) == 1) {
+      x1 <- DTResultsDF()$PCS
+      x2 <- round(DTResultsDF()$ObsTox, 2)
+      x3 <- DTResultsDF()$TargetTox
+      x4 <- ifelse(x2 > x3, "greater than", ifelse(x2 < x3, "lower than", "equal to"))
+      x5 <- unlist(strsplit(input$DTDoseLabels, ","))[DTResultsDF()$TrueMTD]
+      x6 <- round(DTResultsDF()$PATMTD, 2)
+      x7 <- round(DTResultsDF()$MeanDuration, 2)
+      x8 <- round(DTResultsDF()$SDDuration, 2)
+      x9 <- DTResultsDF()$MeanObsN
+      x10 <- DTResultsDF()$MinObsN
+      x11 <- DTResultsDF()$MaxObsN
+      
+      # Only Needed for TARGET-CRM
+      x12 <- DTResultsDF()$PropB
+      x13 <- DTResultsDF()$MeanCohortB
+      x14 <- DTResultsDF()$SDCohortB
+      return(c(x1,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11,x12,x13,x14))
+    }
     
     # 2+ Designs
     else{
@@ -825,15 +904,15 @@ server <- function(input, output, session) {
       x2 <- unlist(strsplit(input$DTDoseLabels, ","))[DTResultsDF()$TrueMTD[1]]
       x3 <- paste(sprintf("The proportion of correct selection (PCS) of the MTD for the %s design is %g.", DTResultsDF()$Design, DTResultsDF()$PCS), collapse = " ")
       x4 <- paste(sprintf("The proportion of patients experiencing a DLT for the %s design is %g, which %s the target toxicity probability of %g.", 
-                    DTResultsDF()$Design, DTResultsDF()$ObsTox, ifelse(DTResultsDF()$ObsTox > DTResultsDF()$TargetTox, "is greater than", 
-                    ifelse(DTResultsDF()$ObsTox == DTResultsDF()$TargetTox, "equals", "is lower than")), DTResultsDF()$TargetTox[1]), collapse = " ")
+                          DTResultsDF()$Design, DTResultsDF()$ObsTox, ifelse(DTResultsDF()$ObsTox > DTResultsDF()$TargetTox, "is greater than", 
+                                                                             ifelse(DTResultsDF()$ObsTox == DTResultsDF()$TargetTox, "equals", "is lower than")), DTResultsDF()$TargetTox[1]), collapse = " ")
       x5 <- DTResultsDF() %>% slice_max(PATMTD) %>% select(Design) %>% pull()
       x6 <- paste(sprintf("The proportion of patients assigned to the true MTD for the %s design is %g.", DTResultsDF()$Design, DTResultsDF()$PATMTD), collapse = " ")
       x7 <- DTResultsDF() %>% slice_min(MeanDuration) %>% select(Design) %>% pull()
       x8 <- paste(sprintf("The mean study duration for the %s design is %g days(SD=%g).", DTResultsDF()$Design, DTResultsDF()$MeanDuration, 
                           DTResultsDF()$SDDuration), collapse = " ")
       x9 <- paste(sprintf("The mean total sample size for the %s design is %g (range=%g-%g).", DTResultsDF()$Design, 
-                    DTResultsDF()$MeanObsN, DTResultsDF()$MinObsN, DTResultsDF()$MaxObsN), collapse = " ")
+                          DTResultsDF()$MeanObsN, DTResultsDF()$MinObsN, DTResultsDF()$MaxObsN), collapse = " ")
       
       # Only Needed for TARGET-CRM
       x10 <- DTResultsDF()$PropB[1]
