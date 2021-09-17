@@ -20,9 +20,9 @@ theme_set(theme_minimal(base_size = 15))
 
 # Conduct page table data frame
 df <- dplyr::tibble(PatientID = "C1",
-                    DoseAdministered = "1",
-                    DLTObserved= "0",
-                    IncludePatientInModel= "1")
+                    DoseAdministered = 1,
+                    DLTObserved= 0,
+                    IncludePatientInModel= 1)
 
 ui <- dashboardPage(title = "DEDUCE", skin = "black",
                     dashboardHeader(title = strong("DEDUCE")),
@@ -193,7 +193,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                          bsTooltip("CTTargetTox", "Please enter the target toxicity probability of the study agent", 
                                                    "top", options = list(container = "body")),
                                          conditionalPanel(condition = "input.CTSelectorTCRM == 1 || input.CTSelectorCRM == 1",
-                                                          textInput("CTPriorTox", "Prior Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3", width = "100%"),
+                                                         textInput("CTPriorTox", "Prior Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3", width = "100%"),
                                                           bsTooltip("CTPriorTox", "Please enter the estimated prior toxicity probabilities for each dose level evaluated in the trial (separated by commas). Toxicity probabilities must increase with each subsequent dose level", 
                                                                     "top", options = list(container = "body")),
                                                           sliderInput("CTCohortSize", "Cohort Size", min = 1, max = 9, value = 3, width = "100%", ticks = FALSE),
@@ -220,10 +220,10 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                                    "top", options = list(container = "body")),
                                          bsTooltip("CTReset", "WARNING: Resets all of the inputs and results, cannot be undone", 
                                                    "top", options = list(container = "body")),
-                                         shiny::textInput(inputId = "PID", label = "Patient ID"),
-                                         shiny::textInput(inputId = "DoseAdm", label = "Dose administered"),
-                                         shiny::textInput(inputId = "DLTobs", label = "DLT observed"),
-                                         shiny::textInput(inputId = "include", label = "Include patient in model"),
+                                         shiny::textInput(inputId = "PID", label = "Patient ID",value =NULL),
+                                         shiny::numericInput(inputId = "DoseAdm", label = "Dose administered",value = NULL),
+                                         shiny::numericInput(inputId = "DLTobs", label = "DLT observed",value =NULL),
+                                         shiny::numericInput(inputId = "include", label = "Include patient in model",value = NULL),
                                          shiny::actionButton(inputId = "add", label = "Add Data"),
                                          shiny::selectInput(inputId = "remove_row", label = "Remove Row",choices = nrow(df)),
                                          shiny::actionButton(inputId = "remove", label = "Remove"),
@@ -236,8 +236,8 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                          
                                   ),
                                   column(9,
-                                         uiOutput("CTPlotsUI"),
-                                         uiOutput("CTNoneUI")
+                                         textOutput("testing"),
+                                         
                                   )
                                 )
                                 
@@ -471,11 +471,12 @@ server <- function(input, output, session) {
   # TARGET-CRM
   if(input$CTSelectorTCRM == TRUE) {
 
-    CTCRM <- conduct.target.crm(prior = numerizer(input$CTPriorTox), target.tox = input$CTTargetTox,tox= input$DLTobs, level=input$DoseAdm,n=length(level),dose.labels =input$CTDoseLabels,include=input$include, pid=input$pid,
+    testing <- conduct.target.crm(prior =numerizer(input$DTPriorTox), target.tox = input$CTTargetTox,tox= input$DLTobs, level=input$DoseAdm,dose.labels =input$CTDoseLabels,include=input$include, pid=input$pid,
   cohort.size = input$CTCohortSize, num.slots.remain=2,current.dose=3)
 
   }
   
+
   # Other
   # if(input$CTSelectorCRM == TRUE) {
   # 
