@@ -177,10 +177,11 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                          h1("Inputs", style="text-align: center; text-decoration: underline;"),
                                          br(),
                                          p("Designs:", style = "font-weight: 700; font-size: 18px;"),
-                                         prettyCheckbox("CTSelectorCRM", "CRM", value = TRUE, icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
-                                         bsTooltip("CTSelectorCRM", "Select to run the CRM Design",
+                                         radioButtons("CTSelectorTCRM", "", c("CRM" = "crm", "TARGET CRM"= "target_crm"), inline = "TRUE"),
+                                         bsTooltip("crm", "Select CRM to run the CRM Design.  Select Target ",
                                                    "top", options = list(container = "body")),
-                                         prettyCheckbox("CTSelectorTCRM", "TARGET-CRM", value = FALSE, icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
+                                         
+                                      #   conditionalPanel(condition = "input.CTSelectorTCRM == 1 || input.CTSelectorCRM == 1",
                                          bsTooltip("CTSelectorTCRM", "Select to run the TARGET-CRM Design",
                                                    "top", options = list(container = "body")),
                                          sliderInput("CTNumDoses", "Number of Dose Levels", min = 3, max = 10, value = 4, width = "100%", ticks = FALSE),
@@ -192,15 +193,36 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                          sliderInput("CTTargetTox", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.01, width = "100%", ticks = FALSE),
                                          bsTooltip("CTTargetTox", "Please enter the target toxicity probability of the study agent", 
                                                    "top", options = list(container = "body")),
-                                         conditionalPanel(condition = "input.CTSelectorTCRM == 1 || input.CTSelectorCRM == 1",
+                                         
                                                          textInput("CTPriorTox", "Prior Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3", width = "100%"),
                                                           bsTooltip("CTPriorTox", "Please enter the estimated prior toxicity probabilities for each dose level evaluated in the trial (separated by commas). Toxicity probabilities must increase with each subsequent dose level", 
                                                                     "top", options = list(container = "body")),
                                                           sliderInput("CTCohortSize", "Cohort Size", min = 1, max = 9, value = 3, width = "100%", ticks = FALSE),
                                                           bsTooltip("CTCohortSize", "Please enter the cohort size. The cohort size is the number of patients to be treated at the current dose level before a dose escalation decision is made", 
-                                                                    "top", options = list(container = "body"))
+                                                                    "top", options = list(container = "body")),
+                                                         sliderInput("CTSlots", "Number of slots remaining", min = 0, max = 8, value = 0, width = "100%", ticks = FALSE),
+                                                         bsTooltip("CTSlots", "Please enter the number of slots remaining to be enrolled for the current cohort of patients.", 
+                                                                   "top", options = list(container = "body")),
+                                      selectInput("CTCurrentDose", "Current dose level", choices = c(-1,1,2,3), selected = 1, width = "100%"),
+                                      bsTooltip("CTCurrentDose", "Please enter the starting dose level from the dose level labels above", 
+                                                "top", options = list(container = "body")),
+                                      shiny::textInput(inputId = "PID", label = "Patient ID",value =NULL),
+                                      shiny::numericInput(inputId = "DoseAdm", label = "Dose administered",value = NULL),
+                                      shiny::numericInput(inputId = "DLTobs", label = "DLT observed",value =NULL),
+                                      shiny::numericInput(inputId = "include", label = "Include patient in model",value = NULL),
+                                      shiny::actionButton(inputId = "add", label = "Add Data"),
+                                      shiny::selectInput(inputId = "remove_row", label = "Remove Row",choices = nrow(df)),
+                                      shiny::actionButton(inputId = "remove", label = "Remove"),
+                                      
+                                      DT::DTOutput(outputId = "table"),
+                                      
+                                      
+                                      splitLayout(cellWidths = c("50%", "25%", "25%"),
+                                                  actionButton("PDoutput", "Generate", width = "100%", style = "font-weight: bold;"),
+                                                  downloadButton("CTResults", "", style = "font-weight: bold; width: 100%;"),
+                                                  actionButton("CTReset", "Reset", width = "100%", style = "font-weight: bold;")
                                          ),
-                                         
+                                                      
                                          # conditionalPanel(condition = "input.CTSelectorTCRM == 1",
                                          #                  sliderInput("CTPropB", "Proportion of Patients from Cohort B", min = 0, max = 1, value = 0.1, step = 0.01, width = "100%", ticks = FALSE),
                                          #                  bsTooltip("CTPropB", "Patients belong to either Cohort A (general enrollment) or Cohort B (enrichment cohort). Please enter the proportion of enrolled patients belonging to Cohort B. Enter a proportion of 0 if no enrichment cohort is needed.",
@@ -209,39 +231,24 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                          #                  bsTooltip("CTMinCohortB", "An optional feature is to require a trial to enroll a minimum number of Cohort B patients. Once the maximum N is attained, enrollment of Cohort A patients will be suspended and only Cohort B patients may enroll until the minimum number has been attained. Please enter the minimum number of Cohort B patients to be enrolled in a trial. Enter 0 if no minimum number is required.",
                                          #                            "top", options = list(container = "body"))
                                          # ),
-                                         splitLayout(cellWidths = c("50%", "25%", "25%"),
-                                                     actionButton("CTSimulate", "Simulate", width = "100%", style = "font-weight: bold;"),
-                                                     downloadButton("CTResults", "", style = "font-weight: bold; width: 100%;"),
-                                                     actionButton("CTReset", "Reset", width = "100%", style = "font-weight: bold;")
-                                         ),
+                                        
                                          bsTooltip("CTSimulate", "Simulates the selected design(s) using the values of the above inputs", 
                                                    "top", options = list(container = "body")),
                                          bsTooltip("CTResults", "Download the full report of plots, tables, and summaries", 
                                                    "top", options = list(container = "body")),
                                          bsTooltip("CTReset", "WARNING: Resets all of the inputs and results, cannot be undone", 
-                                                   "top", options = list(container = "body")),
-                                         shiny::textInput(inputId = "PID", label = "Patient ID",value =NULL),
-                                         shiny::numericInput(inputId = "DoseAdm", label = "Dose administered",value = NULL),
-                                         shiny::numericInput(inputId = "DLTobs", label = "DLT observed",value =NULL),
-                                         shiny::numericInput(inputId = "include", label = "Include patient in model",value = NULL),
-                                         shiny::actionButton(inputId = "add", label = "Add Data"),
-                                         shiny::selectInput(inputId = "remove_row", label = "Remove Row",choices = nrow(df)),
-                                         shiny::actionButton(inputId = "remove", label = "Remove"),
-                                         
-                                         DT::DTOutput(outputId = "table"),
-                                         
-                                         shiny::actionButton(inputId = "PDoutput", label = "Generate Output")
-                                         
+                                                   "top", options = list(container = "body"))
+                                  ),                                         
                                          
                                          
                                   ),
                                   column(9,
-                                         textOutput("testing"),
+                                         textOutput("Doutput"),
                                          
                                   )
                                 )
                                 
-                        ),
+                        ,
                         
                         tabItem(tabName = "Help"
                         ),
@@ -349,6 +356,10 @@ server <- function(input, output, session) {
     updateSelectInput(session, "DTStartLevel", choices = unlist(strsplit(input$DTDoseLabels, ",")), selected = unlist(strsplit(input$DTDoseLabels, ","))[2])
   })
   
+  # Update Current Level Based on Dose Labels (Conduct Page)
+  observe({
+    updateSelectInput(session, "CTCurrentDose", choices = unlist(strsplit(input$CTDoseLabels, ",")), selected = unlist(strsplit(input$CTDoseLabels, ","))[2])
+  })
   # Update Max Depending on Previous Input
   observe({
     updateSliderInput(session, "DTMinCohortB", max = input$DTMaxN)
@@ -360,7 +371,7 @@ server <- function(input, output, session) {
   
   # Get the Conduct Names That Are Selected
   CTSelectedDesignNames <- reactive({
-    conductInputs(c(input$CTSelectorTCRM, input$CTSelectorCRM))
+    conductInputs(c(input$CTSelectorTCRM))
   })
   
   #Conduct Dose Labels
@@ -381,6 +392,17 @@ server <- function(input, output, session) {
     }
   })
   
+  #Number of SLots Remaining
+  
+  
+  
+  observeEvent(list(input$CTSlots, input$CTCohortSize), {
+    req(input$CTSlots)
+    hideFeedback("CTSlots")
+    if (input$CTSlots != input$CTCohortSize - 1) {
+      showFeedbackDanger("CTSlots", "The number of slots available must be 1 less than the cohort size.")
+    }
+  })
   
   # True Tox
   observeEvent(list(input$DTTrueTox, input$DTNumDoses), {
@@ -469,10 +491,10 @@ server <- function(input, output, session) {
   
   
   # TARGET-CRM
-  if(input$CTSelectorTCRM == TRUE) {
+  if(input$CTSelectorTCRM == "target_crm") {
 
-    testing <- conduct.target.crm(prior =numerizer(input$DTPriorTox), target.tox = input$CTTargetTox,tox= input$DLTobs, level=input$DoseAdm,dose.labels =input$CTDoseLabels,include=input$include, pid=input$pid,
-  cohort.size = input$CTCohortSize, num.slots.remain=2,current.dose=3)
+    testing <- conduct.target.crm(prior=numerizer(input$CTPriorTox), target.tox=input$CTTargetTox,tox=input$DLTobs, level=input$DoseAdm,dose.labels=input$CTDoseLabels,include=input$include, pid=input$pid,
+  cohort.size=input$CTCohortSize, num.slots.remain=input$CTSlots,current.dose=input$CTCurrentDose)
 
   }
   
