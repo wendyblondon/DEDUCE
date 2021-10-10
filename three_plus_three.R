@@ -167,9 +167,9 @@ three_plus_three <- function (target_tox, number_trials, true_tox, arrival_rate,
   true_mtd <- which.min(round(abs(target_tox-true_tox),10))
   pcs <- mtd_selection_table[true_mtd] / sum(mtd_selection_table)
   obs_tox_overall <- sum(observe_tox)/sum(patient_allocation)
-  mean_obs_N <- mean(colSums(patient_allocation))
-  min_obs_N <- min(colSums(patient_allocation))
-  max_obs_N <- max(colSums(patient_allocation))
+  mean_obs_n <- mean(colSums(patient_allocation))
+  min_obs_n <- min(colSums(patient_allocation))
+  max_obs_n <- max(colSums(patient_allocation))
   
   patient_allocation_table <- rowSums(patient_allocation)/sum(patient_allocation)
   
@@ -191,7 +191,7 @@ three_plus_three <- function (target_tox, number_trials, true_tox, arrival_rate,
                mtd_selection=mtd_selection, study_duration=study_duration, observe_tox=observe_tox, patient_allocation=patient_allocation,
                
                mtd_selection_table = mtd_selection_table, true_mtd=true_mtd, pcs=pcs, obs_tox_overall=obs_tox_overall,
-               mean_obs_N=mean_obs_N, min_obs_N=min_obs_N, max_obs_N=max_obs_N,
+               mean_obs_n=mean_obs_n, min_obs_n=min_obs_n, max_obs_n=max_obs_n,
                patient_allocation_table=patient_allocation_table, obs_tox_table=obs_tox_table, mean_cohort_b=mean_cohort_b, sd_cohort_b=sd_cohort_b,
                mean_duration=mean_duration, sd_duration=sd_duration, time_taken=time_taken)
   return(result)
