@@ -14,258 +14,257 @@ library(dfcrm)
 
 #####################
 # TARGET-CRM FUNCTION: requires cohort size=3 regardless of intra-patient de-escalation
-# Jan 28, 2019: include indicator "target.crm" 
-	# target.crm=0: NO enrollment of patients at one dose below
-	# target.crm=1: Enrollment of patients at one dose below
-	# target.crm=2: Enrollment of patients at current best dose based on available information, cannot be higher than current dose
+# Jan 28, 2019: include indicator "target_crm" 
+	# target_crm=0: NO enrollment of patients at one dose below
+	# target_crm=1: Enrollment of patients at one dose below
+	# target_crm=2: Enrollment of patients at current best dose based on available information, cannot be higher than current dose
 
-# May 15, 2019: stratified design "min.cohortB" - require minimum number of cohort B patients
+# May 15, 2019: stratified design "min_cohort_b" - require minimum number of cohort B patients
 
-# Jan 22, 2021: New TARGET-CRM function with hard coded target.crm parameter = 1.
+# Jan 22, 2021: New TARGET-CRM function with hard coded target_crm parameter = 1.
 
 
-my.target.crm <- function(prior, target.tox, number.trials, true.tox, arrival.rate, prop.B, 
-                       min.cohortB=0, cycle.length, cohort.size, max.N, start.level) {
+my_target_crm <- function(prior, target_tox, number_trials, true_tox, arrival_rate, prop_b, min_cohort_b=0, cycle_length, cohort_size, max_n, start_level) {
   start <- Sys.time()
   
 # information of interest
-total.patients <- rep(0, number.trials)
-num.cohortA.patients <- rep(0, number.trials)
-num.cohortB.patients <- rep(0, number.trials)
-num.group1.patients <- rep(0, number.trials)
-num.group2.patients <- rep(0, number.trials)
-MTD.selection <- rep(0,number.trials)
-study.duration <- rep(0,number.trials)
-result.num.dose.changes <- rep(0,number.trials)
+total_patients <- rep(0, number_trials)
+num_cohort_a_patients <- rep(0, number_trials)
+num_cohort_b_patients <- rep(0, number_trials)
+num_group_1_patients <- rep(0, number_trials)
+num_group_2_patients <- rep(0, number_trials)
+mtd_selection <- rep(0,number_trials)
+study_duration <- rep(0,number_trials)
+result_num_dose_changes <- rep(0,number_trials)
 
-observe.tox <- mat.or.vec(nr=length(true.tox), nc=number.trials)
-patient.allocation <- mat.or.vec(nr=length(true.tox), nc=number.trials)
+observe_tox <- mat.or.vec(nr=length(true_tox), nc=number_trials)
+patient_allocation <- mat.or.vec(nr=length(true_tox), nc=number_trials)
 
 ##############################################
-# Hard coded target.crm parameter = 1.
-target.crm <- 1
+# Hard coded target_crm parameter = 1.
+target_crm <- 1
 ##############################################
 
-start.time <- proc.time()
-for (i in 1:number.trials) {
+start_time <- proc.time()
+for (i in 1:number_trials) {
 	#print (c("Trial ", i))
 	# Enroll first patient
-	num.slots <- cohort.size # counter to be in the main cohort
-	num.waiting <- 0 # counter for number of cohort A patients waiting
-	wait.cohort <- numeric(0) # array for the cohort of patients in wait list
-	study.end <- 0 # flag to end study
-	current.dose <- start.level # current dose level
-	timeline.time <- 0 # overall study timeline
-	num.dose.changes <- 0
-	PID <- 1
-	#print(PID)
-	arrive.time <- timeline.time + rpois(1, arrival.rate)
-	timeline.time <- arrive.time
-	cohortB <- rbinom(1, 1, prob=prop.B)
-	d <- current.dose
+	num_slots <- cohort_size # counter to be in the main cohort
+	num_waiting <- 0 # counter for number of cohort A patients waiting
+	wait_cohort <- numeric(0) # array for the cohort of patients in wait list
+	study_end <- 0 # flag to end study
+	current_dose <- start_level # current dose level
+	timeline_time <- 0 # overall study timeline
+	num_dose_changes <- 0
+	pid <- 1
+	#print(pid)
+	arrive_time <- timeline_time + rpois(1, arrival_rate)
+	timeline_time <- arrive_time
+	cohort_b <- rbinom(1, 1, prob=prop_b)
+	d <- current_dose
 	# Determine toxicities
-	dose.tox <- rbinom(1,1,prob=true.tox[d])
-	if(dose.tox==1) {
-		end.time <- timeline.time + runif(n=1, min=0, max=cycle.length)
+	dose_tox <- rbinom(1,1,prob=true_tox[d])
+	if(dose_tox==1) {
+		end_time <- timeline_time + runif(n=1, min=0, max=cycle_length)
 	} else {
-		end.time <- timeline.time + cycle.length
+		end_time <- timeline_time + cycle_length
 	}
 	
 	include <- 0
 	group <- 1
-	wait.list <- 0
-	prev.cohort.end.time <- 0
-	num.slots <- num.slots - 1 # Used up one slot
-	pt <- data.frame (PID, arrive.time, cohortB, d, dose.tox, end.time, group, wait.list, include)
+	wait_list <- 0
+	prev_cohort_end_time <- 0
+	num_slots <- num_slots - 1 # Used up one slot
+	pt <- data.frame (pid, arrive_time, cohort_b, d, dose_tox, end_time, group, wait_list, include)
 	
 	# Update counts
-	observe.tox[d,i] <- observe.tox[d,i]+dose.tox
-	patient.allocation[d,i] <- patient.allocation[d,i]+1
+	observe_tox[d,i] <- observe_tox[d,i]+dose_tox
+	patient_allocation[d,i] <- patient_allocation[d,i]+1
 	
-	while (study.end == 0 | length(pt$PID[pt$cohortB==1]) < min.cohortB) { # NEW require at least min.cohortB patients
+	while (study_end == 0 | length(pt$pid[pt$cohort_b==1]) < min_cohort_b) { # NEW require at least min_cohort_b patients
 		# Patient arrives
-		#print(PID)
+		#print(pid)
 		#print(pt)
-		#print(timeline.time)
+		#print(timeline_time)
 
-		if (study.end == 0) {
-			PID <- PID+1
-			arrive.time <- timeline.time + rpois(1, arrival.rate)
-			timeline.time <- arrive.time
-			cohortB <- rbinom(1, 1, prob=prop.B)
-		} else if (study.end == 1) { # reached study end but not sufficient cohort B patients
+		if (study_end == 0) {
+			pid <- pid+1
+			arrive_time <- timeline_time + rpois(1, arrival_rate)
+			timeline_time <- arrive_time
+			cohort_b <- rbinom(1, 1, prob=prop_b)
+		} else if (study_end == 1) { # reached study end but not sufficient cohort B patients
 			# print("study end == 1 but not sufficient cohort B patients")
 			# sample patients until a cohort B patient arrives
 			repeat {
-				#print(PID)
-				PID <- PID+1
-				arrive.time <- timeline.time + rpois(1, arrival.rate)
-				timeline.time <- arrive.time
-				cohortB <- rbinom(1, 1, prob=prop.B)
-				if (cohortB == 1) {
+				#print(pid)
+				pid <- pid+1
+				arrive_time <- timeline_time + rpois(1, arrival_rate)
+				timeline_time <- arrive_time
+				cohort_b <- rbinom(1, 1, prob=prop_b)
+				if (cohort_b == 1) {
 					break
 				}
 			}
 		}			
 
 		# Update which patients to include
-		pt$include <- ifelse(pt$end.time <= timeline.time, 1, 0) # Modified 8/31/2018 to "<="
+		pt$include <- ifelse(pt$end_time <= timeline_time, 1, 0) # Modified 8/31/2018 to "<="
 	
 		# Check if new cohort can be enrolled [only include main cohort timeline]
-		if (num.slots == 0 & timeline.time > tail(pt$end.time[pt$group==1],n=1)) {
-			num.slots <- cohort.size
+		if (num_slots == 0 & timeline_time > tail(pt$end_time[pt$group==1],n=1)) {
+			num_slots <- cohort_size
 		}
 	
-		if (num.slots == cohort.size) { # start of main cohort
-			wait.list <- 0
+		if (num_slots == cohort_size) { # start of main cohort
+			wait_list <- 0
 			# Check for waiting list patients
-			if (num.waiting > 0) {
+			if (num_waiting > 0) {
 				#print ("Enrolling waitlist patient")
-				arrive.time <- prev.cohort.end.time
-				timeline.time <- arrive.time
-				cohortB <- wait.cohort[1] # take first wait list patient
-				wait.cohort <- wait.cohort[-1] # remove from waitlist
+				arrive_time <- prev_cohort_end_time
+				timeline_time <- arrive_time
+				cohort_b <- wait_cohort[1] # take first wait list patient
+				wait_cohort <- wait_cohort[-1] # remove from waitlist
 				# Update which patients to include
-				pt$include <- ifelse(pt$end.time <= timeline.time, 1, 0) # Modified 8/31/2018 to "<="
-				wait.list <- 1
-				num.waiting <- num.waiting - 1
+				pt$include <- ifelse(pt$end_time <= timeline_time, 1, 0) # Modified 8/31/2018 to "<="
+				wait_list <- 1
+				num_waiting <- num_waiting - 1
 			}
 	
-			if (length(pt$PID[pt$include==1])==0) { # no completed observations yet
-				d <- current.dose
+			if (length(pt$pid[pt$include==1])==0) { # no completed observations yet
+				d <- current_dose
 			} else {
-				run.crm <- crm(prior=prior, target=target.tox, tox=pt$dose.tox, level=pt$d, include=which(pt$include==1))
-				#print(c("CRM dose", run.crm$mtd))
-				if (run.crm$mtd > current.dose & current.dose < length(prior)) {
-					current.dose <- current.dose + 1 # Can only escalate one dose higher
-					d <- current.dose
-					num.dose.changes <- num.dose.changes+1
+				run_crm <- crm(prior=prior, target=target_tox, tox=pt$dose_tox, level=pt$d, include=which(pt$include==1))
+				#print(c("CRM dose", run_crm$mtd))
+				if (run_crm$mtd > current_dose & current_dose < length(prior)) {
+					current_dose <- current_dose + 1 # Can only escalate one dose higher
+					d <- current_dose
+					num_dose_changes <- num_dose_changes+1
 				} else {
-					if (run.crm$mtd < current.dose) {
-						num.dose.changes <- num.dose.changes+1
+					if (run_crm$mtd < current_dose) {
+						num_dose_changes <- num_dose_changes+1
 					}
-					current.dose <- run.crm$mtd
-					d <- current.dose
-					##num.slots <- cohort.size # NEW: if de-escalate, then reset num.slots to cohort.size
+					current_dose <- run_crm$mtd
+					d <- current_dose
+					##num_slots <- cohort_size # NEW: if de-escalate, then reset num_slots to cohort_size
 				}
-				#print(c("Recommended dose", current.dose))
+				#print(c("Recommended dose", current_dose))
 			}
 			# Determine toxicities
-			dose.tox <- rbinom(1,1,prob=true.tox[d])
-			if(dose.tox==1) {
-				end.time <- timeline.time + runif(n=1, min=0, max=cycle.length)
+			dose_tox <- rbinom(1,1,prob=true_tox[d])
+			if(dose_tox==1) {
+				end_time <- timeline_time + runif(n=1, min=0, max=cycle_length)
 			} else {
-				end.time <- timeline.time + cycle.length
+				end_time <- timeline_time + cycle_length
 			}
 
 			group <- 1
-			num.slots <- num.slots - 1 # Used up one slot
+			num_slots <- num_slots - 1 # Used up one slot
 	
 			# Add to pt tracker matrix
-			pt <- rbind(pt, c(PID, arrive.time, cohortB, d, dose.tox, end.time, group, wait.list, include))
+			pt <- rbind(pt, c(pid, arrive_time, cohort_b, d, dose_tox, end_time, group, wait_list, include))
 			
 			# Update counts
-			observe.tox[d,i] <- observe.tox[d,i]+dose.tox
-			patient.allocation[d,i] <- patient.allocation[d,i]+1
+			observe_tox[d,i] <- observe_tox[d,i]+dose_tox
+			patient_allocation[d,i] <- patient_allocation[d,i]+1
 	
-		} else if (num.slots > 0 & num.slots < cohort.size) { # enroll in main cohort
-			wait.list <- 0
+		} else if (num_slots > 0 & num_slots < cohort_size) { # enroll in main cohort
+			wait_list <- 0
 			# Check for waiting list patients
-			if (num.waiting > 0) {
+			if (num_waiting > 0) {
 				#print ("Enrolling waitlist patient")
-				arrive.time <- prev.cohort.end.time
-				timeline.time <- arrive.time
-				cohortB <- wait.cohort[1] # take first wait list patient
-				wait.cohort <- wait.cohort[-1] # remove from waitlist
+				arrive_time <- prev_cohort_end_time
+				timeline_time <- arrive_time
+				cohort_b <- wait_cohort[1] # take first wait list patient
+				wait_cohort <- wait_cohort[-1] # remove from waitlist
 				# Update which patients to include
-				pt$include <- ifelse(pt$end.time <= timeline.time, 1, 0) # Modified 8/31/2018 to "<="
-				wait.list <- 1
-				num.waiting <- num.waiting - 1
+				pt$include <- ifelse(pt$end_time <= timeline_time, 1, 0) # Modified 8/31/2018 to "<="
+				wait_list <- 1
+				num_waiting <- num_waiting - 1
 			}
 
-			if (length(pt$PID[pt$include==1])==0) { # no completed observations yet
-				d <- current.dose
+			if (length(pt$pid[pt$include==1])==0) { # no completed observations yet
+				d <- current_dose
 			} else {
 				# Calculate recommended dose
-				run.crm <- crm(prior=prior, target=target.tox, tox=pt$dose.tox, level=pt$d, include=which(pt$include==1))
-				if (run.crm$mtd < current.dose) { # Within a cohort, can only stay at same dose or de-escalate
-					current.dose <- run.crm$mtd
-					#print(c("CRM dose", current.dose))
-					d <- current.dose
-					num.dose.changes <- num.dose.changes+1
-					##num.slots <- cohort.size # NEW: if de-escalate, then reset num.slots to cohort.size
+				run_crm <- crm(prior=prior, target=target_tox, tox=pt$dose_tox, level=pt$d, include=which(pt$include==1))
+				if (run_crm$mtd < current_dose) { # Within a cohort, can only stay at same dose or de-escalate
+					current_dose <- run_crm$mtd
+					#print(c("CRM dose", current_dose))
+					d <- current_dose
+					num_dose_changes <- num_dose_changes+1
+					##num_slots <- cohort_size # NEW: if de-escalate, then reset num_slots to cohort_size
 				} else {
-					d <- current.dose
+					d <- current_dose
 				}
-				#print(c("Recommended dose", current.dose))
+				#print(c("Recommended dose", current_dose))
 			}
 			# Determine toxicities
-			dose.tox <- rbinom(1,1,prob=true.tox[d])
-			if(dose.tox==1) {
-				end.time <- timeline.time + runif(n=1, min=0, max=cycle.length)
+			dose_tox <- rbinom(1,1,prob=true_tox[d])
+			if(dose_tox==1) {
+				end_time <- timeline_time + runif(n=1, min=0, max=cycle_length)
 			} else {
-				end.time <- timeline.time + cycle.length
+				end_time <- timeline_time + cycle_length
 			}
 	
 			group <- 1
-			num.slots <- num.slots - 1 # Used up one slot
+			num_slots <- num_slots - 1 # Used up one slot
 	
 			# Add to pt tracker matrix
-			pt <- rbind(pt, c(PID, arrive.time, cohortB, d, dose.tox, end.time, group, wait.list, include))
+			pt <- rbind(pt, c(pid, arrive_time, cohort_b, d, dose_tox, end_time, group, wait_list, include))
 	
 			# Update counts
-			observe.tox[d,i] <- observe.tox[d,i]+dose.tox
-			patient.allocation[d,i] <- patient.allocation[d,i]+1
+			observe_tox[d,i] <- observe_tox[d,i]+dose_tox
+			patient_allocation[d,i] <- patient_allocation[d,i]+1
 	
-		} else if (num.slots == 0) { # cohort B patients enrolled on one dose below current
+		} else if (num_slots == 0) { # cohort B patients enrolled on one dose below current
 			# Capture previous cohort end time
-			prev.cohort.end.time <- tail(pt$end.time[pt$group==1],n=1)
+			prev_cohort_end_time <- tail(pt$end_time[pt$group==1],n=1)
 	
 			 	# YES capture Cohort B patients at one dose below
-				if (cohortB == 1 & current.dose > 1 & target.crm==1) {
-					d <- current.dose-1
+				if (cohort_b == 1 & current_dose > 1 & target_crm==1) {
+					d <- current_dose-1
 
 					# Determine toxicities
-					dose.tox <- rbinom(1,1,prob=true.tox[d])
-					if(dose.tox==1) {
-						end.time <- timeline.time + runif(n=1, min=0, max=cycle.length)
+					dose_tox <- rbinom(1,1,prob=true_tox[d])
+					if(dose_tox==1) {
+						end_time <- timeline_time + runif(n=1, min=0, max=cycle_length)
 					} else {
-						end.time <- timeline.time + cycle.length
+						end_time <- timeline_time + cycle_length
 					}
 					group <- 2
-					wait.list <- 0
+					wait_list <- 0
 					# Add to pt tracker matrix
-					pt <- rbind(pt, c(PID, arrive.time, cohortB, d, dose.tox, end.time, group, wait.list, include))
+					pt <- rbind(pt, c(pid, arrive_time, cohort_b, d, dose_tox, end_time, group, wait_list, include))
 		
 					# Update counts
-					observe.tox[d,i] <- observe.tox[d,i]+dose.tox
-					patient.allocation[d,i] <- patient.allocation[d,i]+1
+					observe_tox[d,i] <- observe_tox[d,i]+dose_tox
+					patient_allocation[d,i] <- patient_allocation[d,i]+1
 			 	# YES capture Cohort B patients at current recommended dose
-				} else if (cohortB == 1 & target.crm==2) { # NEW: allow capture of Cohort B patients even at lowest dose level
-					d <- current.dose
+				} else if (cohort_b == 1 & target_crm==2) { # NEW: allow capture of Cohort B patients even at lowest dose level
+					d <- current_dose
 
 					# Determine toxicities
-					dose.tox <- rbinom(1,1,prob=true.tox[d])
-					if(dose.tox==1) {
-						end.time <- timeline.time + runif(n=1, min=0, max=cycle.length)
+					dose_tox <- rbinom(1,1,prob=true_tox[d])
+					if(dose_tox==1) {
+						end_time <- timeline_time + runif(n=1, min=0, max=cycle_length)
 					} else {
-						end.time <- timeline.time + cycle.length
+						end_time <- timeline_time + cycle_length
 					}
 					group <- 2
-					wait.list <- 0
+					wait_list <- 0
 					# Add to pt tracker matrix
-					pt <- rbind(pt, c(PID, arrive.time, cohortB, d, dose.tox, end.time, group, wait.list, include))
+					pt <- rbind(pt, c(pid, arrive_time, cohort_b, d, dose_tox, end_time, group, wait_list, include))
 		
 					# Update counts
-					observe.tox[d,i] <- observe.tox[d,i]+dose.tox
-					patient.allocation[d,i] <- patient.allocation[d,i]+1
+					observe_tox[d,i] <- observe_tox[d,i]+dose_tox
+					patient_allocation[d,i] <- patient_allocation[d,i]+1
 
 				} else { # patients added to waiting list with 50% chance of actual enrollment
 					if(rbinom(1,1,0.5)==1) {
-						num.waiting <- num.waiting + 1
-						wait.cohort <- cbind(wait.cohort, cohortB) # Capture which cohort it belongs to
-						#print (c("Adding patient to waitlist: ", PID))
-						#print (c("waitlist cohort: ", wait.cohort))
+						num_waiting <- num_waiting + 1
+						wait_cohort <- cbind(wait_cohort, cohort_b) # Capture which cohort it belongs to
+						#print (c("Adding patient to waitlist: ", pid))
+						#print (c("waitlist cohort: ", wait_cohort))
 					}
 				}
 
@@ -275,63 +274,63 @@ for (i in 1:number.trials) {
 		}
 
 		# Check for study end
-		if (length(pt$PID)==max.N) { 
-			study.end<-1 
+		if (length(pt$pid)==max_n) { 
+			study_end<-1 
 			# Study end, finish observing remaining patients
-			timeline.time <- max(pt$end.time)
+			timeline_time <- max(pt$end_time)
 			pt$include <- 1
-			run.crm.final <- crm(prior=prior, target=target.tox, tox=pt$dose.tox, level=pt$d, include=which(pt$include==1))
+			run_crm_final <- crm(prior=prior, target=target_tox, tox=pt$dose_tox, level=pt$d, include=which(pt$include==1))
 			#print(pt)
-			#print (c("MTD is", run.crm.final$mtd))
-			MTD.selection[i] <- run.crm.final$mtd
-			total.patients[i] <- length(pt$PID)
-			num.cohortA.patients[i] <- length(pt$PID[pt$cohortB==0])
-			num.cohortB.patients[i] <- length(pt$PID[pt$cohortB==1])
-			num.group1.patients[i] <- length(pt$PID[pt$group==1])
-			num.group2.patients[i] <- length(pt$PID[pt$group==2])
-			study.duration[i] <- timeline.time
-			result.num.dose.changes[i] <- num.dose.changes
+			#print (c("mtd is", run_crm_final$mtd))
+			mtd_selection[i] <- run_crm_final$mtd
+			total_patients[i] <- length(pt$pid)
+			num_cohort_a_patients[i] <- length(pt$pid[pt$cohort_b==0])
+			num_cohort_b_patients[i] <- length(pt$pid[pt$cohort_b==1])
+			num_group_1_patients[i] <- length(pt$pid[pt$group==1])
+			num_group_2_patients[i] <- length(pt$pid[pt$group==2])
+			study_duration[i] <- timeline_time
+			result_num_dose_changes[i] <- num_dose_changes
 		}
 	}
 }
 
-MTD.selection.table <- table(MTD.selection)
-true.MTD <- which.min(round(abs(target.tox-true.tox),10))
-PCS <- MTD.selection.table[true.MTD] / sum(MTD.selection.table)
-obs.tox.overall <- sum(observe.tox)/sum(patient.allocation)
-mean.obs.N <- mean(colSums(patient.allocation))
-min.obs.N <- min(colSums(patient.allocation))
-max.obs.N <- max(colSums(patient.allocation))
+mtd_selection_table <- table(mtd_selection)
+true_mtd <- which.min(round(abs(target_tox-true_tox),10))
+pcs <- mtd_selection_table[true_mtd] / sum(mtd_selection_table)
+obs_tox_overall <- sum(observe_tox)/sum(patient_allocation)
+mean_obs_N <- mean(colSums(patient_allocation))
+min_obs_N <- min(colSums(patient_allocation))
+max_obs_N <- max(colSums(patient_allocation))
 
-patient.allocation.table <- rowSums(patient.allocation)/sum(patient.allocation)
-obs.tox.table <- rowSums(observe.tox)/sum(patient.allocation)
+patient_allocation_table <- rowSums(patient_allocation)/sum(patient_allocation)
+obs_tox_table <- rowSums(observe_tox)/sum(patient_allocation)
 
-mean.cohortB = mean(num.group2.patients)
-sd.cohortB = sd(num.group2.patients)
-mean.duration = mean(study.duration)
-sd.duration = sd(study.duration)
+mean_cohort_b = mean(num_group_2_patients)
+sd_cohort_b = sd(num_group_2_patients)
+mean_duration = mean(study_duration)
+sd_duration = sd(study_duration)
 
-df <- data.frame("design"="TARGET-CRM", "true.tox"=true.tox, "trueMTD"=true.MTD, "MTD"=MTD.selection.table,"patient.allocation.table"=patient.allocation.table, "obs.tox.table"=obs.tox.table)
+df <- data.frame("design"="TARGET-CRM", "true_tox"=true_tox, "truemtd"=true_mtd, "mtd"=mtd_selection_table,"patient_allocation_table"=patient_allocation_table, "obs_tox_table"=obs_tox_table)
 
 finish <- Sys.time()
-time.taken <- finish - start
+time_taken <- finish - start
 
-############ Removed "target.crm" from "results" list.
+############ Removed "target_crm" from "results" list_
 
-result <- list(df=df, prior=prior, target.tox=target.tox, number.trials=number.trials, true.tox=true.tox, arrival.rate=arrival.rate, 
-prop.B=prop.B, min.cohortB=min.cohortB, cycle.length=cycle.length, cohort.size=cohort.size, max.N=max.N, start.level=start.level, 
-total.patients=total.patients, num.cohortA.patients=num.cohortA.patients, num.cohortB.patients=num.cohortB.patients,
-num.group1.patients=num.group1.patients, num.group2.patients=num.group2.patients, results.num.dose.changes=result.num.dose.changes, MTD.selection=MTD.selection,
-study.duration=study.duration, observe.tox=observe.tox, patient.allocation=patient.allocation, mean.obs.N=mean.obs.N, min.obs.N=min.obs.N, max.obs.N=max.obs.N,
+result <- list(df=df, prior=prior, target_tox=target_tox, number_trials=number_trials, true_tox=true_tox, arrival_rate=arrival_rate, 
+prop_b=prop_b, min_cohort_b=min_cohort_b, cycle_length=cycle_length, cohort_size=cohort_size, max_n=max_n, start_level=start_level, 
+total_patients=total_patients, num_cohort_a_patients=num_cohort_a_patients, num_cohort_b_patients=num_cohort_b_patients,
+num_group_1_patients=num_group_1_patients, num_group_2_patients=num_group_2_patients, results_num_dose_changes=result_num_dose_changes, mtd_selection=mtd_selection,
+study_duration=study_duration, observe_tox=observe_tox, patient_allocation=patient_allocation, mean_obs_N=mean_obs_N, min_obs_N=min_obs_N, max_obs_N=max_obs_N,
 
-MTD.selection.table = MTD.selection.table, true.MTD=true.MTD, PCS=PCS, obs.tox.overall=obs.tox.overall, patient.allocation.table=patient.allocation.table, obs.tox.table=obs.tox.table,
-mean.cohortB=mean.cohortB, sd.cohortB=sd.cohortB, mean.duration=mean.duration, sd.duration=sd.duration)
+mtd_selection_table = mtd_selection_table, true_mtd=true_mtd, pcs=pcs, obs_tox_overall=obs_tox_overall, patient_allocation_table=patient_allocation_table, obs_tox_table=obs_tox_table,
+mean_cohort_b=mean_cohort_b, sd_cohort_b=sd_cohort_b, mean_duration=mean_duration, sd_duration=sd_duration)
 return(result)
 }
 
-############################
-# targetCRMOut <- my.target.crm(prior=c(0.05,0.1,0.2,0.3), target.tox=0.2, number.trials=100, true.tox=c(0.05,0.12,0.20,0.30), 
-#                      arrival.rate=15, prop.B=0.1, min.cohortB=0, cycle.length=28, cohort.size=3, max.N=18, start.level=2)
+# Example: -------------------
+# target_crm_result <- my_target_crm(prior=c(0.05,0.1,0.2,0.3), target_tox=0.2, number_trials=100, true_tox=c(0.05,0.12,0.20,0.30), 
+#                      arrival_rate=15, prop_b=0.1, min_cohort_b=0, cycle_length=28, cohort_size=3, max_n=18, start_level=2)
 
 
 
