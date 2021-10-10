@@ -4,200 +4,200 @@
 
 ###################################################################
 # Helper function - provides recommendations for 3+3 design
-recommend.3plus3 <- function(current.dose, true.tox, pt) {
-  subset.pt <- pt[pt$d == current.dose,]
-  num.tox <- sum(subset.pt$dose.tox)
-  num.pts <- length(subset.pt$dose.tox)
+recommend_3_plus_3 <- function(current_dose, true_tox, pt) {
+  subset_pt <- pt[pt$d == current_dose,]
+  num_tox <- sum(subset_pt$dose_tox)
+  num_pts <- length(subset_pt$dose_tox)
   
-  if (num.pts==3) {
-    if (num.tox>=2) {
-      recommend.dose <- ifelse(current.dose==1, current.dose, current.dose - 1)
-      study.end<-1
-    } else if (num.tox == 1) {
-      recommend.dose <- current.dose
-      study.end<-0
-    } else if (num.tox ==0) {
-      recommend.dose <- ifelse(current.dose==length(true.tox), current.dose, current.dose + 1)
-      study.end<-0
+  if (num_pts==3) {
+    if (num_tox>=2) {
+      recommend_dose <- ifelse(current_dose==1, current_dose, current_dose - 1)
+      study_end<-1
+    } else if (num_tox == 1) {
+      recommend_dose <- current_dose
+      study_end<-0
+    } else if (num_tox ==0) {
+      recommend_dose <- ifelse(current_dose==length(true_tox), current_dose, current_dose + 1)
+      study_end<-0
     }
-  } else if (num.pts==6) {
-    if (num.tox>=2) {
-      recommend.dose <- ifelse(current.dose==1, current.dose, current.dose - 1)
-      study.end<-1
-    } else if (num.tox <= 1) {
-      if (current.dose == length(true.tox)) {
-        recommend.dose <- current.dose
-        study.end <- 1
+  } else if (num_pts==6) {
+    if (num_tox>=2) {
+      recommend_dose <- ifelse(current_dose==1, current_dose, current_dose - 1)
+      study_end<-1
+    } else if (num_tox <= 1) {
+      if (current_dose == length(true_tox)) {
+        recommend_dose <- current_dose
+        study_end <- 1
       } else {
-        recommend.dose <- current.dose+1
-        study.end <- 0
+        recommend_dose <- current_dose+1
+        study_end <- 0
       }
     }
   }
-  return (list(recommend.dose=recommend.dose, study.end=study.end))
+  return (list(recommend_dose=recommend_dose, study_end=study_end))
 }
 
 #################################################################
 
 
 # Main simulation function
-three.plus.three <- function (target.tox, number.trials, true.tox, arrival.rate, prop.B=0, cycle.length, start.level) {
+three_plus_three <- function (target_tox, number_trials, true_tox, arrival_rate, prop_b=0, cycle_length, start_level) {
   
   start <- Sys.time()
   
   # information of interest
-  total.patients <- rep(0, number.trials)
-  num.cohortA.patients <- rep(0, number.trials)
-  num.cohortB.patients <- rep(0, number.trials)
-  #num.group1.patients <- rep(0, number.trials)
-  #num.group2.patients <- rep(0, number.trials)
-  MTD.selection <- rep(0,number.trials)
-  study.duration <- rep(0,number.trials)
+  total_patients <- rep(0, number_trials)
+  num_cohort_a_patients <- rep(0, number_trials)
+  num_cohort_b_patients <- rep(0, number_trials)
+  #num_group_1_patients <- rep(0, number_trials)
+  #num_group_2_patients <- rep(0, number_trials)
+  mtd_selection <- rep(0,number_trials)
+  study_duration <- rep(0,number_trials)
   
-  observe.tox <- mat.or.vec(nr=length(true.tox), nc=number.trials)
-  patient.allocation <- mat.or.vec(nr=length(true.tox), nc=number.trials)
+  observe_tox <- mat.or.vec(nr=length(true_tox), nc=number_trials)
+  patient_allocation <- mat.or.vec(nr=length(true_tox), nc=number_trials)
   
-  for (i in 1:number.trials) {
+  for (i in 1:number_trials) {
     # print (c("Trial ", i))
-    study.end <- 0
-    current.dose <- start.level # current dose level
-    timeline.time <- 0
+    study_end <- 0
+    current_dose <- start_level # current dose level
+    timeline_time <- 0
     
     # Enroll first cohort of 3 patients
     PID <- c(1:3)
-    inter.time <- rpois(3, arrival.rate)
-    arrive.time <- c(timeline.time+inter.time[1], timeline.time+inter.time[1]+inter.time[2], timeline.time+inter.time[1]+inter.time[2]+inter.time[3])
-    cohortB <- rbinom(3, 1, prob=prop.B)	
-    d <- rep(current.dose, 3)
+    inter_time <- rpois(3, arrival_rate)
+    arrive_time <- c(timeline_time+inter_time[1], timeline_time+inter_time[1]+inter_time[2], timeline_time+inter_time[1]+inter_time[2]+inter_time[3])
+    cohort_b <- rbinom(3, 1, prob=prop_b)	
+    d <- rep(current_dose, 3)
     
     # Determine toxicities
-    dose.tox <- rbinom(3,1,prob=true.tox[d])
+    dose_tox <- rbinom(3,1,prob=true_tox[d])
     
-    end.time <- ifelse(dose.tox==1, arrive.time+runif(n=1,min=0,max=cycle.length), arrive.time+cycle.length)
-    timeline.time <- max(end.time)
+    end_time <- ifelse(dose_tox==1, arrive_time+runif(n=1,min=0,max=cycle_length), arrive_time+cycle_length)
+    timeline_time <- max(end_time)
     
-    pt <- data.frame(PID, arrive.time, end.time, cohortB, d, dose.tox)
+    pt <- data.frame(PID, arrive_time, end_time, cohort_b, d, dose_tox)
     
-    recommend <- recommend.3plus3 (current.dose, true.tox, pt)
-    current.dose <- recommend$recommend.dose
-    study.end <- recommend$study.end
+    recommend <- recommend_3_plus_3 (current_dose, true_tox, pt)
+    current_dose <- recommend$recommend_dose
+    study_end <- recommend$study_end
     
     # Conducting the trial BEFORE trial end is triggered
-    while(study.end == 0) {
+    while(study_end == 0) {
       PID <- PID+3
-      inter.time <- rpois(3, arrival.rate)
-      arrive.time <- c(timeline.time+inter.time[1], timeline.time+inter.time[1]+inter.time[2], timeline.time+inter.time[1]+inter.time[2]+inter.time[3])
-      cohortB <- rbinom(3, 1, prob=prop.B)	
-      d <- rep(current.dose, 3)
+      inter_time <- rpois(3, arrival_rate)
+      arrive_time <- c(timeline_time+inter_time[1], timeline_time+inter_time[1]+inter_time[2], timeline_time+inter_time[1]+inter_time[2]+inter_time[3])
+      cohort_b <- rbinom(3, 1, prob=prop_b)	
+      d <- rep(current_dose, 3)
       
       # Determine toxicities
-      dose.tox <- rbinom(3,1,prob=true.tox[d])
-      end.time <- ifelse(dose.tox==1, arrive.time+runif(n=1,min=0,max=cycle.length), arrive.time+cycle.length)
-      timeline.time <- max(end.time)
+      dose_tox <- rbinom(3,1,prob=true_tox[d])
+      end_time <- ifelse(dose_tox==1, arrive_time+runif(n=1,min=0,max=cycle_length), arrive_time+cycle_length)
+      timeline_time <- max(end_time)
       
       
-      pt <- rbind(pt,data.frame(PID, arrive.time, end.time, cohortB, d, dose.tox))
+      pt <- rbind(pt,data.frame(PID, arrive_time, end_time, cohort_b, d, dose_tox))
       
-      recommend <- recommend.3plus3 (current.dose, true.tox, pt) 
-      current.dose <- recommend$recommend.dose
-      study.end <- recommend$study.end
+      recommend <- recommend_3_plus_3 (current_dose, true_tox, pt) 
+      current_dose <- recommend$recommend_dose
+      study_end <- recommend$study_end
       
     }
     
     # Trial end (no more dose changes)
-    pt.subset <- pt[pt$d==current.dose,]
-    num.pts <- length(pt.subset$dose.tox)	
+    pt_subset <- pt[pt$d==current_dose,]
+    num_pts <- length(pt_subset$dose_tox)	
     
-    if (num.pts==0) {
+    if (num_pts==0) {
       PID <- PID+6
       
-      inter.time <- rpois(6, arrival.rate)
-      arrive.time <- c(timeline.time+inter.time[1], 
-                       timeline.time+inter.time[1]+inter.time[2], 
-                       timeline.time+inter.time[1]+inter.time[2]+inter.time[3],
-                       timeline.time+inter.time[1]+inter.time[2]+inter.time[3]+inter.time[4],
-                       timeline.time+inter.time[1]+inter.time[2]+inter.time[3]+inter.time[4]+inter.time[5],
-                       timeline.time+inter.time[1]+inter.time[2]+inter.time[3]+inter.time[4]+inter.time[5]+inter.time[6])
+      inter_time <- rpois(6, arrival_rate)
+      arrive_time <- c(timeline_time+inter_time[1], 
+                       timeline_time+inter_time[1]+inter_time[2], 
+                       timeline_time+inter_time[1]+inter_time[2]+inter_time[3],
+                       timeline_time+inter_time[1]+inter_time[2]+inter_time[3]+inter_time[4],
+                       timeline_time+inter_time[1]+inter_time[2]+inter_time[3]+inter_time[4]+inter_time[5],
+                       timeline_time+inter_time[1]+inter_time[2]+inter_time[3]+inter_time[4]+inter_time[5]+inter_time[6])
       
-      cohortB <- rbinom(6, 1, prob=prop.B)	
-      d <- rep(current.dose, 6)
+      cohort_b <- rbinom(6, 1, prob=prop_b)	
+      d <- rep(current_dose, 6)
       
       # Determine toxicities
-      dose.tox <- rbinom(6,1,prob=true.tox[d])
-      end.time <- ifelse(dose.tox==1, arrive.time+runif(n=1,min=0,max=cycle.length), arrive.time+cycle.length)
-      timeline.time <- max(end.time)
+      dose_tox <- rbinom(6,1,prob=true_tox[d])
+      end_time <- ifelse(dose_tox==1, arrive_time+runif(n=1,min=0,max=cycle_length), arrive_time+cycle_length)
+      timeline_time <- max(end_time)
       
       
-      if (sum(dose.tox[1:3])<=1) {
-        pt <- rbind(pt,data.frame(PID, arrive.time, end.time, cohortB, d, dose.tox))
-      } else if (sum(dose.tox[1:3])>=2) {
-        pt <- rbind(pt,data.frame(PID, arrive.time, end.time, cohortB, d, dose.tox)[1:3,])
+      if (sum(dose_tox[1:3])<=1) {
+        pt <- rbind(pt,data.frame(PID, arrive_time, end_time, cohort_b, d, dose_tox))
+      } else if (sum(dose_tox[1:3])>=2) {
+        pt <- rbind(pt,data.frame(PID, arrive_time, end_time, cohort_b, d, dose_tox)[1:3,])
       }
-    } else if (num.pts==3) {
+    } else if (num_pts==3) {
       PID <- PID+3
-      inter.time <- rpois(3, arrival.rate)
-      arrive.time <- c(timeline.time+inter.time[1], timeline.time+inter.time[1]+inter.time[2], timeline.time+inter.time[1]+inter.time[2]+inter.time[3])
-      cohortB <- rbinom(3, 1, prob=prop.B)	
-      d <- rep(current.dose, 3)
+      inter_time <- rpois(3, arrival_rate)
+      arrive_time <- c(timeline_time+inter_time[1], timeline_time+inter_time[1]+inter_time[2], timeline_time+inter_time[1]+inter_time[2]+inter_time[3])
+      cohort_b <- rbinom(3, 1, prob=prop_b)	
+      d <- rep(current_dose, 3)
       
       # Determine toxicities
-      dose.tox <- rbinom(3,1,prob=true.tox[d])
-      end.time <- ifelse(dose.tox==1, arrive.time+runif(n=1,min=0,max=cycle.length), arrive.time+cycle.length)
-      timeline.time <- max(end.time)
+      dose_tox <- rbinom(3,1,prob=true_tox[d])
+      end_time <- ifelse(dose_tox==1, arrive_time+runif(n=1,min=0,max=cycle_length), arrive_time+cycle_length)
+      timeline_time <- max(end_time)
       
-      pt <- rbind(pt,data.frame(PID, arrive.time, end.time, cohortB, d, dose.tox))
+      pt <- rbind(pt,data.frame(PID, arrive_time, end_time, cohort_b, d, dose_tox))
     }
     
-    # Declare MTD
+    # Declare mtd
     
-    MTD.selection[i] <- current.dose
-    total.patients[i] <- length(pt$PID)
-    num.cohortA.patients[i] <- length(pt$PID[pt$cohortB==0])
-    num.cohortB.patients[i] <- length(pt$PID[pt$cohortB==1])
-    study.duration[i] <- timeline.time	
+    mtd_selection[i] <- current_dose
+    total_patients[i] <- length(pt$PID)
+    num_cohort_a_patients[i] <- length(pt$PID[pt$cohort_b==0])
+    num_cohort_b_patients[i] <- length(pt$PID[pt$cohort_b==1])
+    study_duration[i] <- timeline_time	
     
-    for (j in 1:length(true.tox)){ 
-      patient.allocation[j,i] <- length(pt$d[pt$d==j])
-      observe.tox[j,i] <- length(pt$d[pt$d==j & pt$dose.tox==1])
+    for (j in 1:length(true_tox)){ 
+      patient_allocation[j,i] <- length(pt$d[pt$d==j])
+      observe_tox[j,i] <- length(pt$d[pt$d==j & pt$dose_tox==1])
     }
   }
   
   # Calculate summary statistics
-  MTD.selection.table <- table(MTD.selection)
-  true.MTD <- which.min(round(abs(target.tox-true.tox),10))
-  PCS <- MTD.selection.table[true.MTD] / sum(MTD.selection.table)
-  obs.tox.overall <- sum(observe.tox)/sum(patient.allocation)
-  mean.obs.N <- mean(colSums(patient.allocation))
-  min.obs.N <- min(colSums(patient.allocation))
-  max.obs.N <- max(colSums(patient.allocation))
+  mtd_selection_table <- table(mtd_selection)
+  true_mtd <- which.min(round(abs(target_tox-true_tox),10))
+  pcs <- mtd_selection_table[true_mtd] / sum(mtd_selection_table)
+  obs_tox_overall <- sum(observe_tox)/sum(patient_allocation)
+  mean_obs_N <- mean(colSums(patient_allocation))
+  min_obs_N <- min(colSums(patient_allocation))
+  max_obs_N <- max(colSums(patient_allocation))
   
-  patient.allocation.table <- rowSums(patient.allocation)/sum(patient.allocation)
+  patient_allocation_table <- rowSums(patient_allocation)/sum(patient_allocation)
   
-  obs.tox.table <- rowSums(observe.tox)/sum(patient.allocation)
-  mean.cohortB <- 0
-  sd.cohortB <- 0
-  mean.duration = mean(study.duration)
-  sd.duration = sd(study.duration)
+  obs_tox_table <- rowSums(observe_tox)/sum(patient_allocation)
+  mean_cohort_b <- 0
+  sd_cohort_b <- 0
+  mean_duration = mean(study_duration)
+  sd_duration = sd(study_duration)
   
-  df <- data.frame("design"="3+3", "true.tox"=true.tox, "trueMTD"=true.MTD, "MTD"=MTD.selection.table,"patient.allocation.table"=patient.allocation.table, "obs.tox.table"=obs.tox.table)
+  df <- data.frame("design"="3+3", "true_tox"=true_tox, "truemtd"=true_mtd, "mtd"=mtd_selection_table,"patient_allocation_table"=patient_allocation_table, "obs_tox_table"=obs_tox_table)
   
   finish <- Sys.time()
-  time.taken <- finish - start
+  time_taken <- finish - start
   
-  result <- list(df=df, target.tox=target.tox, number.trials=number.trials, true.tox=true.tox, arrival.rate=arrival.rate, 
-               prop.B=prop.B, cycle.length=cycle.length, start.level=start.level, 
+  result <- list(df=df, target_tox=target_tox, number_trials=number_trials, true_tox=true_tox, arrival_rate=arrival_rate, 
+               prop_b=prop_b, cycle_length=cycle_length, start_level=start_level, 
                
-               total.patients=total.patients, num.cohortA.patients=num.cohortA.patients, num.cohortB.patients=num.cohortB.patients,
-               MTD.selection=MTD.selection, study.duration=study.duration, observe.tox=observe.tox, patient.allocation=patient.allocation,
+               total_patients=total_patients, num_cohort_a_patients=num_cohort_a_patients, num_cohort_b_patients=num_cohort_b_patients,
+               mtd_selection=mtd_selection, study_duration=study_duration, observe_tox=observe_tox, patient_allocation=patient_allocation,
                
-               MTD.selection.table = MTD.selection.table, true.MTD=true.MTD, PCS=PCS, obs.tox.overall=obs.tox.overall,
-               mean.obs.N=mean.obs.N, min.obs.N=min.obs.N, max.obs.N=max.obs.N,
-               patient.allocation.table=patient.allocation.table, obs.tox.table=obs.tox.table, mean.cohortB=mean.cohortB, sd.cohortB=sd.cohortB,
-               mean.duration=mean.duration, sd.duration=sd.duration, time.taken=time.taken)
+               mtd_selection_table = mtd_selection_table, true_mtd=true_mtd, pcs=pcs, obs_tox_overall=obs_tox_overall,
+               mean_obs_N=mean_obs_N, min_obs_N=min_obs_N, max_obs_N=max_obs_N,
+               patient_allocation_table=patient_allocation_table, obs_tox_table=obs_tox_table, mean_cohort_b=mean_cohort_b, sd_cohort_b=sd_cohort_b,
+               mean_duration=mean_duration, sd_duration=sd_duration, time_taken=time_taken)
   return(result)
   
 }
 
 
-###################################
-# tptOut <- three.plus.three(target.tox=0.2, number.trials=1000, true.tox=c(0.05,0.12,0.20,0.30), arrival.rate=15, prop.B=0.1, cycle.length=28, start.level=2)
+# Example: ----------------
+# three_plus_three_result <- three_plus_three(target_tox=0.2, number_trials=1000, true_tox=c(0.05,0.12,0.20,0.30), arrival_rate=15, prop_b=0.1, cycle_length=28, start_level=2)
