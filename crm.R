@@ -281,7 +281,7 @@ for (i in 1:number_trials) {
 			pt$include <- 1
 			run_crm_final <- crm(prior=prior, target=target_tox, tox=pt$dose_tox, level=pt$d, include=which(pt$include==1))
 			#print(pt)
-			#print (c("MTD is", run_crm_final$mtd))
+			#print (c("mtd is", run_crm_final$mtd))
 			mtd_selection[i] <- run_crm_final$mtd
 			total_patients[i] <- length(pt$pid)
 			num_cohort_a_patients[i] <- length(pt$pid[pt$cohort_b==0])
@@ -310,7 +310,7 @@ sd_cohort_b = sd(num_group_2_patients)
 mean_duration = mean(study_duration)
 sd_duration = sd(study_duration)
 
-df <- data.frame("design"="CRM", "true_tox"=true_tox, "trueMTD"=true_mtd, "MTD"=mtd_selection_table, "patient_allocation_table"=patient_allocation_table, "obs_tox_table"=obs_tox_table)
+df <- data.frame("design"="CRM", "true_tox"=true_tox, "true_mtd"=true_mtd, "mtd"=mtd_selection_table, "patient_allocation_table"=patient_allocation_table, "obs_tox_table"=obs_tox_table)
 
 finish <- Sys.time()
 time_taken <- finish - start
