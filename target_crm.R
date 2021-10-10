@@ -298,9 +298,9 @@ mtd_selection_table <- table(mtd_selection)
 true_mtd <- which.min(round(abs(target_tox-true_tox),10))
 pcs <- mtd_selection_table[true_mtd] / sum(mtd_selection_table)
 obs_tox_overall <- sum(observe_tox)/sum(patient_allocation)
-mean_obs_N <- mean(colSums(patient_allocation))
-min_obs_N <- min(colSums(patient_allocation))
-max_obs_N <- max(colSums(patient_allocation))
+mean_obs_n <- mean(colSums(patient_allocation))
+min_obs_n <- min(colSums(patient_allocation))
+max_obs_n <- max(colSums(patient_allocation))
 
 patient_allocation_table <- rowSums(patient_allocation)/sum(patient_allocation)
 obs_tox_table <- rowSums(observe_tox)/sum(patient_allocation)
@@ -321,7 +321,7 @@ result <- list(df=df, prior=prior, target_tox=target_tox, number_trials=number_t
 prop_b=prop_b, min_cohort_b=min_cohort_b, cycle_length=cycle_length, cohort_size=cohort_size, max_n=max_n, start_level=start_level, 
 total_patients=total_patients, num_cohort_a_patients=num_cohort_a_patients, num_cohort_b_patients=num_cohort_b_patients,
 num_group_1_patients=num_group_1_patients, num_group_2_patients=num_group_2_patients, results_num_dose_changes=result_num_dose_changes, mtd_selection=mtd_selection,
-study_duration=study_duration, observe_tox=observe_tox, patient_allocation=patient_allocation, mean_obs_N=mean_obs_N, min_obs_N=min_obs_N, max_obs_N=max_obs_N,
+study_duration=study_duration, observe_tox=observe_tox, patient_allocation=patient_allocation, mean_obs_n=mean_obs_n, min_obs_n=min_obs_n, max_obs_n=max_obs_n,
 
 mtd_selection_table = mtd_selection_table, true_mtd=true_mtd, pcs=pcs, obs_tox_overall=obs_tox_overall, patient_allocation_table=patient_allocation_table, obs_tox_table=obs_tox_table,
 mean_cohort_b=mean_cohort_b, sd_cohort_b=sd_cohort_b, mean_duration=mean_duration, sd_duration=sd_duration)
