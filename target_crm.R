@@ -310,7 +310,7 @@ sd_cohort_b = sd(num_group_2_patients)
 mean_duration = mean(study_duration)
 sd_duration = sd(study_duration)
 
-df <- data.frame("design"="TARGET-CRM", "true_tox"=true_tox, "truemtd"=true_mtd, "mtd"=mtd_selection_table,"patient_allocation_table"=patient_allocation_table, "obs_tox_table"=obs_tox_table)
+df <- data.frame("design"="TARGET-CRM", "true_tox"=true_tox, "true_mtd"=true_mtd, "mtd"=mtd_selection_table,"patient_allocation_table"=patient_allocation_table, "obs_tox_table"=obs_tox_table)
 
 finish <- Sys.time()
 time_taken <- finish - start
