@@ -78,7 +78,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                 fluidRow(
                                   column(12, align="center",
                                          a(href="https://www.danafarberbostonchildrens.org", img(id="df_logo", src = "danafarber_bostonchildrens_logo.png", style="cursor: pointer;"), target="_blank", rel="noopener noreferrer"),
-                                         a(href="https://www.NorthwesternMutual.com", img(id="nm_logo", src = "nm_logo.png", style="cursor: pointer;"), target="_blank", rel="noopener noreferrer"),
+                                         a(href="https://www.NorthwesternMutual.com", img(id="nm_logo", src = "NLogo.png", style="cursor: pointer;"), target="_blank", rel="noopener noreferrer"),
                                          a(href="https://hms.harvard.edu/", img(id="hms_logo", src = "HMS.png", style="cursor: pointer;"), target="_blank", rel="noopener noreferrer")
                                   )
                                 )
@@ -496,9 +496,9 @@ server <- function(input, output, session) {
     if(length(dt_selected_design_names()) > 1){
       ggplot() + 
         geom_bar(data = dt_plot_df() %>% 
-                   mutate(mtd_prop=mtd_freq/input$dt_num_trials), aes(x=dose_level, y=mtd_prop, fill=design), stat="identity", position="dodge") + 
+                   mutate(mtd_prop=mtd.Freq/input$dt_num_trials), aes(x=dose_level, y=mtd_prop, fill=design), stat="identity", position="dodge") + 
         geom_bar(data = dt_plot_df() %>% 
-                   mutate(mtd_prop=mtd_freq/input$dt_num_trials) %>% 
+                   mutate(mtd_prop=mtd.Freq/input$dt_num_trials) %>% 
                    filter(dose_num == true_mtd), aes(x=dose_level, y=mtd_prop, fill=design, color=as.factor(true_mtd)), stat="identity", position="dodge", size=2) +
         xlab("Dose Level") + ylab("Proportion of Simulated Trials") + scale_color_manual(name="True MTD", values=c("black"), labels=NULL) +
         ggtitle("Proportion of Simulated Trials Selecting\nEach Dose Level as True MTD") + theme(plot.title = element_text(hjust = 0.5)) +
@@ -508,9 +508,9 @@ server <- function(input, output, session) {
     else if (length(dt_selected_design_names()) == 1){
       ggplot() + 
         geom_bar(data=dt_plot_df() %>% 
-                   mutate(mtd_prop = mtd_freq/input$dt_num_trials), aes(x=dose_level, y=mtd_prop), stat='identity', fill="#BEBEBE") + 
+                   mutate(mtd_prop = mtd.Freq/input$dt_num_trials), aes(x=dose_level, y=mtd_prop), stat='identity', fill="#BEBEBE") + 
         geom_bar(data=dt_plot_df() %>% 
-                   mutate(mtd_prop = mtd_freq/input$dt_num_trials) %>% 
+                   mutate(mtd_prop = mtd.Freq/input$dt_num_trials) %>% 
                    filter(dose_num == true_mtd), aes(x=dose_level, y=mtd_prop, color=as.factor(true_mtd)), stat="identity", fill="#BEBEBE", size=2) +
         xlab("Dose Level") + ylab("Proportion of Simulated Trials") + scale_color_manual(name="True MTD", values=c("black"), labels=NULL) +
         ggtitle("Proportion of Simulated Trials Selecting\nEach Dose Level as True MTD") + theme(plot.title = element_text(hjust = 0.5)) +
