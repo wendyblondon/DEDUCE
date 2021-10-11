@@ -598,7 +598,7 @@ server <- function(input, output, session) {
       if (dt_function_outputs()[[v]]$df$design[1] == "3+3") {
         
         x <- round(unname(c(nullToNA(dt_function_outputs()[[v]]$pcs), nullToNA(dt_function_outputs()[[v]]$true_mtd), 
-                            dt_function_outputs()[[v]]$MTD_selection_table/dt_function_outputs()[[v]]$number_trials, 
+                            dt_function_outputs()[[v]]$mtd_selection_table/dt_function_outputs()[[v]]$number_trials, 
                             nullToNA(dt_function_outputs()[[v]]$obs_tox_overall), dt_function_outputs()[[v]]$obs_tox_table, 
                             nullToNA(dt_function_outputs()[[v]]$mean_obs_n), nullToNA(dt_function_outputs()[[v]]$min_obs_n), 
                             nullToNA(dt_function_outputs()[[v]]$max_obs_n), dt_function_outputs()[[v]]$patient_allocation_table, 
@@ -607,7 +607,7 @@ server <- function(input, output, session) {
       }
       else {
         x <- round(unname(c(nullToNA(dt_function_outputs()[[v]]$pcs), nullToNA(dt_function_outputs()[[v]]$true_mtd), 
-                            dt_function_outputs()[[v]]$MTD_selection_table/dt_function_outputs()[[v]]$number_trials, 
+                            dt_function_outputs()[[v]]$mtd_selection_table/dt_function_outputs()[[v]]$number_trials, 
                             nullToNA(dt_function_outputs()[[v]]$obs_tox_overall), dt_function_outputs()[[v]]$obs_tox_table, 
                             nullToNA(dt_function_outputs()[[v]]$mean_obs_n), nullToNA(dt_function_outputs()[[v]]$min_obs_n), 
                             nullToNA(dt_function_outputs()[[v]]$max_obs_n), dt_function_outputs()[[v]]$patient_allocation_table, 
