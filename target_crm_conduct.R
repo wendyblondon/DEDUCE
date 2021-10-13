@@ -36,14 +36,19 @@ target_crm_conduct <- function(prior, target_tox, tox, level, n=length(level), d
   tbl2 <- data.frame("dose"=out$dosename, "prior"=out$prior, "total_wts"=0, "ptox"=out$ptox, "lolmt"=out$ptoxL, "uplmt"=out$ptoxU)
   tbl2$level <- as.numeric(rownames(tbl2))
   
-  # Create field that counts how many patients were given each dose
+  # Create lists to append to for getting summary of patients given each dose and experiencing a DLT
   l <- tbl2$level[tbl1$level]
+  l2 <- tbl2$level[which(tbl1$toxicity==1)]
   
   for (i in tbl2$level) {
     l <- c(l, i)
+    l2 <- c(l2, i)
   }
+  
   tbl2$n <- as.numeric(table(l)-1)
-  tbl2 <- tbl2[c(1,7,2,8,3,4:6)]
+  tbl2$total_tox <- as.numeric(table(l2)-1)
+  
+  tbl2 <- tbl2[c(1,7,2,8,3,9,4:6)]
   
   output <- list(df1 = tbl1, df2=tbl2, crm.out=out, current_dose=current_dose, cohort_size=cohort_size, num_slots_remain=num_slots_remain, dfcrm_mtd=dfcrm_mtd)
   
