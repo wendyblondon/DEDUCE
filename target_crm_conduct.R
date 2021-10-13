@@ -32,11 +32,12 @@ target_crm_conduct <- function(prior, target_tox, tox, level, n=length(level), d
   out$mtd <- out$dosename[recommend_dose]
   
   # Create Data Frames for Output Into Shiny
-  tbl1 <- data.frame("pid"=out$pid, "level"=out$level, "toxicity"=out$tox, "included"=out$include)
-  tbl1$included <- as.integer(tbl1$level %in% tbl1$included)
+  tbl1 <- data.frame("pid"=out$pid, "level"=out$level, "toxicity"=out$tox)
   
   tbl2 <- data.frame("dose"=out$dosename, "prior"=out$prior, "ptox"=signif(out$ptox, 3), "lolmt"=signif(out$ptoxL, 3), "uplmt"=signif(out$ptoxU, 3))
   tbl2$level <- as.numeric(rownames(tbl2))
+  
+  tbl1$included <- as.integer(tbl2$level %in% out$include)
   
   # Create lists to append to for getting summary of patients given each dose and experiencing a DLT
   l <- tbl2$level[tbl1$level]
