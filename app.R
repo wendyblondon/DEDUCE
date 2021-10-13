@@ -32,7 +32,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                       tabItems(
                         tabItem(tabName = "Home",
                                 tags$script(HTML("$('body').addClass('fixed');")),
-                                img(id="homeimg", src = "home.png"),
+                                img(id="homeimg", src = "home.jpg"),
                                 p(id="hometagline", "DEsign and conDUCt of dose Escalation trials (DEDUCE) - A unified resource for clinical investigators and statisticians to design and conduct more efficient 
                                   and accurate phase 1 trials."),
                                 h2("Overview"),
