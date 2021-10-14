@@ -30,6 +30,8 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                     ),
                     dashboardBody(
                       tabItems(
+                        
+                        # Home Tab ---------------------
                         tabItem(tabName = "Home",
                                 tags$script(HTML("$('body').addClass('fixed');")),
                                 img(id="homeimg", src = "home.jpg"),
@@ -84,6 +86,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                 )
                         ),
                         
+                        # Design Tab ---------------------
                         tabItem(tabName = "Design",
                                 fluidRow(
                                   column(3, style="overflow-y:scroll; height: 70vh;",
@@ -163,13 +166,61 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                 )
                         ),
                         
+                        # Conduct Tab ---------------------
                         tabItem(tabName = "Conduct",
-                                h1("Coming Soon...")
+                                fluidRow(
+                                  column(3, style="overflow-y:scroll; height: 70vh;",
+                                         h1("Inputs", style="text-align: center; text-decoration: underline;"),
+                                         br(),
+                                         p("Designs:", style = "font-weight: 700; font-size: 18px;"),
+                                         radioButtons("ct_selectors", "Design", c("CRM", "TARGET CRM"), inline = "TRUE"),
+                                         bsTooltip("ct_selectors", "Select the design to run", 
+                                                   "top", options = list(container = "body")),
+                                         sliderInput("ct_num_doses", "Number of Dose Levels", min = 3, max = 10, value = 4, width = "100%", ticks = FALSE),
+                                         bsTooltip("ct_num_doses", "Please enter the number of doses that will be used", 
+                                                   "top", options = list(container = "body")),
+                                         textInput("ct_dose_labels", "Dose Level Labels", value = "-1,1,2,3", width = "100%"),
+                                         bsTooltip("ct_dose_labels", "Please enter the dose level labels (separated by commas) for each dose level evaluated in the trial", 
+                                                   "top", options = list(container = "body")),
+                                         sliderInput("ct_target_tox", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.01, width = "100%", ticks = FALSE),
+                                         bsTooltip("ct_target_tox", "Please enter the target toxicity probability of the study agent", 
+                                                   "top", options = list(container = "body")),
+                                         textInput("ct_prior_tox", "Prior Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3", width = "100%"),
+                                         bsTooltip("ct_prior_tox", "Please enter the estimated prior toxicity probabilities for each dose level evaluated in the trial (separated by commas). Toxicity probabilities must increase with each subsequent dose level", 
+                                                   "top", options = list(container = "body")),
+                                         sliderInput("ct_cohort_size", "Cohort Size", min = 1, max = 9, value = 3, width = "100%", ticks = FALSE),
+                                         bsTooltip("ct_cohort_size", "Please enter the cohort size. The cohort size is the number of patients to be treated at the current dose level before a dose escalation decision is made", 
+                                                   "top", options = list(container = "body")),
+                                         sliderInput("ct_slots", "Number of Slots Remaining", min = 0, max = 8, value = 0, width = "100%", ticks = FALSE),
+                                         bsTooltip("ct_slots", "Please enter the number of slots remaining to be enrolled for the current cohort of patients.", 
+                                                   "top", options = list(container = "body")),
+                                         selectInput("ct_current_dose", "Current dose level", choices = c(-1,1,2,3), selected = 1, width = "100%"),
+                                         bsTooltip("ct_current_dose", "Please enter the starting dose level from the dose level labels above", 
+                                                   "top", options = list(container = "body")),
+                                         textInput("ct_pid", "Patient ID", value = "", width = "100%"),
+                                         bsTooltip("ct_pid", "Please enter a patient ID to add to the study", 
+                                                   "top", options = list(container = "body")),
+                                         selectInput("ct_dose_adm", "Dose Administered", choices = c(-1,1,2,3), selected = 1, width = "100%"),
+                                         bsTooltip("ct_dose_adm", "Please select the dose that will be administered to this patient",
+                                                   "top", options = list(container = "body")),
+                                         switchInput("ct_dlt_obs", "DLT Observed", onLabel="Yes", offLabel="No"),
+                                         bsTooltip("ct_dlt_obs", "Please select if a DLT was observed for this patient",
+                                                   "top", options = list(container = "body")),
+                                         switchInput("ct_include", "Include in Model", onLabel="Yes", offLabel="No"),
+                                         bsTooltip("ct_include", "Please select if this patient should be included in the model",
+                                                   "top", options = list(container = "body"))
+                                  ),
+                                  column(9,
+                                    h1("tables here")
+                                  )
+                                )
                         ),
                         
+                        # Help Tab ---------------------
                         tabItem(tabName = "Help"
                         ),
                         
+                        # About Tab ---------------------
                         tabItem(tabName = "About",
                                 h2("DEDUCE Leadership: Dana-Farber/Boston Children's Cancer and Blood Disorders Center"),
                                 tags$ul(
