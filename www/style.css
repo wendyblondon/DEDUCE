@@ -7,10 +7,6 @@
   background-color: white;
 }
 
-.skin-black .sidebar a{
-    color: black;
-}
-
 .skin-black .sidebar-menu li.active a{
   background-color: white;
   border-left-color: #003087;
