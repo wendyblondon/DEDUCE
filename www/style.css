@@ -3,12 +3,18 @@
   font-size: 30px;
 }
 
+.skin-black .main-sidebar {
+  background-color: white;
+}
+
 .skin-black .sidebar-menu li.active a{
+  background-color: white;
   border-left-color: #003087;
   border-left-width: 0.75em;
 }
 
 .skin-black .sidebar-menu li:hover a{
+  background-color: white;
   border-left-color: #41B6E6;
   border-left-width: 0.75em;
 }
