@@ -3,8 +3,12 @@
   font-size: 30px;
 }
 
-.skin-black .main-sidebar {
+.skin-black .main-sidebar{
   background-color: white;
+}
+
+.skin-black .sidebar a{
+    color: black;
 }
 
 .skin-black .sidebar-menu li.active a{
