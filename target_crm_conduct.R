@@ -40,16 +40,16 @@ target_crm_conduct <- function(prior, target_tox, tox, level, n=length(level), d
   tbl1$included <- as.integer(tbl2$level %in% out$include)
   
   # Create lists to append to for getting summary of patients given each dose and experiencing a DLT
-  l <- tbl2$level[tbl1$level]
-  l2 <- tbl2$level[which(tbl1$toxicity==1)]
+  n_list <- tbl1$level[which(tbl1$included==1)]
+  total_tox_list <- tbl1$level[which(tbl1$toxicity==1 & tbl1$included==1)]
   
   for (i in tbl2$level) {
-    l <- c(l, i)
-    l2 <- c(l2, i)
+    n_list <- c(n_list, i)
+    total_tox_list <- c(total_tox_list, i)
   }
   
-  tbl2$n <- as.numeric(table(l)-1)
-  tbl2$total_tox <- as.numeric(table(l2)-1)
+  tbl2$n <- as.numeric(table(n_list)-1)
+  tbl2$total_tox <- as.numeric(table(total_tox_list)-1)
   
   tbl2 <- tbl2[c(1,6,2,7,8,3:5)]
   
