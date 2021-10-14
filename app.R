@@ -80,8 +80,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                 fluidRow(
                                   column(12, align="center",
                                          a(href="https://www.danafarberbostonchildrens.org", img(id="df_logo", src = "danafarber_bostonchildrens_logo.png", style="cursor: pointer;"), target="_blank", rel="noopener noreferrer"),
-                                         a(href="https://www.NorthwesternMutual.com", img(id="nm_logo", src = "NMLogo.png", style="cursor: pointer;"), target="_blank", rel="noopener noreferrer"),
-                                         a(href="https://hms.harvard.edu/", img(id="hms_logo", src = "HMS.png", style="cursor: pointer;"), target="_blank", rel="noopener noreferrer")
+                                         a(href="https://www.NorthwesternMutual.com", img(id="nm_logo", src = "NMLogo.png", style="cursor: pointer;"), target="_blank", rel="noopener noreferrer")
                                   )
                                 )
                         ),
@@ -295,8 +294,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                 fluidRow(
                                   column(12, align="center",
                                          a(href="https://www.danafarberbostonchildrens.org", img(id="df_logo", src = "danafarber_bostonchildrens_logo.png", style="cursor: pointer;"), target="_blank", rel="noopener noreferrer"),
-                                         a(href="https://www.NorthwesternMutual.com", img(id="nm_logo", src = "NMLogo.png", style="cursor: pointer;"), target="_blank", rel="noopener noreferrer"),
-                                         a(href="https://hms.harvard.edu/", img(id="hms_logo", src = "HMS.png", style="cursor: pointer;"), target="_blank", rel="noopener noreferrer")
+                                         a(href="https://www.NorthwesternMutual.com", img(id="nm_logo", src = "NMLogo.png", style="cursor: pointer;"), target="_blank", rel="noopener noreferrer")
                                   )
                                 )
                                 
