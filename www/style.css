@@ -7,14 +7,20 @@
   background-color: white;
 }
 
+.skin-black .sidebar a{
+  color: black;
+}
+
 .skin-black .sidebar-menu li.active a{
   background-color: white;
+  color: black;
   border-left-color: #003087;
   border-left-width: 0.75em;
 }
 
 .skin-black .sidebar-menu li:hover a{
   background-color: white;
+  color: black;
   border-left-color: #41B6E6;
   border-left-width: 0.75em;
 }
@@ -44,7 +50,7 @@
 
 /* HOME & ABOUT TAB */
 p{
-    font-size: 18px;  
+  font-size: 18px;  
 }
 
 h2{
