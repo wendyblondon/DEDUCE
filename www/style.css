@@ -84,49 +84,16 @@ h2{
 }
 
 /* DESIGN TAB */
-.pretty{
-  font-size: 18px;
-}
-
 #dt_dose_labels{
   font-size: 18px;
 }
 
-#dt_trueTox{
+#dt_true_tox{
   font-size: 18px;
 }
 
-#dt_priorTox{
+#dt_prior_tox{
   font-size: 18px;
-}
-
-.control-label{
-  font-size: 18px;
-}
-
-.irs-min{
-  font-size: 16px;
-  line-height: 16px;
-}
-
-.irs-max{
-  font-size: 16px;
-  line-height: 16px;
-}
-
-.irs-single{
-  font-size: 16px;
-  line-height: 16px;
-}
-
-.selectize-input{ 
-  font-size: 18px; 
-  line-height: 18px;
-}
-
-.selectize-dropdown{
-  font-size: 18px; 
-  line-height: 18px;
 }
 
 #dt_simulate:hover{
@@ -163,4 +130,51 @@ h2{
 #dt_plot4{
   height: calc(50vh - 50px) !important;
   width: 100%;
+}
+
+/* CONDUCT TAB */
+#ct_selectors{
+  font-size: 18px;
+}
+
+#ct_dose_labels{
+  font-size: 18px;
+}
+
+#ct_prior_tox{
+  font-size: 18px;
+}
+
+/* DESIGN & CONDUCT TAB */
+.pretty{
+  font-size: 18px;
+}
+
+.control-label{
+  font-size: 18px;
+}
+
+.irs-min{
+  font-size: 16px;
+  line-height: 16px;
+}
+
+.irs-max{
+  font-size: 16px;
+  line-height: 16px;
+}
+
+.irs-single{
+  font-size: 16px;
+  line-height: 16px;
+}
+
+.selectize-input{ 
+  font-size: 18px; 
+  line-height: 18px;
+}
+
+.selectize-dropdown{
+  font-size: 18px; 
+  line-height: 18px;
 }
