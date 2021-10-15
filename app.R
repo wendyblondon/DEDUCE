@@ -204,7 +204,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                          switchInput("ct_dlt_obs", "DLT Observed", onLabel="Yes", offLabel="No"),
                                          bsTooltip("ct_dlt_obs", "Please select if a DLT was observed for this patient",
                                                    "top", options = list(container = "body")),
-                                         switchInput("ct_include", "Include in Model", onLabel="Yes", offLabel="No"),
+                                         switchInput("ct_include", "Include in Model", value=TRUE, onLabel="Yes", offLabel="No"),
                                          bsTooltip("ct_include", "Please select if this patient should be included in the model",
                                                    "top", options = list(container = "body"))
                                   ),
