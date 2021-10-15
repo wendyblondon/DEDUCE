@@ -436,6 +436,11 @@ server <- function(input, output, session) {
     }
   })
   
+  # Make Sure State is Set When Simulate is Press
+  observeEvent(input$dt_simulate, {
+    dt_v$data <- 1
+  })
+  
   # Running the Design(s)
   dt_function_outputs <- eventReactive(input$dt_simulate, {
     w <- Waiter$new(html = spin_heartbeat(), color = "black")
