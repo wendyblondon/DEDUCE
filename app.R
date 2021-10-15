@@ -305,6 +305,9 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
 
 server <- function(input, output, session) {
   
+  # Reactive Value for Checking Status
+  dt_v <- reactiveValues(data=NULL)
+  
   # Disable Results Button Until Design(s) Ran
   disable("dt_results")
   
@@ -408,13 +411,13 @@ server <- function(input, output, session) {
     reset("dt_max_n")
     reset("dt_min_cohort_b")
     reset("dt_cohort_size")
-    reset("dt_simulate")
+    dt_v$data <- NULL
     disable("dt_results")
   })
   
   # UI if No Design Selected
   output$dt_none_ui <- renderUI({
-    req(input$dt_simulate == 0)
+    req(is.null(dt_v$data))
     tagList(
       fluidRow(
         icon("arrow-left", "fa-3x"),
