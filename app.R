@@ -408,15 +408,17 @@ server <- function(input, output, session) {
     reset("dt_max_n")
     reset("dt_min_cohort_b")
     reset("dt_cohort_size")
+    reset("dt_simulate")
     disable("dt_results")
   })
   
   # UI if No Design Selected
   output$dt_none_ui <- renderUI({
-    req(length(dt_selected_design_names()) == 0)
+    req(input$dt_simulate == 0)
     tagList(
       fluidRow(
-        h2("Please select a design to begin", style="color: #ff0033")
+        icon("arrow-left", "fa-3x"),
+        h2("Please select the appropriate inputs before scrolling down and running the simulation", style="color: black")
       )
     )
   })
