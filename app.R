@@ -420,8 +420,12 @@ server <- function(input, output, session) {
     req(is.null(dt_v$data))
     tagList(
       fluidRow(
-        icon("arrow-left", "fa-3x"),
-        h2("Please select the appropriate inputs before scrolling down and running the simulation", style="color: black")
+        column(12, align="center",
+          br(),
+          br(),
+          icon("arrow-left", "fa-3x"),
+          h2("Please select the appropriate inputs before scrolling down and running the simulation", style="color: black")
+        )
       )
     )
   })
