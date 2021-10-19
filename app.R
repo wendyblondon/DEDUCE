@@ -16,6 +16,7 @@ source("funs.R")
 theme_set(theme_minimal(base_size = 15))
 
 
+# UI ---------------------
 ui <- dashboardPage(title = "DEDUCE", skin = "black",
                     dashboardHeader(title = strong("DEDUCE")),
                     dashboardSidebar(
@@ -31,7 +32,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                     dashboardBody(
                       tabItems(
                         
-                        # Home Tab ---------------------
+                        ## Home Tab ---------------------
                         tabItem(tabName = "Home",
                                 tags$script(HTML("$('body').addClass('fixed');")),
                                 img(id="homeimg", src = "home.jpg"),
@@ -85,7 +86,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                 )
                         ),
                         
-                        # Design Tab ---------------------
+                        ## Design Tab ---------------------
                         tabItem(tabName = "Design",
                                 fluidRow(
                                   column(3, style="overflow-y:scroll; height: 70vh;",
@@ -165,7 +166,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                 )
                         ),
                         
-                        # Conduct Tab ---------------------
+                        ## Conduct Tab ---------------------
                         tabItem(tabName = "Conduct",
                                 fluidRow(
                                   column(3, style="overflow-y:scroll; height: 70vh;",
@@ -214,11 +215,11 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                 )
                         ),
                         
-                        # Help Tab ---------------------
+                        ## Help Tab ---------------------
                         tabItem(tabName = "Help"
                         ),
                         
-                        # About Tab ---------------------
+                        ## About Tab ---------------------
                         tabItem(tabName = "About",
                                 h2("DEDUCE Leadership: Dana-Farber/Boston Children's Cancer and Blood Disorders Center"),
                                 tags$ul(
@@ -303,7 +304,10 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                     )
 )
 
+# Server ---------------------
 server <- function(input, output, session) {
+  
+  ## Design Tab ---------------------
   
   # Reactive Value for Checking Status
   dt_v <- reactiveValues(data=NULL)
@@ -468,7 +472,7 @@ server <- function(input, output, session) {
       
     }
     
-    # Other
+    # CRM
     if(input$dt_selector_crm == TRUE) {
       
       crm <- my_crm(prior = numerizer(input$dt_prior_tox), target_tox = input$dt_target_tox, 
@@ -803,6 +807,10 @@ server <- function(input, output, session) {
       render(temp_report, output_file = file, params = params, envir = new.env(parent = globalenv()))
     }
   )
+  
+  # Conduct Tab ---------------------
+  
+  
 }
 
 shinyApp(ui, server)
