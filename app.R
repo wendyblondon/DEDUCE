@@ -837,8 +837,15 @@ server <- function(input, output, session) {
   })
   
   ### Update Input Values Based Off Other Inputs ---------------------
+  
+  # Update Number of Slots Remaining Max Based off Cohort Size
   observe({
     updateSliderInput(session, "ct_slots", max = input$ct_cohort_size - 1)
+  })
+  
+  # Update Current Dose Based on Dose Labels
+  observe({
+    updateSelectInput(session, "ct_current_dose", choices = unlist(strsplit(input$ct_dose_labels, ",")), selected = unlist(strsplit(input$ct_dose_labels, ","))[2])
   })
   
 }
