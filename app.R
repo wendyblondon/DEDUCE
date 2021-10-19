@@ -836,6 +836,11 @@ server <- function(input, output, session) {
     }
   })
   
+  ### Update Input Values Based Off Other Inputs ---------------------
+  observe({
+    updateSliderInput(session, "ct_slots", max = input$ct_cohort_size - 1)
+  })
+  
 }
 
 shinyApp(ui, server)
