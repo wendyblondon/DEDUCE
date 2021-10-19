@@ -330,7 +330,7 @@ server <- function(input, output, session) {
     updateSliderInput(session, "dt_min_cohort_b", max = input$dt_max_n)
   })
   
-  ## Warnings for Invalid Inputs
+  ### Warnings for Invalid Inputs ---------------------
   
   # Dose Labels
   observeEvent(list(input$dt_dose_labels, input$dt_num_doses), {
@@ -808,8 +808,33 @@ server <- function(input, output, session) {
     }
   )
   
-  # Conduct Tab ---------------------
+  ## Conduct Tab ---------------------
   
+  ### Warnings for Invalid Inputs ---------------------
+  
+  # Dose Labels
+  observeEvent(list(input$ct_dose_labels, input$ct_num_doses), {
+    req(input$ct_dose_labels)
+    hideFeedback("ct_dose_labels")
+    if (length(unlist(strsplit(input$ct_dose_labels, ",")))!= input$ct_num_doses) {
+      showFeedbackDanger("ct_dose_labels", "The length must match the number of dose levels selected above. Be sure to use commas to separate each label.")
+    }
+  })
+  
+  # Prior Tox
+  observeEvent(list(input$ct_prior_tox, input$ct_num_doses), {
+    req(input$ct_prior_tox)
+    hideFeedback("ct_prior_tox")
+    if (length(unlist(strsplit(input$ct_prior_tox, ",")))!= input$ct_num_doses) {
+      showFeedbackDanger("ct_prior_tox", "The length must match the number of dose levels selected at the top. Be sure to use commas to separate each decimal.")
+    }
+    else if (incrementCheck(input$ct_prior_tox)==FALSE) {
+      showFeedbackDanger("ct_prior_tox", "The probabilities must increase with each subsequent dose")
+    }
+    else if (decimalCheck(input$ct_prior_tox)==FALSE) {
+      showFeedbackDanger("ct_prior_tox", "The probabilities must be a decimal")
+    }
+  })
   
 }
 
