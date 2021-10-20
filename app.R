@@ -200,7 +200,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                   column(9,
                                     box(
                                      title = "Patient Inputs", solidHeader = TRUE,
-                                     textInput("ct_pid", "Patient ID", value = "", width = "100%"),
+                                     textInput("ct_pid", "Patient ID", value = "C1", width = "100%"),
                                      bsTooltip("ct_pid", "Please enter a patient ID to add to the study", 
                                                "top", options = list(container = "body")),
                                      selectInput("ct_dose_adm", "Dose Administered", choices = c(-1,1,2,3), selected = 1, width = "100%"),
