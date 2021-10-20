@@ -856,6 +856,11 @@ server <- function(input, output, session) {
     updateSelectInput(session, "ct_current_dose", choices = unlist(strsplit(input$ct_dose_labels, ",")), selected = unlist(strsplit(input$ct_dose_labels, ","))[2])
   })
   
+  # Update Dose Administered Based on Dose Labels
+  observe({
+    updateSelectInput(session, "ct_dose_adm", choices = unlist(strsplit(input$ct_dose_labels, ",")), selected = unlist(strsplit(input$ct_dose_labels, ","))[2])
+  })
+  
 }
 
 shinyApp(ui, server)
