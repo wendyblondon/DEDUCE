@@ -195,22 +195,24 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                                    "top", options = list(container = "body")),
                                          selectInput("ct_current_dose", "Current dose level", choices = c(-1,1,2,3), selected = 1, width = "100%"),
                                          bsTooltip("ct_current_dose", "Please enter the starting dose level from the dose level labels above", 
-                                                   "top", options = list(container = "body")),
-                                         textInput("ct_pid", "Patient ID", value = "", width = "100%"),
-                                         bsTooltip("ct_pid", "Please enter a patient ID to add to the study", 
-                                                   "top", options = list(container = "body")),
-                                         selectInput("ct_dose_adm", "Dose Administered", choices = c(-1,1,2,3), selected = 1, width = "100%"),
-                                         bsTooltip("ct_dose_adm", "Please select the dose that will be administered to this patient",
-                                                   "top", options = list(container = "body")),
-                                         switchInput("ct_dlt_obs", "DLT Observed", onLabel="Yes", offLabel="No"),
-                                         bsTooltip("ct_dlt_obs", "Please select if a DLT was observed for this patient",
-                                                   "top", options = list(container = "body")),
-                                         switchInput("ct_include", "Include in Model", value=TRUE, onLabel="Yes", offLabel="No"),
-                                         bsTooltip("ct_include", "Please select if this patient should be included in the model",
                                                    "top", options = list(container = "body"))
                                   ),
                                   column(9,
-                                    h1("tables here")
+                                    box(
+                                     title = "Patient Inputs", solidHeader = TRUE,
+                                     textInput("ct_pid", "Patient ID", value = "", width = "100%"),
+                                     bsTooltip("ct_pid", "Please enter a patient ID to add to the study", 
+                                               "top", options = list(container = "body")),
+                                     selectInput("ct_dose_adm", "Dose Administered", choices = c(-1,1,2,3), selected = 1, width = "100%"),
+                                     bsTooltip("ct_dose_adm", "Please select the dose that will be administered to this patient",
+                                               "top", options = list(container = "body")),
+                                     switchInput("ct_dlt_obs", "DLT Observed", onLabel="Yes", offLabel="No", width = "100%"),
+                                     bsTooltip("ct_dlt_obs", "Please select if a DLT was observed for this patient",
+                                               "top", options = list(container = "body")),
+                                     switchInput("ct_include", "Include in Model", value=TRUE, onLabel="Yes", offLabel="No", width = "100%"),
+                                     bsTooltip("ct_include", "Please select if this patient should be included in the model",
+                                               "top", options = list(container = "body"))
+                                    )
                                   )
                                 )
                         ),
