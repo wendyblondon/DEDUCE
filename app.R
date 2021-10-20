@@ -309,10 +309,9 @@ server <- function(input, output, session) {
   
   ## Design Tab ---------------------
   
-  # Reactive Value for Checking Status
-  dt_v <- reactiveValues(data=NULL)
+  ### Misc. ---------------------
   
-  # Disable Results Button Until Design(s) Ran
+  # Disable Results Button Until Design(s) Are Ran
   disable("dt_results")
   
   # Get the Design Names That Are Selected
@@ -320,15 +319,8 @@ server <- function(input, output, session) {
     designInputs(c(input$dt_selector_tpt, input$dt_selector_tcrm, input$dt_selector_crm))
   })
   
-  # Update Start Level Based on Dose Labels
-  observe({
-    updateSelectInput(session, "dt_start_level", choices = unlist(strsplit(input$dt_dose_labels, ",")), selected = unlist(strsplit(input$dt_dose_labels, ","))[2])
-  })
-  
-  # Update Max Depending on Previous Input
-  observe({
-    updateSliderInput(session, "dt_min_cohort_b", max = input$dt_max_n)
-  })
+  # Set Initial Reactive Value
+  dt_v <- reactiveValues(data=NULL)
   
   ### Warnings for Invalid Inputs ---------------------
   
@@ -340,7 +332,6 @@ server <- function(input, output, session) {
       showFeedbackDanger("dt_dose_labels", "The length must match the number of dose levels selected above. Be sure to use commas to separate each label.")
     }
   })
-  
   
   # True Tox
   observeEvent(list(input$dt_true_tox, input$dt_num_doses), {
@@ -372,23 +363,26 @@ server <- function(input, output, session) {
     }
   })
   
-  # Main Plotting UI
-  output$dt_plots_ui <- renderUI({
-    req(length(dt_selected_design_names()) > 0)
-    hidden(
-      div(id="dt_ui_plots",
-          column(6,
-                 plotOutput("dt_plot_1"),
-                 br(),
-                 plotOutput("dt_plot_2")
-          ),
-          column(6,
-                 plotOutput("dt_plot_3"),
-                 br(),
-                 plotOutput("dt_plot_4")
-          )
-      )
-    )
+  ### Observers ---------------------
+  
+  # Update Start Level Based on Dose Labels
+  observe({
+    updateSelectInput(session, "dt_start_level", choices = unlist(strsplit(input$dt_dose_labels, ",")), selected = unlist(strsplit(input$dt_dose_labels, ","))[2])
+  })
+  
+  # Update Max Depending on Previous Input
+  observe({
+    updateSliderInput(session, "dt_min_cohort_b", max = input$dt_max_n)
+  })
+  
+  # Disable Simulate Button if No Designs Selected
+  observe({
+    if(input$dt_selector_tpt == 0 & input$dt_selector_tcrm == 0 & input$dt_selector_crm == 0){
+      disable("dt_simulate")
+    }
+    else{
+      enable("dt_simulate")
+    }
   })
   
   # Shows the Plots UI After Clicking Simulate
@@ -396,7 +390,19 @@ server <- function(input, output, session) {
     show("dt_ui_plots")
   })
   
-  # Hide/Reset the UI Elements
+  # Activate Download Button if a Simulation was Ran Already
+  observe({
+    if (input$dt_simulate > 0) {
+      enable("dt_results")
+    }
+  })
+  
+  # Change Reactive Value When Design is Ran
+  observeEvent(input$dt_simulate, {
+    dt_v$data <- 1
+  })
+  
+  # Hide/Reset the UI Elements When Reset is Clicked
   observeEvent(input$dt_reset, {
     hide("dt_ui_plots")
     reset("dt_selector_tpt")
@@ -419,37 +425,43 @@ server <- function(input, output, session) {
     disable("dt_results")
   })
   
+  ### UI ---------------------
+  
+  # Main Plotting UI
+  output$dt_plots_ui <- renderUI({
+    req(length(dt_selected_design_names()) > 0)
+    hidden(
+      div(id="dt_ui_plots",
+          column(6,
+                 plotOutput("dt_plot_1"),
+                 br(),
+                 plotOutput("dt_plot_2")
+          ),
+          column(6,
+                 plotOutput("dt_plot_3"),
+                 br(),
+                 plotOutput("dt_plot_4")
+          )
+      )
+    )
+  })
+  
   # UI if No Design Selected
   output$dt_none_ui <- renderUI({
     req(is.null(dt_v$data))
     tagList(
       fluidRow(
         column(12, align="center",
-          br(),
-          br(),
-          icon("arrow-left", "fa-3x"),
-          h2("Please select the appropriate inputs before scrolling down and running the simulation", style="color: black")
+               br(),
+               br(),
+               icon("arrow-left", "fa-3x"),
+               h2("Please select the appropriate inputs before scrolling down and running the simulation", style="color: black")
         )
       )
     )
   })
   
-  # Disable Simulate Button if No Designs Selected
-  observe({
-    if(input$dt_selector_tpt == 0 & input$dt_selector_tcrm == 0 & input$dt_selector_crm == 0){
-      disable("dt_simulate")
-    }
-    else{
-      enable("dt_simulate")
-    }
-  })
-  
-  # Make Sure State is Set When Simulate is Press
-  observeEvent(input$dt_simulate, {
-    dt_v$data <- 1
-  })
-  
-  # Running the Design(s)
+  ### Running the Functions ---------------------
   dt_function_outputs <- eventReactive(input$dt_simulate, {
     w <- Waiter$new(html = spin_heartbeat(), color = "black")
     w$show()
@@ -487,6 +499,8 @@ server <- function(input, output, session) {
     
     
   })
+  
+  ### Dataframes to Access Data ---------------------
   
   # DF for Design Results Used in Report
   dt_results_df <- reactive({
@@ -555,7 +569,7 @@ server <- function(input, output, session) {
     return(finaldf)
   })
   
-  
+  ### Plots ---------------------
   
   # Plot1
   dt_plot_1 <- reactive({
@@ -655,7 +669,9 @@ server <- function(input, output, session) {
     dt_plot_4()
   })
   
-  # Table DF
+  ### Dataframe and Variables for Report Generation ---------------------
+  
+  # Table DF for Report Results
   dt_table_1_df <- reactive({
     
     table_list <- list()
@@ -784,26 +800,16 @@ server <- function(input, output, session) {
       return(c(x1,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11,x12))
     } 
   })
-  
-  # Observer to Activate Download Button
-  observe({
-    if (input$dt_simulate > 0) {
-      enable("dt_results")
-    }
-  })
-  
+
   # Download Results
   output$dt_results <- downloadHandler(
-    filename = function(){
-      paste0("DELPHI Results ", Sys.time(), ".docx")
-    },
+    filename = function(){paste0("DELPHI Results ", Sys.time(), ".docx")}, 
     content = function(file){
+      
       temp_report <- file.path(tempdir(), "report.Rmd")
       file.copy("report.Rmd", temp_report, overwrite = TRUE)
-      
       params <- list(d = dt_selected_design_names(), m = dt_report_methods(), r = dt_report_results(), 
                      p1 = dt_plot_1(), p2 = dt_plot_2(), p3 = dt_plot_3(), p4 = dt_plot_4(), t = dt_table_1_df())
-      
       render(temp_report, output_file = file, params = params, envir = new.env(parent = globalenv()))
     }
   )
@@ -836,7 +842,7 @@ server <- function(input, output, session) {
     }
   })
   
-  ### Update Input Values Based Off Other Inputs ---------------------
+  ### Observers ---------------------
   
   # Update Number of Slots Remaining Max Based off Cohort Size
   observe({
