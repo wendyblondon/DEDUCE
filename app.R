@@ -867,15 +867,18 @@ server <- function(input, output, session) {
     updateSelectInput(session, "ct_dose_adm", choices = unlist(strsplit(input$ct_dose_labels, ",")), selected = unlist(strsplit(input$ct_dose_labels, ","))[2])
   })
   
-  ### Table ---------------------
+  ### Patient Table ---------------------
   
+  # Reactive Patients Table
   ct_patients_df <- reactiveVal(data.frame(patient_id=NULL, dose_level=NULL, dlt=NULL, include=NULL))
   
+  # Add Patient Inputs to Table
   observeEvent(input$ct_add, {
     t <- rbind(ct_patients_df(), data.frame(patient_id=input$ct_pid, dose_level=input$ct_dose_adm, dlt=input$ct_dlt_obs, include=input$ct_include))
     ct_patients_df(t)
   })
   
+  # Remove Selected Row of Table
   observeEvent(input$ct_remove, {
     t <- ct_patients_df()
     if (!is.null(input$ct_patients_table_rows_selected)) {
@@ -884,6 +887,7 @@ server <- function(input, output, session) {
     ct_patients_df(t)
   })
   
+  # Create the Patients Table
   output$ct_patients_table <- renderDT({
     datatable(ct_patients_df(), rownames = FALSE, colnames = c("Patient ID", "Dose Level", "DLT Observed", "Include in Model"), 
               selection = 'single', options = list(dom = 't'))
