@@ -876,6 +876,15 @@ server <- function(input, output, session) {
     ct_patients_df(t)
   })
   
+  observeEvent(input$ct_remove, {
+    t = ct_patients_df()
+    print(nrow(t))
+    if (!is.null(input$shiny_table_rows_selected)) {
+      t <- t[-as.numeric(input$shiny_table_rows_selected),]
+    }
+    ct_patients_df(t)
+  })
+  
   output$ct_patients <- renderDT({
     ct_patients_df()
   })
