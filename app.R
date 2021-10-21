@@ -218,7 +218,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                        actionButton("ct_remove", "Remove", width = "100%", style = "font-weight: bold;")
                                      )
                                     ),
-                                    DTOutput("ct_patients")
+                                    DTOutput("ct_patients_table")
                                   )
                                 )
                         ),
@@ -878,13 +878,13 @@ server <- function(input, output, session) {
   
   observeEvent(input$ct_remove, {
     t <- ct_patients_df()
-    if (!is.null(input$shiny_table_rows_selected)) {
-      t <- t[-as.numeric(input$shiny_table_rows_selected),]
+    if (!is.null(input$ct_patients_table_rows_selected)) {
+      t <- t[-as.numeric(input$ct_patients_table_rows_selected),]
     }
     ct_patients_df(t)
   })
   
-  output$ct_patients <- renderDT({
+  output$ct_patients_table <- renderDT({
     datatable(ct_patients_df(), selection = 'single', options = list(dom = 't'))
   })
   
