@@ -208,16 +208,20 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                         selectInput("ct_dose_adm", "Dose Administered", choices = c(-1,1,2,3), selected = 1, width = "100%"),
                                         bsTooltip("ct_dose_adm", "Please select the dose that will be administered to this patient",
                                                   "top", options = list(container = "body")),
-                                        switchInput("ct_dlt_obs", "DLT Observed", onLabel="Yes", offLabel="No", width = "100%"),
+                                        splitLayout(
+                                          switchInput("ct_dlt_obs", "DLT Observed", onLabel="Yes", offLabel="No", width = "100%"),
+                                          switchInput("ct_include", "Include in Model", value=TRUE, onLabel="Yes", offLabel="No", width = "100%")
+                                        ),
                                         bsTooltip("ct_dlt_obs", "Please select if a DLT was observed for this patient",
                                                   "top", options = list(container = "body")),
-                                        switchInput("ct_include", "Include in Model", value=TRUE, onLabel="Yes", offLabel="No", width = "100%"),
                                         bsTooltip("ct_include", "Please select if this patient should be included in the model",
                                                   "top", options = list(container = "body")),
-                                        actionButton("ct_add", "Add", width = "100%", style = "font-weight: bold;"),
+                                        splitLayout(
+                                          actionButton("ct_add", "Add", width = "100%", style = "font-weight: bold;"),
+                                          actionButton("ct_remove", "Remove", width = "100%", style = "font-weight: bold;")
+                                        ),
                                         bsTooltip("ct_add", "Add the chosen patient inputs to the table", 
                                                   "top", options = list(container = "body")),
-                                        actionButton("ct_remove", "Remove", width = "100%", style = "font-weight: bold;"),
                                         bsTooltip("ct_remove", "Remove the selected row from the table", 
                                                   "top", options = list(container = "body"))
                                       ),
