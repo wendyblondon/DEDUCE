@@ -880,6 +880,11 @@ server <- function(input, output, session) {
     updateSelectInput(session, "ct_dose_adm", choices = unlist(strsplit(input$ct_dose_labels, ",")), selected = unlist(strsplit(input$ct_dose_labels, ","))[2])
   })
   
+  # Update Patient ID Based on Length of Table
+  observe({
+    updateTextInput(session, "ct_pid", value = sprintf("C%d", nrow(ct_patients_df()) + 1))
+  })
+  
   ### Patient Table ---------------------
   
   # Reactive Patients Table
