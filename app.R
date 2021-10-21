@@ -885,7 +885,8 @@ server <- function(input, output, session) {
   })
   
   output$ct_patients_table <- renderDT({
-    datatable(ct_patients_df(), rownames = FALSE, selection = 'single', options = list(dom = 't'))
+    datatable(ct_patients_df(), rownames = FALSE, colnames = c("Patient ID", "Dose Level", "DLT Observed", "Include in Model"), 
+              selection = 'single', options = list(dom = 't'))
   })
   
 }
