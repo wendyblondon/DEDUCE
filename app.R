@@ -200,7 +200,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                   ),
                                   column(9,
                                     fluidRow(
-                                      column(6,
+                                      column(4,
                                         title = "Patient Inputs", solidHeader = TRUE,
                                         textInput("ct_pid", "Patient ID", value = "C1", width = "100%"),
                                         bsTooltip("ct_pid", "Please enter a patient ID to add to the study", 
@@ -214,12 +214,14 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                         switchInput("ct_include", "Include in Model", value=TRUE, onLabel="Yes", offLabel="No", width = "100%"),
                                         bsTooltip("ct_include", "Please select if this patient should be included in the model",
                                                   "top", options = list(container = "body")),
-                                        splitLayout(
-                                          actionButton("ct_add", "Add", width = "100%", style = "font-weight: bold;"),
-                                          actionButton("ct_remove", "Remove", width = "100%", style = "font-weight: bold;")
-                                        )
+                                        actionButton("ct_add", "Add", width = "100%", style = "font-weight: bold;"),
+                                        bsTooltip("ct_add", "Add the chosen patient inputs to the table", 
+                                                  "top", options = list(container = "body")),
+                                        actionButton("ct_remove", "Remove", width = "100%", style = "font-weight: bold;"),
+                                        bsTooltip("ct_remove", "Remove the selected row from the table", 
+                                                  "top", options = list(container = "body"))
                                       ),
-                                      column(6,
+                                      column(8,
                                         DTOutput("ct_patients_table")
                                       )
                                     ),
