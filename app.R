@@ -201,7 +201,6 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                   column(9,
                                     fluidRow(
                                       column(4,
-                                        title = "Patient Inputs", solidHeader = TRUE,
                                         textInput("ct_pid", "Patient ID", value = "C1", width = "100%"),
                                         bsTooltip("ct_pid", "Please enter a patient ID to add to the study", 
                                                   "top", options = list(container = "body")),
