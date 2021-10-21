@@ -872,7 +872,7 @@ server <- function(input, output, session) {
   ct_patients_df <- reactiveVal(data.frame(patient_id=NULL, dose_level=NULL, dlt=NULL, include=NULL))
   
   observeEvent(input$ct_add, {
-    t <- rbind(data.frame(patient_id=input$ct_pid, dose_level=input$ct_dose_adm, dlt=input$ct_dlt_obs, include=input$ct_include), ct_patients_df())
+    t <- rbind(ct_patients_df(), data.frame(patient_id=input$ct_pid, dose_level=input$ct_dose_adm, dlt=input$ct_dlt_obs, include=input$ct_include))
     ct_patients_df(t)
   })
   
