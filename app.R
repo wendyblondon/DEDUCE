@@ -7,6 +7,7 @@ library(shinyFeedback)
 library(waiter)
 library(tidyverse)
 library(rmarkdown)
+library(DT)
 
 source("crm.R")
 source("target_crm.R")
@@ -216,7 +217,8 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                        actionButton("ct_add", "Add", width = "100%", style = "font-weight: bold;"),
                                        actionButton("ct_remove", "Remove", width = "100%", style = "font-weight: bold;")
                                      )
-                                    )
+                                    ),
+                                    DTOutput("ct_patients")
                                   )
                                 )
                         ),
@@ -863,6 +865,19 @@ server <- function(input, output, session) {
   # Update Dose Administered Based on Dose Labels
   observe({
     updateSelectInput(session, "ct_dose_adm", choices = unlist(strsplit(input$ct_dose_labels, ",")), selected = unlist(strsplit(input$ct_dose_labels, ","))[2])
+  })
+  
+  ### Table ---------------------
+  
+  ct_patients_df <- reactiveVal(data.frame(patient_id=NULL, dose_level=NULL, dlt=NULL, include=NULL))
+  
+  observeEvent(input$ct_add, {
+    t <- rbind(data.frame(patient_id=input$ct_pid, dose_level=input$ct_dose_adm, dlt=input$ct_dlt_obs, include=input$ct_include), ct_patients_df())
+    ct_patients_df(t)
+  })
+  
+  output$ct_patients <- renderDT({
+    ct_patients_df()
   })
   
 }
