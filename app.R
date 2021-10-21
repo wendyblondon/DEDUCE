@@ -877,8 +877,7 @@ server <- function(input, output, session) {
   })
   
   observeEvent(input$ct_remove, {
-    t = ct_patients_df()
-    print(nrow(t))
+    t <- ct_patients_df()
     if (!is.null(input$shiny_table_rows_selected)) {
       t <- t[-as.numeric(input$shiny_table_rows_selected),]
     }
@@ -886,7 +885,7 @@ server <- function(input, output, session) {
   })
   
   output$ct_patients <- renderDT({
-    ct_patients_df()
+    datatable(ct_patients_df(), selection = 'single', options = list(dom = 't'))
   })
   
 }
