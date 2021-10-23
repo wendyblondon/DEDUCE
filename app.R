@@ -910,7 +910,7 @@ server <- function(input, output, session) {
   # Create the Patients Table
   output$ct_patients_table <- renderDT({
     datatable(ct_patients_df(), rownames = FALSE, colnames = c("Patient ID", "Dose Level", "DLT Observed", "Include in Model"), 
-              selection = 'single', options = list(dom = 't', scrollY="300px"))
+              selection = 'single', options = list(dom = 't', scrollY = "300px", ordering = FALSE))
   })
   
   ### Running the Function ---------------------
@@ -933,12 +933,12 @@ server <- function(input, output, session) {
   
   # DF1
   output$ct_df1 <- renderDT({
-    datatable(ct_function_outputs()[[1]], rownames = FALSE, options = list(dom = 't', scrollY="300px"))
+    datatable(ct_function_outputs()[[1]], rownames = FALSE, options = list(dom = 't', scrollY = "300px", ordering = FALSE))
   })
   
   # DF2
   output$ct_df2 <- renderDT({
-    datatable(ct_function_outputs()[[2]], rownames = FALSE, options = list(dom = 't', scrollY="300px"))
+    datatable(ct_function_outputs()[[2]], rownames = FALSE, options = list(dom = 't', scrollY = "300px", ordering = FALSE))
   })
 }
 
