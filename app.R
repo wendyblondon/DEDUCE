@@ -12,6 +12,7 @@ library(DT)
 source("crm.R")
 source("target_crm.R")
 source("three_plus_three.R")
+source("target_crm_conduct.R")
 source("funs.R")
 
 theme_set(theme_minimal(base_size = 15))
@@ -221,11 +222,17 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                                   "top", options = list(container = "body"))
                                       ),
                                       column(8,
-                                        DTOutput("ct_patients_table")
+                                        DTOutput("ct_patients_table"),
+                                        actionButton("ct_simulate", "Simulate", width = "100%", style = "font-weight: bold;")
                                       )
                                     ),
                                     fluidRow(
-                                      h1("test")
+                                      column(6,
+                                        DTOutput("ct_df1")
+                                      ),
+                                      column(6,
+                                        DTOutput("ct_df2")
+                                      )
                                     )
                                   )
                                 )
@@ -906,6 +913,33 @@ server <- function(input, output, session) {
               selection = 'single', options = list(dom = 't', scrollY="300px"))
   })
   
+  ### Running the Function ---------------------
+  ct_function_outputs <- eventReactive(input$ct_simulate, {
+    w <- Waiter$new(html = spin_heartbeat(), color = "black")
+    w$show()
+    
+    tcrmc <- target_crm_conduct(prior = numerizer(input$ct_prior_tox), target_tox = input$ct_target_tox, tox = ct_patients_df()$dlt, 
+                                dose_labels = unlist(strsplit(input$ct_dose_labels, ",")), 
+                                level = match(ct_patients_df()$dose_level, unlist(strsplit(input$ct_dose_labels, ","))), 
+                                pid = unlist(strsplit(ct_patients_df()$patient_id, ",")), include = which(ct_patients_df()$include), 
+                                cohort_size = input$ct_cohort_size, num_slots_remain = input$ct_slots, 
+                                current_dose = match(input$ct_current_dose, unlist(strsplit(input$ct_dose_labels, ","))))
+    
+    w$hide() 
+    return(list(df1 = tcrmc$df1, df2 = tcrmc$df2))
+  })
+  
+  ### Placeholder for Function Outputs ---------------------
+  
+  # DF1
+  output$ct_df1 <- renderDT({
+    datatable(ct_function_outputs()[[1]], rownames = FALSE, options = list(dom = 't', scrollY="300px"))
+  })
+  
+  # DF2
+  output$ct_df2 <- renderDT({
+    datatable(ct_function_outputs()[[2]], rownames = FALSE, options = list(dom = 't', scrollY="300px"))
+  })
 }
 
 shinyApp(ui, server)
