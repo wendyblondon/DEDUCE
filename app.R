@@ -918,6 +918,18 @@ server <- function(input, output, session) {
     }
   })
   
+  # Reset Inputs When Reset Button Clicked
+  observeEvent(input$ct_reset, {
+    reset("ct_selectors")
+    reset("ct_num_doses")
+    reset("ct_dose_labels")
+    reset("ct_target_tox")
+    reset("ct_prior_tox")
+    reset("ct_cohort_size")
+    reset("ct_dlt_obs")
+    reset("ct_include")
+  })
+  
   ### Patient Table ---------------------
   
   # Reactive Patients Table
