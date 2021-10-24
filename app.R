@@ -933,6 +933,8 @@ server <- function(input, output, session) {
     reset("ct_dlt_obs")
     reset("ct_include")
     ct_patients_df(data.frame(patient_id=NULL, dose_level=NULL, dlt=NULL, include=NULL))
+    hide("ct_df1")
+    hide("ct_df2")
   })
   
   ### Patient Table ---------------------
