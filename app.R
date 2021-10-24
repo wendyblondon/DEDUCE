@@ -933,8 +933,8 @@ server <- function(input, output, session) {
     reset("ct_dlt_obs")
     reset("ct_include")
     ct_patients_df(data.frame(patient_id=NULL, dose_level=NULL, dlt=NULL, include=NULL))
-    hide("ct_df1")
-    hide("ct_df2")
+    reset("ct_df1")
+    reset("ct_df2")
   })
   
   ### Patient Table ---------------------
@@ -977,8 +977,6 @@ server <- function(input, output, session) {
   
   ### Running the Function ---------------------
   ct_function_outputs <- eventReactive(input$ct_simulate, {
-    show("ct_df1")
-    show("ct_df2")
     
     tcrmc <- target_crm_conduct(prior = numerizer(input$ct_prior_tox), target_tox = input$ct_target_tox, tox = ct_patients_df()$dlt, 
                                 dose_labels = unlist(strsplit(input$ct_dose_labels, ",")), 
