@@ -335,8 +335,9 @@ server <- function(input, output, session) {
   
   ### Misc. ---------------------
   
-  # Disable Results Button Until Design(s) Are Ran
+  # Disable Buttons at Startup
   disable("dt_results")
+  disable("ct_simulate")
   
   # Get the Design Names That Are Selected
   dt_selected_design_names <- reactive({
@@ -886,6 +887,16 @@ server <- function(input, output, session) {
   # Update Patient ID Based on Length of Table
   observe({
     updateTextInput(session, "ct_pid", value = sprintf("C%d", nrow(ct_patients_df()) + 1))
+  })
+  
+  # Disable Simulate Button if Number of Rows in Patient Table Doesn't Match Input Number
+  observe({
+    if(nrow(ct_patients_df())!= input$ct_num_doses){
+      disable("ct_simulate")
+    }
+    else{
+      enable("ct_simulate")
+    }
   })
   
   ### Patient Table ---------------------
