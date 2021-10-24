@@ -905,8 +905,7 @@ server <- function(input, output, session) {
     tagList(
       fluidRow(
         column(12, align="center",
-               br(),
-               h4(sprintf("%d patient(s) needed to match dose inputs", input$ct_num_doses - nrow(ct_patients_df())), style="color: red")
+               h4(sprintf("Table needs %d patient(s) to match your inputs", input$ct_num_doses - nrow(ct_patients_df())), style="color: red")
         )
       )
     )
