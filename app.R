@@ -911,6 +911,7 @@ server <- function(input, output, session) {
   observe({
     if(nrow(ct_patients_df()) == input$ct_num_doses){
       disable("ct_add")
+      removeTooltip(session, "ct_add")
     }
     else{
       enable("ct_add")
