@@ -231,7 +231,8 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                       splitLayout(
                                         DTOutput("ct_df1"),
                                         DTOutput("ct_df2")
-                                      )
+                                      ),
+                                      actionButton("ct_reset", "Reset", width = "100%", style = "font-weight: bold;")
                                     )
                                   )
                                 )
