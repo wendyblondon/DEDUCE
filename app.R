@@ -928,6 +928,7 @@ server <- function(input, output, session) {
     reset("ct_cohort_size")
     reset("ct_slots")
     reset("ct_current_dose")
+    reset("ct_pid")
     reset("ct_dose_adm")
     reset("ct_dlt_obs")
     reset("ct_include")
