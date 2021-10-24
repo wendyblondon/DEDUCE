@@ -907,6 +907,16 @@ server <- function(input, output, session) {
     }
   })
   
+  # Disable Add Button if Number of Rows in Patient Table Matches Input Number
+  observe({
+    if(nrow(ct_patients_df()) == input$ct_num_doses){
+      disable("ct_add")
+    }
+    else{
+      enable("ct_add")
+    }
+  })
+  
   ### Patient Table ---------------------
   
   # Reactive Patients Table
