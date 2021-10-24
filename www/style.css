@@ -188,3 +188,19 @@ h2{
   font-size: 18px; 
   line-height: 18px;
 }
+
+/* CONDUCT TAB */
+#ct_simulate:hover{
+  background-color: #1b9e77;
+  color: white;
+}
+
+#ct_results:hover{
+  background-color: #7570b3;
+  color: white;
+}
+
+#ct_reset:hover{
+  background-color: #d95f02;
+  color: white;
+}
