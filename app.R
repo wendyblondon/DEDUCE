@@ -216,6 +216,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                           actionButton("ct_add", "Add", width = "100%", style = "font-weight: bold;"),
                                           actionButton("ct_remove", "Remove", width = "100%", style = "font-weight: bold;")
                                         ),
+                                        uiOutput("ct_patient_helper"),
                                         bsTooltip("ct_add", "Add the chosen patient inputs to the table", 
                                                   "top", options = list(container = "body")),
                                         bsTooltip("ct_remove", "Remove the selected row from the table", 
@@ -896,6 +897,19 @@ server <- function(input, output, session) {
   observeEvent(input$ct_add, {
     t <- rbind(ct_patients_df(), data.frame(patient_id=input$ct_pid, dose_level=input$ct_dose_adm, dlt=input$ct_dlt_obs, include=input$ct_include))
     ct_patients_df(t)
+  })
+  
+  # UI Warning for Amount of Patients to Add Still
+  output$ct_patient_helper <- renderUI({
+    req(nrow(ct_patients_df())!= input$ct_num_doses)
+    tagList(
+      fluidRow(
+        column(12, align="center",
+               br(),
+               h4(sprintf("%d patient(s) needed to match dose inputs", input$ct_num_doses - nrow(ct_patients_df())), style="color: red")
+        )
+      )
+    )
   })
   
   # Remove Selected Row of Table
