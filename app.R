@@ -235,7 +235,13 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                         actionButton("ct_simulate", "Simulate", width = "100%", style = "font-weight: bold;"),
                                         downloadButton("ct_results", "", style = "font-weight: bold; width: 100%;"),
                                         actionButton("ct_reset", "Reset", width = "100%", style = "font-weight: bold;")
-                                      )
+                                      ),
+                                      bsTooltip("ct_simulate", "Simulates the selected design using the chosen inputs and patients info", 
+                                                "top", options = list(container = "body")),
+                                      bsTooltip("ct_results", "Download the results", 
+                                                "top", options = list(container = "body")),
+                                      bsTooltip("ct_reset", "WARNING: Resets all of the inputs and results, cannot be undone", 
+                                                "top", options = list(container = "body"))
                                     )
                                   )
                                 )
