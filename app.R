@@ -228,10 +228,8 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                       )
                                     ),
                                     fluidRow(
-                                      column(6,
-                                        DTOutput("ct_df1")
-                                      ),
-                                      column(6,
+                                      splitLayout(
+                                        DTOutput("ct_df1"),
                                         DTOutput("ct_df2")
                                       )
                                     )
