@@ -977,8 +977,8 @@ server <- function(input, output, session) {
   
   ### Running the Function ---------------------
   ct_function_outputs <- eventReactive(input$ct_simulate, {
-    w <- Waiter$new(html = spin_heartbeat(), color = "black")
-    w$show()
+    show("ct_df1")
+    show("ct_df2")
     
     tcrmc <- target_crm_conduct(prior = numerizer(input$ct_prior_tox), target_tox = input$ct_target_tox, tox = ct_patients_df()$dlt, 
                                 dose_labels = unlist(strsplit(input$ct_dose_labels, ",")), 
@@ -987,7 +987,6 @@ server <- function(input, output, session) {
                                 cohort_size = input$ct_cohort_size, num_slots_remain = input$ct_slots, 
                                 current_dose = match(input$ct_current_dose, unlist(strsplit(input$ct_dose_labels, ","))))
     
-    w$hide() 
     return(list(df1 = tcrmc$df1, df2 = tcrmc$df2))
   })
   
