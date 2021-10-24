@@ -223,8 +223,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                                   "top", options = list(container = "body"))
                                       ),
                                       column(8,
-                                        DTOutput("ct_patients_table"),
-                                        actionButton("ct_simulate", "Simulate", width = "100%", style = "font-weight: bold;")
+                                        DTOutput("ct_patients_table")
                                       )
                                     ),
                                     fluidRow(
@@ -232,7 +231,11 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                         DTOutput("ct_df1"),
                                         DTOutput("ct_df2")
                                       ),
-                                      actionButton("ct_reset", "Reset", width = "100%", style = "font-weight: bold;")
+                                      splitLayout(cellWidths = c("50%", "25%", "25%"),
+                                        actionButton("ct_simulate", "Simulate", width = "100%", style = "font-weight: bold;"),
+                                        downloadButton("ct_results", "", style = "font-weight: bold; width: 100%;"),
+                                        actionButton("ct_reset", "Reset", width = "100%", style = "font-weight: bold;")
+                                      )
                                     )
                                   )
                                 )
