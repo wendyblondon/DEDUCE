@@ -195,7 +195,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                          sliderInput("ct_slots", "Number of Slots Remaining", min = 0, max = 8, value = 0, width = "100%", ticks = FALSE),
                                          bsTooltip("ct_slots", "Please enter the number of slots remaining to be enrolled for the current cohort of patients.", 
                                                    "top", options = list(container = "body")),
-                                         selectInput("ct_current_dose", "Current dose level", choices = c(-1,1,2,3), selected = 1, width = "100%"),
+                                         selectInput("ct_current_dose", "Current Dose level", choices = c(-1,1,2,3), selected = 1, width = "100%"),
                                          bsTooltip("ct_current_dose", "Please enter the starting dose level from the dose level labels above", 
                                                    "top", options = list(container = "body"))
                                   ),
@@ -924,7 +924,7 @@ server <- function(input, output, session) {
     tagList(
       fluidRow(
         column(12, align="center",
-               h4(sprintf("Please add %d patient(s) to match the Number of Dose Levels input", input$ct_num_doses - nrow(ct_patients_df())), style="color: red")
+               h4(sprintf("Please add %d patient(s) to match your number of inputs", input$ct_num_doses - nrow(ct_patients_df())), style="color: red")
         )
       )
     )
