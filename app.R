@@ -227,10 +227,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                       )
                                     ),
                                     fluidRow(
-                                      splitLayout(
-                                        DTOutput("ct_df1"),
-                                        DTOutput("ct_df2")
-                                      ),
+                                      uiOutput("ct_patients_ui"),
                                       splitLayout(cellWidths = c("50%", "25%", "25%"),
                                         actionButton("ct_simulate", "Simulate", width = "100%", style = "font-weight: bold;"),
                                         downloadButton("ct_results", "", style = "font-weight: bold; width: 100%;"),
@@ -933,6 +930,7 @@ server <- function(input, output, session) {
     reset("ct_dlt_obs")
     reset("ct_include")
     ct_patients_df(data.frame(patient_id=NULL, dose_level=NULL, dlt=NULL, include=NULL))
+    hide("ct_ui_patients")
   })
   
   ### Patient Table ---------------------
@@ -987,6 +985,21 @@ server <- function(input, output, session) {
   })
   
   ### Placeholder for Function Outputs ---------------------
+  
+  output$ct_patients_ui <- renderUI({
+    hidden(
+      div(id="ct_ui_patients",
+        splitLayout(
+          DTOutput("ct_df1"),
+          DTOutput("ct_df2")
+        )
+      )
+    )
+  })
+  
+  observeEvent(input$ct_simulate,{
+    show("ct_ui_patients")
+  })
   
   # DF1
   output$ct_df1 <- renderDT({
