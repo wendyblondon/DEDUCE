@@ -990,7 +990,7 @@ server <- function(input, output, session) {
   output$ct_patients_ui <- renderUI({
     hidden(
       div(id="ct_ui_patients",
-        splitLayout(
+        splitLayout(cellArgs = list(style = "padding: 15px"),
           DTOutput("ct_df1"),
           DTOutput("ct_df2")
         )
