@@ -986,6 +986,7 @@ server <- function(input, output, session) {
   
   ### Placeholder for Function Outputs ---------------------
   
+  # UI Output for Patient Tables
   output$ct_patients_ui <- renderUI({
     hidden(
       div(id="ct_ui_patients",
@@ -997,6 +998,7 @@ server <- function(input, output, session) {
     )
   })
   
+  # Show Table when Simulate is Pressed
   observeEvent(input$ct_simulate,{
     show("ct_ui_patients")
   })
