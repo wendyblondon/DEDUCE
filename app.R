@@ -201,7 +201,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                   ),
                                   column(9,
                                     fluidRow(
-                                      column(4,
+                                      column(5,
                                         textInput("ct_pid", "Patient ID", value = "C1", width = "100%"),
                                         bsTooltip("ct_pid", "Please enter a patient ID to add to the study", 
                                                   "top", options = list(container = "body")),
@@ -222,7 +222,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                         bsTooltip("ct_remove", "Remove the selected row from the table", 
                                                   "top", options = list(container = "body"))
                                       ),
-                                      column(8,
+                                      column(7,
                                         DTOutput("ct_patients_table")
                                       )
                                     ),
