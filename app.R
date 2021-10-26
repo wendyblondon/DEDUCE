@@ -974,10 +974,10 @@ server <- function(input, output, session) {
           column(3,
             DTOutput("ct_df1")
           ),
-          column(4,
+          column(6,
             DTOutput("ct_df2")
           ),
-          column(5,
+          column(3,
             textOutput("ct_next_dose")
           )
         )
