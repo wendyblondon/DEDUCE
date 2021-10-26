@@ -969,10 +969,16 @@ server <- function(input, output, session) {
   output$ct_patients_ui <- renderUI({
     hidden(
       div(id="ct_ui_patients",
-        splitLayout(cellArgs = list(style = "padding: 15px"),
-          DTOutput("ct_df1"),
-          DTOutput("ct_df2"),
-          infoBoxOutput("ct_next_dose")
+        fluidRow(
+          column(3,
+            DTOutput("ct_df1")
+          ),
+          column(4,
+            DTOutput("ct_df2")
+          ),
+          column(5,
+            infoBoxOutput("ct_next_dose")
+          )
         )
       )
     )
