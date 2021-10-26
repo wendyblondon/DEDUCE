@@ -977,7 +977,7 @@ server <- function(input, output, session) {
             DTOutput("ct_df2")
           ),
           column(5,
-            infoBoxOutput("ct_next_dose")
+            textOutput("ct_next_dose")
           )
         )
       )
@@ -1000,10 +1000,8 @@ server <- function(input, output, session) {
   })
   
   # Recommended Dose
-  output$ct_next_dose <- renderInfoBox({
-    infoBox(
-      "Next Recommended Dose", ct_function_outputs()[[3]], icon = icon("clipboard-list"), color = "black"
-    )
+  output$ct_next_dose <- renderText({
+    paste("Next Recommended Dose:", ct_function_outputs()[[3]])
   })
 }
 
