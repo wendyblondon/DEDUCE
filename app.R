@@ -977,7 +977,7 @@ server <- function(input, output, session) {
           column(6,
             DTOutput("ct_df2")
           ),
-          column(3,
+          column(3, align = "center",
             textOutput("ct_next_dose")
           )
         )
@@ -1002,7 +1002,9 @@ server <- function(input, output, session) {
   
   # Recommended Dose
   output$ct_next_dose <- renderText({
-    paste("Next Recommended Dose:", ct_function_outputs()[[3]])
+    div(id = "ct_next_dose_text",
+      paste("Next Recommended Dose:", ct_function_outputs()[[3]])
+    )
   })
 }
 
