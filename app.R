@@ -947,7 +947,7 @@ server <- function(input, output, session) {
   # Create the Patients Table
   output$ct_patients_table <- renderDT({
     datatable(ct_patients_df(), rownames = FALSE, colnames = c("Patient ID", "Dose Level", "DLT Observed", "Include in Model"), 
-              selection = 'single', options = list(dom = 't', scrollY = "300px", ordering = FALSE))
+              selection = 'single', options = list(dom = 't', scrollY = "250px", ordering = FALSE))
   })
   
   ### Running the Function ---------------------
