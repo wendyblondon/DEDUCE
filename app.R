@@ -894,24 +894,13 @@ server <- function(input, output, session) {
     updateTextInput(session, "ct_pid", value = sprintf("C%d", nrow(ct_patients_df()) + 1))
   })
   
-  # Disable Simulate Button if Number of Rows in Patient Table Doesn't Match Input Number
+  # Disable Simulate Button if Patient Table is Empty
   observe({
-    if(nrow(ct_patients_df())!= input$ct_num_doses){
+    if(nrow(ct_patients_df()) == 0){
       disable("ct_simulate")
     }
     else{
       enable("ct_simulate")
-    }
-  })
-  
-  # Disable Add Button if Number of Rows in Patient Table Matches Input Number
-  observe({
-    if(nrow(ct_patients_df()) == input$ct_num_doses){
-      disable("ct_add")
-      removeTooltip(session, "ct_add")
-    }
-    else{
-      enable("ct_add")
     }
   })
   
@@ -942,18 +931,6 @@ server <- function(input, output, session) {
   observeEvent(input$ct_add, {
     t <- rbind(ct_patients_df(), data.frame(patient_id=input$ct_pid, dose_level=input$ct_dose_adm, dlt=input$ct_dlt_obs, include=input$ct_include))
     ct_patients_df(t)
-  })
-  
-  # UI Warning for Amount of Patients to Add Still
-  output$ct_patient_helper <- renderUI({
-    req(nrow(ct_patients_df())!= input$ct_num_doses)
-    tagList(
-      fluidRow(
-        column(12, align="center",
-               h4(sprintf("Please add %d patient(s) to match your number of inputs", input$ct_num_doses - nrow(ct_patients_df())), style="color: red")
-        )
-      )
-    )
   })
   
   # Remove Selected Row of Table
