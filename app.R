@@ -1002,9 +1002,7 @@ server <- function(input, output, session) {
   
   # Recommended Dose
   output$ct_next_dose <- renderText({
-    div(id = "ct_next_dose_text",
-      paste("Next Recommended Dose:", ct_function_outputs()[[3]])
-    )
+    paste("Next Recommended Dose:", ct_function_outputs()[[3]])
   })
 }
 
