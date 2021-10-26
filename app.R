@@ -958,7 +958,7 @@ server <- function(input, output, session) {
                                 cohort_size = input$ct_cohort_size, num_slots_remain = input$ct_slots, 
                                 current_dose = match(input$ct_current_dose, unlist(strsplit(input$ct_dose_labels, ","))))
     
-    return(list(df1 = tcrmc$df1, df2 = tcrmc$df2))
+    return(list(df1 = tcrmc$df1, df2 = tcrmc$df2, next_dose = tcrmc$crm.out$mtd))
   })
   
   ### Placeholder for Function Outputs ---------------------
@@ -969,7 +969,8 @@ server <- function(input, output, session) {
       div(id="ct_ui_patients",
         splitLayout(cellArgs = list(style = "padding: 15px"),
           DTOutput("ct_df1"),
-          DTOutput("ct_df2")
+          DTOutput("ct_df2"),
+          infoBoxOutput("ct_next_dose")
         )
       )
     )
@@ -988,6 +989,13 @@ server <- function(input, output, session) {
   # DF2
   output$ct_df2 <- renderDT({
     datatable(ct_function_outputs()[[2]], rownames = FALSE, options = list(dom = 't', scrollY = "300px", ordering = FALSE))
+  })
+  
+  # Recommended Dose
+  output$ct_next_dose <- renderInfoBox({
+    infoBox(
+      "Next Recommended Dose", ct_function_outputs[[3]], icon = icon("clipboard-list"), color = "black"
+    )
   })
 }
 
