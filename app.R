@@ -230,7 +230,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                       uiOutput("ct_patients_ui")
                                     ),
                                     fluidRow(
-                                      splitLayout(cellWidths = c("50%", "25%", "25%"),
+                                      splitLayout(cellWidths = c("50%", "25%", "25%"), cellArgs = list(style = "padding: 5px"),
                                                   actionButton("ct_simulate", "Simulate", width = "100%", style = "font-weight: bold;"),
                                                   downloadButton("ct_results", "", style = "font-weight: bold; width: 100%;"),
                                                   actionButton("ct_reset", "Reset", width = "100%", style = "font-weight: bold;")
