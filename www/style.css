@@ -208,3 +208,8 @@ h2{
   background-color: #d95f02;
   color: white;
 }
+
+#ct_next_dose_text{
+  font-size: 20px;
+  font-weight: bold;
+}
