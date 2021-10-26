@@ -994,7 +994,7 @@ server <- function(input, output, session) {
   # Recommended Dose
   output$ct_next_dose <- renderInfoBox({
     infoBox(
-      "Next Recommended Dose", ct_function_outputs[[3]], icon = icon("clipboard-list"), color = "black"
+      "Next Recommended Dose", ct_function_outputs()[[3]], icon = icon("clipboard-list"), color = "black"
     )
   })
 }
