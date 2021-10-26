@@ -226,6 +226,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                         DTOutput("ct_patients_table")
                                       )
                                     ),
+                                    br(),
                                     fluidRow(
                                       uiOutput("ct_patients_ui")
                                     ),
