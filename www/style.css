@@ -213,3 +213,7 @@ h2{
   font-size: 20px;
   font-weight: bold;
 }
+
+#ct_patients_ui{
+  padding: 5px;
+}
