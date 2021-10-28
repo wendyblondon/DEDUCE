@@ -971,13 +971,10 @@ server <- function(input, output, session) {
     hidden(
       div(id="ct_ui_patients",
         fluidRow(
-          column(3,
-            DTOutput("ct_df1")
+          column(8,
+            DTOutput("ct_df")
           ),
-          column(6,
-            DTOutput("ct_df2")
-          ),
-          column(3, align = "center",
+          column(4, align = "center",
             textOutput("ct_next_dose")
           )
         )
@@ -990,13 +987,8 @@ server <- function(input, output, session) {
     show("ct_ui_patients")
   })
   
-  # DF1
-  output$ct_df1 <- renderDT({
-    datatable(ct_function_outputs()[[1]], rownames = FALSE, options = list(dom = 't', scrollY = "30vh", ordering = FALSE))
-  })
-  
-  # DF2
-  output$ct_df2 <- renderDT({
+  # DF
+  output$ct_df <- renderDT({
     datatable(ct_function_outputs()[[2]], rownames = FALSE, options = list(dom = 't', scrollY = "30vh", ordering = FALSE))
   })
   
