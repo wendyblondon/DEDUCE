@@ -142,23 +142,6 @@ h2{
   width: 100%;
 }
 
-/* CONDUCT TAB */
-#ct_selectors{
-  font-size: 18px;
-}
-
-#ct_dose_labels{
-  font-size: 18px;
-}
-
-#ct_prior_tox{
-  font-size: 18px;
-}
-
-#ct_pid{
-  font-size: 18px;
-}
-
 /* DESIGN & CONDUCT TAB */
 .pretty{
   font-size: 18px;
@@ -194,6 +177,23 @@ h2{
 }
 
 /* CONDUCT TAB */
+
+#ct_selectors{
+  font-size: 18px;
+}
+
+#ct_dose_labels{
+  font-size: 18px;
+}
+
+#ct_prior_tox{
+  font-size: 18px;
+}
+
+#ct_pid{
+  font-size: 18px;
+}
+
 #ct_simulate:hover{
   background-color: #1b9e77;
   color: white;
