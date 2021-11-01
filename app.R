@@ -834,9 +834,9 @@ server <- function(input, output, session) {
     } 
   })
 
-  # Download Results
+  ### Download Results ---------------------
   output$dt_results <- downloadHandler(
-    filename = function(){paste0("DELPHI Results ", Sys.time(), ".docx")}, 
+    filename = function(){paste0("DEDUCE Design ", Sys.time(), ".docx")}, 
     content = function(file){
       
       temp_report <- file.path(tempdir(), "report.Rmd")
@@ -963,7 +963,7 @@ server <- function(input, output, session) {
                                 cohort_size = input$ct_cohort_size, num_slots_remain = input$ct_slots, 
                                 current_dose = match(input$ct_current_dose, unlist(strsplit(input$ct_dose_labels, ","))))
     
-    return(list(df1 = tcrmc$df1, df2 = tcrmc$df2, next_dose = tcrmc$crm.out$mtd))
+    return(list(df1 = tcrmc$df1, df2 = tcrmc$df2, next_dose = tcrmc$crm.out$mtd, out = tcrmc))
   })
   
   ### Placeholder for Function Outputs ---------------------
@@ -1001,6 +1001,21 @@ server <- function(input, output, session) {
   output$ct_next_dose <- renderText({
     paste("Next Recommended Dose:", ct_function_outputs()[[3]])
   })
+  
+  ### Download Results ---------------------
+  output$ct_results <- downloadHandler(
+    filename = function(){paste0("DEDUCE Conduct ", Sys.time(), ".docx")}, 
+    content = function(file){
+      
+      temp_report <- file.path(tempdir(), "report_conduct.Rmd")
+      file.copy("report.Rmd", temp_report, overwrite = TRUE)
+      params <- list(df1 = ct_function_outputs()[['df1']], df2 = ct_function_outputs()[['df2']], r1 = ct_function_outputs()[['out']]$crm.out$mtd, 
+                     r2 = input$ct_target_tox, r3 = ct_function_outputs()[['out']]$crm.out$prior, r4 = ct_function_outputs()[['out']]$crm.out$prior.var,
+                     r5 = ct_function_outputs()[['out']]$crm.out$estimate, r6 = ct_function_outputs()[['out']]$crm.out$post.var, r7 = input$ct_current_dose, 
+                     r8 = input$ct_cohort_size, r9 = input$ct_slots)
+      render(temp_report, output_file = file, params = params, envir = new.env(parent = globalenv()))
+    }
+  )
 }
 
 shinyApp(ui, server)
