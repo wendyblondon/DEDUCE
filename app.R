@@ -990,7 +990,11 @@ server <- function(input, output, session) {
   
   # DF
   output$ct_df <- renderDT({
-    datatable(ct_function_outputs()[[2]], rownames = FALSE, options = list(dom = 't', scrollY = "30vh", ordering = FALSE))
+    datatable(ct_function_outputs()[[2]], rownames = FALSE,
+              options = list(
+                dom = 't', scrollY = "30vh", ordering = FALSE, 
+                initComplete = JS("function(settings, json) {","$(this.api().table().container()).css({'font-size': '18px'});","}")
+              ))
   })
   
   # Recommended Dose
