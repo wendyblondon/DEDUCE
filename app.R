@@ -946,11 +946,12 @@ server <- function(input, output, session) {
   })
   
   # Create the Patients Table
-  output$ct_patients_table <- renderDT({
-    datatable(ct_patients_df(), rownames = FALSE, colnames = c("Patient ID", "Dose Level", "DLT Observed", "Include in Model"), 
-              selection = 'single', options = list(dom = 't', scrollY = "30vh", ordering = FALSE, 
-                                                   initComplete = JS("function(settings, json) {","$(this.api().table().container()).css({'font-size': '18px'});","}")))
-  })
+  output$ct_patients_table <- renderDT(ct_patients_df(), rownames = FALSE, 
+                                       colnames = c("Patient ID", "Dose Level", "DLT Observed", "Include in Model"), selection = 'single', 
+                                       options = list(dom = 't', scrollY = "30vh", ordering = FALSE, 
+                                                      initComplete = JS("function(settings, json) {","$(this.api().table().container()).css({'font-size': '18px'});","}"))
+    
+  )
   
   ### Running the Function ---------------------
   ct_function_outputs <- eventReactive(input$ct_simulate, {
