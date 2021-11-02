@@ -1,0 +1,63 @@
+---
+title: "DEDUCE Dose Escalation Recommendations"
+output: word_document
+params:
+  d: NA
+  df1: NA
+  df2 :NA
+  r1: NA
+  r2: NA
+  r3: NA
+  r4: NA
+  r5: NA
+  r6: NA
+  r7: NA
+  r8: NA
+  r9: NA
+
+---
+*Report Date and Time: "`r Sys.time()`"*
+
+**`r params$d`**
+
+*Software:* DEDUCE app version 1.0 available [here](https://bengarski.shinyapps.io/DEDUCE/) 
+
+
+# Data Summary:
+
+```{r, echo=FALSE, fig.cap="Figure 1: }
+params$df1 + theme(text = element_text(size = 12))  
+```
+
+
+# Toxicity Probability Update (with 90 Percent Probability Interval):
+```{r, echo=FALSE, fig.cap="Figure 2:"}
+params$df2 + theme(text = element_text(size = 12))  
+```
+
+## Next Recommended Dose Level: "`r params$r1`"
+
+## Recommendation is Based on a Target Toxicity Probability of "`r params$r2`"
+
+## Estimation Details:
+Empiric Dose-Toxicity Model: $p = dose^{exp(beta)}$
+dose = "`r params$r3`"
+
+## Normal Prior on Beta with Mean 0 and Variance "`r params$r4`"
+
+## Posterior Mean of Beta: "`r params$r5`"
+
+## Posterior Variance of Beta: "`r params$r6`"
+
+# Additional Details:
+
+## Current Dose Level: "`r params$r7`"
+
+## Cohort Size: "`r params$r8`"
+
+## Number of Slots Remaining at Current Dose Level: "`r params$r9`"
+
+## Dose Escalation Rules:
+* No dose skipping upon dose escalation
+* Intra-cohort dose de-escalation is allowed
+* Intra-cohort dose escalation is not allowed
