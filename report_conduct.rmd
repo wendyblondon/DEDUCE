@@ -23,7 +23,7 @@ params:
 
 # Data Summary:
 
-```{r, echo=FALSE, fig.cap="Figure 1: }
+```{r, echo=FALSE, fig.cap="Figure 1:" }
 params$df1 + theme(text = element_text(size = 12))  
 ```
 
