@@ -949,7 +949,7 @@ server <- function(input, output, session) {
     reset("ct_dose_adm")
     reset("ct_dlt_obs")
     reset("ct_include")
-    ct_patients_df(data.frame(patient_id=NULL, dose_level=NULL, dlt=NULL, include=NULL))
+    ct_patients_df(data.frame(patient_id=numeric(), dose_level=numeric(), dlt=numeric(), include=numeric()))
     hide("ct_ui_patients")
     disable("ct_results")
   })
@@ -957,7 +957,7 @@ server <- function(input, output, session) {
   ### Patient Table ---------------------
   
   # Reactive Patients Table
-  ct_patients_df <- reactiveVal(data.frame(patient_id=NULL, dose_level=NULL, dlt=NULL, include=NULL))
+  ct_patients_df <- reactiveVal(data.frame(patient_id=numeric(), dose_level=numeric(), dlt=numeric(), include=numeric()))
   
   # Add Patient Inputs to Table
   observeEvent(input$ct_add, {
