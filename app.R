@@ -917,6 +917,15 @@ server <- function(input, output, session) {
     }
   })
   
+  # Activate Download Button if a Simulation was Ran Already
+  observe({
+    if (input$ct_simulate > 0) {
+      enable("ct_results")
+    } else{
+      disable("ct_results")
+    }
+  })
+  
   # Reset Inputs When Reset Button Clicked
   observeEvent(input$ct_reset, {
     reset("ct_selectors")
