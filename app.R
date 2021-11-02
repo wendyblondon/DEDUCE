@@ -963,7 +963,7 @@ server <- function(input, output, session) {
                                 cohort_size = input$ct_cohort_size, num_slots_remain = input$ct_slots, 
                                 current_dose = match(input$ct_current_dose, unlist(strsplit(input$ct_dose_labels, ","))))
     
-    return(list(df1 = tcrmc$df1, df2 = tcrmc$df2, next_dose = tcrmc$crm.out$mtd, out = tcrmc))
+    return(tcrmc)
   })
   
   ### Placeholder for Function Outputs ---------------------
@@ -990,7 +990,7 @@ server <- function(input, output, session) {
   })
   
   # DF
-  output$ct_df <- renderDT(ct_function_outputs()[[2]], rownames = FALSE,
+  output$ct_df <- renderDT(ct_function_outputs()$df2, rownames = FALSE,
     options = list(
       dom = 't', scrollY = "30vh", ordering = FALSE, 
       initComplete = JS("function(settings, json) {","$(this.api().table().container()).css({'font-size': '18px'});","}")
@@ -999,7 +999,7 @@ server <- function(input, output, session) {
   
   # Recommended Dose
   output$ct_next_dose <- renderText({
-    paste("Next Recommended Dose:", ct_function_outputs()[[3]])
+    paste("Next Recommended Dose:", ct_function_outputs()$crm.out$mtd)
   })
   
   ### Download Results ---------------------
@@ -1009,12 +1009,11 @@ server <- function(input, output, session) {
       
       temp_report <- file.path(tempdir(), "report_conduct.Rmd")
       file.copy("report.Rmd", temp_report, overwrite = TRUE)
-      params <- list(df1 = ct_function_outputs()[['df1']], df2 = ct_function_outputs()[['df2']], r1 = ct_function_outputs()[['out']]$crm.out$mtd, 
-                     r2 = ct_function_outputs()[['out']]$crm.out$target, r3 = ct_function_outputs()[['out']]$crm.out$prior, 
-                     r4 = ct_function_outputs()[['out']]$crm.out$prior.var, r5 = ct_function_outputs()[['out']]$crm.out$estimate, 
-                     r6 = ct_function_outputs()[['out']]$crm.out$post.var, 
-                     r7 = ct_function_outputs()[['out']]$crm.out$dosename[ct_function_outputs()[['out']]$current_dose], 
-                     r8 = ct_function_outputs()[['out']]$cohort_size, r9 = ct_function_outputs()[['out']]$num_slots_remain)
+      params <- list(df1 = ct_function_outputs()$df1, df2 = ct_function_outputs()$df2, r1 = ct_function_outputs()$crm.out$mtd, 
+                     r2 = ct_function_outputs()$crm.out$target, r3 = ct_function_outputs()$crm.out$prior, 
+                     r4 = ct_function_outputs()$crm.out$prior.var, r5 = ct_function_outputs()$crm.out$estimate, 
+                     r6 = ct_function_outputs()$crm.out$post.var, r7 = ct_function_outputs()$crm.out$dosename[ct_function_outputs()$current_dose], 
+                     r8 = ct_function_outputs()$cohort_size, r9 = ct_function_outputs()$num_slots_remain)
       render(temp_report, output_file = file, params = params, envir = new.env(parent = globalenv()))
     }
   )
