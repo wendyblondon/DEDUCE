@@ -3,7 +3,7 @@ title: "DEDUCE Dose Escalation Recommendations"
 output: word_document
 params:
   df1: NA
-  df2 :NA
+  df2: NA
   r1: NA
   r2: NA
   r3: NA
