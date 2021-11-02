@@ -23,14 +23,14 @@ params:
 
 # Data Summary:
 
-```{r, echo=FALSE, fig.cap="Figure 1:" }
-params$df1 + theme(text = element_text(size = 12))  
+```{r, echo=FALSE}
+knitr::kable(params$df1, caption = "Table 1: Data Summary")
 ```
 
 
 # Toxicity Probability Update (with 90 Percent Probability Interval):
-```{r, echo=FALSE, fig.cap="Figure 2:"}
-params$df2 + theme(text = element_text(size = 12))  
+```{r, echo=FALSE}
+knitr::kable(params$df2, caption = "Table 2: Something")
 ```
 
 ## Next Recommended Dose Level: "`r params$r1`"
