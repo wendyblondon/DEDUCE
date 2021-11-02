@@ -907,6 +907,16 @@ server <- function(input, output, session) {
     }
   })
   
+  # Disable Simulate Button if Patient Table Doesn't Include Any Patients
+  observe({
+    if(length(which(ct_patients_df()$include)) == 0){
+      disable("ct_simulate")
+    }
+    else{
+      enable("ct_simulate")
+    }
+  })
+  
   # Reset Inputs When Reset Button Clicked
   observeEvent(input$ct_reset, {
     reset("ct_selectors")
