@@ -92,7 +92,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                         tabItem(tabName = "Design",
                                 fluidRow(
                                   column(3, style="overflow-y:scroll; height: 70vh;",
-                                         h1("Inputs", style="text-align: center; text-decoration: underline;"),
+                                         h2("Inputs", style="text-align: center;"),
                                          br(),
                                          p("Designs:", style = "font-weight: 700; font-size: 18px;"),
                                          prettyCheckbox("dt_selector_tpt", "3+3", value = TRUE, icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
@@ -172,7 +172,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                         tabItem(tabName = "Conduct",
                                 fluidRow(
                                   column(3, style="overflow-y:scroll; height: 70vh;",
-                                         h1("Inputs", style="text-align: center; text-decoration: underline;"),
+                                         h2("Inputs", style="text-align: center;"),
                                          br(),
                                          radioButtons("ct_selectors", "Design", c("CRM", "TARGET CRM"), inline = "TRUE"),
                                          bsTooltip("ct_selectors", "Select the design to run", 
@@ -202,6 +202,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                   column(9,
                                     fluidRow(
                                       column(5,
+                                        h2("Observed Toxicity Inputs:", style = "text-align: center;"),
                                         textInput("ct_pid", "Patient ID", value = "C1", width = "100%"),
                                         bsTooltip("ct_pid", "Please enter a patient ID to add to the study", 
                                                   "top", options = list(container = "body")),
@@ -223,6 +224,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                                   "top", options = list(container = "body"))
                                       ),
                                       column(7,
+                                        h2("Observed Toxicity Data:", style = "text-align: center;"),
                                         DTOutput("ct_patients_table")
                                       )
                                     ),
