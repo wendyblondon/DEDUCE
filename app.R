@@ -879,7 +879,7 @@ server <- function(input, output, session) {
   
   # Update Number of Slots Remaining Max Based off Cohort Size
   observe({
-    updateSliderInput(session, "ct_slots", max = input$ct_cohort_size - 1)
+    updateSliderInput(session, "ct_slots", max = input$ct_cohort_size - 1, value = input$ct_cohort_size - 1)
   })
   
   # Update Current Dose Based on Dose Labels
