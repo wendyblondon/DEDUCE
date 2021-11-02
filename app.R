@@ -903,6 +903,7 @@ server <- function(input, output, session) {
       enable("ct_remove")
     } else{
       disable("ct_remove")
+      removeTooltip(session, "ct_remove")
     }
   })
   
