@@ -24,36 +24,36 @@ params:
 # Data Summary:
 
 ```{r, echo=FALSE}
-knitr::kable(params$df1, caption = "Table 1: Data Summary")
+knitr::kable(params$df1)
 ```
 
 
 # Toxicity Probability Update (with 90 Percent Probability Interval):
 ```{r, echo=FALSE}
-knitr::kable(params$df2, caption = "Table 2: Something")
+knitr::kable(params$df2)
 ```
 
-## Next Recommended Dose Level: "`r params$r1`"
+## Next Recommended Dose Level: `r params$r1`
 
-## Recommendation is Based on a Target Toxicity Probability of "`r params$r2`"
+## Recommendation is Based on a Target Toxicity Probability of `r params$r2`
 
 ## Estimation Details:
-Empiric Dose-Toxicity Model: $p = dose^{exp(beta)}$
-dose = "`r params$r3`"
+Empiric Dose-Toxicity Model: $p = dose^{exp(beta)}$\
+dose = `r params$r3`
 
-## Normal Prior on Beta with Mean 0 and Variance "`r params$r4`"
+## Normal Prior on Beta with Mean 0 and Variance `r params$r4`
 
-## Posterior Mean of Beta: "`r params$r5`"
+## Posterior Mean of Beta: `r params$r5`
 
-## Posterior Variance of Beta: "`r params$r6`"
+## Posterior Variance of Beta: `r params$r6`
 
 # Additional Details:
 
-## Current Dose Level: "`r params$r7`"
+## Current Dose Level: `r params$r7`
 
-## Cohort Size: "`r params$r8`"
+## Cohort Size: `r params$r8`
 
-## Number of Slots Remaining at Current Dose Level: "`r params$r9`"
+## Number of Slots Remaining at Current Dose Level: `r params$r9`
 
 ## Dose Escalation Rules:
 * No dose skipping upon dose escalation
