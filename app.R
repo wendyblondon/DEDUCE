@@ -1008,7 +1008,7 @@ server <- function(input, output, session) {
     content = function(file){
       
       temp_report <- file.path(tempdir(), "report_conduct.Rmd")
-      file.copy("report.Rmd", temp_report, overwrite = TRUE)
+      file.copy("report_conduct.Rmd", temp_report, overwrite = TRUE)
       params <- list(df1 = ct_function_outputs()$df1, df2 = ct_function_outputs()$df2, r1 = ct_function_outputs()$crm.out$mtd, 
                      r2 = ct_function_outputs()$crm.out$target, r3 = ct_function_outputs()$crm.out$prior, 
                      r4 = ct_function_outputs()$crm.out$prior.var, r5 = ct_function_outputs()$crm.out$estimate, 
