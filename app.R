@@ -909,7 +909,7 @@ server <- function(input, output, session) {
   
   # Disable Simulate Button if Patient Table Doesn't Include Any Patients
   observe({
-    if(length(which(ct_patients_df()$include)) == 0){
+    if(length(which(ct_patients_df()$include == TRUE)) == 0){
       disable("ct_simulate")
     }
     else{
