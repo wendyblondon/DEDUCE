@@ -13,7 +13,6 @@ params:
   r7: NA
   r8: NA
   r9: NA
-
 ---
 *Report Date and Time: "`r Sys.time()`"*
 
