@@ -1010,9 +1010,11 @@ server <- function(input, output, session) {
       temp_report <- file.path(tempdir(), "report_conduct.Rmd")
       file.copy("report.Rmd", temp_report, overwrite = TRUE)
       params <- list(df1 = ct_function_outputs()[['df1']], df2 = ct_function_outputs()[['df2']], r1 = ct_function_outputs()[['out']]$crm.out$mtd, 
-                     r2 = input$ct_target_tox, r3 = ct_function_outputs()[['out']]$crm.out$prior, r4 = ct_function_outputs()[['out']]$crm.out$prior.var,
-                     r5 = ct_function_outputs()[['out']]$crm.out$estimate, r6 = ct_function_outputs()[['out']]$crm.out$post.var, r7 = input$ct_current_dose, 
-                     r8 = input$ct_cohort_size, r9 = input$ct_slots)
+                     r2 = ct_function_outputs()[['out']]$crm.out$target, r3 = ct_function_outputs()[['out']]$crm.out$prior, 
+                     r4 = ct_function_outputs()[['out']]$crm.out$prior.var, r5 = ct_function_outputs()[['out']]$crm.out$estimate, 
+                     r6 = ct_function_outputs()[['out']]$crm.out$post.var, 
+                     r7 = ct_function_outputs()[['out']]$crm.out$dosename[ct_function_outputs()[['out']]$current_dose], 
+                     r8 = ct_function_outputs()[['out']]$cohort_size, r9 = ct_function_outputs()[['out']]$num_slots_remain)
       render(temp_report, output_file = file, params = params, envir = new.env(parent = globalenv()))
     }
   )
