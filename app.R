@@ -839,8 +839,8 @@ server <- function(input, output, session) {
     filename = function(){paste0("DEDUCE Design ", Sys.time(), ".docx")}, 
     content = function(file){
       
-      temp_report <- file.path(tempdir(), "report.Rmd")
-      file.copy("report.Rmd", temp_report, overwrite = TRUE)
+      temp_report <- file.path(tempdir(), "report.rmd")
+      file.copy("report.rmd", temp_report, overwrite = TRUE)
       params <- list(d = dt_selected_design_names(), m = dt_report_methods(), r = dt_report_results(), 
                      p1 = dt_plot_1(), p2 = dt_plot_2(), p3 = dt_plot_3(), p4 = dt_plot_4(), t = dt_table_1_df())
       render(temp_report, output_file = file, params = params, envir = new.env(parent = globalenv()))
@@ -1027,8 +1027,8 @@ server <- function(input, output, session) {
     filename = function(){paste0("DEDUCE Conduct ", Sys.time(), ".docx")}, 
     content = function(file){
       
-      temp_report <- file.path(tempdir(), "report_conduct.Rmd")
-      file.copy("report_conduct.Rmd", temp_report, overwrite = TRUE)
+      temp_report <- file.path(tempdir(), "report_conduct.rmd")
+      file.copy("report_conduct.rmd", temp_report, overwrite = TRUE)
       params <- list(df1 = ct_function_outputs()$df1, df2 = ct_function_outputs()$df2, r1 = ct_function_outputs()$crm.out$mtd, 
                      r2 = ct_function_outputs()$crm.out$target, r3 = ct_function_outputs()$crm.out$prior, 
                      r4 = ct_function_outputs()$crm.out$prior.var, r5 = ct_function_outputs()$crm.out$estimate, 
