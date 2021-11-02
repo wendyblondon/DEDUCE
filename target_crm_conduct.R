@@ -40,13 +40,12 @@ target_crm_conduct <- function(prior, target_tox, tox, level, n=length(level), d
   
   # Create Dataframe 2 for Output Into Shiny
   tbl2 <- data.frame("dose"=out$dosename, "prior"=out$prior, "ptox"=signif(out$ptox, 3), "lolmt"=signif(out$ptoxL, 3), "uplmt"=signif(out$ptoxU, 3))
-  tbl2$level <- as.numeric(rownames(tbl2))
   
   # Create lists to append to for getting summary of patients given each dose and experiencing a DLT
   n_list <- tbl1$level[which(tbl1$included==1)]
   total_tox_list <- tbl1$level[which(tbl1$toxicity==1 & tbl1$included==1)]
   
-  for (i in tbl2$level) {
+  for (i in as.numeric(rownames(tbl2))) {
     n_list <- c(n_list, i)
     total_tox_list <- c(total_tox_list, i)
   }
@@ -54,7 +53,7 @@ target_crm_conduct <- function(prior, target_tox, tox, level, n=length(level), d
   tbl2$n <- as.numeric(table(n_list)-1)
   tbl2$total_tox <- as.numeric(table(total_tox_list)-1)
   
-  tbl2 <- tbl2[c(1,6,2,7,8,3:5)]
+  tbl2 <- tbl2[c(1,2,6,7,3:5)]
   
   output <- list(df1 = tbl1, df2=tbl2, crm.out=out, current_dose=current_dose, cohort_size=cohort_size, num_slots_remain=num_slots_remain, dfcrm_mtd=dfcrm_mtd)
   
