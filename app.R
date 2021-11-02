@@ -213,8 +213,8 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                           switchInput("ct_include", "Include in Model", value=TRUE, onLabel="Yes", offLabel="No", width = "100%")
                                         ),
                                         splitLayout(
-                                          actionButton("ct_add", "Add", width = "100%", style = "font-weight: bold;"),
-                                          actionButton("ct_remove", "Remove", width = "100%", style = "font-weight: bold;")
+                                          actionButton("ct_add", "Add New Patient", width = "100%", style = "font-weight: bold;"),
+                                          actionButton("ct_remove", "Remove Selected Patient", width = "100%", style = "font-weight: bold;")
                                         ),
                                         uiOutput("ct_patient_helper"),
                                         bsTooltip("ct_add", "Add the chosen patient inputs to the table", 
