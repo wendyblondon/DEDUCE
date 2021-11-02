@@ -897,6 +897,15 @@ server <- function(input, output, session) {
     updateTextInput(session, "ct_pid", value = sprintf("C%d", nrow(ct_patients_df()) + 1))
   })
   
+  # Disable Remove Patient Button if Row isn't Selected
+  observe({
+    if (!is.null(input$ct_patients_table_rows_selected)) {
+      enable("ct_remove")
+    } else{
+      disable("ct_remove")
+    }
+  })
+  
   # Disable Simulate Button if Patient Table is Empty
   observe({
     if(nrow(ct_patients_df()) == 0){
