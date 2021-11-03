@@ -194,6 +194,16 @@ h2{
   font-size: 18px;
 }
 
+#ct_add:hover{
+  background-color: #1b9e77;
+  color: white;
+}
+
+#ct_remove:hover{
+  background-color: #d95f02;
+  color: white;
+}
+
 #ct_simulate:hover{
   background-color: #1b9e77;
   color: white;
