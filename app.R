@@ -945,7 +945,6 @@ server <- function(input, output, session) {
     reset("ct_target_tox")
     reset("ct_prior_tox")
     reset("ct_cohort_size")
-    reset("ct_slots")
     reset("ct_current_dose")
     reset("ct_pid")
     reset("ct_dose_adm")
