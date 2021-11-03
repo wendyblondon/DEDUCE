@@ -936,6 +936,11 @@ server <- function(input, output, session) {
     }
   })
   
+  # Show Table when Simulate is Pressed
+  observeEvent(input$ct_simulate,{
+    show("ct_ui_patients")
+  })
+  
   # Reset Inputs When Reset Button Clicked
   observeEvent(input$ct_reset, {
     reset("ct_selectors")
@@ -997,7 +1002,7 @@ server <- function(input, output, session) {
     return(tcrmc)
   })
   
-  ### Placeholder for Function Outputs ---------------------
+  ### Function Outputs ---------------------
   
   # UI Output for Patient Tables
   output$ct_patients_ui <- renderUI({
@@ -1013,11 +1018,6 @@ server <- function(input, output, session) {
         )
       )
     )
-  })
-  
-  # Show Table when Simulate is Pressed
-  observeEvent(input$ct_simulate,{
-    show("ct_ui_patients")
   })
   
   # DF
