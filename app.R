@@ -219,8 +219,6 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                         ),
                                         uiOutput("ct_patient_helper"),
                                         bsTooltip("ct_add", "Add the chosen patient inputs to the table", 
-                                                  "top", options = list(container = "body")),
-                                        bsTooltip("ct_remove", "Remove the selected row from the table", 
                                                   "top", options = list(container = "body"))
                                       ),
                                       column(7,
@@ -903,6 +901,7 @@ server <- function(input, output, session) {
   observe({
     if (!is.null(input$ct_patients_table_rows_selected)) {
       enable("ct_remove")
+      addTooltip(session, "ct_remove", "Remove the selected row from the table", "top", options = list(container = "body"))
     } else{
       disable("ct_remove")
       removeTooltip(session, "ct_remove")
