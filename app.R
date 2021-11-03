@@ -226,10 +226,6 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                         DTOutput("ct_patients_table")
                                       )
                                     ),
-                                    br(),
-                                    fluidRow(
-                                      uiOutput("ct_patients_ui")
-                                    ),
                                     fluidRow(
                                       splitLayout(cellWidths = c("50%", "25%", "25%"), cellArgs = list(style = "padding: 5px"),
                                                   actionButton("ct_simulate", "Run Model", width = "100%", style = "font-weight: bold;"),
@@ -242,6 +238,9 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                                 "top", options = list(container = "body")),
                                       bsTooltip("ct_reset", "WARNING: Resets all of the inputs and results, cannot be undone", 
                                                 "top", options = list(container = "body"))
+                                    ),
+                                    fluidRow(
+                                      uiOutput("ct_patients_ui")
                                     )
                                   )
                                 )
