@@ -209,7 +209,7 @@ h2{
   color: white;
   font-size: 14px;
   font-weight: bold;
-  border: 2px solid black;
+  border: 5px solid black;
 }
 
 #ct_remove{
@@ -227,7 +227,7 @@ h2{
   color: white;
   font-size: 14px;
   font-weight: bold;
-  border: 2px solid black;
+  border: 5px solid black;
 }
 
 #ct_simulate{
