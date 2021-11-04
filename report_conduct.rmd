@@ -16,9 +16,9 @@ params:
   r9: NA
 ---
 
-*Trial Design: `r params$d`*\
-*Software: DEDUCE app version 1.0 available [here](https://bengarski.shinyapps.io/DEDUCE/)*\
-*Report Date and Time: `r Sys.time()`*\
+Trial Design: `r params$d`\
+Software: DEDUCE app version 1.0 available [here](https://bengarski.shinyapps.io/DEDUCE/)\
+Report Date and Time: `r Sys.time()`\
 
 # Observed Toxicity Data:
 
@@ -29,7 +29,7 @@ knitr::kable(params$df1)
 
 # Toxicity Probability Results:
 ```{r, echo=FALSE}
-knitr::kable(params$df2, caption = "90 Percent Probability Interval")
+knitr::kable(params$df2, caption = "(90 Percent Probability Interval)")
 ```
 
 Next Recommended Dose Level: `r params$r1`
