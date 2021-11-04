@@ -150,9 +150,9 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                                       "top", options = list(container = "body"))
                                          ),
                                          splitLayout(cellWidths = c("50%", "25%", "25%"),
-                                                     actionButton("dt_simulate", "Simulate", width = "100%", style = "font-weight: bold;"),
-                                                     downloadButton("dt_results", "", style = "font-weight: bold; width: 100%;"),
-                                                     actionButton("dt_reset", "Reset", width = "100%", style = "font-weight: bold;")
+                                                     actionButton("dt_simulate", "Simulate"),
+                                                     downloadButton("dt_results", ""),
+                                                     actionButton("dt_reset", "Reset")
                                          ),
                                          bsTooltip("dt_simulate", "Simulates the selected design(s) using the values of the above inputs", 
                                                    "top", options = list(container = "body")),
