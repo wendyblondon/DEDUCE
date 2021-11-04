@@ -228,7 +228,7 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                     ),
                                     fluidRow(
                                       splitLayout(cellWidths = c("50%", "25%", "25%"), cellArgs = list(style = "padding: 5px"),
-                                                  actionButton("ct_simulate", "Run Model", width = "100%", style = "font-weight: bold;"),
+                                                  actionButton("ct_simulate", "Run Model", width = "100%"),
                                                   downloadButton("ct_results", "", style = "font-weight: bold; width: 100%;"),
                                                   actionButton("ct_reset", "Reset", width = "100%", style = "font-weight: bold;")
                                       ),
