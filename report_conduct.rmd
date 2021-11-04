@@ -16,11 +16,9 @@ params:
   r9: NA
 ---
 
-Trial Design: `r params$d`
-
-Software: DEDUCE app version 1.0 available [here](https://bengarski.shinyapps.io/DEDUCE/)
-
-Report Date and Time: `r Sys.time()`
+*Trial Design: `r params$d`*\
+*Software: DEDUCE app version 1.0 available [here](https://bengarski.shinyapps.io/DEDUCE/)*\
+*Report Date and Time: `r Sys.time()`*\
 
 # Observed Toxicity Data:
 
@@ -55,7 +53,7 @@ Number of Slots Remaining at Current Dose Level: `r params$r9`
 # Estimation Details:
 
 Empiric Dose-Toxicity Model: $p = dose^{exp(beta)}$\
-*dose = `r params$r3`*
+dose = `r params$r3`
 
 Normal Prior on Beta with Mean 0 and Variance `r params$r4`
 
