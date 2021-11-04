@@ -1022,7 +1022,7 @@ server <- function(input, output, session) {
   
   # DF
   output$ct_df <- renderDT(ct_function_outputs()$df2, rownames = FALSE,
-                           colnames = c("Dose Level", "Prior Prob. of DLT", "# of Patients", "# DLT's", "Posterior Prob. of DLT", "Lower Limit", "Upper Limit"),
+                           colnames = c("Dose", "Prior Prob. of DLT", "Patients", "DLT's", "Posterior Prob. of DLT", "Lower Limit", "Upper Limit"),
                            options = list(dom = 't', scrollY = "30vh", ordering = FALSE, 
                               initComplete = JS("function(settings, json) {","$(this.api().table().container()).css({'font-size': '18px'});","}")
                             )
