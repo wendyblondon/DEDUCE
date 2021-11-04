@@ -14,21 +14,21 @@ params:
   r8: NA
   r9: NA
 ---
-*Report Date and Time: "`r Sys.time()`"*
 
-**`r params$d`**
+Trial Design: `r params$d`\
 
-*Software:* DEDUCE app version 1.0 available [here](https://bengarski.shinyapps.io/DEDUCE/) 
+Software: DEDUCE app version 1.0 available [here](https://bengarski.shinyapps.io/DEDUCE/) \
 
+Report Date and Time: `r Sys.time()`\
 
-# Data Summary:
+# Observed Toxicity Data:
 
 ```{r, echo=FALSE}
-knitr::kable(params$df1)
+knitr::kable(params$df1, caption = "90 Percent Probability Interval")
 ```
 
 
-# Toxicity Probability Update (with 90 Percent Probability Interval):
+# Toxicity Probability Results:
 ```{r, echo=FALSE}
 knitr::kable(params$df2)
 ```
@@ -37,25 +37,27 @@ knitr::kable(params$df2)
 
 ## Recommendation is Based on a Target Toxicity Probability of `r params$r2`
 
-## Estimation Details:
-Empiric Dose-Toxicity Model: $p = dose^{exp(beta)}$\
-dose = `r params$r3`
-
-## Normal Prior on Beta with Mean 0 and Variance `r params$r4`
-
-## Posterior Mean of Beta: `r params$r5`
-
-## Posterior Variance of Beta: `r params$r6`
-
 # Additional Details:
 
-## Current Dose Level: `r params$r7`
+### Current Dose Level: `r params$r7`
 
-## Cohort Size: `r params$r8`
+### Cohort Size: `r params$r8`
 
-## Number of Slots Remaining at Current Dose Level: `r params$r9`
+### Number of Slots Remaining at Current Dose Level: `r params$r9`
 
-## Dose Escalation Rules:
+# Dose Escalation Rules:
+
 * No dose skipping upon dose escalation
 * Intra-cohort dose de-escalation is allowed
 * Intra-cohort dose escalation is not allowed
+
+# Estimation Details:
+
+### Empiric Dose-Toxicity Model: $p = dose^{exp(beta)}$\
+### dose = `r params$r3`
+
+### Normal Prior on Beta with Mean 0 and Variance `r params$r4`
+
+### Posterior Mean of Beta: `r params$r5`
+
+### Posterior Variance of Beta: `r params$r6`
