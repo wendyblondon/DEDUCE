@@ -106,19 +106,58 @@ h2{
   font-size: 18px;
 }
 
+#dt_simulate{
+  width: 100%;
+  background-color: #003087;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  border: 2px solid black;
+}
+
 #dt_simulate:hover{
+  width: 100%;
   background-color: #1b9e77;
   color: white;
+  font-size: 14px;
+  font-weight: bold;
+  border: 5px solid black;
+}
+
+#dt_results{
+  width: 100%;
+  background-color: #003087;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  border: 2px solid black;
 }
 
 #dt_results:hover{
+  width: 100%;
   background-color: #7570b3;
   color: white;
+  font-size: 14px;
+  font-weight: bold;
+  border: 5px solid black;
+}
+
+#dt_reset{
+  width: 100%;
+  background-color: #003087;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  border: 2px solid black;
 }
 
 #dt_reset:hover{
+  width: 100%;
   background-color: #d95f02;
   color: white;
+  font-size: 14px;
+  font-weight: bold;
+  border: 5px solid black;
 }
 
 #dt_plot1{
