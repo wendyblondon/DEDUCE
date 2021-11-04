@@ -1040,7 +1040,7 @@ server <- function(input, output, session) {
       
       temp_report <- file.path(tempdir(), "report_conduct.rmd")
       file.copy("report_conduct.rmd", temp_report, overwrite = TRUE)
-      params <- list(df1 = ct_function_outputs()$df1, df2 = ct_function_outputs()$df2, r1 = ct_function_outputs()$crm.out$mtd, 
+      params <- list(d = input$ct_selectors, df1 = ct_function_outputs()$df1, df2 = ct_function_outputs()$df2, r1 = ct_function_outputs()$crm.out$mtd, 
                      r2 = ct_function_outputs()$crm.out$target, r3 = ct_function_outputs()$crm.out$prior, 
                      r4 = ct_function_outputs()$crm.out$prior.var, r5 = ct_function_outputs()$crm.out$estimate, 
                      r6 = ct_function_outputs()$crm.out$post.var, r7 = ct_function_outputs()$crm.out$dosename[ct_function_outputs()$current_dose], 
