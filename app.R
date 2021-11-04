@@ -229,8 +229,8 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                     fluidRow(
                                       splitLayout(cellWidths = c("50%", "25%", "25%"), cellArgs = list(style = "padding: 5px"),
                                                   actionButton("ct_simulate", "Run Model", width = "100%"),
-                                                  downloadButton("ct_results", "", style = "font-weight: bold; width: 100%;"),
-                                                  actionButton("ct_reset", "Reset", width = "100%", style = "font-weight: bold;")
+                                                  downloadButton("ct_results", ""),
+                                                  actionButton("ct_reset", "Reset", width = "100%")
                                       ),
                                       bsTooltip("ct_simulate", "Simulates the selected design using the chosen inputs and patients info", 
                                                 "top", options = list(container = "body")),
