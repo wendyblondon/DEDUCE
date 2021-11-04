@@ -218,14 +218,32 @@ h2{
   border: 5px solid black;
 }
 
+#ct_results{
+  background-color: #003087;
+  color: white;
+  font-weight: bold;
+  border: 2px solid black;
+}
+
 #ct_results:hover{
   background-color: #7570b3;
   color: white;
+  font-weight: bold;
+  border: 5px solid black;
+}
+
+#ct_reset{
+  background-color: #003087;
+  color: white;
+  font-weight: bold;
+  border: 2px solid black;
 }
 
 #ct_reset:hover{
   background-color: #d95f02;
   color: white;
+  font-weight: bold;
+  border: 5px solid black;
 }
 
 #ct_next_dose{
