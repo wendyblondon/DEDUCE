@@ -194,14 +194,40 @@ h2{
   font-size: 18px;
 }
 
+#ct_add{
+  width: 100%;
+  background-color: #003087;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  border: 2px solid black;
+}
+
 #ct_add:hover{
+  width: 100%;
   background-color: #1b9e77;
   color: white;
+  font-size: 14px;
+  font-weight: bold;
+  border: 2px solid black;
+}
+
+#ct_remove{
+  width: 100%;
+  background-color: #003087;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  border: 2px solid black;
 }
 
 #ct_remove:hover{
+  width: 100%;
   background-color: #d95f02;
   color: white;
+  font-size: 14px;
+  font-weight: bold;
+  border: 2px solid black;
 }
 
 #ct_simulate{
