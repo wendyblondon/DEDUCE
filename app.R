@@ -1022,10 +1022,10 @@ server <- function(input, output, session) {
   
   # DF
   output$ct_df <- renderDT(ct_function_outputs()$df2, rownames = FALSE,
-    options = list(
-      dom = 't', scrollY = "30vh", ordering = FALSE, 
-      initComplete = JS("function(settings, json) {","$(this.api().table().container()).css({'font-size': '18px'});","}")
-    )
+                           rownames = c("Dose Level", "Prior Prob. of DLT", "# of Patients", "# DLT's", "Lower Limit", "Upper Limit"),
+                           options = list(dom = 't', scrollY = "30vh", ordering = FALSE, 
+                              initComplete = JS("function(settings, json) {","$(this.api().table().container()).css({'font-size': '18px'});","}")
+                            )
   )
   
   # Recommended Dose
