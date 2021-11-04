@@ -204,9 +204,18 @@ h2{
   color: white;
 }
 
+#ct_simulate{
+  background-color: #003087;
+  color: white;
+  font-weight: bold;
+  border: 2px solid black;
+}
+
 #ct_simulate:hover{
   background-color: #1b9e77;
   color: white;
+  font-weight: bold;
+  border: 5px solid black;
 }
 
 #ct_results:hover{
