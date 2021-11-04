@@ -262,8 +262,9 @@ h2{
   font-size: 20px;
   font-weight: bold;
   color: white;
-  background-color: #003087;
+  background-color: #41B6E6;
   padding: 5px;
   margin: 15px;
-  border: 2px solid black;
+  border-left-style: solid;
+  border-left-color: #003087;
 }
