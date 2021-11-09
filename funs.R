@@ -7,7 +7,7 @@ sequencer <- function(x){
   seq(1,length(unlist(strsplit(x, ","))))
 }
 
-incrementCheck <- function(x) {
+increment_check <- function(x) {
   if (is.character(x)) {
     
     lengthX <- length(unlist(strsplit(x, ",")))
@@ -34,7 +34,7 @@ incrementCheck <- function(x) {
   }
 }
 
-decimalCheck <- function(x){
+decimal_check <- function(x){
   if (is.character(x)) {
     
     lengthX <- length(unlist(strsplit(x, ",")))
@@ -61,11 +61,11 @@ decimalCheck <- function(x){
   }
 }
 
-nullToNA <- function(x){
+null_to_na <- function(x){
   ifelse(is.null(x), NA, x)
 }
 
-designInputs <- function(x){
+design_inputs <- function(x){
   
   trues <- which(x==TRUE)
   
