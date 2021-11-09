@@ -202,16 +202,16 @@ ui <- dashboardPage(title = "DEDUCE", skin = "black",
                                   column(9,
                                     fluidRow(
                                       column(5,
-                                        h2("Observed Toxicity Inputs:", style = "text-align: center;"),
+                                        h2("Enter Patient Toxicity Data:", style = "text-align: center;"),
                                         textInput("ct_pid", "Patient ID", value = "C1", width = "100%"),
                                         bsTooltip("ct_pid", "Please enter a patient ID to add to the study", 
                                                   "top", options = list(container = "body")),
-                                        selectInput("ct_dose_adm", "Dose Administered", choices = c(-1,1,2,3), selected = 1, width = "100%"),
+                                        selectInput("ct_dose_adm", "Administered Dose Level", choices = c(-1,1,2,3), selected = 1, width = "100%"),
                                         bsTooltip("ct_dose_adm", "Please select the dose that will be administered to this patient",
                                                   "top", options = list(container = "body")),
                                         splitLayout(
-                                          switchInput("ct_dlt_obs", "DLT Observed", onLabel="Yes", offLabel="No", width = "100%"),
-                                          switchInput("ct_include", "Include in Model", value=TRUE, onLabel="Yes", offLabel="No", width = "100%")
+                                          switchInput("ct_dlt_obs", "Was DLT Observed?", onLabel="Yes", offLabel="No", width = "100%"),
+                                          switchInput("ct_include", "Include Patient in Model?", value=TRUE, onLabel="Yes", offLabel="No", width = "100%")
                                         ),
                                         splitLayout(
                                           actionButton("ct_add", "Add New Patient"),
@@ -1022,7 +1022,7 @@ server <- function(input, output, session) {
   
   # DF
   output$ct_df <- renderDT(ct_function_outputs()$df2, rownames = FALSE,
-                           colnames = c("Dose", "Prior Prob. of DLT", "Patients", "DLT's", "Posterior Prob. of DLT", "Lower Limit", "Upper Limit"),
+                           colnames = c("Dose Level", "Prior Prob. of DLT", "# Patients", "# DLT's", "Posterior Prob. of DLT", "Lower Limit", "Upper Limit"),
                            options = list(dom = 't', scrollY = "30vh", ordering = FALSE, 
                               initComplete = JS("function(settings, json) {","$(this.api().table().container()).css({'font-size': '18px'});","}")
                             )
@@ -1030,7 +1030,7 @@ server <- function(input, output, session) {
   
   # Recommended Dose
   output$ct_next_dose <- renderText({
-    paste("Next Recommended Dose:", ct_function_outputs()$crm.out$mtd)
+    paste("Recommended Dose Level:", ct_function_outputs()$crm.out$mtd)
   })
   
   ### Download Results ---------------------
