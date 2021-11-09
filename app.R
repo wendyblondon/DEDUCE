@@ -348,7 +348,7 @@ server <- function(input, output, session) {
   
   # Get the Design Names That Are Selected
   dt_selected_design_names <- reactive({
-    designInputs(c(input$dt_selector_tpt, input$dt_selector_tcrm, input$dt_selector_crm))
+    design_inputs(c(input$dt_selector_tpt, input$dt_selector_tcrm, input$dt_selector_crm))
   })
   
   # Set Initial Reactive Value
@@ -372,10 +372,10 @@ server <- function(input, output, session) {
     if (length(unlist(strsplit(input$dt_true_tox, ",")))!= input$dt_num_doses) {
       showFeedbackDanger("dt_true_tox", "The length must match the number of dose levels selected at the top. Be sure to use commas to separate each decimal.")
     }
-    else if (incrementCheck(input$dt_true_tox)==FALSE) {
+    else if (increment_check(input$dt_true_tox)==FALSE) {
       showFeedbackDanger("dt_true_tox", "The probabilities must increase with each subsequent dose")
     }
-    else if (decimalCheck(input$dt_true_tox)==FALSE) {
+    else if (decimal_check(input$dt_true_tox)==FALSE) {
       showFeedbackDanger("dt_true_tox", "The probabilities must be a decimal")
     }
   })
@@ -387,10 +387,10 @@ server <- function(input, output, session) {
     if (length(unlist(strsplit(input$dt_prior_tox, ",")))!= input$dt_num_doses) {
       showFeedbackDanger("dt_prior_tox", "The length must match the number of dose levels selected at the top. Be sure to use commas to separate each decimal.")
     }
-    else if (incrementCheck(input$dt_prior_tox)==FALSE) {
+    else if (increment_check(input$dt_prior_tox)==FALSE) {
       showFeedbackDanger("dt_prior_tox", "The probabilities must increase with each subsequent dose")
     }
-    else if (decimalCheck(input$dt_prior_tox)==FALSE) {
+    else if (decimal_check(input$dt_prior_tox)==FALSE) {
       showFeedbackDanger("dt_prior_tox", "The probabilities must be a decimal")
     }
   })
@@ -711,22 +711,22 @@ server <- function(input, output, session) {
     for (v in seq(1, length(dt_selected_design_names()))) {
       if (dt_function_outputs()[[v]]$df$design[1] == "3+3") {
         
-        x <- round(unname(c(nullToNA(dt_function_outputs()[[v]]$pcs), nullToNA(dt_function_outputs()[[v]]$true_mtd), 
+        x <- round(unname(c(null_to_na(dt_function_outputs()[[v]]$pcs), null_to_na(dt_function_outputs()[[v]]$true_mtd), 
                             dt_function_outputs()[[v]]$mtd_selection_table/dt_function_outputs()[[v]]$number_trials, 
-                            nullToNA(dt_function_outputs()[[v]]$obs_tox_overall), dt_function_outputs()[[v]]$obs_tox_table, 
-                            nullToNA(dt_function_outputs()[[v]]$mean_obs_n), nullToNA(dt_function_outputs()[[v]]$min_obs_n), 
-                            nullToNA(dt_function_outputs()[[v]]$max_obs_n), dt_function_outputs()[[v]]$patient_allocation_table, 
+                            null_to_na(dt_function_outputs()[[v]]$obs_tox_overall), dt_function_outputs()[[v]]$obs_tox_table, 
+                            null_to_na(dt_function_outputs()[[v]]$mean_obs_n), null_to_na(dt_function_outputs()[[v]]$min_obs_n), 
+                            null_to_na(dt_function_outputs()[[v]]$max_obs_n), dt_function_outputs()[[v]]$patient_allocation_table, 
                             dt_function_outputs()[[v]]$mean_duration, dt_function_outputs()[[v]]$sd_duration, NA, NA)), 3)
         x_name <- dt_function_outputs()[[v]]$df$design[1]
       }
       else {
-        x <- round(unname(c(nullToNA(dt_function_outputs()[[v]]$pcs), nullToNA(dt_function_outputs()[[v]]$true_mtd), 
+        x <- round(unname(c(null_to_na(dt_function_outputs()[[v]]$pcs), null_to_na(dt_function_outputs()[[v]]$true_mtd), 
                             dt_function_outputs()[[v]]$mtd_selection_table/dt_function_outputs()[[v]]$number_trials, 
-                            nullToNA(dt_function_outputs()[[v]]$obs_tox_overall), dt_function_outputs()[[v]]$obs_tox_table, 
-                            nullToNA(dt_function_outputs()[[v]]$mean_obs_n), nullToNA(dt_function_outputs()[[v]]$min_obs_n), 
-                            nullToNA(dt_function_outputs()[[v]]$max_obs_n), dt_function_outputs()[[v]]$patient_allocation_table, 
+                            null_to_na(dt_function_outputs()[[v]]$obs_tox_overall), dt_function_outputs()[[v]]$obs_tox_table, 
+                            null_to_na(dt_function_outputs()[[v]]$mean_obs_n), null_to_na(dt_function_outputs()[[v]]$min_obs_n), 
+                            null_to_na(dt_function_outputs()[[v]]$max_obs_n), dt_function_outputs()[[v]]$patient_allocation_table, 
                             dt_function_outputs()[[v]]$mean_duration, dt_function_outputs()[[v]]$sd_duration, 
-                            nullToNA(dt_function_outputs()[[v]]$mean_cohort_b), nullToNA(dt_function_outputs()[[v]]$sd_cohort_b))), 3)
+                            null_to_na(dt_function_outputs()[[v]]$mean_cohort_b), null_to_na(dt_function_outputs()[[v]]$sd_cohort_b))), 3)
         x_name <- dt_function_outputs()[[v]]$df$design[1]
       }
       
@@ -866,10 +866,10 @@ server <- function(input, output, session) {
     if (length(unlist(strsplit(input$ct_prior_tox, ",")))!= input$ct_num_doses) {
       showFeedbackDanger("ct_prior_tox", "The length must match the number of dose levels selected at the top. Be sure to use commas to separate each decimal.")
     }
-    else if (incrementCheck(input$ct_prior_tox)==FALSE) {
+    else if (increment_check(input$ct_prior_tox)==FALSE) {
       showFeedbackDanger("ct_prior_tox", "The probabilities must increase with each subsequent dose")
     }
-    else if (decimalCheck(input$ct_prior_tox)==FALSE) {
+    else if (decimal_check(input$ct_prior_tox)==FALSE) {
       showFeedbackDanger("ct_prior_tox", "The probabilities must be a decimal")
     }
   })
