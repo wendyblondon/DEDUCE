@@ -1,5 +1,4 @@
 library(shiny)
-library(shinydashboard)
 library(shinyBS)
 library(shinyjs)
 library(shinyWidgets)
@@ -9,330 +8,358 @@ library(tidyverse)
 library(rmarkdown)
 library(DT)
 
+# Adding External Files
 source("crm.R")
 source("target_crm.R")
 source("three_plus_three.R")
 source("target_crm_conduct.R")
 source("funs.R")
 
+# Set ggplot2 Default Font Size
 theme_set(theme_minimal(base_size = 15))
 
-
 # UI ---------------------
-ui <- dashboardPage(title = "DEDUCE", skin = "black",
-                    dashboardHeader(title = strong("DEDUCE")),
-                    dashboardSidebar(
-                      useShinyjs(), includeCSS("www/style.css"), useShinyFeedback(), use_waiter(),
-                                     sidebarMenu(id='tabs',
-                                                 menuItem("Home", tabName = "Home"),
-                                                 menuItem("Design", tabName = "Design"),
-                                                 menuItem("Conduct", tabName = "Conduct"),
-                                                 menuItem("Help", href="https://drive.google.com/file/d/18MGkaaIYFfJ5gqi1vGqnf7Myy0QjLs-i/view"),
-                                                 menuItem("About", tabName = "About")
-                                     )
-                    ),
-                    dashboardBody(
-                      tabItems(
-                        
-                        ## Home Tab ---------------------
-                        tabItem(tabName = "Home",
-                                tags$script(HTML("$('body').addClass('fixed');")),
-                                img(id="homeimg", src = "home.jpg"),
-                                p(id="hometagline", "DEsign and conDUCt of dose Escalation trials (DEDUCE) - A unified resource for clinical investigators and statisticians to design and conduct more efficient 
-                                  and accurate phase 1 trials."),
-                                h2("Overview"),
-                                p(id="overview", "The DEDUCE platform is an interactive, web-based resource to design and conduct 
-                                  phase 1 dose escalation trials using rule-based and Bayesian adaptive designs. Our goal in developing this application is to raise 
-                                  awareness, educate, and provide open access to investigators for alternative, improved methods and tools to design and conduct phase 
-                                  1 dose escalation trials."),
-                                h2("DEDUCE Modules:"),
-                                tags$ul(
-                                  tags$li(
-                                    h4(class="trialdc", "Trial Design"),
-                                    p("Users can specify and compare the operating characteristics for hypothetical phase 1 designs through trial simulations, 
-                                    and select an optimal design for the needs of the trial.")
-                                  ),
-                                  tags$li(
-                                    h4(class="trialdc", "Trial Conduct"),
-                                    p("Users can implement the adaptive trial, and determine the recommended dose level each time a new patient enrolls.")
-                                  )    
-                                ),
-                                
-                                h2("Available Designs:"),
-                                tags$ul(
-                                  tags$li(
-                                    p("Continual Reassessment Method (CRM) ", a(href="https://pubmed.ncbi.nlm.nih.gov/2350571/", "[O'Quigley et al. ", em("Biometrics,"), " 1990]", target="_blank", rel="noopener noreferrer"))
-                                  ),
-                                  tags$li(
-                                    p("TARGETed-Agent Continual Reassessment Method (TARGET-CRM)")
-                                  ), 
-                                  tags$li(
-                                    p("3+3 ", a(href="https://pubmed.ncbi.nlm.nih.gov/2790129/", "[Storer. ", em("Biometrics,"), " 1989]", target="_blank", rel="noopener noreferrer"))
-                                  )     
-                                ),
-                                
-                                h2("Key Features of DEDUCE:"),
-                                tags$ul(
-                                  tags$li(
-                                    p("Permits simultaneous comparison of multiple trial designs for the same set of simulation parameters")
-                                  ),
-                                  tags$li(
-                                    p("Dynamically generates a written report summarizing simulation results")
-                                  )
-                                ),
-                                fluidRow(
-                                  column(12, align="center",
-                                         a(href="https://www.danafarberbostonchildrens.org", img(id="df_logo", src = "danafarber_bostonchildrens_logo.png", style="cursor: pointer;"), target="_blank", rel="noopener noreferrer"),
-                                         a(href="https://www.NorthwesternMutual.com", img(id="nm_logo", src = "NMLogo.png", style="cursor: pointer;"), target="_blank", rel="noopener noreferrer")
-                                  )
-                                )
-                        ),
-                        
-                        ## Design Tab ---------------------
-                        tabItem(tabName = "Design",
-                                fluidRow(
-                                  column(3, style="overflow-y:scroll; height: 70vh;",
-                                         h2("Inputs", style="text-align: center;"),
-                                         br(),
-                                         p("Designs:", style = "font-weight: 700; font-size: 18px;"),
-                                         prettyCheckbox("dt_selector_tpt", "3+3", value = TRUE, icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
-                                         bsTooltip("dt_selector_tpt", "Select to run the 3+3 Design", 
-                                                   "top", options = list(container = "body")),
-                                         prettyCheckbox("dt_selector_crm", "CRM", value = FALSE, icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
-                                         bsTooltip("dt_selector_crm", "Select to run the CRM Design", 
-                                                   "top", options = list(container = "body")),
-                                         prettyCheckbox("dt_selector_tcrm", "TARGET-CRM", value = FALSE, icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
-                                         bsTooltip("dt_selector_tcrm", "Select to run the TARGET-CRM Design", 
-                                                   "top", options = list(container = "body")),
-                                         sliderInput("dt_num_doses", "Number of Dose Levels", min = 3, max = 10, value = 4, width = "100%", ticks = FALSE),
-                                         bsTooltip("dt_num_doses", "Please enter the number of doses that will be used", 
-                                                   "top", options = list(container = "body")),
-                                         textInput("dt_dose_labels", "Dose Level Labels", value = "-1,1,2,3", width = "100%"),
-                                         bsTooltip("dt_dose_labels", "Please enter the dose level labels (separated by commas) for each dose level evaluated in the trial", 
-                                                   "top", options = list(container = "body")),
-                                         selectInput("dt_start_level", "Starting Dose Level", choices = c(-1,1,2,3), selected = 1, width = "100%"),
-                                         bsTooltip("dt_start_level", "Please enter the starting dose level from the dose level labels above", 
-                                                   "top", options = list(container = "body")),
-                                         sliderInput("dt_num_trials", "Number of Simulated Trials", min = 0, max = 10000, value = 100, width = "100%", step = 100, ticks = FALSE),
-                                         bsTooltip("dt_num_trials", "Please enter the number of simulated trials. A larger number of simulations increases the precision of simulation results and computation time", 
-                                                   "top", options = list(container = "body")),
-                                         sliderInput("dt_target_tox", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.01, width = "100%", ticks = FALSE),
-                                         bsTooltip("dt_target_tox", "Please enter the target toxicity probability of the study agent", 
-                                                   "top", options = list(container = "body")),
-                                         textInput("dt_true_tox", "True Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3", width = "100%"),
-                                         bsTooltip("dt_true_tox", "Please enter the true toxicity probabilities for each dose level (separated by commas). Toxicity probabilities must increase with each subsequent dose level", 
-                                                   "top", options = list(container = "body")),
-                                         sliderInput("dt_arrival_rate", "Average Time Between Patient Enrollments (In Days)", min = 0, max = 180, value = 15, width = "100%", ticks = FALSE),
-                                         bsTooltip("dt_arrival_rate", "Please enter the average time between enrolling patients (In Days)", 
-                                                   "top", options = list(container = "body")),
-                                         sliderInput("dt_cycle_length", "Duration of DLT Observation Period (In Days)", min = 0, max = 365, value = 28, width = "100%", ticks = FALSE),
-                                         bsTooltip("dt_cycle_length", "Please enter the duration of the DLT observation period (In Days)", 
-                                                   "top", options = list(container = "body")),
-                                         
-                                         conditionalPanel(condition = "input.dt_selector_tcrm == 1 || input.dt_selector_crm == 1",
-                                           textInput("dt_prior_tox", "Prior Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3", width = "100%"),
-                                           bsTooltip("dt_prior_tox", "Please enter the prior toxicity probabilities for each dose level (separated by commas). Toxicity probabilities must increase with each subsequent dose level", 
-                                                     "top", options = list(container = "body")),
-                                           sliderInput("dt_max_n", "Maximum Sample Size", min = 1, max = 200, value = 18, width = "100%", ticks = FALSE),
-                                           bsTooltip("dt_max_n", "Please enter the maximum number of patients to be enrolled per trial", 
-                                                     "top", options = list(container = "body")),
-                                           sliderInput("dt_cohort_size", "Cohort Size", min = 1, max = 9, value = 3, width = "100%", ticks = FALSE),
-                                           bsTooltip("dt_cohort_size", "Please enter the cohort size. The cohort size is the number of patients to be treated at the current dose level before a dose escalation decision is made", 
-                                                     "top", options = list(container = "body"))
-                                         ),
-                                         
-                                         conditionalPanel(condition = "input.dt_selector_tcrm == 1",
-                                            sliderInput("dt_prop_b", "Proportion of Patients from Cohort B", min = 0, max = 1, value = 0.1, step = 0.01, width = "100%", ticks = FALSE),
-                                            bsTooltip("dt_prop_b", "Patients belong to either Cohort A (general enrollment) or Cohort B (enrichment cohort). Please enter the proportion of enrolled patients belonging to Cohort B. Enter a proportion of 0 if no enrichment cohort is needed.", 
-                                                                    "top", options = list(container = "body")),
-                                            sliderInput("dt_min_cohort_b", "Minimum Enrollment of Cohort B Patients (Optional)", min = 0, max = 100, value = 0, width = "100%", ticks = FALSE),
-                                            bsTooltip("dt_min_cohort_b", "An optional feature is to require a trial to enroll a minimum number of Cohort B patients. Once the maximum N is attained, enrollment of Cohort A patients will be suspended and only Cohort B patients may enroll until the minimum number has been attained. Please enter the minimum number of Cohort B patients to be enrolled in a trial. Enter 0 if no minimum number is required.", 
-                                                      "top", options = list(container = "body"))
-                                         ),
-                                         splitLayout(cellWidths = c("50%", "25%", "25%"),
-                                                     actionButton("dt_simulate", "Simulate"),
-                                                     downloadButton("dt_results", ""),
-                                                     actionButton("dt_reset", "Reset")
-                                         ),
-                                         bsTooltip("dt_simulate", "Simulates the selected design(s) using the values of the above inputs", 
-                                                   "top", options = list(container = "body")),
-                                         bsTooltip("dt_results", "Download the full report of plots, tables, and summaries", 
-                                                   "top", options = list(container = "body")),
-                                         bsTooltip("dt_reset", "WARNING: Resets all of the inputs and results, cannot be undone", 
-                                                   "top", options = list(container = "body"))
-                                  ),
-                                  column(9,
-                                         uiOutput("dt_plots_ui"),
-                                         uiOutput("dt_none_ui")
-                                  )
-                                )
-                        ),
-                        
-                        ## Conduct Tab ---------------------
-                        tabItem(tabName = "Conduct",
-                                fluidRow(
-                                  column(3, style="overflow-y:scroll; height: 70vh;",
-                                         h2("Inputs", style="text-align: center;"),
-                                         br(),
-                                         radioButtons("ct_selectors", "Design", c("CRM", "TARGET CRM"), inline = "TRUE"),
-                                         bsTooltip("ct_selectors", "Select the design to run", 
-                                                   "top", options = list(container = "body")),
-                                         sliderInput("ct_num_doses", "Number of Dose Levels", min = 3, max = 10, value = 4, width = "100%", ticks = FALSE),
-                                         bsTooltip("ct_num_doses", "Please enter the number of doses that will be used", 
-                                                   "top", options = list(container = "body")),
-                                         textInput("ct_dose_labels", "Dose Level Labels", value = "-1,1,2,3", width = "100%"),
-                                         bsTooltip("ct_dose_labels", "Please enter the dose level labels (separated by commas) for each dose level evaluated in the trial", 
-                                                   "top", options = list(container = "body")),
-                                         sliderInput("ct_target_tox", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.01, width = "100%", ticks = FALSE),
-                                         bsTooltip("ct_target_tox", "Please enter the target toxicity probability of the study agent", 
-                                                   "top", options = list(container = "body")),
-                                         textInput("ct_prior_tox", "Prior Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3", width = "100%"),
-                                         bsTooltip("ct_prior_tox", "Please enter the estimated prior toxicity probabilities for each dose level evaluated in the trial (separated by commas). Toxicity probabilities must increase with each subsequent dose level", 
-                                                   "top", options = list(container = "body")),
-                                         sliderInput("ct_cohort_size", "Cohort Size", min = 1, max = 9, value = 3, width = "100%", ticks = FALSE),
-                                         bsTooltip("ct_cohort_size", "Please enter the cohort size. The cohort size is the number of patients to be treated at the current dose level before a dose escalation decision is made", 
-                                                   "top", options = list(container = "body")),
-                                         sliderInput("ct_slots", "Number of Slots Remaining", min = 0, max = 8, value = 0, width = "100%", ticks = FALSE),
-                                         bsTooltip("ct_slots", "Please enter the number of slots remaining to be enrolled for the current cohort of patients.", 
-                                                   "top", options = list(container = "body")),
-                                         selectInput("ct_current_dose", "Current Dose level", choices = c(-1,1,2,3), selected = 1, width = "100%"),
-                                         bsTooltip("ct_current_dose", "Please enter the starting dose level from the dose level labels above", 
-                                                   "top", options = list(container = "body"))
-                                  ),
-                                  column(9,
-                                    fluidRow(
-                                      column(5,
-                                        h2("Enter Patient Toxicity Data:", style = "text-align: center;"),
-                                        textInput("ct_pid", "Patient ID", value = "C1", width = "100%"),
-                                        bsTooltip("ct_pid", "Please enter a patient ID to add to the study", 
-                                                  "top", options = list(container = "body")),
-                                        selectInput("ct_dose_adm", "Administered Dose Level", choices = c(-1,1,2,3), selected = 1, width = "100%"),
-                                        bsTooltip("ct_dose_adm", "Please select the dose that will be administered to this patient",
-                                                  "top", options = list(container = "body")),
-                                        splitLayout(
-                                          switchInput("ct_dlt_obs", "Was DLT Observed?", onLabel="Yes", offLabel="No", width = "100%"),
-                                          switchInput("ct_include", "Include Patient in Model?", value=TRUE, onLabel="Yes", offLabel="No", width = "100%")
-                                        ),
-                                        splitLayout(
-                                          actionButton("ct_add", "Add New Patient"),
-                                          actionButton("ct_remove", "Remove Selected Patient")
-                                        ),
-                                        uiOutput("ct_patient_helper"),
-                                        bsTooltip("ct_add", "Add the chosen patient inputs to the table", 
-                                                  "top", options = list(container = "body"))
-                                      ),
-                                      column(7,
-                                        h2("Observed Toxicity Data:", style = "text-align: center;"),
-                                        DTOutput("ct_patients_table")
-                                      )
-                                    ),
-                                    fluidRow(
-                                      splitLayout(cellWidths = c("50%", "25%", "25%"), cellArgs = list(style = "padding: 5px"),
-                                                  actionButton("ct_simulate", "Run Model"),
-                                                  downloadButton("ct_results", ""),
-                                                  actionButton("ct_reset", "Reset")
-                                      ),
-                                      bsTooltip("ct_simulate", "Simulates the selected design using the chosen inputs and patients info", 
-                                                "top", options = list(container = "body")),
-                                      bsTooltip("ct_results", "Download the results", 
-                                                "top", options = list(container = "body")),
-                                      bsTooltip("ct_reset", "WARNING: Resets all of the inputs and results, cannot be undone", 
-                                                "top", options = list(container = "body"))
-                                    ),
-                                    fluidRow(
-                                      uiOutput("ct_patients_ui")
-                                    )
-                                  )
-                                )
-                        ),
-                        
-                        ## Help Tab ---------------------
-                        tabItem(tabName = "Help"
-                        ),
-                        
-                        ## About Tab ---------------------
-                        tabItem(tabName = "About",
-                                h2("DEDUCE Leadership: Dana-Farber/Boston Children's Cancer and Blood Disorders Center"),
-                                tags$ul(
-                                  tags$li(
-                                    p("Clement Ma, PhD")
-                                  ),
-                                  tags$li(
-                                    p("Wendy B. London, PhD")
-                                  )
-                                ),
-                                h2("Development Team: Northwestern Mutual"),
-                                tags$ul(
-                                  tags$li(
-                                    p("Judy Berdan")
-                                  ),
-                                  tags$li(
-                                    p("Laure Borchardt")
-                                  ),
-                                  tags$li(
-                                    p("Audra Brennan")
-                                  ),
-                                  tags$li(
-                                    p("Stan Crane")
-                                  ),
-                                  tags$li(
-                                    p("Ben Garski")
-                                  ),
-                                  tags$li(
-                                    p("Nanette Jamel")
-                                  ),
-                                  tags$li(
-                                    p("Lori Kiraly")
-                                  ),
-                                  tags$li(
-                                    p("Danielle Pankey")
-                                  ),
-                                  tags$li(
-                                    p("Susan Stegman, MD")
-                                  )
-                                ),
-                                h2("Contact:"),
-                                tags$ul(
-                                  tags$li(
-                                    p("For Assistance Please Contact: Drs. Clement Ma and Wendy B. London")
-                                  )
-                                ),
-                                h2("Citation:"),
-                                tags$ul(
-                                  tags$li(
-                                    p("To site DEDUCE please use: Insert link to citation")
-                                  )
-                                ),
-                                h2("Acknowledgements:"),
-                                p(id="acknowledgements", "We would like to thank the Northwestern Mutual Tech for Good team for their pro-bono development, design, and project management 
+ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
+  
+  ## Home Tab ---------------------               
+  tabPanel("Home",
+    useShinyjs(), includeCSS("www/style.css"), useShinyFeedback(), use_waiter(),
+    img(id="homeimg", src = "home.jpg"),
+    fluidRow(
+      column(12,
+        p(id = "hometagline", 
+          "DEsign and conDUCt of dose Escalation trials (DEDUCE)"
+        ),
+        p(id = "hometagdesc", 
+          "A unified resource for clinical investigators and statisticians to", br(),
+          "design and conduct more efficient and accurate phase 1 trials."
+        ),
+        h2("Overview"),
+        p(id="overview", 
+          "The DEDUCE platform is an interactive, web-based resource to design and conduct 
+            phase 1 dose escalation trials using rule-based and Bayesian adaptive designs. 
+            Our goal in developing this application is to raise awareness, educate, 
+            and provide open access to investigators for alternative, improved methods and tools 
+            to design and conduct phase 1 dose escalation trials."
+        ),
+        h2("DEDUCE Modules:"),
+        tags$ul(
+          tags$li(
+            h4(class="trialdc", "Trial Design"),
+            p(
+              "Users can specify and compare the operating characteristics for hypothetical phase 1 designs 
+                through trial simulations, and select an optimal design for the needs of the trial."
+            )
+          ),
+          tags$li(
+            h4(class="trialdc", "Trial Conduct"),
+            p("Users can implement the adaptive trial, and determine the recommended dose level each time a new patient enrolls.")
+          )    
+        ),
+        h2("Available Designs:"),
+        tags$ul(
+          tags$li(
+            p("Continual Reassessment Method (CRM) ",
+              a(
+                href="https://pubmed.ncbi.nlm.nih.gov/2350571/", "[O'Quigley et al. ", em("Biometrics,"), " 1990]", 
+                target="_blank", rel="noopener noreferrer"
+              )
+            )
+          ),
+          tags$li(
+            p("TARGETed-Agent Continual Reassessment Method (TARGET-CRM)")
+          ), 
+          tags$li(
+            p("3+3 ", 
+              a(
+                href="https://pubmed.ncbi.nlm.nih.gov/2790129/", "[Storer. ", em("Biometrics,"), " 1989]", 
+                target="_blank", rel="noopener noreferrer"
+              )
+            )
+          )     
+        ),
+        h2("Key Features of DEDUCE:"),
+        tags$ul(
+          tags$li(
+            p("Permits simultaneous comparison of multiple trial designs for the same set of simulation parameters")
+          ),
+          tags$li(
+            p("Dynamically generates a written report summarizing simulation results")
+          )
+        )
+      )
+    ),
+    fluidRow(
+      column(12, align="center",
+        a(
+          href="https://www.danafarberbostonchildrens.org",
+          img(id="df_logo", src = "danafarber_bostonchildrens_logo.png", style="cursor: pointer;"),
+          target="_blank", rel="noopener noreferrer"
+        ),
+        a(
+          href="https://www.NorthwesternMutual.com",
+          img(id="nm_logo", src = "NMLogo.png", style="cursor: pointer;"),
+          target="_blank", rel="noopener noreferrer"
+        )
+      )
+    )
+  ),
+  
+  ## Design Tab ---------------------
+  tabPanel("Design",
+    div(id = "other_tabs",
+      fluidRow(
+        column(3, style="overflow-y:scroll; height: 80vh;",
+          h3("Inputs", style="text-align: center;"),
+          br(),
+          p("Designs:", style = "font-weight: 700; font-size: 18px;"),
+          prettyCheckbox("dt_selector_tpt", "3+3", value = TRUE, icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
+          bsTooltip("dt_selector_tpt", "Select to run the 3+3 Design", 
+                    "top", options = list(container = "body")),
+          prettyCheckbox("dt_selector_crm", "CRM", value = FALSE, icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
+          bsTooltip("dt_selector_crm", "Select to run the CRM Design", 
+                    "top", options = list(container = "body")),
+          prettyCheckbox("dt_selector_tcrm", "TARGET-CRM", value = FALSE, icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
+          bsTooltip("dt_selector_tcrm", "Select to run the TARGET-CRM Design", 
+                    "top", options = list(container = "body")),
+          sliderInput("dt_num_doses", "Number of Dose Levels", min = 3, max = 10, value = 4, width = "100%", ticks = FALSE),
+          bsTooltip("dt_num_doses", "Please enter the number of doses that will be used", 
+                    "top", options = list(container = "body")),
+          textInput("dt_dose_labels", "Dose Level Labels", value = "-1,1,2,3", width = "100%"),
+          bsTooltip("dt_dose_labels", "Please enter the dose level labels (separated by commas) for each dose level evaluated in the trial", 
+                    "top", options = list(container = "body")),
+          selectInput("dt_start_level", "Starting Dose Level", choices = c(-1,1,2,3), selected = 1, width = "100%"),
+          bsTooltip("dt_start_level", "Please enter the starting dose level from the dose level labels above", 
+                    "top", options = list(container = "body")),
+          sliderInput("dt_num_trials", "Number of Simulated Trials", min = 0, max = 10000, value = 100, width = "100%", step = 100, ticks = FALSE),
+          bsTooltip("dt_num_trials", "Please enter the number of simulated trials. A larger number of simulations increases the precision of simulation results and computation time", 
+                    "top", options = list(container = "body")),
+          sliderInput("dt_target_tox", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.01, width = "100%", ticks = FALSE),
+          bsTooltip("dt_target_tox", "Please enter the target toxicity probability of the study agent", 
+                    "top", options = list(container = "body")),
+          textInput("dt_true_tox", "True Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3", width = "100%"),
+          bsTooltip("dt_true_tox", "Please enter the true toxicity probabilities for each dose level (separated by commas). Toxicity probabilities must increase with each subsequent dose level", 
+                    "top", options = list(container = "body")),
+          sliderInput("dt_arrival_rate", "Average Time Between Patient Enrollments (In Days)", min = 0, max = 180, value = 15, width = "100%", ticks = FALSE),
+          bsTooltip("dt_arrival_rate", "Please enter the average time between enrolling patients (In Days)", 
+                    "top", options = list(container = "body")),
+          sliderInput("dt_cycle_length", "Duration of DLT Observation Period (In Days)", min = 0, max = 365, value = 28, width = "100%", ticks = FALSE),
+          bsTooltip("dt_cycle_length", "Please enter the duration of the DLT observation period (In Days)", 
+                    "top", options = list(container = "body")),
+                 
+          # Show if TARGET-CRM or CRM is Checked
+          conditionalPanel(
+            condition = "input.dt_selector_tcrm == 1 || input.dt_selector_crm == 1",
+            textInput("dt_prior_tox", "Prior Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3", width = "100%"),
+            bsTooltip("dt_prior_tox", "Please enter the prior toxicity probabilities for each dose level (separated by commas). Toxicity probabilities must increase with each subsequent dose level", 
+                      "top", options = list(container = "body")),
+            sliderInput("dt_max_n", "Maximum Sample Size", min = 1, max = 200, value = 18, width = "100%", ticks = FALSE),
+            bsTooltip("dt_max_n", "Please enter the maximum number of patients to be enrolled per trial", 
+                      "top", options = list(container = "body")),
+            sliderInput("dt_cohort_size", "Cohort Size", min = 1, max = 9, value = 3, width = "100%", ticks = FALSE),
+            bsTooltip("dt_cohort_size", "Please enter the cohort size. The cohort size is the number of patients to be treated at the current dose level before a dose escalation decision is made", 
+                      "top", options = list(container = "body"))
+          ),
+                 
+          # Show if TARGET-CRM is Checked
+          conditionalPanel(
+            condition = "input.dt_selector_tcrm == 1",
+            sliderInput("dt_prop_b", "Proportion of Patients from Cohort B", min = 0, max = 1, value = 0.1, step = 0.01, width = "100%", ticks = FALSE),
+            bsTooltip("dt_prop_b", "Patients belong to either Cohort A (general enrollment) or Cohort B (enrichment cohort). Please enter the proportion of enrolled patients belonging to Cohort B. Enter a proportion of 0 if no enrichment cohort is needed.", 
+                      "top", options = list(container = "body")),
+            sliderInput("dt_min_cohort_b", "Minimum Enrollment of Cohort B Patients (Optional)", min = 0, max = 100, value = 0, width = "100%", ticks = FALSE),
+            bsTooltip("dt_min_cohort_b", "An optional feature is to require a trial to enroll a minimum number of Cohort B patients. Once the maximum N is attained, enrollment of Cohort A patients will be suspended and only Cohort B patients may enroll until the minimum number has been attained. Please enter the minimum number of Cohort B patients to be enrolled in a trial. Enter 0 if no minimum number is required.", 
+                      "top", options = list(container = "body"))
+          ),
+          splitLayout(
+            cellWidths = c("50%", "25%", "25%"),
+            actionButton("dt_simulate", "Simulate"),
+            downloadButton("dt_results", ""),
+            actionButton("dt_reset", "Reset")
+          ),
+          bsTooltip("dt_simulate", "Simulates the selected design(s) using the values of the above inputs", 
+                    "top", options = list(container = "body")),
+          bsTooltip("dt_results", "Download the full report of plots, tables, and summaries", 
+                    "top", options = list(container = "body")),
+          bsTooltip("dt_reset", "WARNING: Resets all of the inputs and results, cannot be undone", 
+                    "top", options = list(container = "body"))
+          ),
+          column(9,
+            uiOutput("dt_plots_ui"),
+            uiOutput("dt_none_ui")
+          )
+        )
+    )
+  ),
+  
+  ## Conduct Tab ---------------------
+  tabPanel("Conduct",
+    div(id = "other_tabs",
+      fluidRow(
+        column(3, style="overflow-y:scroll; height: 80vh;",
+          h3("Inputs", style="text-align: center;"),
+          br(),
+          radioButtons("ct_selectors", "Design", c("CRM", "TARGET CRM"), inline = "TRUE"),
+          bsTooltip("ct_selectors", "Select the design to run", 
+                    "top", options = list(container = "body")),
+          sliderInput("ct_num_doses", "Number of Dose Levels", min = 3, max = 10, value = 4, width = "100%", ticks = FALSE),
+          bsTooltip("ct_num_doses", "Please enter the number of doses that will be used", 
+                    "top", options = list(container = "body")),
+          textInput("ct_dose_labels", "Dose Level Labels", value = "-1,1,2,3", width = "100%"),
+          bsTooltip("ct_dose_labels", "Please enter the dose level labels (separated by commas) for each dose level evaluated in the trial", 
+                    "top", options = list(container = "body")),
+          sliderInput("ct_target_tox", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.01, width = "100%", ticks = FALSE),
+          bsTooltip("ct_target_tox", "Please enter the target toxicity probability of the study agent", 
+                    "top", options = list(container = "body")),
+          textInput("ct_prior_tox", "Prior Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3", width = "100%"),
+          bsTooltip("ct_prior_tox", "Please enter the estimated prior toxicity probabilities for each dose level evaluated in the trial (separated by commas). Toxicity probabilities must increase with each subsequent dose level", 
+                    "top", options = list(container = "body")),
+          sliderInput("ct_cohort_size", "Cohort Size", min = 1, max = 9, value = 3, width = "100%", ticks = FALSE),
+          bsTooltip("ct_cohort_size", "Please enter the cohort size. The cohort size is the number of patients to be treated at the current dose level before a dose escalation decision is made", 
+                    "top", options = list(container = "body")),
+          sliderInput("ct_slots", "Number of Slots Remaining", min = 0, max = 8, value = 0, width = "100%", ticks = FALSE),
+          bsTooltip("ct_slots", "Please enter the number of slots remaining to be enrolled for the current cohort of patients.", 
+                    "top", options = list(container = "body")),
+          selectInput("ct_current_dose", "Current Dose level", choices = c(-1,1,2,3), selected = 1, width = "100%"),
+          bsTooltip("ct_current_dose", "Please enter the starting dose level from the dose level labels above", 
+                    "top", options = list(container = "body"))
+        ),
+        column(9,
+          fluidRow(
+            column(5,
+              h3("Enter Patient Toxicity Data:", style = "text-align: center;"),
+              textInput("ct_pid", "Patient ID", value = "C1", width = "100%"),
+              bsTooltip("ct_pid", "Please enter a patient ID to add to the study", 
+                        "top", options = list(container = "body")),
+              selectInput("ct_dose_adm", "Administered Dose Level", choices = c(-1,1,2,3), selected = 1, width = "100%"),
+              bsTooltip("ct_dose_adm", "Please select the dose that will be administered to this patient",
+                        "top", options = list(container = "body")),
+              prettyCheckbox("ct_dlt_obs", "Was DLT Observed?", icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
+              bsTooltip("ct_dlt_obs", "Select if a dose level toxicity is present", 
+                        "top", options = list(container = "body")),
+              prettyCheckbox("ct_include", "Include Patient in Model?", value = TRUE, icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
+              bsTooltip("ct_include", "Select to include this patient in the model", 
+                        "top", options = list(container = "body")),
+              splitLayout(
+                actionButton("ct_add", "Add New Patient"),
+                actionButton("ct_remove", "Remove Selected Patient")
+              ),
+              uiOutput("ct_patient_helper"),
+              bsTooltip("ct_add", "Add the chosen patient inputs to the table", 
+                        "top", options = list(container = "body")),
+              DTOutput("ct_patients_table")
+            ),
+            column(7,
+              uiOutput("ct_patients_ui"),
+              splitLayout(
+                cellWidths = c("50%", "25%", "25%"), cellArgs = list(style = "padding: 5px"),
+                actionButton("ct_simulate", "Run Model"),
+                downloadButton("ct_results", ""),
+                actionButton("ct_reset", "Reset")
+              ),
+              bsTooltip("ct_simulate", "Simulates the selected design using the chosen inputs and patients info", 
+                        "top", options = list(container = "body")),
+              bsTooltip("ct_results", "Download the results", 
+                        "top", options = list(container = "body")),
+              bsTooltip("ct_reset", "WARNING: Resets all of the inputs and results, cannot be undone", 
+                        "top", options = list(container = "body"))
+            )
+          )
+        )
+      )
+    )
+  ),
+  
+  ## About Tab ---------------------
+  tabPanel("About",
+    fluidRow(
+      h2("DEDUCE Leadership: Dana-Farber/Boston Children's Cancer and Blood Disorders Center"),
+      tags$ul(
+        tags$li(
+          p("Clement Ma, PhD")
+        ),
+        tags$li(
+          p("Wendy B. London, PhD")
+        )
+      ),
+      h2("Development Team: Northwestern Mutual"),
+      tags$ul(
+        tags$li(
+          p("Judy Berdan")
+        ),
+        tags$li(
+          p("Laure Borchardt")
+        ),
+        tags$li(
+          p("Audra Brennan")
+        ),
+        tags$li(
+          p("Stan Crane")
+        ),
+        tags$li(
+          p("Ben Garski")
+        ),
+        tags$li(
+          p("Nanette Jamel")
+        ),
+        tags$li(
+          p("Lori Kiraly")
+        ),
+        tags$li(
+          p("Danielle Pankey")
+        ),
+        tags$li(
+          p("Susan Stegman, MD")
+        )
+      ),
+      h2("Contact:"),
+      tags$ul(
+        tags$li(
+          p("For Assistance Please Contact: Drs. Clement Ma and Wendy B. London")
+        )
+      ),
+      h2("Citation:"),
+      tags$ul(
+        tags$li(
+          p("To site DEDUCE please use: Insert link to citation")
+        )
+      ),
+      h2("Acknowledgements:"),
+      p(id="acknowledgements", "We would like to thank the Northwestern Mutual Tech for Good team for their pro-bono development, design, and project management 
                                 support for the DEDUCE platform. We would also like to thank our test users, Drs. Steven G. DuBois, Karen D. Wright, 
                                 and David S. Shulman for their helpful feedback."),
-                                h2("References:"),
-                                tags$ul(
-                                  tags$li(
-                                    p(
-                                      a("Storer BE. Design and Analysis of Phase I Clinical Trials. ", em("Biometrics. "), "1989;45(3):925-37.",
-                                        href="https://pubmed.ncbi.nlm.nih.gov/2790129/", target="_blank", rel="noopener noreferrer")
-                                    )
-                                  ),
-                                  tags$li(
-                                    p(
-                                      a("O'Quigley J, Pepe M, Fisher L. Continual reassessment method: a practical design for phase 1 Clinical trials in cancer. ", 
-                                        em("Biometrics. "), "1990;46(1):33-48.", href="https://pubmed.ncbi.nlm.nih.gov/2350571/", 
-                                        target="_blank", rel="noopener noreferrer")
-                                    )
-                                  )
-                                ),
-                                fluidRow(
-                                  column(12, align="center",
-                                         a(href="https://www.danafarberbostonchildrens.org", img(id="df_logo", src = "danafarber_bostonchildrens_logo.png", style="cursor: pointer;"), target="_blank", rel="noopener noreferrer"),
-                                         a(href="https://www.NorthwesternMutual.com", img(id="nm_logo", src = "NMLogo.png", style="cursor: pointer;"), target="_blank", rel="noopener noreferrer")
-                                  )
-                                )
-                                
-                        )
-                      )
-                    )
+      h2("References:"),
+      tags$ul(
+        tags$li(
+          p(
+            a("Storer BE. Design and Analysis of Phase I Clinical Trials. ", em("Biometrics. "), "1989;45(3):925-37.",
+              href="https://pubmed.ncbi.nlm.nih.gov/2790129/", target="_blank", rel="noopener noreferrer")
+          )
+        ),
+        tags$li(
+          p(
+            a("O'Quigley J, Pepe M, Fisher L. Continual reassessment method: a practical design for phase 1 Clinical trials in cancer. ", 
+              em("Biometrics. "), "1990;46(1):33-48.", href="https://pubmed.ncbi.nlm.nih.gov/2350571/", 
+              target="_blank", rel="noopener noreferrer")
+          )
+        )
+      )
+    ),
+    fluidRow(
+      column(12, align="center",
+        a(
+          href = "https://www.danafarberbostonchildrens.org", 
+          img(id = "df_logo", src = "danafarber_bostonchildrens_logo.png", style = "cursor: pointer;"), 
+          target = "_blank", rel = "noopener noreferrer"
+        ),
+        a(
+          href = "https://www.NorthwesternMutual.com",
+          img(id = "nm_logo", src = "NMLogo.png", style = "cursor: pointer;"),
+          target = "_blank", rel = "noopener noreferrer"
+        )
+      )
+    )
+  )
 )
 
 # Server ---------------------
@@ -464,16 +491,19 @@ server <- function(input, output, session) {
     req(length(dt_selected_design_names()) > 0)
     hidden(
       div(id="dt_ui_plots",
-          column(6,
-                 plotOutput("dt_plot_1"),
-                 br(),
-                 plotOutput("dt_plot_2")
-          ),
-          column(6,
-                 plotOutput("dt_plot_3"),
-                 br(),
-                 plotOutput("dt_plot_4")
+        fluidRow(
+          splitLayout(
+            plotOutput("dt_plot_1"),
+            plotOutput("dt_plot_3")
           )
+        ),
+        br(),
+        fluidRow(
+          splitLayout(
+            plotOutput("dt_plot_2"),
+            plotOutput("dt_plot_4")
+          )
+        )
       )
     )
   })
@@ -483,11 +513,11 @@ server <- function(input, output, session) {
     req(is.null(dt_v$data))
     tagList(
       fluidRow(
-        column(12, align="center",
+        column(12,
                br(),
                br(),
                icon("arrow-left", "fa-3x"),
-               h2("Please select the appropriate inputs before scrolling down and running the simulation", style="color: black")
+               h3("Please select the appropriate inputs before running the simulation", style="color: black")
         )
       )
     )
@@ -736,11 +766,11 @@ server <- function(input, output, session) {
     }
     df <- as.data.frame(do.call(cbind, table_list))
     op_chars <- c("Proportion of correct selection (PCS)", "True MTD", sprintf("Proportion of trials selecting dose %s as true MTD", unlist(strsplit(input$dt_dose_labels, ","))),
-                 "Proportion of patients experiencing a DLT overall", sprintf("Proportion of patients experiencing a DLT at dose %s", unlist(strsplit(input$dt_dose_labels, ","))),
-                 "Mean total sample size", "Minimmum total sample size", "Maximum total sample size", 
-                 sprintf("Proportion of patients enrolled at dose %s", unlist(strsplit(input$dt_dose_labels, ","))), "Mean study duration in days", 
-                 "Standard deviation of study duration in days", "Mean # of cohort B patients enrolled during DTL observation period (TARGET-CRM only)",
-                 "Standard deviation of # of cohort B patients enrolled during DLT observation period (TARGET-CRM only)")
+                  "Proportion of patients experiencing a DLT overall", sprintf("Proportion of patients experiencing a DLT at dose %s", unlist(strsplit(input$dt_dose_labels, ","))),
+                  "Mean total sample size", "Minimmum total sample size", "Maximum total sample size", 
+                  sprintf("Proportion of patients enrolled at dose %s", unlist(strsplit(input$dt_dose_labels, ","))), "Mean study duration in days", 
+                  "Standard deviation of study duration in days", "Mean # of cohort B patients enrolled during DTL observation period (TARGET-CRM only)",
+                  "Standard deviation of # of cohort B patients enrolled during DLT observation period (TARGET-CRM only)")
     df <- cbind(op_chars, df)
     colnames(df)[1] <- "Operating Characteristic"
     return(df)
@@ -785,26 +815,26 @@ server <- function(input, output, session) {
   # Values for Rmd - Results Section
   dt_report_results <- reactive({
     
-      # 1 Design
-      if (length(dt_selected_design_names()) == 1) {
-        x1 <- dt_results_df()$pcs
-        x2 <- round(dt_results_df()$obs_tox, 2)
-        x3 <- dt_results_df()$target_tox
-        x4 <- ifelse(x2 > x3, "greater than", ifelse(x2 < x3, "lower than", "equal to"))
-        x5 <- unlist(strsplit(input$dt_dose_labels, ","))[dt_results_df()$true_mtd]
-        x6 <- round(dt_results_df()$patmtd, 2)
-        x7 <- round(dt_results_df()$mean_duration, 2)
-        x8 <- round(dt_results_df()$sd_duration, 2)
-        x9 <- dt_results_df()$mean_obs_n
-        x10 <- dt_results_df()$min_obs_n
-        x11 <- dt_results_df()$max_obs_n
-        
-        # Only Needed for TARGET-CRM
-        x12 <- dt_results_df()$prop_b
-        x13 <- dt_results_df()$mean_cohort_b
-        x14 <- dt_results_df()$sd_cohort_b
-        return(c(x1,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11,x12,x13,x14))
-      }
+    # 1 Design
+    if (length(dt_selected_design_names()) == 1) {
+      x1 <- dt_results_df()$pcs
+      x2 <- round(dt_results_df()$obs_tox, 2)
+      x3 <- dt_results_df()$target_tox
+      x4 <- ifelse(x2 > x3, "greater than", ifelse(x2 < x3, "lower than", "equal to"))
+      x5 <- unlist(strsplit(input$dt_dose_labels, ","))[dt_results_df()$true_mtd]
+      x6 <- round(dt_results_df()$patmtd, 2)
+      x7 <- round(dt_results_df()$mean_duration, 2)
+      x8 <- round(dt_results_df()$sd_duration, 2)
+      x9 <- dt_results_df()$mean_obs_n
+      x10 <- dt_results_df()$min_obs_n
+      x11 <- dt_results_df()$max_obs_n
+      
+      # Only Needed for TARGET-CRM
+      x12 <- dt_results_df()$prop_b
+      x13 <- dt_results_df()$mean_cohort_b
+      x14 <- dt_results_df()$sd_cohort_b
+      return(c(x1,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11,x12,x13,x14))
+    }
     
     # 2+ Designs
     else{
@@ -812,15 +842,15 @@ server <- function(input, output, session) {
       x2 <- unlist(strsplit(input$dt_dose_labels, ","))[dt_results_df()$true_mtd[1]]
       x3 <- paste(sprintf("The proportion of correct selection (PCS) of the MTD for the %s design is %g.", dt_results_df()$design, dt_results_df()$pcs), collapse = " ")
       x4 <- paste(sprintf("The proportion of patients experiencing a DLT for the %s design is %g, which %s the target toxicity probability of %g.", 
-                    dt_results_df()$design, dt_results_df()$obs_tox, ifelse(dt_results_df()$obs_tox > dt_results_df()$target_tox, "is greater than", 
-                    ifelse(dt_results_df()$obs_tox == dt_results_df()$target_tox, "equals", "is lower than")), dt_results_df()$target_tox[1]), collapse = " ")
+                          dt_results_df()$design, dt_results_df()$obs_tox, ifelse(dt_results_df()$obs_tox > dt_results_df()$target_tox, "is greater than", 
+                                                                                  ifelse(dt_results_df()$obs_tox == dt_results_df()$target_tox, "equals", "is lower than")), dt_results_df()$target_tox[1]), collapse = " ")
       x5 <- dt_results_df() %>% slice_max(patmtd) %>% select(design) %>% pull()
       x6 <- paste(sprintf("The proportion of patients assigned to the true MTD for the %s design is %g.", dt_results_df()$design, dt_results_df()$patmtd), collapse = " ")
       x7 <- dt_results_df() %>% slice_min(mean_duration) %>% select(design) %>% pull()
       x8 <- paste(sprintf("The mean study duration for the %s design is %g days(SD=%g).", dt_results_df()$design, dt_results_df()$mean_duration, 
                           dt_results_df()$sd_duration), collapse = " ")
       x9 <- paste(sprintf("The mean total sample size for the %s design is %g (range=%g-%g).", dt_results_df()$design, 
-                    dt_results_df()$mean_obs_n, dt_results_df()$min_obs_n, dt_results_df()$max_obs_n), collapse = " ")
+                          dt_results_df()$mean_obs_n, dt_results_df()$min_obs_n, dt_results_df()$max_obs_n), collapse = " ")
       
       # Only Needed for TARGET-CRM
       x10 <- dt_results_df()$prop_b[1]
@@ -832,7 +862,7 @@ server <- function(input, output, session) {
       return(c(x1,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11,x12))
     } 
   })
-
+  
   ### Download Results ---------------------
   output$dt_results <- downloadHandler(
     filename = function(){paste0("DEDUCE Design ", Sys.time(), ".docx")}, 
@@ -985,8 +1015,8 @@ server <- function(input, output, session) {
                                        options = list(dom = 't', scrollY = "30vh", ordering = FALSE,
                                                       initComplete = JS("function(settings, json) {","$(this.api().table().container()).css({'font-size': '18px'});","}"),
                                                       language = list(zeroRecords = "Add patient(s) to the table")
-                                                      )
-    
+                                       )
+                                       
   )
   
   ### Running the Function ---------------------
@@ -1009,12 +1039,9 @@ server <- function(input, output, session) {
     hidden(
       div(id="ct_ui_patients",
         fluidRow(
-          column(8,
-            DTOutput("ct_df")
-          ),
-          column(4, align = "center",
-            textOutput("ct_next_dose")
-          )
+          h3("Dose Escalation Recommendations", style = "text-align: center;"),
+          DTOutput("ct_df"),
+          textOutput("ct_next_dose")
         )
       )
     )
@@ -1024,8 +1051,8 @@ server <- function(input, output, session) {
   output$ct_df <- renderDT(ct_function_outputs()$df2, rownames = FALSE,
                            colnames = c("Dose Level", "Prior Prob. of DLT", "# Patients", "# DLT's", "Posterior Prob. of DLT", "Lower Limit", "Upper Limit"),
                            options = list(dom = 't', scrollY = "30vh", ordering = FALSE, 
-                              initComplete = JS("function(settings, json) {","$(this.api().table().container()).css({'font-size': '18px'});","}")
-                            )
+                                          initComplete = JS("function(settings, json) {","$(this.api().table().container()).css({'font-size': '18px'});","}")
+                           )
   )
   
   # Recommended Dose
