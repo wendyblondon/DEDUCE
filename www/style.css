@@ -24,6 +24,7 @@
 .navbar-default .navbar-nav li a{
   color: black;
   font-weight: bold;
+  font-size: 1.2em;
 }
 
 .navbar-default .navbar-nav .active a{
