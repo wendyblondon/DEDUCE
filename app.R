@@ -454,10 +454,12 @@ server <- function(input, output, session) {
     show("dt_ui_plots")
   })
   
-  # Activate Download Button if a Simulation was Ran Already
+  # Activate Download Button if a Simulation was Ran Already and Force User to Reset After Every Use
   observe({
     if (input$dt_simulate > 0) {
       enable("dt_results")
+      disable("dt_simulate")
+      removeTooltip(session, "dt_simulate")
     }
   })
   
@@ -487,6 +489,7 @@ server <- function(input, output, session) {
     reset("dt_cohort_size")
     dt_v$data <- NULL
     disable("dt_results")
+    enable("dt_simulate")
   })
   
   ### UI ---------------------
