@@ -321,7 +321,12 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
       h2("Citation:"),
       tags$ul(
         tags$li(
-          p("To site DEDUCE please use: Insert link to citation")
+          p("To cite DEDUCE, please use: Ma C, Berdan J, Borchardt L, Crane S, Garski B, Jamel N, Kiraly L, Pankey D, Stegman S, London WB (2021). 
+            DEsign and conDUCt of dose Escalation trials (DEDUCE). Available at:", 
+            a(
+              href="https://bengarski.shinyapps.io/DEDUCE/", "https://bengarski.shinyapps.io/DEDUCE/"
+            )
+          )
         )
       ),
       h2("Acknowledgements:"),
