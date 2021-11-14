@@ -24,28 +24,26 @@
 
 .navbar-default .navbar-nav li a{
   color: black;
-  font-size: 1.2em;
+  font-size: 1.4em;
 }
 
 .navbar-default .navbar-nav .active a{
   border-top: 1em solid #003087;
   background-color: white;
   color: black;
-  font-weight: bold;
+  text-decoration: underline;
 }
 
 .navbar-default .navbar-nav .active a:focus{
   border-top: 1em solid #003087;
   background-color: white;
   color: black;
-  font-weight: bold;
 }
 
 .navbar-default .navbar-nav a:hover{
   border-top: 1em solid #41B6E6;
   background-color: white;
   color: black;
-  font-weight: bold;
 }
 
 /* HOME TAB */
