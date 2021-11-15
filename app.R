@@ -257,8 +257,6 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
               ),
               bsTooltip("ct_add", "Add the chosen patient inputs to the table", 
                         "top", options = list(container = "body")),
-              bsTooltip("ct_remove", "Remove the selected patient from the table", 
-                        "top", options = list(container = "body")),
               DTOutput("ct_patients_table")
             ),
             column(7,
@@ -950,7 +948,7 @@ server <- function(input, output, session) {
   observe({
     if (!is.null(input$ct_patients_table_rows_selected)) {
       enable("ct_remove")
-      addTooltip(session, "ct_remove", "Remove the selected row from the table", "top", options = list(container = "body"))
+      addTooltip(session, "ct_remove", "Remove the selected patient from the table", "top", options = list(container = "body"))
     } else{
       disable("ct_remove")
       removeTooltip(session, "ct_remove")
