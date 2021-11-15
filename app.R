@@ -132,13 +132,15 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
           bsTooltip("dt_start_level", "Please enter the starting dose level from the dose level labels above", 
                     "top", options = list(container = "body")),
           sliderInput("dt_num_trials", "Number of Simulated Trials", min = 0, max = 10000, value = 100, width = "100%", step = 100, ticks = FALSE),
-          bsTooltip("dt_num_trials", "Please enter the number of simulated trials. A larger number of simulations increases the precision of simulation results and computation time", 
+          bsTooltip("dt_num_trials", "Please enter the number of simulated trials. 
+                    A larger number of simulations increases the precision of simulation results and computation time", 
                     "top", options = list(container = "body")),
           sliderInput("dt_target_tox", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.01, width = "100%", ticks = FALSE),
           bsTooltip("dt_target_tox", "Please enter the target toxicity probability of the study agent", 
                     "top", options = list(container = "body")),
           textInput("dt_true_tox", "True Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3", width = "100%"),
-          bsTooltip("dt_true_tox", "Please enter the true toxicity probabilities for each dose level (separated by commas). Toxicity probabilities must increase with each subsequent dose level", 
+          bsTooltip("dt_true_tox", "Please enter the true toxicity probabilities for each dose level (separated by commas). 
+                    Toxicity probabilities must increase with each subsequent dose level", 
                     "top", options = list(container = "body")),
           sliderInput("dt_arrival_rate", "Average Time Between Patient Enrollments (In Days)", min = 0, max = 180, value = 15, width = "100%", ticks = FALSE),
           bsTooltip("dt_arrival_rate", "Please enter the average time between enrolling patients (In Days)", 
@@ -151,13 +153,16 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
           conditionalPanel(
             condition = "input.dt_selector_tcrm == 1 || input.dt_selector_crm == 1",
             textInput("dt_prior_tox", "Prior Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3", width = "100%"),
-            bsTooltip("dt_prior_tox", "Please enter the prior toxicity probabilities for each dose level (separated by commas). Toxicity probabilities must increase with each subsequent dose level", 
+            bsTooltip("dt_prior_tox", "Please enter the prior toxicity probabilities for each dose level (separated by commas). 
+                      Toxicity probabilities must increase with each subsequent dose level", 
                       "top", options = list(container = "body")),
             sliderInput("dt_max_n", "Maximum Sample Size", min = 1, max = 200, value = 18, width = "100%", ticks = FALSE),
-            bsTooltip("dt_max_n", "Please enter the maximum number of patients to be enrolled per trial", 
+            bsTooltip("dt_max_n", "Please enter the maximum number of patients to be enrolled per trial. Trial accuracy increases with larger sample size.
+                      The selected sample size should balance trial accuracy with accrual feasibility", 
                       "top", options = list(container = "body")),
             sliderInput("dt_cohort_size", "Cohort Size", min = 1, max = 9, value = 3, width = "100%", ticks = FALSE),
-            bsTooltip("dt_cohort_size", "Please enter the cohort size. The cohort size is the number of patients to be treated at the current dose level before a dose escalation decision is made", 
+            bsTooltip("dt_cohort_size", "Please enter the cohort size. The cohort size is the number of patients to be treated at the current dose level 
+                      before a dose escalation decision is made", 
                       "top", options = list(container = "body"))
           ),
                  
@@ -165,10 +170,14 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
           conditionalPanel(
             condition = "input.dt_selector_tcrm == 1",
             sliderInput("dt_prop_b", "Proportion of Patients from Cohort B", min = 0, max = 1, value = 0.1, step = 0.01, width = "100%", ticks = FALSE),
-            bsTooltip("dt_prop_b", "Patients belong to either Cohort A (general enrollment) or Cohort B (enrichment cohort). Please enter the proportion of enrolled patients belonging to Cohort B. Enter a proportion of 0 if no enrichment cohort is needed.", 
+            bsTooltip("dt_prop_b", "Patients belong to either Cohort A (general enrollment) or Cohort B (enrichment cohort). 
+                      Please enter the proportion of enrolled patients belonging to Cohort B. Enter a proportion of 0 if no enrichment cohort is needed.", 
                       "top", options = list(container = "body")),
             sliderInput("dt_min_cohort_b", "Minimum Enrollment of Cohort B Patients (Optional)", min = 0, max = 100, value = 0, width = "100%", ticks = FALSE),
-            bsTooltip("dt_min_cohort_b", "An optional feature is to require a trial to enroll a minimum number of Cohort B patients. Once the maximum N is attained, enrollment of Cohort A patients will be suspended and only Cohort B patients may enroll until the minimum number has been attained. Please enter the minimum number of Cohort B patients to be enrolled in a trial. Enter 0 if no minimum number is required.", 
+            bsTooltip("dt_min_cohort_b", "An optional feature is to require a trial to enroll a minimum number of Cohort B patients. 
+                      Once the maximum N is attained, enrollment of Cohort A patients will be suspended and only Cohort B patients may enroll 
+                      until the minimum number has been attained. Please enter the minimum number of Cohort B patients to be enrolled in a trial. 
+                      Enter 0 if no minimum number is required.", 
                       "top", options = list(container = "body"))
           ),
           splitLayout(
