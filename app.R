@@ -123,7 +123,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
           bsTooltip("dt_selector_tcrm", "Select to run the TARGET-CRM Design", 
                     "top", options = list(container = "body")),
           sliderInput("dt_num_doses", "Number of Dose Levels", min = 3, max = 10, value = 4, width = "100%", ticks = FALSE),
-          bsTooltip("dt_num_doses", "Please enter the number of doses that will be used", 
+          bsTooltip("dt_num_doses", "Please enter the number of doses that will be used.", 
                     "top", options = list(container = "body")),
           textInput("dt_dose_labels", "Dose Level Labels", value = "-1,1,2,3", width = "100%"),
           bsTooltip("dt_dose_labels", "Please enter the dose level labels (separated by commas) for each dose level evaluated in the trial", 
@@ -138,7 +138,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
           sliderInput("dt_target_tox", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.01, width = "100%", ticks = FALSE),
           bsTooltip("dt_target_tox", "Please enter the target toxicity probability of the study agent", 
                     "top", options = list(container = "body")),
-          textInput("dt_true_tox", "True Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3", width = "100%"),
+          textInput("dt_true_tox", "True Toxicity Probability Vector per Dose Level", value = "0.05,0.12,0.2,0.3", width = "100%"),
           bsTooltip("dt_true_tox", "Please enter the true toxicity probabilities for each dose level (separated by commas). 
                     Toxicity probabilities must increase with each subsequent dose level.", 
                     "top", options = list(container = "body")),
@@ -152,7 +152,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
           # Show if TARGET-CRM or CRM is Checked
           conditionalPanel(
             condition = "input.dt_selector_tcrm == 1 || input.dt_selector_crm == 1",
-            textInput("dt_prior_tox", "Prior Toxicity Probability Vector", value = "0.05,0.12,0.2,0.3", width = "100%"),
+            textInput("dt_prior_tox", "Prior Toxicity Probability Vector per Dose Level", value = "0.05,0.12,0.2,0.3", width = "100%"),
             bsTooltip("dt_prior_tox", "Please enter the prior toxicity probabilities for each dose level (separated by commas). 
                       Toxicity probabilities must increase with each subsequent dose level.", 
                       "top", options = list(container = "body")),
@@ -325,7 +325,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
       h2("Contact:"),
       tags$ul(
         tags$li(
-          p("For Assistance Please Contact: Drs. Clement Ma and Wendy B. London")
+          p("For assistance, please contact: Drs. Clement Ma and Wendy B. London.")
         )
       ),
       h2("Citation:"),
