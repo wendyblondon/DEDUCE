@@ -289,7 +289,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
           sliderInput("ct_num_doses", "Number of Dose Levels", min = 3, max = 10, value = 4, width = "100%", ticks = FALSE),
           bsTooltip(
             "ct_num_doses",
-            "Please enter the number of doses that will be used", 
+            "Please enter the number of dose levels in your trial", 
             "top", options = list(container = "body")
           ),
           textInput("ct_dose_labels", "Dose Level Labels", value = "-1,1,2,3", width = "100%"),
@@ -326,13 +326,20 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
           sliderInput("ct_slots", "Number of Slots Remaining", min = 0, max = 8, value = 0, width = "100%", ticks = FALSE),
           bsTooltip(
             "ct_slots",
-            "Please enter the number of slots remaining to be enrolled for the current cohort of patients", 
+            paste(
+              "Please enter the number of slots remaining to be enrolled for the current cohort of patients.",
+              "Escalating to a higher dose level is not permitted until the current cohort is fully evaluated",
+              "at the current dose level. Please update this input parameter for each successive patient enrolled in the trial."
+            ),
             "top", options = list(container = "body")
           ),
           selectInput("ct_current_dose", "Current Dose level", choices = c(-1,1,2,3), selected = 1, width = "100%"),
           bsTooltip(
             "ct_current_dose",
-            "Please enter the starting dose level from the dose level labels above", 
+            paste(
+              "Please enter the dose level currently under evaluation.",
+              "(TARGET-CRM permits enrolling patients at one dose level below the dose level under evaluation."
+            ),
             "top", options = list(container = "body")
           )
         ),
@@ -343,19 +350,22 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
               textInput("ct_pid", "Patient ID", value = "C1", width = "100%"),
               bsTooltip(
                 "ct_pid",
-                "Please enter a patient ID to add to the study", 
+                paste(
+                  "Please enter a patient identifier. This auto-populates if you choose not to enter an ID.",
+                  "DO NOT ENTER PATIENT PROTECTED HEALTH INFORMATION (PHI), e.g. MRNs, patient initials, cooperative group ID"
+                ),
                 "top", options = list(container = "body")
               ),
               selectInput("ct_dose_adm", "Administered Dose Level", choices = c(-1,1,2,3), selected = 1, width = "100%"),
               bsTooltip(
                 "ct_dose_adm",
-                "Please select the dose that will be administered to this patient",
+                "Please select the dose level administered",
                 "top", options = list(container = "body")
               ),
               prettyCheckbox("ct_dlt_obs", "Was DLT Observed?", icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
               bsTooltip(
                 "ct_dlt_obs",
-                "Select if a dose level toxicity is present", 
+                "Please select if a dose limiting toxicity (DLT) was observed", 
                 "top", options = list(container = "body")
               ),
               prettyCheckbox("ct_include", "Include Patient in Model?", value = TRUE, icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
@@ -390,7 +400,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
               ),
               bsTooltip(
                 "ct_results",
-                "Download the results", 
+                "Download the dose escalation recommendations in a MS Word report", 
                 "top", options = list(container = "body")
               ),
               bsTooltip(
@@ -1073,7 +1083,7 @@ server <- function(input, output, session) {
   observe({
     if (!is.null(input$ct_patients_table_rows_selected)) {
       enable("ct_remove")
-      addTooltip(session, "ct_remove", "Remove the selected patient from the table", "top", options = list(container = "body"))
+      addTooltip(session, "ct_remove", "Remove the selected patient from the table below", "top", options = list(container = "body"))
     } else{
       disable("ct_remove")
       removeTooltip(session, "ct_remove")
