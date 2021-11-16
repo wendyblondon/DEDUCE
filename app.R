@@ -319,7 +319,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
             "ct_cohort_size",
             paste(
               "Please enter the cohort size. The cohort size is the number of patients to be treated",
-              "at the current dose level before a dose escalation decision is made"
+              "at the current dose level before a dose escalation decision is made."
             ),
             "top", options = list(container = "body")
           ),
