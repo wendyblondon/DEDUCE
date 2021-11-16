@@ -352,7 +352,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
                 "ct_pid",
                 paste(
                   "Please enter a patient identifier. This auto-populates if you choose not to enter an ID.",
-                  "DO NOT ENTER PATIENT PROTECTED HEALTH INFORMATION (PHI), e.g. MRNs, patient initials, cooperative group ID"
+                  "DO NOT ENTER PATIENT PROTECTED HEALTH INFORMATION (PHI) (e.g. MRNs, patient initials, cooperative group ID)."
                 ),
                 "top", options = list(container = "body")
               ),
