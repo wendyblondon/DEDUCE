@@ -114,71 +114,134 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
           br(),
           p("Designs:", style = "font-weight: 700; font-size: 18px;"),
           prettyCheckbox("dt_selector_tpt", "3+3", value = TRUE, icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
-          bsTooltip("dt_selector_tpt", "Select to run the 3+3 Design", 
-                    "top", options = list(container = "body")),
+          bsTooltip(
+            "dt_selector_tpt", 
+            "Select to run the 3+3 Design", 
+            "top", options = list(container = "body")
+          ),
           prettyCheckbox("dt_selector_crm", "CRM", value = FALSE, icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
-          bsTooltip("dt_selector_crm", "Select to run the CRM Design", 
-                    "top", options = list(container = "body")),
+          bsTooltip(
+            "dt_selector_crm",
+            "Select to run the CRM Design", 
+            "top", options = list(container = "body")
+          ),
           prettyCheckbox("dt_selector_tcrm", "TARGET-CRM", value = FALSE, icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
-          bsTooltip("dt_selector_tcrm", "Select to run the TARGET-CRM Design", 
-                    "top", options = list(container = "body")),
+          bsTooltip(
+            "dt_selector_tcrm",
+            "Select to run the TARGET-CRM Design", 
+            "top", options = list(container = "body")
+          ),
           sliderInput("dt_num_doses", "Number of Dose Levels", min = 3, max = 10, value = 4, width = "100%", ticks = FALSE),
-          bsTooltip("dt_num_doses", "Please enter the number of doses that will be used", 
-                    "top", options = list(container = "body")),
+          bsTooltip(
+            "dt_num_doses",
+            "Please enter the number of doses that will be used", 
+            "top", options = list(container = "body")
+          ),
           textInput("dt_dose_labels", "Dose Level Labels", value = "-1,1,2,3", width = "100%"),
-          bsTooltip("dt_dose_labels", "Please enter the dose level labels (separated by commas) for each dose level evaluated in the trial", 
-                    "top", options = list(container = "body")),
+          bsTooltip(
+            "dt_dose_labels",
+            "Please enter the dose level labels (separated by commas) for each dose level evaluated in the trial", 
+            "top", options = list(container = "body")
+          ),
           selectInput("dt_start_level", "Starting Dose Level", choices = c(-1,1,2,3), selected = 1, width = "100%"),
-          bsTooltip("dt_start_level", "Please enter the starting dose level from the dose level labels above", 
-                    "top", options = list(container = "body")),
+          bsTooltip(
+            "dt_start_level",
+            "Please enter the starting dose level from the dose level labels above", 
+            "top", options = list(container = "body")
+          ),
           sliderInput("dt_num_trials", "Number of Simulated Trials", min = 0, max = 10000, value = 100, width = "100%", step = 100, ticks = FALSE),
-          bsTooltip("dt_num_trials", "Please enter the number of simulated trials. 
-                    A larger number of simulations increases the precision of simulation results and computation time.", 
-                    "top", options = list(container = "body")),
+          bsTooltip(
+            "dt_num_trials",
+            paste(
+              "Please enter the number of simulated trials.",
+              "A larger number of simulations increases the precision of simulation results and computation time."
+            ), 
+            "top", options = list(container = "body")
+          ),
           sliderInput("dt_target_tox", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.01, width = "100%", ticks = FALSE),
-          bsTooltip("dt_target_tox", "Please enter the target toxicity probability of the study agent", 
-                    "top", options = list(container = "body")),
+          bsTooltip(
+            "dt_target_tox",
+            "Please enter the target toxicity probability of the study agent", 
+            "top", options = list(container = "body")
+          ),
           textInput("dt_true_tox", "True Toxicity Probability Vector Per Dose Level", value = "0.05,0.12,0.2,0.3", width = "100%"),
-          bsTooltip("dt_true_tox", "Please enter the true toxicity probabilities for each dose level (separated by commas). 
-                    Toxicity probabilities must increase with each subsequent dose level.", 
-                    "top", options = list(container = "body")),
+          bsTooltip(
+            "dt_true_tox",
+            paste(
+              "Please enter the true toxicity probabilities for each dose level (separated by commas).", 
+              "Toxicity probabilities must increase with each subsequent dose level."
+            ), 
+            "top", options = list(container = "body")
+          ),
           sliderInput("dt_arrival_rate", "Average Time Between Patient Enrollments (in Days)", min = 0, max = 180, value = 15, width = "100%", ticks = FALSE),
-          bsTooltip("dt_arrival_rate", "Please enter the average time between enrolling patients (In Days)", 
-                    "top", options = list(container = "body")),
+          bsTooltip(
+            "dt_arrival_rate",
+            "Please enter the average time (in days) between enrolling patients", 
+            "top", options = list(container = "body")
+          ),
           sliderInput("dt_cycle_length", "Duration of DLT Observation Period (in Days)", min = 0, max = 365, value = 28, width = "100%", ticks = FALSE),
-          bsTooltip("dt_cycle_length", "Please enter the duration of the DLT observation period (In Days)", 
-                    "top", options = list(container = "body")),
+          bsTooltip(
+            "dt_cycle_length",
+            "Please enter the duration (in days) of the DLT observation period", 
+            "top", options = list(container = "body")
+          ),
                  
           # Show if TARGET-CRM or CRM is Checked
           conditionalPanel(
             condition = "input.dt_selector_tcrm == 1 || input.dt_selector_crm == 1",
             textInput("dt_prior_tox", "Prior Toxicity Probability Vector Per Dose Level", value = "0.05,0.12,0.2,0.3", width = "100%"),
-            bsTooltip("dt_prior_tox", "Please enter the prior toxicity probabilities for each dose level (separated by commas). 
-                      Toxicity probabilities must increase with each subsequent dose level.", 
-                      "top", options = list(container = "body")),
+            bsTooltip(
+              "dt_prior_tox",
+              paste(
+                "Please enter the prior toxicity probabilities for each dose level (separated by commas).",
+                "Toxicity probabilities must increase with each subsequent dose level."
+              ), 
+              "top", options = list(container = "body")
+            ),
             sliderInput("dt_max_n", "Maximum Sample Size", min = 1, max = 200, value = 18, width = "100%", ticks = FALSE),
-            bsTooltip("dt_max_n", "Please enter the maximum number of patients to be enrolled per trial. Trial accuracy increases with a larger sample size.
-                      The selected sample size should balance trial accuracy with accrual feasibility.", 
-                      "top", options = list(container = "body")),
+            bsTooltip(
+              "dt_max_n",
+              paste(
+                "Please enter the maximum number of patients to be enrolled per trial.",
+                "Trial accuracy increases with a larger sample size.",
+                "The selected sample size should balance trial accuracy with accrual feasibility."
+              ),
+              "top", options = list(container = "body")
+            ),
             sliderInput("dt_cohort_size", "Cohort Size", min = 1, max = 9, value = 3, width = "100%", ticks = FALSE),
-            bsTooltip("dt_cohort_size", "Please enter the cohort size. The cohort size is the number of patients to be treated at the current dose level 
-                      before a dose escalation decision is made.", 
-                      "top", options = list(container = "body"))
+            bsTooltip(
+              "dt_cohort_size",
+              paste(
+                "Please enter the cohort size. The cohort size is the number of patients to be",
+                "treated at the current dose level before a dose escalation decision is made."
+              ),
+              "top", options = list(container = "body")
+            )
           ),
                  
           # Show if TARGET-CRM is Checked
           conditionalPanel(
             condition = "input.dt_selector_tcrm == 1",
             sliderInput("dt_prop_b", "Proportion of Patients from Cohort B", min = 0, max = 1, value = 0.1, step = 0.01, width = "100%", ticks = FALSE),
-            bsTooltip("dt_prop_b", "Patients belong to either Cohort A (general enrollment) or Cohort B (enrichment cohort). 
-                      Please enter the proportion of enrolled patients belonging to Cohort B. Enter a proportion of 0 if no enrichment cohort is needed.", 
-                      "top", options = list(container = "body")),
+            bsTooltip(
+              "dt_prop_b",
+              paste(
+                "Patients belong to either Cohort A (general enrollment) or Cohort B (enrichment cohort).",
+                "Please enter the proportion of enrolled patients belonging to Cohort B. Enter a proportion of 0 if no enrichment cohort is needed."
+              ),
+              "top", options = list(container = "body")
+            ),
             sliderInput("dt_min_cohort_b", "Minimum Enrollment of Cohort B Patients (Optional)", min = 0, max = 100, value = 0, width = "100%", ticks = FALSE),
-            bsTooltip("dt_min_cohort_b", "An optional feature is to require a trial to enroll a minimum number of Cohort B patients. 
-                      Once the maximum N is attained, enrollment of Cohort A patients will be suspended and only Cohort B patients may enroll 
-                      until the minimum number has been attained. Please enter the minimum number of Cohort B patients to be enrolled in a trial. 
-                      Enter 0 if no minimum number is required.", 
-                      "top", options = list(container = "body"))
+            bsTooltip(
+              "dt_min_cohort_b",
+              paste(
+                "An optional feature is to require a trial to enroll a minimum number of Cohort B patients.",
+                "Once the maximum N is attained, enrollment of Cohort A patients will be suspended and only Cohort B patients may enroll",
+                "until the minimum number has been attained. Please enter the minimum number of Cohort B patients to be enrolled in a trial.", 
+                "Enter 0 if no minimum number is required."
+              ),
+              "top", options = list(container = "body")
+            )
           ),
           splitLayout(
             cellWidths = c("50%", "25%", "25%"),
@@ -186,18 +249,27 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
             downloadButton("dt_results", ""),
             actionButton("dt_reset", "Reset")
           ),
-          bsTooltip("dt_simulate", "Simulates the selected design(s) using the values of the above inputs", 
-                    "top", options = list(container = "body")),
-          bsTooltip("dt_results", "Download the full report of plots, tables, and summaries", 
-                    "top", options = list(container = "body")),
-          bsTooltip("dt_reset", "WARNING: Resets all of the inputs and results. Cannot be undone.", 
-                    "top", options = list(container = "body"))
+          bsTooltip(
+            "dt_simulate",
+            "Simulates the selected design(s) using the values of the above inputs", 
+            "top", options = list(container = "body")
           ),
-          column(9,
+          bsTooltip(
+            "dt_results",
+            "Download the full report of plots, tables, and summaries", 
+            "top", options = list(container = "body")
+          ),
+          bsTooltip(
+            "dt_reset",
+            "WARNING: Resets all of the inputs and results. Cannot be undone.", 
+            "top", options = list(container = "body")
+          )
+        ),
+        column(9,
             uiOutput("dt_plots_ui"),
             uiOutput("dt_none_ui")
-          )
         )
+      )
     )
   ),
   
@@ -209,54 +281,98 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
           h3("Inputs", style="text-align: center;"),
           br(),
           radioButtons("ct_selectors", "Design", c("CRM", "TARGET CRM"), inline = "TRUE"),
-          bsTooltip("ct_selectors", "Select the design to run", 
-                    "top", options = list(container = "body")),
+          bsTooltip(
+            "ct_selectors",
+            "Select the design to run", 
+            "top", options = list(container = "body")
+          ),
           sliderInput("ct_num_doses", "Number of Dose Levels", min = 3, max = 10, value = 4, width = "100%", ticks = FALSE),
-          bsTooltip("ct_num_doses", "Please enter the number of doses that will be used", 
-                    "top", options = list(container = "body")),
+          bsTooltip(
+            "ct_num_doses",
+            "Please enter the number of doses that will be used", 
+            "top", options = list(container = "body")
+          ),
           textInput("ct_dose_labels", "Dose Level Labels", value = "-1,1,2,3", width = "100%"),
-          bsTooltip("ct_dose_labels", "Please enter the dose level labels (separated by commas) for each dose level evaluated in the trial", 
-                    "top", options = list(container = "body")),
+          bsTooltip(
+            "ct_dose_labels",
+            "Please enter the dose level labels (separated by commas) for each dose level evaluated in the trial", 
+            "top", options = list(container = "body")
+          ),
           sliderInput("ct_target_tox", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.01, width = "100%", ticks = FALSE),
-          bsTooltip("ct_target_tox", "Please enter the target toxicity probability of the study agent", 
-                    "top", options = list(container = "body")),
+          bsTooltip(
+            "ct_target_tox",
+            "Please enter the target toxicity probability of the study agent", 
+            "top", options = list(container = "body")
+          ),
           textInput("ct_prior_tox", "Prior Toxicity Probability Vector Per Dose Level", value = "0.05,0.12,0.2,0.3", width = "100%"),
-          bsTooltip("ct_prior_tox", "Please enter the estimated prior toxicity probabilities for each dose level evaluated in the trial (separated by commas). 
-                    Toxicity probabilities must increase with each subsequent dose level.", 
-                    "top", options = list(container = "body")),
+          bsTooltip(
+            "ct_prior_tox",
+            paste(
+              "Please enter the estimated prior toxicity probabilities for each dose level", 
+              "evaluated in the trial (separated by commas).",
+              "Toxicity probabilities must increase with each subsequent dose level."
+            ),
+            "top", options = list(container = "body")
+          ),
           sliderInput("ct_cohort_size", "Cohort Size", min = 1, max = 9, value = 3, width = "100%", ticks = FALSE),
-          bsTooltip("ct_cohort_size", "Please enter the cohort size. 
-                    The cohort size is the number of patients to be treated at the current dose level before a dose escalation decision is made", 
-                    "top", options = list(container = "body")),
+          bsTooltip(
+            "ct_cohort_size",
+            paste(
+              "Please enter the cohort size. The cohort size is the number of patients to be treated",
+              "at the current dose level before a dose escalation decision is made"
+            ),
+            "top", options = list(container = "body")
+          ),
           sliderInput("ct_slots", "Number of Slots Remaining", min = 0, max = 8, value = 0, width = "100%", ticks = FALSE),
-          bsTooltip("ct_slots", "Please enter the number of slots remaining to be enrolled for the current cohort of patients", 
-                    "top", options = list(container = "body")),
+          bsTooltip(
+            "ct_slots",
+            "Please enter the number of slots remaining to be enrolled for the current cohort of patients", 
+            "top", options = list(container = "body")
+          ),
           selectInput("ct_current_dose", "Current Dose level", choices = c(-1,1,2,3), selected = 1, width = "100%"),
-          bsTooltip("ct_current_dose", "Please enter the starting dose level from the dose level labels above", 
-                    "top", options = list(container = "body"))
+          bsTooltip(
+            "ct_current_dose",
+            "Please enter the starting dose level from the dose level labels above", 
+            "top", options = list(container = "body")
+          )
         ),
         column(9,
           fluidRow(
             column(5,
               h3("Enter Patient Toxicity Data:", style = "text-align: center;"),
               textInput("ct_pid", "Patient ID", value = "C1", width = "100%"),
-              bsTooltip("ct_pid", "Please enter a patient ID to add to the study", 
-                        "top", options = list(container = "body")),
+              bsTooltip(
+                "ct_pid",
+                "Please enter a patient ID to add to the study", 
+                "top", options = list(container = "body")
+              ),
               selectInput("ct_dose_adm", "Administered Dose Level", choices = c(-1,1,2,3), selected = 1, width = "100%"),
-              bsTooltip("ct_dose_adm", "Please select the dose that will be administered to this patient",
-                        "top", options = list(container = "body")),
+              bsTooltip(
+                "ct_dose_adm",
+                "Please select the dose that will be administered to this patient",
+                "top", options = list(container = "body")
+              ),
               prettyCheckbox("ct_dlt_obs", "Was DLT Observed?", icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
-              bsTooltip("ct_dlt_obs", "Select if a dose level toxicity is present", 
-                        "top", options = list(container = "body")),
+              bsTooltip(
+                "ct_dlt_obs",
+                "Select if a dose level toxicity is present", 
+                "top", options = list(container = "body")
+              ),
               prettyCheckbox("ct_include", "Include Patient in Model?", value = TRUE, icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
-              bsTooltip("ct_include", "Select to include this patient in the model", 
-                        "top", options = list(container = "body")),
+              bsTooltip(
+                "ct_include",
+                "Select to include this patient in the model", 
+                "top", options = list(container = "body")
+              ),
               splitLayout(
                 actionButton("ct_add", "Add New Patient"),
                 actionButton("ct_remove", "Remove Selected Patient")
               ),
-              bsTooltip("ct_add", "Add the chosen patient inputs to the table", 
-                        "top", options = list(container = "body")),
+              bsTooltip(
+                "ct_add",
+                "Add the chosen patient inputs to the table", 
+                "top", options = list(container = "body")
+              ),
               DTOutput("ct_patients_table")
             ),
             column(7,
@@ -267,12 +383,21 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
                 downloadButton("ct_results", ""),
                 actionButton("ct_reset", "Reset")
               ),
-              bsTooltip("ct_simulate", "Simulates the selected design using the chosen inputs and patients info", 
-                        "top", options = list(container = "body")),
-              bsTooltip("ct_results", "Download the results", 
-                        "top", options = list(container = "body")),
-              bsTooltip("ct_reset", "WARNING: Resets all of the inputs and results. Cannot be undone.", 
-                        "top", options = list(container = "body"))
+              bsTooltip(
+                "ct_simulate",
+                "Simulates the selected design using the chosen inputs and patients info", 
+                "top", options = list(container = "body")
+              ),
+              bsTooltip(
+                "ct_results",
+                "Download the results", 
+                "top", options = list(container = "body")
+              ),
+              bsTooltip(
+                "ct_reset",
+                "WARNING: Resets all of the inputs and results. Cannot be undone.", 
+                "top", options = list(container = "body")
+              )
             )
           )
         )
