@@ -333,7 +333,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
             ),
             "top", options = list(container = "body")
           ),
-          selectInput("ct_current_dose", "Current Dose level", choices = c(-1,1,2,3), selected = 1, width = "100%"),
+          selectInput("ct_current_dose", "Dose level Currently Under Evaluation", choices = c(-1,1,2,3), selected = 1, width = "100%"),
           bsTooltip(
             "ct_current_dose",
             paste(
