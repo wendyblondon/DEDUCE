@@ -475,9 +475,11 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
         )
       ),
       h2("Acknowledgements:"),
-      p(id="acknowledgements", "We would like to thank the Northwestern Mutual Tech for Good team for their pro-bono development, design, and project management 
-                                support for the DEDUCE platform. We would also like to thank our test users, Drs. Steven G. DuBois, Karen D. Wright, 
-                                and David S. Shulman for their helpful feedback."),
+      p(id="acknowledgements",
+        "We would like to thank the Northwestern Mutual Tech for Good team for their pro-bono development, design, and project management 
+        support for the DEDUCE platform. We would also like to thank our test users, Drs. Steven G. DuBois, Karen D. Wright, 
+        and David S. Shulman for their helpful feedback."
+      ),
       h2("References:"),
       tags$ul(
         tags$li(
