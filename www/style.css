@@ -21,7 +21,7 @@
 
 .navbar-default .navbar-brand, .navbar-default .navbar-brand:focus, .navbar-default .navbar-brand:hover{
   padding-top: 0.8em;
-  font-size: 2em;
+  font-size: 2.5em;
   color: black;
   font-weight: bold;
 }
@@ -32,7 +32,7 @@
 
 .navbar-default .navbar-nav li a{
   color: black;
-  font-size: 1.4em;
+  font-size: 1.6em;
 }
 
 .navbar-default .navbar-nav .active a{
