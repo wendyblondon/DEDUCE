@@ -55,6 +55,8 @@ target_crm_conduct <- function(prior, target_tox, tox, level, n=length(level), d
   
   tbl2 <- tbl2[c(1,2,6,7,3:5)]
   
+  tbl1$level <- out$dosename[tbl1$level]
+  
   output <- list(df1 = tbl1, df2=tbl2, crm_out=out, current_dose=current_dose, cohort_size=cohort_size, num_slots_remain=num_slots_remain, dfcrm_mtd=dfcrm_mtd)
   
 }
