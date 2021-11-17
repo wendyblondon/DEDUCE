@@ -11,7 +11,7 @@ params:
   p3: NA
   p4: NA
 ---
-*Report Date and Time: "`r Sys.time()`"*
+*Report Date and Time: "`r lubridate::with_tz(Sys.time(), "America/New_York")`"*
 
 *Software:* DEDUCE app version 1.0 available [here](https://bengarski.shinyapps.io/DEDUCE/) 
 
