@@ -22,7 +22,7 @@ theme_set(theme_minimal(base_size = 15))
 ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
   
   ## Home Tab ---------------------               
-  tabPanel("Home",
+  tabPanel("HOME",
     useShinyjs(), includeCSS("www/style.css"), useShinyFeedback(), use_waiter(),
     img(id="homeimg", src = "home.jpg"),
     fluidRow(
@@ -106,7 +106,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
   ),
   
   ## Design Tab ---------------------
-  tabPanel("Design",
+  tabPanel("DESIGN YOUR TRIAL",
     div(id = "other_tabs",
       fluidRow(
         column(3, style="overflow-y:scroll; height: 80vh;",
@@ -274,7 +274,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
   ),
   
   ## Conduct Tab ---------------------
-  tabPanel("Conduct",
+  tabPanel("CONDUCT YOUR TRIAL",
     div(id = "other_tabs",
       fluidRow(
         column(3, style="overflow-y:scroll; height: 80vh;",
@@ -416,7 +416,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
   ),
   
   ## About Tab ---------------------
-  tabPanel("About",
+  tabPanel("ABOUT",
     fluidRow(
       h2("DEDUCE Leadership: Dana-Farber/Boston Children's Cancer and Blood Disorders Center"),
       tags$ul(
