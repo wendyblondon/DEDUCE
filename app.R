@@ -1212,7 +1212,7 @@ server <- function(input, output, session) {
   
   # Recommended Dose
   output$ct_next_dose <- renderText({
-    paste("Recommended Dose Level:", ct_function_outputs()$crm.out$mtd)
+    paste("Recommended Dose Level:", ct_function_outputs()$crm_out$mtd)
   })
   
   ### Download Results ---------------------
@@ -1222,10 +1222,10 @@ server <- function(input, output, session) {
       
       temp_report <- file.path(tempdir(), "report_conduct.rmd")
       file.copy("report_conduct.rmd", temp_report, overwrite = TRUE)
-      params <- list(d = input$ct_selectors, df1 = ct_function_outputs()$df1, df2 = ct_function_outputs()$df2, r1 = ct_function_outputs()$crm.out$mtd, 
-                     r2 = ct_function_outputs()$crm.out$target, r3 = ct_function_outputs()$crm.out$prior, 
-                     r4 = ct_function_outputs()$crm.out$prior.var, r5 = ct_function_outputs()$crm.out$estimate, 
-                     r6 = ct_function_outputs()$crm.out$post.var, r7 = ct_function_outputs()$crm.out$dosename[ct_function_outputs()$current_dose], 
+      params <- list(d = input$ct_selectors, df1 = ct_function_outputs()$df1, df2 = ct_function_outputs()$df2, r1 = ct_function_outputs()$crm_out$mtd, 
+                     r2 = ct_function_outputs()$crm_out$target, r3 = ct_function_outputs()$crm_out$prior, 
+                     r4 = ct_function_outputs()$crm_out$prior.var, r5 = ct_function_outputs()$crm_out$estimate, 
+                     r6 = ct_function_outputs()$crm_out$post.var, r7 = ct_function_outputs()$crm_out$dosename[ct_function_outputs()$current_dose], 
                      r8 = ct_function_outputs()$cohort_size, r9 = ct_function_outputs()$num_slots_remain)
       render(temp_report, output_file = file, params = params, envir = new.env(parent = globalenv()))
     }
