@@ -34,9 +34,9 @@ target_crm_conduct <- function(prior, target_tox, tox, level, n=length(level), d
   # Create Dataframe 1 for Output Into Shiny
   tbl1 <- data.frame("pid"=out$pid, "level"=out$level, "toxicity"=out$tox)
   
-  # Make Included Column for Dataframe 1
-  tbl1[out$include, "included"] <- 1
-  tbl1$included <- replace(tbl1$included, is.na(tbl1$included), 0)
+  # Make Included Column for Dataframe True
+  tbl1[out$include, "included"] <- TRUE
+  tbl1$included <- replace(tbl1$included, is.na(tbl1$included), FALSE)
   
   # Create Dataframe 2 for Output Into Shiny
   tbl2 <- data.frame("dose"=out$dosename, "prior"=out$prior, "ptox"=signif(out$ptox, 3), "lolmt"=signif(out$ptoxL, 3), "uplmt"=signif(out$ptoxU, 3))
