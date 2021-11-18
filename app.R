@@ -307,17 +307,17 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
             actionButton("dt_reset", "Reset")
           ),
           bsPopover(
-            "dt_simulate",
+            "dt_simulate", "",
             "Simulates the selected design(s) using the values of the above inputs", 
             placement = "top"
           ),
           bsPopover(
-            "dt_results",
+            "dt_results", "",
             "Download a MS Word document with the full report of plots, tables, and summaries", 
             placement = "top"
           ),
           bsPopover(
-            "dt_reset",
+            "dt_reset", "",
             "WARNING: Resets all of the inputs and results. Cannot be undone.", 
             placement = "top"
           )
@@ -340,10 +340,10 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
           
           ### Designs ---------------------
           radioButtons("ct_selectors", "Design", c("CRM", "TARGET CRM"), inline = "TRUE"),
-          bsTooltip(
-            "ct_selectors",
+          bsPopover(
+            "ct_selectors", "",
             "Select the design to run", 
-            "top", options = list(container = "body")
+            placement = "top",
           ),
           
           ### Number of Doses ---------------------
