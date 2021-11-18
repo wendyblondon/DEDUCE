@@ -114,133 +114,78 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
           br(),
           p("Designs:", style = "font-weight: 700; font-size: 18px;"),
           prettyCheckbox("dt_selector_tpt", "3+3", value = TRUE, icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
-          bsTooltip(
-            "dt_selector_tpt", 
-            "Select to run the 3+3 Design", 
-            "top", options = list(container = "body")
-          ),
           prettyCheckbox("dt_selector_crm", "CRM", value = FALSE, icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
-          bsTooltip(
-            "dt_selector_crm",
-            "Select to run the CRM Design", 
-            "top", options = list(container = "body")
-          ),
           prettyCheckbox("dt_selector_tcrm", "TARGET-CRM", value = FALSE, icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
-          bsTooltip(
-            "dt_selector_tcrm",
-            "Select to run the TARGET-CRM Design", 
-            "top", options = list(container = "body")
-          ),
-          sliderInput("dt_num_doses", "Number of Dose Levels", min = 3, max = 10, value = 4, width = "100%", ticks = FALSE),
-          bsTooltip(
+          sliderInput(
             "dt_num_doses",
-            "Please enter the number of doses that will be used", 
-            "top", options = list(container = "body")
+            div(p(class = "help-p", "Number of Dose Levels"), HTML('<button id="dt-num-doses-help" class="help-btn" type="button">?</button>')),
+            min = 3, max = 10, value = 4, width = "100%", ticks = FALSE
           ),
-          textInput("dt_dose_labels", "Dose Level Labels", value = "-1,1,2,3", width = "100%"),
-          bsTooltip(
+          textInput(
             "dt_dose_labels",
-            "Please enter the dose level labels (separated by commas) for each dose level evaluated in the trial", 
-            "top", options = list(container = "body")
+            div(p(class = "help-p", "Dose Level Labels"), HTML('<button id="dt-dose-labels-help" class="help-btn" type="button">?</button>')), 
+            value = "-1,1,2,3", width = "100%"
           ),
-          selectInput("dt_start_level", "Starting Dose Level", choices = c(-1,1,2,3), selected = 1, width = "100%"),
-          bsTooltip(
-            "dt_start_level",
-            "Please enter the starting dose level from the dose level labels above", 
-            "top", options = list(container = "body")
-          ),
-          sliderInput("dt_num_trials", "Number of Simulated Trials", min = 0, max = 10000, value = 100, width = "100%", step = 100, ticks = FALSE),
-          bsTooltip(
+          sliderInput(
             "dt_num_trials",
-            paste(
-              "Please enter the number of simulated trials.",
-              "A larger number of simulations increases the precision of simulation results and computation time."
-            ), 
-            "top", options = list(container = "body")
+            div(p(class = "help-p", "Number of Simulated Trials"), HTML('<button id="dt-num-trials-help" class="help-btn" type="button">?</button>')), 
+            min = 0, max = 10000, value = 100, width = "100%", step = 100, ticks = FALSE
           ),
-          sliderInput("dt_target_tox", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.01, width = "100%", ticks = FALSE),
-          bsTooltip(
+          sliderInput(
             "dt_target_tox",
-            "Please enter the target toxicity probability of the study agent", 
-            "top", options = list(container = "body")
+            div(p(class = "help-p", "Target Toxicity Probability"), HTML('<button id="dt-target-tox-help" class="help-btn" type="button">?</button>')),
+            min = 0, max = 1, value = 0.2, step = 0.01, width = "100%", ticks = FALSE
           ),
-          textInput("dt_true_tox", "True Toxicity Probability Vector Per Dose Level", value = "0.05,0.12,0.2,0.3", width = "100%"),
-          bsTooltip(
+          textInput(
             "dt_true_tox",
-            paste(
-              "Please enter the true toxicity probabilities for each dose level (separated by commas).", 
-              "Toxicity probabilities must increase with each subsequent dose level."
-            ), 
-            "top", options = list(container = "body")
+            div(p(class = "help-p", "True Toxicity Probability Vector Per Dose Level"), HTML('<button id="dt-true-tox-help" class="help-btn" type="button">?</button>')),
+            value = "0.05,0.12,0.2,0.3", width = "100%"
+                    
           ),
-          sliderInput("dt_arrival_rate", "Average Time Between Patient Enrollments (in Days)", min = 0, max = 180, value = 15, width = "100%", ticks = FALSE),
-          bsTooltip(
+          sliderInput(
             "dt_arrival_rate",
-            "Please enter the average time (in days) between enrolling patients", 
-            "top", options = list(container = "body")
+            div(p(class = "help-p", "Average Time Between Patient Enrollments (in Days)"), HTML('<button id="dt-arrival-rate-help" class="help-btn" type="button">?</button>')),
+            min = 0, max = 180, value = 15, width = "100%", ticks = FALSE
           ),
-          sliderInput("dt_cycle_length", "Duration of DLT Observation Period (in Days)", min = 0, max = 365, value = 28, width = "100%", ticks = FALSE),
-          bsTooltip(
+          sliderInput(
             "dt_cycle_length",
-            "Please enter the duration (in days) of the DLT observation period", 
-            "top", options = list(container = "body")
+            div(p(class = "help-p", "Duration of DLT Observation Period (in Days)"), HTML('<button id="dt-cycle-length-help" class="help-btn" type="button">?</button>')), 
+            min = 0, max = 365, value = 28, width = "100%", ticks = FALSE
           ),
                  
           # Show if TARGET-CRM or CRM is Checked
           conditionalPanel(
             condition = "input.dt_selector_tcrm == 1 || input.dt_selector_crm == 1",
-            textInput("dt_prior_tox", "Prior Toxicity Probability Vector Per Dose Level", value = "0.05,0.12,0.2,0.3", width = "100%"),
-            bsTooltip(
+            textInput(
               "dt_prior_tox",
-              paste(
-                "Please enter the prior toxicity probabilities for each dose level (separated by commas).",
-                "Toxicity probabilities must increase with each subsequent dose level."
-              ), 
-              "top", options = list(container = "body")
+              div(p(class = "help-p", "Prior Toxicity Probability Vector Per Dose Level"), HTML('<button id="dt-prior-tox-help" class="help-btn" type="button">?</button>')),
+              value = "0.05,0.12,0.2,0.3", width = "100%"
+                      
             ),
-            sliderInput("dt_max_n", "Maximum Sample Size", min = 1, max = 200, value = 18, width = "100%", ticks = FALSE),
-            bsTooltip(
+            sliderInput(
               "dt_max_n",
-              paste(
-                "Please enter the maximum number of patients to be enrolled per trial.",
-                "Trial accuracy increases with a larger sample size.",
-                "The selected sample size should balance trial accuracy with accrual feasibility."
-              ),
-              "top", options = list(container = "body")
+              div(p(class = "help-p", "Maximum Sample Size"), HTML('<button id="dt-max-n-help" class="help-btn" type="button">?</button>')),
+              min = 1, max = 200, value = 18, width = "100%", ticks = FALSE
             ),
-            sliderInput("dt_cohort_size", "Cohort Size", min = 1, max = 9, value = 3, width = "100%", ticks = FALSE),
-            bsTooltip(
+            sliderInput(
               "dt_cohort_size",
-              paste(
-                "Please enter the cohort size. The cohort size is the number of patients to be",
-                "treated at the current dose level before a dose escalation decision is made."
-              ),
-              "top", options = list(container = "body")
-            )
+              div(p(class = "help-p", "Cohort Size"), HTML('<button id="dt-cohort-size-help" class="help-btn" type="button">?</button>')),
+              min = 1, max = 9, value = 3, width = "100%", ticks = FALSE
+            ),
           ),
                  
           # Show if TARGET-CRM is Checked
           conditionalPanel(
             condition = "input.dt_selector_tcrm == 1",
-            sliderInput("dt_prop_b", "Proportion of Patients from Cohort B", min = 0, max = 1, value = 0.1, step = 0.01, width = "100%", ticks = FALSE),
-            bsTooltip(
+            sliderInput(
               "dt_prop_b",
-              paste(
-                "Patients belong to either Cohort A (general enrollment) or Cohort B (enrichment cohort).",
-                "Please enter the proportion of enrolled patients belonging to Cohort B. Enter a proportion of 0 if no enrichment cohort is needed."
-              ),
-              "top", options = list(container = "body")
+              div(p(class = "help-p", "Proportion of Patients from Cohort B"), HTML('<button id="dt-prop-b-help" class="help-btn" type="button">?</button>')),
+              min = 0, max = 1, value = 0.1, step = 0.01, width = "100%", ticks = FALSE
             ),
-            sliderInput("dt_min_cohort_b", "Minimum Enrollment of Cohort B Patients (Optional)", min = 0, max = 100, value = 0, width = "100%", ticks = FALSE),
-            bsTooltip(
+            sliderInput(
               "dt_min_cohort_b",
-              paste(
-                "An optional feature is to require a trial to enroll a minimum number of Cohort B patients.",
-                "Once the maximum N is attained, enrollment of Cohort A patients will be suspended and only Cohort B patients may enroll",
-                "until the minimum number has been attained. Please enter the minimum number of Cohort B patients to be enrolled in a trial.", 
-                "Enter 0 if no minimum number is required."
-              ),
-              "top", options = list(container = "body")
+              div(p(class = "help-p", "Minimum Enrollment of Cohort B Patients (Optional)"), HTML('<button id="dt-min-cohort-b-help" class="help-btn" type="button">?</button>')),
+              min = 0, max = 100, value = 0, width = "100%", ticks = FALSE
             )
           ),
           splitLayout(
