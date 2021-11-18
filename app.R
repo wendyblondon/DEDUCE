@@ -377,7 +377,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
             min = 0, max = 1, value = 0.2, step = 0.01, width = "100%", ticks = FALSE
           ),
           bsPopover(
-            "ct-target-tox-help",
+            "ct-target-tox-help", "",
             "Please enter the target toxicity probability of the study agent", 
             placement = "top", trigger = "focus"
           ),
@@ -389,7 +389,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
             value = "0.05,0.12,0.2,0.3", width = "100%"
           ),
           bsPopover(
-            "ct-prior-tox-help",
+            "ct-prior-tox-help", "",
             paste(
               "Please enter the estimated prior toxicity probabilities for each dose level", 
               "evaluated in the trial (separated by commas).",
@@ -405,7 +405,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
             min = 1, max = 9, value = 3, width = "100%", ticks = FALSE
           ),
           bsPopover(
-            "ct-cohort-size-help",
+            "ct-cohort-size-help", "",
             paste(
               "Please enter the cohort size. The cohort size is the number of patients to be treated",
               "at the current dose level before a dose escalation decision is made."
@@ -420,7 +420,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
             min = 0, max = 8, value = 0, width = "100%", ticks = FALSE
           ),
           bsPopover(
-            "ct-slots-help",
+            "ct-slots-help", "",
             paste(
               "Please enter the number of slots remaining to be enrolled for the current cohort of patients.",
               "Escalating to a higher dose level is not permitted until the current cohort is fully evaluated",
@@ -436,7 +436,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
             choices = c(-1,1,2,3), selected = 1, width = "100%"
           ),
           bsPopover(
-            "ct-current-dose-help",
+            "ct-current-dose-help", "",
             paste(
               "Please enter the dose level currently under evaluation.",
               "(TARGET-CRM permits enrolling patients at one dose level below the dose level under evaluation."
@@ -456,7 +456,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
                 value = "C1", width = "100%"
               ),
               bsPopover(
-                "ct-pid-help",
+                "ct-pid-help", "",
                 paste(
                   "Please enter a patient identifier. This auto-populates if you choose not to enter an ID.",
                   "DO NOT ENTER PATIENT PROTECTED HEALTH INFORMATION (PHI) (e.g. MRNs, patient initials, cooperative group ID)."
@@ -471,7 +471,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
                 choices = c(-1,1,2,3), selected = 1, width = "100%"
               ),
               bsPopover(
-                "ct-dose-adm-help",
+                "ct-dose-adm-help", "",
                 "Please select the dose level administered",
                 placement = "top", trigger = "focus"
               ),
@@ -479,7 +479,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
               ### DLT Observed ---------------------
               prettyCheckbox("ct_dlt_obs", "Was DLT Observed?", icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
               bsPopover(
-                "ct_dlt_obs",
+                "ct_dlt_obs", "",
                 "Please select if a dose limiting toxicity (DLT) was observed", 
                 placement = "top",
               ),
@@ -487,7 +487,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
               ### Include in Model ---------------------
               prettyCheckbox("ct_include", "Include Patient in Model?", value = TRUE, icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
               bsPopover(
-                "ct_include",
+                "ct_include", "",
                 "Select to include this patient in the model", 
                 placement = "top",
               ),
@@ -498,7 +498,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
                 actionButton("ct_remove", "Remove Selected Patient")
               ),
               bsPopover(
-                "ct_add",
+                "ct_add", "",
                 "Add the chosen patient inputs to the table", 
                 placement = "top",
               ),
@@ -519,17 +519,17 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
                 actionButton("ct_reset", "Reset")
               ),
               bsPopover(
-                "ct_simulate",
+                "ct_simulate", "",
                 "Simulates the selected design using the chosen inputs and patients info", 
                 placement = "top",
               ),
               bsPopover(
-                "ct_results",
+                "ct_results", "",
                 "Download the dose escalation recommendations in a MS Word report", 
                 placement = "top",
               ),
               bsPopover(
-                "ct_reset",
+                "ct_reset", "",
                 "WARNING: Resets all of the inputs and results. Cannot be undone.", 
                 placement = "top",
               )
