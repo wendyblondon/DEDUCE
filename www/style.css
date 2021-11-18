@@ -234,6 +234,17 @@ h2{
   line-height: 18px;
 }
 
+.help-p{
+  display: inline;
+}
+
+.help-btn{
+  background-color: #BCDBEA;
+  color: white;
+  font-weight: bold;
+  border: none;
+}
+
 /* CONDUCT TAB */
 
 #ct_selectors{
