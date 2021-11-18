@@ -243,6 +243,7 @@ h2{
   color: white;
   font-weight: bold;
   border: none;
+  border-radius: 50%;
 }
 
 /* CONDUCT TAB */
