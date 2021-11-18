@@ -339,11 +339,15 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
           br(),
           
           ### Designs ---------------------
-          radioButtons("ct_selectors", "Design", c("CRM", "TARGET CRM"), inline = "TRUE"),
+          radioButtons(
+            "ct_selectors",
+            div(p(class = "help-p", "Design"), HTML('<button id="ct-selectors-help" class="help-btn" type="button">?</button>')),
+            c("CRM", "TARGET CRM"), inline = "TRUE"
+          ),
           bsPopover(
-            "ct_selectors", "",
-            "Select the design to run", 
-            placement = "top",
+            "ct-selectors-help", "",
+            "Select the design to run in the model", 
+            placement = "top", trigger = "focus"
           ),
           
           ### Number of Doses ---------------------
