@@ -239,8 +239,10 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
             ),
             bsPopover(
               "dt-max-n-help", "",
-              "Please enter the maximum number of patients to be enrolled per trial.
-              Trial accuracy increases with a larger sample size. The selected sample size should balance trial accuracy with accrual feasibility.",
+              paste(
+                "Please enter the maximum number of patients to be enrolled per trial. Trial accuracy increases with a larger sample size.",
+                "The selected sample size should balance trial accuracy with accrual feasibility."
+              ),
               placement = "top", trigger = "click"
             ),
             
@@ -269,8 +271,11 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
             ),
             bsPopover(
               "dt-prop-b-help", "",
-              "Patients belong to either Cohort A (general enrollment) or Cohort B (enrichment cohort). 
-              Please enter the proportion of enrolled patients belonging to Cohort B. Enter a proportion of 0 if no enrichment cohort is needed.",
+              paste(
+                "Patients belong to either Cohort A (general enrollment) or Cohort B (enrichment cohort).",
+                "Please enter the proportion of enrolled patients belonging to Cohort B.",
+                "Enter a proportion of 0 if no enrichment cohort is needed."
+              ),
               placement = "top", trigger = "click"
             ),
             
@@ -282,10 +287,12 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
             ),
             bsPopover(
               "dt-min-cohort-b-help", "",
-              "An optional feature is to require a trial to enroll a minimum number of Cohort B patients.
-              Once the maximum N is attained, enrollment of Cohort A patients will be suspended and only Cohort B patients may enroll
-              until the minimum number has been attained. Please enter the minimum number of Cohort B patients to be enrolled in a trial.
-              Enter 0 if no minimum number is required.",
+              paste(
+                "An optional feature is to require a trial to enroll a minimum number of Cohort B patients.",
+              "Once the maximum N is attained, enrollment of Cohort A patients will be suspended and only Cohort B patients may enroll",
+              "until the minimum number has been attained. Please enter the minimum number of Cohort B patients to be enrolled in a trial.",
+              "Enter 0 if no minimum number is required."
+              ),
               placement = "top", trigger = "click"
             )
           ),
