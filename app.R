@@ -129,7 +129,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
           ),
           bsPopover(
             "dt-num-doses-help", "",
-            "Please enter the number of doses that will be used",
+            "Please enter the number of dose levels in your trial",
             placement = "top", trigger = "focus"
           ),
           
@@ -299,7 +299,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
             )
           ),
           
-          ### Buttons ---------------------
+          ### Simulate/Download/Reset Buttons ---------------------
           splitLayout(
             cellWidths = c("50%", "25%", "25%"),
             actionButton("dt_simulate", "Simulate"),
@@ -337,133 +337,201 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
         column(3, style="overflow-y:scroll; height: 80vh;",
           h3("Inputs", style="text-align: center;"),
           br(),
+          
+          ### Designs ---------------------
           radioButtons("ct_selectors", "Design", c("CRM", "TARGET CRM"), inline = "TRUE"),
           bsTooltip(
             "ct_selectors",
             "Select the design to run", 
             "top", options = list(container = "body")
           ),
-          sliderInput("ct_num_doses", "Number of Dose Levels", min = 3, max = 10, value = 4, width = "100%", ticks = FALSE),
-          bsTooltip(
+          
+          ### Number of Doses ---------------------
+          sliderInput(
             "ct_num_doses",
-            "Please enter the number of dose levels in your trial", 
-            "top", options = list(container = "body")
+            div(p(class = "help-p", "Number of Dose Levels"), HTML('<button id="ct-num-doses-help" class="help-btn" type="button">?</button>')),
+            min = 3, max = 10, value = 4, width = "100%", ticks = FALSE
           ),
-          textInput("ct_dose_labels", "Dose Level Labels", value = "-1,1,2,3", width = "100%"),
-          bsTooltip(
+          bsPopover(
+            "ct-num-doses-help", "",
+            "Please enter the number of dose levels in your trial",
+            placement = "top", trigger = "focus"
+          ),
+          
+          ### Dose Labels ---------------------
+          textInput(
             "ct_dose_labels",
-            "Please enter the dose level labels (separated by commas) for each dose level evaluated in the trial", 
-            "top", options = list(container = "body")
+            div(p(class = "help-p", "Dose Level Labels"), HTML('<button id="ct-dose-labels-help" class="help-btn" type="button">?</button>')),
+            value = "-1,1,2,3", width = "100%"
           ),
-          sliderInput("ct_target_tox", "Target Toxicity Probability", min = 0, max = 1, value = 0.2, step = 0.01, width = "100%", ticks = FALSE),
-          bsTooltip(
+          bsPopover(
+            "ct-dose-labels-help", "",
+            "Please enter the dose level labels (separated by commas) for each dose level evaluated in the trial",
+            placement = "top", trigger = "focus"
+          ),
+          
+          ### Target Toxicity ---------------------
+          sliderInput(
             "ct_target_tox",
-            "Please enter the target toxicity probability of the study agent", 
-            "top", options = list(container = "body")
+            div(p(class = "help-p", "Target Toxicity Probability"), HTML('<button id="ct-target-tox-help" class="help-btn" type="button">?</button>')),
+            min = 0, max = 1, value = 0.2, step = 0.01, width = "100%", ticks = FALSE
           ),
-          textInput("ct_prior_tox", "Prior Toxicity Probability Vector Per Dose Level", value = "0.05,0.12,0.2,0.3", width = "100%"),
-          bsTooltip(
+          bsPopover(
+            "ct-target-tox-help",
+            "Please enter the target toxicity probability of the study agent", 
+            placement = "top", trigger = "focus"
+          ),
+          
+          ### Prior Toxicity ---------------------
+          textInput(
             "ct_prior_tox",
+            div(p(class = "help-p", "Prior Toxicity Probability Vector Per Dose Level"), HTML('<button id="ct-prior-tox-help" class="help-btn" type="button">?</button>')),
+            value = "0.05,0.12,0.2,0.3", width = "100%"
+          ),
+          bsPopover(
+            "ct-prior-tox-help",
             paste(
               "Please enter the estimated prior toxicity probabilities for each dose level", 
               "evaluated in the trial (separated by commas).",
               "Toxicity probabilities must increase with each subsequent dose level."
             ),
-            "top", options = list(container = "body")
+            placement = "top", trigger = "focus"
           ),
-          sliderInput("ct_cohort_size", "Cohort Size", min = 1, max = 9, value = 3, width = "100%", ticks = FALSE),
-          bsTooltip(
+          
+          ### Cohort Size ---------------------
+          sliderInput(
             "ct_cohort_size",
+            div(p(class = "help-p", "Cohort Size"), HTML('<button id="ct-cohort-size-help" class="help-btn" type="button">?</button>')),
+            min = 1, max = 9, value = 3, width = "100%", ticks = FALSE
+          ),
+          bsPopover(
+            "ct-cohort-size-help",
             paste(
               "Please enter the cohort size. The cohort size is the number of patients to be treated",
               "at the current dose level before a dose escalation decision is made."
             ),
-            "top", options = list(container = "body")
+            placement = "top", trigger = "focus"
           ),
-          sliderInput("ct_slots", "Number of Slots Remaining", min = 0, max = 8, value = 0, width = "100%", ticks = FALSE),
-          bsTooltip(
+          
+          ### Slots Remaining ---------------------
+          sliderInput(
             "ct_slots",
+            div(p(class = "help-p", "Number of Slots Remaining"), HTML('<button id="ct-slots-help" class="help-btn" type="button">?</button>')),
+            min = 0, max = 8, value = 0, width = "100%", ticks = FALSE
+          ),
+          bsPopover(
+            "ct-slots-help",
             paste(
               "Please enter the number of slots remaining to be enrolled for the current cohort of patients.",
               "Escalating to a higher dose level is not permitted until the current cohort is fully evaluated",
               "at the current dose level. Please update this input parameter for each successive patient enrolled in the trial."
             ),
-            "top", options = list(container = "body")
+            placement = "top", trigger = "focus"
           ),
-          selectInput("ct_current_dose", "Dose level Currently Under Evaluation", choices = c(-1,1,2,3), selected = 1, width = "100%"),
-          bsTooltip(
+          
+          ### Current Dose ---------------------
+          selectInput(
             "ct_current_dose",
+            div(p(class = "help-p", "Dose level Currently Under Evaluation"), HTML('<button id="ct-current-dose-help" class="help-btn" type="button">?</button>')),
+            choices = c(-1,1,2,3), selected = 1, width = "100%"
+          ),
+          bsPopover(
+            "ct-current-dose-help",
             paste(
               "Please enter the dose level currently under evaluation.",
               "(TARGET-CRM permits enrolling patients at one dose level below the dose level under evaluation."
             ),
-            "top", options = list(container = "body")
+            placement = "top", trigger = "focus"
           )
         ),
         column(9,
           fluidRow(
             column(5,
               h3("Enter Patient Toxicity Data:", style = "text-align: center;"),
-              textInput("ct_pid", "Patient ID", value = "C1", width = "100%"),
-              bsTooltip(
+              
+              ### Patient ID ---------------------
+              textInput(
                 "ct_pid",
+                div(p(class = "help-p", "Patient ID"), HTML('<button id="ct-pid-help" class="help-btn" type="button">?</button>')),
+                value = "C1", width = "100%"
+              ),
+              bsPopover(
+                "ct-pid-help",
                 paste(
                   "Please enter a patient identifier. This auto-populates if you choose not to enter an ID.",
                   "DO NOT ENTER PATIENT PROTECTED HEALTH INFORMATION (PHI) (e.g. MRNs, patient initials, cooperative group ID)."
                 ),
-                "top", options = list(container = "body")
+                placement = "top", trigger = "focus"
               ),
-              selectInput("ct_dose_adm", "Administered Dose Level", choices = c(-1,1,2,3), selected = 1, width = "100%"),
-              bsTooltip(
+              
+              ### Dose Administered ---------------------
+              selectInput(
                 "ct_dose_adm",
-                "Please select the dose level administered",
-                "top", options = list(container = "body")
+                div(p(class = "help-p", "Administered Dose Level"), HTML('<button id="ct-dose-adm-help" class="help-btn" type="button">?</button>')),
+                choices = c(-1,1,2,3), selected = 1, width = "100%"
               ),
+              bsPopover(
+                "ct-dose-adm-help",
+                "Please select the dose level administered",
+                placement = "top", trigger = "focus"
+              ),
+              
+              ### DLT Observed ---------------------
               prettyCheckbox("ct_dlt_obs", "Was DLT Observed?", icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
-              bsTooltip(
+              bsPopover(
                 "ct_dlt_obs",
                 "Please select if a dose limiting toxicity (DLT) was observed", 
-                "top", options = list(container = "body")
+                placement = "top",
               ),
+              
+              ### Include in Model ---------------------
               prettyCheckbox("ct_include", "Include Patient in Model?", value = TRUE, icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
-              bsTooltip(
+              bsPopover(
                 "ct_include",
                 "Select to include this patient in the model", 
-                "top", options = list(container = "body")
+                placement = "top",
               ),
+              
+              ### Add/Remove Buttons ---------------------
               splitLayout(
                 actionButton("ct_add", "Add New Patient"),
                 actionButton("ct_remove", "Remove Selected Patient")
               ),
-              bsTooltip(
+              bsPopover(
                 "ct_add",
                 "Add the chosen patient inputs to the table", 
-                "top", options = list(container = "body")
+                placement = "top",
               ),
+              
+              ### Patients Table ---------------------
               DTOutput("ct_patients_table")
             ),
             column(7,
+                   
+              ### Results UI ---------------------
               uiOutput("ct_patients_ui"),
+              
+              ### Simulate/Download/Reset Buttons ---------------------
               splitLayout(
                 cellWidths = c("50%", "25%", "25%"), cellArgs = list(style = "padding: 5px"),
                 actionButton("ct_simulate", "Run Model"),
                 downloadButton("ct_results", ""),
                 actionButton("ct_reset", "Reset")
               ),
-              bsTooltip(
+              bsPopover(
                 "ct_simulate",
                 "Simulates the selected design using the chosen inputs and patients info", 
-                "top", options = list(container = "body")
+                placement = "top",
               ),
-              bsTooltip(
+              bsPopover(
                 "ct_results",
                 "Download the dose escalation recommendations in a MS Word report", 
-                "top", options = list(container = "body")
+                placement = "top",
               ),
-              bsTooltip(
+              bsPopover(
                 "ct_reset",
                 "WARNING: Resets all of the inputs and results. Cannot be undone.", 
-                "top", options = list(container = "body")
+                placement = "top",
               )
             )
           )
