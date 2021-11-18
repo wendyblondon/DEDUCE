@@ -130,7 +130,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
           bsPopover(
             "dt-num-doses-help", "",
             "Please enter the number of doses that will be used",
-            placement = "top", trigger = "click"
+            placement = "top", trigger = "focus"
           ),
           
           #### Dose Labels ---------------------
@@ -142,7 +142,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
           bsPopover(
             "dt-dose-labels-help", "",
             "Please enter the dose level labels (separated by commas) for each dose level evaluated in the trial",
-            placement = "top", trigger = "click"
+            placement = "top", trigger = "focus"
           ),
           
           #### Starting Dose ---------------------
@@ -154,7 +154,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
           bsPopover(
             "dt-start-level-help", "",
             "Please enter the starting dose level from the dose level labels above",
-            placement = "top", trigger = "click"
+            placement = "top", trigger = "focus"
           ),
           
           #### Number of Trials ---------------------
@@ -166,7 +166,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
           bsPopover(
             "dt-num-trials-help", "",
             "Please enter the number of simulated trials. A larger number of simulations increases the precision of simulation results and computation time.",
-            placement = "top", trigger = "click"
+            placement = "top", trigger = "focus"
           ),
           
           #### Target Toxicity ---------------------
@@ -178,7 +178,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
           bsPopover(
             "dt-target-tox-help", "",
             "Please enter the target toxicity probability of the study agent",
-            placement = "top", trigger = "click"
+            placement = "top", trigger = "focus"
           ),
           
           #### True Toxicity ---------------------
@@ -190,7 +190,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
           bsPopover(
             "dt-true-tox-help", "",
             "Please enter the true toxicity probabilities for each dose level (separated by commas). Toxicity probabilities must increase with each subsequent dose level.",
-            placement = "top", trigger = "click"
+            placement = "top", trigger = "focus"
           ),
           
           #### Arrival Rate ---------------------
@@ -202,7 +202,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
           bsPopover(
             "dt-arrival-rate-help", "",
             "Please enter the average time (in days) between enrolling patients",
-            placement = "top", trigger = "click"
+            placement = "top", trigger = "focus"
           ),
           
           #### Cycle Length ---------------------
@@ -214,7 +214,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
           bsPopover(
             "dt-cycle-length-help", "",
             "Please enter the duration (in days) of the DLT observation period",
-            placement = "top", trigger = "click"
+            placement = "top", trigger = "focus"
           ),
                  
           ### TARGET-CRM & CRM Inputs ---------------------
@@ -230,7 +230,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
             bsPopover(
               "dt-prior-tox-help", "",
               "Please enter the prior toxicity probabilities for each dose level (separated by commas). Toxicity probabilities must increase with each subsequent dose level.",
-              placement = "top", trigger = "click"
+              placement = "top", trigger = "focus"
             ),
             
             #### Max Sample  ---------------------
@@ -245,7 +245,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
                 "Please enter the maximum number of patients to be enrolled per trial. Trial accuracy increases with a larger sample size.",
                 "The selected sample size should balance trial accuracy with accrual feasibility."
               ),
-              placement = "top", trigger = "click"
+              placement = "top", trigger = "focus"
             ),
             
             #### Cohort Size ---------------------
@@ -257,7 +257,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
             bsPopover(
               "dt-cohort-size-help", "",
               "Please enter the cohort size. The cohort size is the number of patients to be treated at the current dose level before a dose escalation decision is made.",
-              placement = "top", trigger = "click"
+              placement = "top", trigger = "focus"
             )
           ),
                  
@@ -278,7 +278,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
                 "Please enter the proportion of enrolled patients belonging to Cohort B.",
                 "Enter a proportion of 0 if no enrichment cohort is needed."
               ),
-              placement = "top", trigger = "click"
+              placement = "top", trigger = "focus"
             ),
             
             #### Minimum Cohort B ---------------------
@@ -295,7 +295,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
               "until the minimum number has been attained. Please enter the minimum number of Cohort B patients to be enrolled in a trial.",
               "Enter 0 if no minimum number is required."
               ),
-              placement = "top", trigger = "click"
+              placement = "top", trigger = "focus"
             )
           ),
           
