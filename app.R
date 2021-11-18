@@ -115,6 +115,8 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
           p("Designs:", style = "font-weight: 700; font-size: 18px;"),
           
           ### Main Inputs ---------------------
+          
+          #### Designs ---------------------
           prettyCheckbox("dt_selector_tpt", "3+3", value = TRUE, icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
           prettyCheckbox("dt_selector_crm", "CRM", value = FALSE, icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
           prettyCheckbox("dt_selector_tcrm", "TARGET-CRM", value = FALSE, icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
