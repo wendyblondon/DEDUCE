@@ -663,7 +663,6 @@ server <- function(input, output, session) {
   ### Misc. ---------------------
   
   # Disable Buttons at Startup
-  disable("dt_results")
   disable("ct_simulate")
   
   # Get the Design Names That Are Selected
