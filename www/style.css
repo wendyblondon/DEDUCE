@@ -246,6 +246,11 @@ h2{
   border-radius: 50%;
 }
 
+.ct_checkbox{
+  font-size: 18px;
+  font-weight: bold;
+}
+
 /* CONDUCT TAB */
 
 #ct_selectors{
