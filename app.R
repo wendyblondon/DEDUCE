@@ -672,7 +672,7 @@ server <- function(input, output, session) {
   })
   
   # Set Initial Reactive Value
-  dt_v <- reactiveValues(data=NULL)
+  dt_v <- reactiveVal(NULL)
   
   ### Warnings for Invalid Inputs ---------------------
   
@@ -744,16 +744,20 @@ server <- function(input, output, session) {
   
   # Activate Download Button if a Simulation was Ran Already and Force User to Reset After Every Use
   observe({
-    if (input$dt_simulate > 0) {
+    if (!is.null(dt_v())) {
       enable("dt_results")
       disable("dt_simulate")
       removePopover(session, "dt_simulate")
+    } else{
+      disable("dt_results")
+      enable("dt_simulate")
+      addPopover(session, "dt_simulate", "", "Simulates the selected design(s) using the values of the above inputs", placement = "top")
     }
   })
   
   # Change Reactive Value When Design is Ran
   observeEvent(input$dt_simulate, {
-    dt_v$data <- 1
+    dt_v(1)
   })
   
   # Hide/Reset the UI Elements When Reset is Clicked
@@ -775,9 +779,8 @@ server <- function(input, output, session) {
     reset("dt_max_n")
     reset("dt_min_cohort_b")
     reset("dt_cohort_size")
-    dt_v$data <- NULL
+    dt_v(NULL)
     disable("dt_results")
-    enable("dt_simulate")
   })
   
   ### UI ---------------------
@@ -806,7 +809,7 @@ server <- function(input, output, session) {
   
   # UI if No Design Selected
   output$dt_none_ui <- renderUI({
-    req(is.null(dt_v$data))
+    req(is.null(dt_v()))
     tagList(
       fluidRow(
         column(12,
