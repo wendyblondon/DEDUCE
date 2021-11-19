@@ -662,9 +662,6 @@ server <- function(input, output, session) {
   
   ### Misc. ---------------------
   
-  # Disable Buttons at Startup
-  disable("ct_simulate")
-  
   # Get the Design Names That Are Selected
   dt_selected_design_names <- reactive({
     design_inputs(c(input$dt_selector_tpt, input$dt_selector_tcrm, input$dt_selector_crm))
