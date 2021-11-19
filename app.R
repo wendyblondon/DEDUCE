@@ -112,7 +112,13 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
         column(3, style="overflow-y:scroll; height: 80vh;",
           h3("Inputs", style="text-align: center;"),
           br(),
-          p("Designs:", style = "font-weight: 700; font-size: 18px;"),
+          div(p(class = "help-p", "Designs"), HTML('<button id="dt-designs-help" class="help-btn" type="button">?</button>'), style = "font-weight: bold; font-size: 18px;"),
+          bsPopover(
+            "dt-designs-help", "",
+            "Select the design(s) to run in the model",
+            placement = "top", trigger = "focus"
+          ),
+          br(),
           
           ### Main Inputs ---------------------
           
