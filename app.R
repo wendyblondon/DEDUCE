@@ -489,7 +489,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
               ### DLT Observed ---------------------
               checkboxInput(
                 "ct_dlt_obs", value = FALSE, width = "100%",
-                label = div(p(class = "help-p", "Was a DLT Observed?"), HTML('<button id="ct-dlt-obs-help" class="help-btn" type="button">?</button>'))
+                label = div(class = "ct_checkbox", p(class = "help-p", "Was a DLT Observed?"), HTML('<button id="ct-dlt-obs-help" class="help-btn" type="button">?</button>'))
               ),
               bsPopover(
                 "ct-dlt-obs-help", "",
@@ -500,7 +500,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
               ### Include in Model ---------------------
               checkboxInput(
                 "ct_include", value = TRUE, width = "100%",
-                label = div(p(class = "help-p", "Include Patient in Model?"), HTML('<button id="ct-include-help" class="help-btn" type="button">?</button>'))
+                label = div(class = "ct_checkbox", p(class = "help-p", "Include Patient in Model?"), HTML('<button id="ct-include-help" class="help-btn" type="button">?</button>'))
               ),
               bsPopover(
                 "ct-include-help", "",
