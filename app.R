@@ -483,23 +483,31 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
               bsPopover(
                 "ct-dose-adm-help", "",
                 "Please select the dose level administered",
-                placement = "bottom", trigger = "focus"
+                placement = "top", trigger = "focus"
               ),
               
               ### DLT Observed ---------------------
-              prettyCheckbox("ct_dlt_obs", "Was DLT Observed?", icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
+              prettyCheckbox(
+                "ct_dlt_obs",
+                div(p(class = "help-p", "Was a DLT Observed?"), HTML('<button id="ct-dlt-obs-help" class="help-btn" type="button">?</button>')),
+                icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE
+              ),
               bsPopover(
-                "ct_dlt_obs", "",
+                "ct-dlt-obs-help", "",
                 "Please select if a dose limiting toxicity (DLT) was observed", 
-                placement = "bottom",
+                placement = "top", trigger = "focus"
               ),
               
               ### Include in Model ---------------------
-              prettyCheckbox("ct_include", "Include Patient in Model?", value = TRUE, icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
+              prettyCheckbox(
+                "ct_include",
+                div(p(class = "help-p", "Include Patient in Model?"), HTML('<button id="ct-include-help" class="help-btn" type="button">?</button>')),
+                value = TRUE, icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE
+              ),
               bsPopover(
-                "ct_include", "",
+                "ct-include-help", "",
                 "Select to include this patient in the model", 
-                placement = "bottom",
+                placement = "top", trigger = "focus"
               ),
               
               ### Add/Remove Buttons ---------------------
@@ -510,7 +518,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
               bsPopover(
                 "ct_add", "",
                 "Add the chosen patient inputs to the table", 
-                placement = "bottom",
+                placement = "top",
               ),
               
               ### Patients Table ---------------------
