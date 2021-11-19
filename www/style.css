@@ -246,6 +246,10 @@ h2{
   border-radius: 50%;
 }
 
+.help-btn:hover{
+  background-color: #003087
+}
+
 .ct_checkbox{
   font-size: 18px;
   font-weight: bold;
