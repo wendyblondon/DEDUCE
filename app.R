@@ -741,7 +741,7 @@ server <- function(input, output, session) {
     if (input$dt_simulate > 0) {
       enable("dt_results")
       disable("dt_simulate")
-      removeTooltip(session, "dt_simulate")
+      removePopover(session, "dt_simulate")
     }
   })
   
@@ -1220,10 +1220,10 @@ server <- function(input, output, session) {
   observe({
     if (!is.null(input$ct_patients_table_rows_selected)) {
       enable("ct_remove")
-      addTooltip(session, "ct_remove", "Remove the selected patient from the table below", "top", options = list(container = "body"))
+      addPopover(session, "ct_remove", "", "Remove the selected patient from the table below", placement = "top")
     } else{
       disable("ct_remove")
-      removeTooltip(session, "ct_remove")
+      removePopover(session, "ct_remove")
     }
   })
   
