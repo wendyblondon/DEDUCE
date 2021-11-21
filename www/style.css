@@ -374,3 +374,8 @@ h2{
   border-left-style: solid;
   border-left-color: #003087;
 }
+
+/* ABOUT TAB */
+.help-text{
+  padding: 2em;
+}
