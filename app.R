@@ -449,7 +449,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
             "ct-current-dose-help", "",
             paste(
               "Please enter the dose level currently under evaluation.",
-              "(TARGET-CRM permits enrolling patients at one dose level below the dose level under evaluation."
+              "(TARGET-CRM permits enrolling patients at one dose level below the dose level under evaluation.)"
             ),
             placement = "top", trigger = "focus"
           )
