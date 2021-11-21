@@ -107,7 +107,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
   
   ## Design Tab ---------------------
   tabPanel("DESIGN YOUR TRIAL",
-    div(id = "other_tabs",
+    div(class = "other_tabs",
       fluidRow(
         column(3, style="overflow-y:scroll; height: 80vh;",
           h3("Inputs", style="text-align: center;"),
@@ -338,7 +338,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
   
   ## Conduct Tab ---------------------
   tabPanel("CONDUCT YOUR TRIAL",
-    div(id = "other_tabs",
+    div(class = "other_tabs",
       fluidRow(
         column(3, style="overflow-y:scroll; height: 80vh;",
           h3("Inputs", style="text-align: center;"),
