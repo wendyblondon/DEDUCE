@@ -18,7 +18,7 @@ params:
 
 Trial Design: `r params$d`\
 Software: DEDUCE app version 1.0 available [here](https://bengarski.shinyapps.io/DEDUCE/)\
-Report Date and Time: `r lubridate::with_tz(Sys.time(), "America/New_York")`\
+Report Date and Time: `r paste(lubridate::with_tz(Sys.time(), "America/New_York"), 'ET')`\
 
 # Observed Toxicity Data:
 
