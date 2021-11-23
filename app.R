@@ -1174,7 +1174,7 @@ server <- function(input, output, session) {
   
   ### Download Results ---------------------
   output$dt_results <- downloadHandler(
-    filename = function(){paste0("DEDUCE Design ", lubridate::with_tz(Sys.time(), "America/New_York"), ".docx")}, 
+    filename = function(){paste0("DEDUCE Design ", lubridate::with_tz(Sys.time(), "America/New_York"), " ET.docx")}, 
     content = function(file){
       
       temp_report <- file.path(tempdir(), "report.rmd")
@@ -1371,7 +1371,7 @@ server <- function(input, output, session) {
   
   ### Download Results ---------------------
   output$ct_results <- downloadHandler(
-    filename = function(){paste0("DEDUCE Conduct ", lubridate::with_tz(Sys.time(), "America/New_York"), ".docx")}, 
+    filename = function(){paste0("DEDUCE Conduct ", lubridate::with_tz(Sys.time(), "America/New_York"), " ET.docx")}, 
     content = function(file){
       
       temp_report <- file.path(tempdir(), "report_conduct.rmd")
