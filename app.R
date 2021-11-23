@@ -489,7 +489,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
               ### DLT Observed ---------------------
               checkboxInput(
                 "ct_dlt_obs", value = FALSE, width = "100%",
-                label = div(class = "ct_checkbox", p(class = "help-p", "Was a DLT Observed?"), HTML('<button id="ct-dlt-obs-help" class="help-btn" type="button">?</button>'))
+                label = div(class = "ct_checkbox", p(class = "help-p", "Experienced a DLT?"), HTML('<button id="ct-dlt-obs-help" class="help-btn" type="button">?</button>'))
               ),
               bsPopover(
                 "ct-dlt-obs-help", "",
