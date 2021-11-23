@@ -24,7 +24,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
   ## Home Tab ---------------------               
   tabPanel("HOME",
     useShinyjs(), includeCSS("www/style.css"), useShinyFeedback(), use_waiter(),
-    img(id="homeimg", src = "home.jpg"),
+    img(id = "homeimg", src = "home.jpg"),
     fluidRow(
       column(12,
         p(id = "hometagline", 
