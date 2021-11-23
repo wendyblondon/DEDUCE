@@ -179,7 +179,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
           sliderInput(
             "dt_target_tox",
             div(p(class = "help-p", "Target Toxicity Probability"), HTML('<button id="dt-target-tox-help" class="help-btn" type="button">?</button>')),
-            min = 0, max = 1, value = 0.2, step = 0.01, width = "100%", ticks = FALSE
+            min = 0, max = 0.8, value = 0.2, step = 0.01, width = "100%", ticks = FALSE
           ),
           bsPopover(
             "dt-target-tox-help", "",
@@ -384,7 +384,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
           sliderInput(
             "ct_target_tox",
             div(p(class = "help-p", "Target Toxicity Probability"), HTML('<button id="ct-target-tox-help" class="help-btn" type="button">?</button>')),
-            min = 0, max = 1, value = 0.2, step = 0.01, width = "100%", ticks = FALSE
+            min = 0, max = 0.8, value = 0.2, step = 0.01, width = "100%", ticks = FALSE
           ),
           bsPopover(
             "ct-target-tox-help", "",
