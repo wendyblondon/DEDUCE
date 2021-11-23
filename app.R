@@ -1246,19 +1246,9 @@ server <- function(input, output, session) {
     }
   })
   
-  # Disable Simulate Button if Patient Table is Empty
+  # Disable Simulate Button if Patient Table is Empty or Max is Reached
   observe({
-    if(nrow(ct_patients_df()) == 0){
-      disable("ct_simulate")
-    }
-    else{
-      enable("ct_simulate")
-    }
-  })
-  
-  # Disable Simulate Button if Patient Table Doesn't Include Any Patients
-  observe({
-    if(length(which(ct_patients_df()$include == TRUE)) == 0){
+    if(length(which(ct_patients_df()$include == TRUE)) == 0 || length(which(ct_patients_df()$include == TRUE)) == 50){
       disable("ct_simulate")
     }
     else{
