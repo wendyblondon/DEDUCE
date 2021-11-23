@@ -42,21 +42,21 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
             and provide open access to investigators for alternative, improved methods and tools 
             to design and conduct phase 1 dose escalation trials."
         ),
-        h2("DEDUCE Modules:"),
+        h2("DEDUCE Modules"),
         tags$ul(
           tags$li(
-            h4(class="trialdc", "Trial Design"),
+            h4("DESIGN YOUR TRIAL:"),
             p(
               "Users can specify and compare the operating characteristics for hypothetical phase 1 designs 
                 through trial simulations, and select an optimal design for the needs of the trial."
             )
           ),
           tags$li(
-            h4(class="trialdc", "Trial Conduct"),
+            h4("CONDUCT YOUR TRIAL:"),
             p("Users can implement the adaptive trial, and determine the recommended dose level each time a new patient enrolls.")
           )    
         ),
-        h2("Available Designs:"),
+        h2("Available Designs"),
         tags$ul(
           tags$li(
             p("Continual Reassessment Method (CRM) ",
@@ -78,7 +78,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
             )
           )     
         ),
-        h2("Key Features of DEDUCE:"),
+        h2("Key Features of DEDUCE"),
         tags$ul(
           tags$li(
             p("Permits simultaneous comparison of multiple trial designs for the same set of simulation parameters")
