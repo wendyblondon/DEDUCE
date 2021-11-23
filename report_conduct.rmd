@@ -23,13 +23,13 @@ Report Date and Time: `r paste(lubridate::with_tz(Sys.time(), "America/New_York"
 # Observed Toxicity Data:
 
 ```{r, echo=FALSE}
-knitr::kable(params$df1)
+knitr::kable(params$df1, col.names = c("Patient ID", "Dose Level", "Experienced a DLT", "Included in Model"))
 ```
 
 
 # Toxicity Probability Results:
 ```{r, echo=FALSE}
-knitr::kable(params$df2, caption = "(90 Percent Probability Interval)")
+knitr::kable(params$df2, col.names = c("Dose Level", "Prior Toxicity", "n", "Total Experiencing a DLT", "Probability Toxicity", "Lower", "Upper"), caption = "(90 Percent Probability Interval)")
 ```
 
 Next Recommended Dose Level: `r params$r1`
