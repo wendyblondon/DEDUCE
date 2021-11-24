@@ -84,15 +84,15 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
       )
     ),
     fluidRow(
-      column(12, align="center",
+      column(12, align="center", class = "footer",
         a(
           href="https://www.danafarberbostonchildrens.org",
-          img(id="df_logo", src = "danafarber_bostonchildrens_logo.png", style="cursor: pointer;"),
+          img(id="df_logo", src = "danafarber_bostonchildrens_logo.png"),
           target="_blank", rel="noopener noreferrer"
         ),
         a(
           href="https://www.NorthwesternMutual.com",
-          img(id="nm_logo", src = "NMLogo.png", style="cursor: pointer;"),
+          img(id="nm_logo", src = "NMLogo.png"),
           target="_blank", rel="noopener noreferrer"
         )
       )
