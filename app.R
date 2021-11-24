@@ -25,7 +25,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
   tabPanel("HOME",
     useShinyjs(), includeCSS("www/style.css"), useShinyFeedback(), use_waiter(),
     img(id = "homeimg", src = "home.jpg"),
-    fluidRow(
+    fluidRow(class = "home-body",
       column(12,
         p(id = "hometagline", 
           "DEsign and conDUCt of dose Escalation trials (DEDUCE)"
@@ -35,7 +35,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
           "design and conduct more efficient and accurate phase 1 trials."
         ),
         h2("Overview"),
-        p(id="overview", 
+        p(
           "The DEDUCE platform is an interactive, web-based resource to design and conduct 
             phase 1 dose escalation trials using rule-based and Bayesian adaptive designs. 
             Our goal in developing this application is to raise awareness, educate, 
