@@ -74,6 +74,10 @@
   margin: 1em 5em 2em;
 }
 
+.home-body{
+  margin: 1em 5em 0.5em;
+}
+
 /* HOME & ABOUT TAB */
 p{
   font-size: 18px;  
@@ -82,16 +86,6 @@ p{
 h2{
   color: #003087;
   font-weight: bold;
-  margin: 1em 3em 0.5em;
-}
-
-#overview{
-  margin: 0 1.5em 0.5em;
-}
-
-#acknowledgements{
-  margin-left: 1.5em;
-  margin-right: 1.5em;
 }
 
 #df_logo{
@@ -371,6 +365,12 @@ h2{
 }
 
 /* ABOUT TAB */
+#acknowledgements{
+  margin-left: 1.5em;
+  margin-right: 1.5em;
+}
+
+/* HELP TAB */
 .help-text{
   padding: 2em;
 }
