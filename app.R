@@ -25,7 +25,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
   tabPanel("HOME",
     useShinyjs(), includeCSS("www/style.css"), useShinyFeedback(), use_waiter(),
     img(id = "homeimg", src = "home.jpg"),
-    fluidRow(class = "home-body",
+    fluidRow(class = "text-body",
       column(12,
         p(id = "hometagline", 
           "DEsign and conDUCt of dose Escalation trials (DEDUCE)"
@@ -558,7 +558,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
   
   ## About Tab ---------------------
   tabPanel("ABOUT",
-    fluidRow(
+    fluidRow(class = "text-body",
       h2("DEDUCE Leadership: Dana-Farber/Boston Children's Cancer and Blood Disorders Center"),
       tags$ul(
         tags$li(
