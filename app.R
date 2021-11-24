@@ -655,6 +655,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
       )
     )
   ),
+  ## Help Tab ---------------------
   tabPanel("HELP",
     fluidRow(
       column(12, align = "center",
