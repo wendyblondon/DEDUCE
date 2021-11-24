@@ -48,6 +48,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
           "Users can specify and compare the operating characteristics for hypothetical phase 1 designs 
             through trial simulations, and select an optimal design for the needs of the trial."
         ),
+        br(),
         h4("CONDUCT YOUR TRIAL"),
         p("Users can implement the adaptive trial, and determine the recommended dose level each time a new patient enrolls."),
         h2("Available Designs"),
