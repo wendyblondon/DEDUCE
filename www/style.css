@@ -100,15 +100,17 @@ h2{
 }
 
 #df_logo{
-  width: 20%;
-  max-width: 100%;
-  margin: 4em 4em 2em;
+  width: 40%;
 }
 
 #nm_logo{
-  width: 20%;
-  max-width: 100%;
-  margin: 4em 4em 2em;
+  width: 40%;
+}
+
+.footer{
+  margin: 8em 5em 2em;
+  padding: 0;
+  text-align: center;
 }
 
 /* DESIGN TAB */
