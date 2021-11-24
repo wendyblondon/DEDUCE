@@ -42,7 +42,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
             and provide open access to investigators for alternative, improved methods and tools 
             to design and conduct phase 1 dose escalation trials."
         ),
-        h2("DEDUCE Modules"),
+        h2("DEDUCE Modules", id = "home-modules"),
         h4("DESIGN YOUR TRIAL"),
         p(
           "Users can specify and compare the operating characteristics for hypothetical phase 1 designs 
