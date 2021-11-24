@@ -84,7 +84,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
       )
     ),
     fluidRow(
-      column(12, align="center", class = "footer",
+      column(12, class = "footer",
         a(
           href="https://www.danafarberbostonchildrens.org",
           img(id="df_logo", src = "danafarber_bostonchildrens_logo.png"),
