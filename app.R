@@ -42,7 +42,8 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
             and provide open access to investigators for alternative, improved methods and tools 
             to design and conduct phase 1 dose escalation trials."
         ),
-        h2("DEDUCE Modules", id = "home-modules"),
+        br(),
+        h2("DEDUCE Modules"),
         h4("DESIGN YOUR TRIAL"),
         p(
           "Users can specify and compare the operating characteristics for hypothetical phase 1 designs 
@@ -51,6 +52,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
         br(),
         h4("CONDUCT YOUR TRIAL"),
         p("Users can implement the adaptive trial, and determine the recommended dose level each time a new patient enrolls."),
+        br(),
         h2("Available Designs"),
         tags$ul(
           tags$li(
@@ -73,6 +75,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
             )
           )     
         ),
+        br(),
         h2("Key Features of DEDUCE"),
         tags$ul(
           tags$li(
