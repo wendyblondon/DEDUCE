@@ -112,20 +112,20 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
         column(3, style="overflow-y:scroll; height: 80vh;",
           h3("Inputs", style="text-align: center;"),
           br(),
-          div(p(class = "help-p", "Designs"), HTML('<button id="dt-designs-help" class="help-btn" type="button">?</button>'), style = "font-weight: bold; font-size: 18px;"),
+          
+          ### Main Inputs ---------------------
+          
+          #### Designs ---------------------
+          checkboxGroupInput(
+            "dt_selectors",
+            div(p(class = "help-p", "Designs"), HTML('<button id="dt-designs-help" class="help-btn" type="button">?</button>'), style = "font-weight: bold; font-size: 18px;"),
+            c("3+3", "CRM", "TARGET-CRM"), selected = "3+3", inline = TRUE
+          ),
           bsPopover(
             "dt-designs-help", "",
             "Select the design(s) to run in the model",
             placement = "top", trigger = "focus"
           ),
-          br(),
-          
-          ### Main Inputs ---------------------
-          
-          #### Designs ---------------------
-          prettyCheckbox("dt_selector_tpt", "3+3", value = TRUE, icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
-          prettyCheckbox("dt_selector_crm", "CRM", value = FALSE, icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
-          prettyCheckbox("dt_selector_tcrm", "TARGET-CRM", value = FALSE, icon = icon("check"), shape = "round", animation = "jelly", inline = TRUE),
           
           #### Number of Doses ---------------------
           sliderInput(
@@ -225,7 +225,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
                  
           ### TARGET-CRM & CRM Inputs ---------------------
           conditionalPanel(
-            condition = "input.dt_selector_tcrm == 1 || input.dt_selector_crm == 1",
+            condition = "input.dt_selectors.includes('TARGET-CRM') || input.dt_selectors.includes('CRM')",
             
             #### Prior Toxicity ---------------------
             textInput(
@@ -269,7 +269,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
                  
           ### TARGET-CRM Inputs ---------------------
           conditionalPanel(
-            condition = "input.dt_selector_tcrm == 1",
+            condition = "input.dt_selectors.includes('TARGET-CRM')",
             
             #### Prop B ---------------------
             sliderInput(
@@ -679,7 +679,7 @@ server <- function(input, output, session) {
   
   # Get the Design Names That Are Selected
   dt_selected_design_names <- reactive({
-    design_inputs(c(input$dt_selector_tpt, input$dt_selector_tcrm, input$dt_selector_crm))
+    input$dt_selectors
   })
   
   # Set Initial Reactive Value to Keep Track if Simulation Was Ran
@@ -688,10 +688,10 @@ server <- function(input, output, session) {
   ### Warnings for Invalid Inputs ---------------------
   
   # Designs
-  observeEvent(list(input$dt_selector_tpt, input$dt_selector_tcrm, input$dt_selector_crm), {
-    hideFeedback("dt_selector_tcrm")
-    if (input$dt_selector_tpt == 0 && input$dt_selector_tcrm == 0 && input$dt_selector_crm == 0) {
-      showFeedbackDanger("dt_selector_tcrm", "A design must be selected before running the simulation.")
+  observeEvent(input$dt_selectors, {
+    hideFeedback("dt_selectors")
+    if (is.null(input$dt_selectors)) {
+      showFeedbackDanger("dt_selectors", "A design must be selected before running the simulation.")
     }
   })
   
@@ -752,7 +752,7 @@ server <- function(input, output, session) {
        length(unlist(strsplit(input$dt_prior_tox, ",")))!= input$dt_num_doses ||
        increment_check(input$dt_prior_tox)==FALSE ||
        decimal_check(input$dt_prior_tox)==FALSE ||
-       (input$dt_selector_tpt == 0 && input$dt_selector_tcrm == 0 && input$dt_selector_crm == 0)){
+       is.null(input$dt_selectors)){
         disable("dt_simulate")
     } else{
       enable("dt_simulate")
@@ -768,9 +768,7 @@ server <- function(input, output, session) {
   observe({
     if (!is.null(dt_sim_count())) {
       enable("dt_results")
-      disable("dt_selector_tpt")
-      disable("dt_selector_crm")
-      disable("dt_selector_tcrm")
+      disable("dt_selectors")
       disable("dt_num_doses")
       disable("dt_dose_labels")
       disable("dt_start_level")
@@ -796,9 +794,7 @@ server <- function(input, output, session) {
   # Hide/Enable/Reset the UI Elements When Reset is Clicked
   observeEvent(input$dt_reset, {
     hide("dt_ui_plots")
-    enable("dt_selector_tpt")
-    enable("dt_selector_crm")
-    enable("dt_selector_tcrm")
+    enable("dt_selectors")
     enable("dt_num_doses")
     enable("dt_dose_labels")
     enable("dt_start_level")
@@ -812,9 +808,7 @@ server <- function(input, output, session) {
     enable("dt_cohort_size")
     enable("dt_prop_b")
     enable("dt_min_cohort_b")
-    reset("dt_selector_tpt")
-    reset("dt_selector_tcrm")
-    reset("dt_selector_crm")
+    reset("dt_selectors")
     reset("dt_num_doses")
     reset("dt_dose_labels")
     reset("dt_start_level")
@@ -880,7 +874,7 @@ server <- function(input, output, session) {
     dt_sim_count(1)
     
     # 3+3
-    if (input$dt_selector_tpt == TRUE) {
+    if ("3+3" %in% input$dt_selectors) {
       
       tpt <- three_plus_three(target_tox = input$dt_target_tox, number_trials = input$dt_num_trials, 
                               true_tox = numerizer(input$dt_true_tox), arrival_rate = input$dt_arrival_rate, cycle_length = input$dt_cycle_length, 
@@ -888,7 +882,7 @@ server <- function(input, output, session) {
     }
     
     # TARGET-CRM
-    if(input$dt_selector_tcrm == TRUE) {
+    if("TARGET-CRM" %in% input$dt_selectors) {
       
       tcrm <- my_target_crm(prior = numerizer(input$dt_prior_tox), target_tox = input$dt_target_tox, 
                             number_trials = input$dt_num_trials, true_tox = numerizer(input$dt_true_tox), 
@@ -898,7 +892,7 @@ server <- function(input, output, session) {
     }
     
     # CRM
-    if(input$dt_selector_crm == TRUE) {
+    if("CRM" %in% input$dt_selectors) {
       
       crm <- my_crm(prior = numerizer(input$dt_prior_tox), target_tox = input$dt_target_tox, 
                     number_trials = input$dt_num_trials, true_tox = numerizer(input$dt_true_tox), 
@@ -1131,7 +1125,7 @@ server <- function(input, output, session) {
   dt_report_methods <- reactive({
     req(input$dt_simulate > 0)
     
-    if (input$dt_selector_tcrm == 1 | input$dt_selector_crm == 1) {
+    if ("TARGET-CRM" %in% input$dt_selectors || "CRM" %in% input$dt_selectors) {
       
       x1 <- input$dt_num_trials
       x2 <- input$dt_num_doses
