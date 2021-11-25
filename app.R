@@ -695,6 +695,9 @@ server <- function(input, output, session) {
     hideFeedback("dt_dose_labels")
     if (length(unlist(strsplit(input$dt_dose_labels, ",")))!= input$dt_num_doses) {
       showFeedbackDanger("dt_dose_labels", "The length must match the number of dose levels selected above. Be sure to use commas to separate each label.")
+      disable("dt_simulate")
+    } else{
+      enable("dt_simulate")
     }
   })
   
@@ -704,12 +707,17 @@ server <- function(input, output, session) {
     hideFeedback("dt_true_tox")
     if (length(unlist(strsplit(input$dt_true_tox, ",")))!= input$dt_num_doses) {
       showFeedbackDanger("dt_true_tox", "The length must match the number of dose levels selected at the top. Be sure to use commas to separate each decimal.")
+      disable("dt_simulate")
     }
     else if (increment_check(input$dt_true_tox)==FALSE) {
       showFeedbackDanger("dt_true_tox", "The probabilities must increase with each subsequent dose")
+      disable("dt_simulate")
     }
     else if (decimal_check(input$dt_true_tox)==FALSE) {
       showFeedbackDanger("dt_true_tox", "The probabilities must be a decimal")
+      disable("dt_simulate")
+    } else{
+      enable("dt_simulate")
     }
   })
   
@@ -719,12 +727,17 @@ server <- function(input, output, session) {
     hideFeedback("dt_prior_tox")
     if (length(unlist(strsplit(input$dt_prior_tox, ",")))!= input$dt_num_doses) {
       showFeedbackDanger("dt_prior_tox", "The length must match the number of dose levels selected at the top. Be sure to use commas to separate each decimal.")
+      disable("dt_simulate")
     }
     else if (increment_check(input$dt_prior_tox)==FALSE) {
       showFeedbackDanger("dt_prior_tox", "The probabilities must increase with each subsequent dose")
+      disable("dt_simulate")
     }
     else if (decimal_check(input$dt_prior_tox)==FALSE) {
       showFeedbackDanger("dt_prior_tox", "The probabilities must be a decimal")
+      disable("dt_simulate")
+    } else{
+      enable("dt_simulate")
     }
   })
   
