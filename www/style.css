@@ -80,6 +80,10 @@ p{
   font-size: 18px;  
 }
 
+.home-about-p{
+  font-size: 1.6em;
+}
+
 h2{
   color: #003087;
   font-weight: bold;
