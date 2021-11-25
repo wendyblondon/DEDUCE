@@ -1320,7 +1320,7 @@ server <- function(input, output, session) {
     ct_patients_df(data.frame(patient_id=numeric(), dose_level=numeric(), dlt=numeric(), include=numeric()))
     hide("ct_ui_patients")
     disable("ct_results")
-    ct_sim_count(1)
+    ct_sim_count(NULL)
   })
   
   ### Patient Table ---------------------
