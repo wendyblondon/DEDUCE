@@ -807,13 +807,13 @@ server <- function(input, output, session) {
       div(id="dt_ui_plots",
         tagList(
           splitLayout(
-            plotOutput("dt_plot_1"),
-            plotOutput("dt_plot_3")
+            plotOutput("dt_plot_1", height = "40vh"),
+            plotOutput("dt_plot_3", height = "40vh")
           ),
           br(),
           splitLayout(
-            plotOutput("dt_plot_2"),
-            plotOutput("dt_plot_4")
+            plotOutput("dt_plot_2", height = "40vh"),
+            plotOutput("dt_plot_4", height = "40vh")
           )
         )
       )
