@@ -805,17 +805,15 @@ server <- function(input, output, session) {
     req(length(dt_selected_design_names()) > 0)
     hidden(
       div(id="dt_ui_plots",
-        fluidRow(
-          column(12,
-            splitLayout(
-              plotOutput("dt_plot_1", width = "100%"),
-              plotOutput("dt_plot_3", width = "100%")
-            ),
-            br(),
-            splitLayout(
-              plotOutput("dt_plot_2", width = "100%"),
-              plotOutput("dt_plot_4", width = "100%")
-            )
+        tagList(
+          splitLayout(
+            plotOutput("dt_plot_1"),
+            plotOutput("dt_plot_3")
+          ),
+          br(),
+          splitLayout(
+            plotOutput("dt_plot_2"),
+            plotOutput("dt_plot_4")
           )
         )
       )
