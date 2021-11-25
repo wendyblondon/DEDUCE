@@ -35,7 +35,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
           "design and conduct more efficient and accurate phase 1 trials."
         ),
         h2("Overview"),
-        p(
+        p(class = "home-about-p",
           "The DEDUCE platform is an interactive, web-based resource to design and conduct 
             phase 1 dose escalation trials using rule-based and Bayesian adaptive designs. 
             Our goal in developing this application is to raise awareness, educate, 
@@ -45,18 +45,18 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
         br(),
         h2("DEDUCE Modules"),
         h4("DESIGN YOUR TRIAL"),
-        p(
+        p(class = "home-about-p",
           "Users can specify and compare the operating characteristics for hypothetical phase 1 designs 
             through trial simulations, and select an optimal design for the needs of the trial."
         ),
         br(),
         h4("CONDUCT YOUR TRIAL"),
-        p("Users can implement the adaptive trial, and determine the recommended dose level each time a new patient enrolls."),
+        p(class = "home-about-p", "Users can implement the adaptive trial, and determine the recommended dose level each time a new patient enrolls."),
         br(),
         h2("Available Designs"),
         tags$ul(
           tags$li(
-            p("Continual Reassessment Method (CRM) ",
+            p(class = "home-about-p", "Continual Reassessment Method (CRM) ",
               a(
                 href="https://pubmed.ncbi.nlm.nih.gov/2350571/", "[O'Quigley et al. ", em("Biometrics,"), " 1990]", 
                 target="_blank", rel="noopener noreferrer"
@@ -64,10 +64,10 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
             )
           ),
           tags$li(
-            p("TARGETed-Agent Continual Reassessment Method (TARGET-CRM)")
+            p(class = "home-about-p", "TARGETed-Agent Continual Reassessment Method (TARGET-CRM)")
           ), 
           tags$li(
-            p("3+3 ", 
+            p(class = "home-about-p", "3+3 ", 
               a(
                 href="https://pubmed.ncbi.nlm.nih.gov/2790129/", "[Storer. ", em("Biometrics,"), " 1989]", 
                 target="_blank", rel="noopener noreferrer"
@@ -79,10 +79,10 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
         h2("Key Features of DEDUCE"),
         tags$ul(
           tags$li(
-            p("Permits simultaneous comparison of multiple trial designs for the same set of simulation parameters")
+            p(class = "home-about-p", "Permits simultaneous comparison of multiple trial designs for the same set of simulation parameters")
           ),
           tags$li(
-            p("Dynamically generates a written report summarizing simulation results")
+            p(class = "home-about-p", "Dynamically generates a written report summarizing simulation results")
           )
         )
       )
