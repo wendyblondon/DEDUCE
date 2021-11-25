@@ -179,26 +179,6 @@ ul{
   border: 2px solid black;
 }
 
-#dt_plot1{
-  height: calc(50vh - 50px) !important;
-  width: 100%;
-} 
-
-#dt_plot2{
-  height: calc(50vh - 50px) !important;
-  width: 100%;
-} 
-
-#dt_plot3{
-  height: calc(50vh - 50px) !important;
-  width: 100%;
-} 
-
-#dt_plot4{
-  height: calc(50vh - 50px) !important;
-  width: 100%;
-}
-
 /* DESIGN & CONDUCT TAB */
 p{
   font-size: 18px;  
