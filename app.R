@@ -35,7 +35,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
           "design and conduct more efficient and accurate phase 1 trials."
         ),
         h2("Overview"),
-        p(class = "home-about-p",
+        p(class = "main-text",
           "The DEDUCE platform is an interactive, web-based resource to design and conduct 
             phase 1 dose escalation trials using rule-based and Bayesian adaptive designs. 
             Our goal in developing this application is to raise awareness, educate, 
@@ -44,19 +44,19 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
         ),
         br(),
         h2("DEDUCE Modules"),
-        p(class = "home-about-p", "DESIGN YOUR TRIAL"),
-        p(class = "home-about-p",
+        p(class = "main-text", "DESIGN YOUR TRIAL"),
+        p(class = "main-text",
           "Users can specify and compare the operating characteristics for hypothetical phase 1 designs 
             through trial simulations, and select an optimal design for the needs of the trial."
         ),
         br(),
-        p(class = "home-about-p", "CONDUCT YOUR TRIAL"),
-        p(class = "home-about-p", "Users can implement the adaptive trial, and determine the recommended dose level each time a new patient enrolls."),
+        p(class = "main-text", "CONDUCT YOUR TRIAL"),
+        p(class = "main-text", "Users can implement the adaptive trial, and determine the recommended dose level each time a new patient enrolls."),
         br(),
         h2("Available Designs"),
         tags$ul(
           tags$li(
-            p(class = "home-about-p", "Continual Reassessment Method (CRM) ",
+            p(class = "main-text", "Continual Reassessment Method (CRM) ",
               a(
                 href="https://pubmed.ncbi.nlm.nih.gov/2350571/", "[O'Quigley et al. ", em("Biometrics,"), " 1990]", 
                 target="_blank", rel="noopener noreferrer"
@@ -64,10 +64,10 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
             )
           ),
           tags$li(
-            p(class = "home-about-p", "TARGETed-Agent Continual Reassessment Method (TARGET-CRM)")
+            p(class = "main-text", "TARGETed-Agent Continual Reassessment Method (TARGET-CRM)")
           ), 
           tags$li(
-            p(class = "home-about-p", "3+3 ", 
+            p(class = "main-text", "3+3 ", 
               a(
                 href="https://pubmed.ncbi.nlm.nih.gov/2790129/", "[Storer. ", em("Biometrics,"), " 1989]", 
                 target="_blank", rel="noopener noreferrer"
@@ -79,10 +79,10 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
         h2("Key Features of DEDUCE"),
         tags$ul(
           tags$li(
-            p(class = "home-about-p", "Permits simultaneous comparison of multiple trial designs for the same set of simulation parameters")
+            p(class = "main-text", "Permits simultaneous comparison of multiple trial designs for the same set of simulation parameters")
           ),
           tags$li(
-            p(class = "home-about-p", "Dynamically generates a written report summarizing simulation results")
+            p(class = "main-text", "Dynamically generates a written report summarizing simulation results")
           )
         )
       )
@@ -560,35 +560,35 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
   tabPanel("ABOUT",
     fluidRow(class = "text-body",
       h2(id = "about-top", "DEDUCE Leadership:"),
-      p(class = "home-about-p", strong("Dana-Farber/Boston Children's Cancer and Blood Disorders Center")),
+      p(class = "main-text", strong("Dana-Farber/Boston Children's Cancer and Blood Disorders Center")),
       br(),
-      p(class = "home-about-p", "Clement Ma, PhD"),
-      p(class = "home-about-p", "Wendy B. London, PhD"),
+      p(class = "main-text", "Clement Ma, PhD"),
+      p(class = "main-text", "Wendy B. London, PhD"),
       br(),
       h2("Development Team:"),
-      p(class = "home-about-p", strong("Northwestern Mutual")),
+      p(class = "main-text", strong("Northwestern Mutual")),
       br(),
-      p(class = "home-about-p", "Judy Berdan"),
-      p(class = "home-about-p", "Laure Borchardt"),
-      p(class = "home-about-p", "Audra Brennan"),
-      p(class = "home-about-p", "Stan Crane"),
-      p(class = "home-about-p", "Ben Garski"),
-      p(class = "home-about-p", "Nanette Jamel"),
-      p(class = "home-about-p", "Lori Kiraly"),
-      p(class = "home-about-p", "Danielle Pankey"),
-      p(class = "home-about-p", "Susan Stegman, MD"),
+      p(class = "main-text", "Judy Berdan"),
+      p(class = "main-text", "Laure Borchardt"),
+      p(class = "main-text", "Audra Brennan"),
+      p(class = "main-text", "Stan Crane"),
+      p(class = "main-text", "Ben Garski"),
+      p(class = "main-text", "Nanette Jamel"),
+      p(class = "main-text", "Lori Kiraly"),
+      p(class = "main-text", "Danielle Pankey"),
+      p(class = "main-text", "Susan Stegman, MD"),
       br(),
       h2("Contact:"),
-      p(class = "home-about-p", "For assistance, please contact: Drs. Clement Ma and Wendy B. London."),
+      p(class = "main-text", "For assistance, please contact: Drs. Clement Ma and Wendy B. London."),
       br(),
       h2("Citation:"),
-      p(class = "home-about-p", "To cite DEDUCE, please use: Ma C, Berdan J, Borchardt L, Crane S, Garski B, Jamel N, Kiraly L, Pankey D, 
+      p(class = "main-text", "To cite DEDUCE, please use: Ma C, Berdan J, Borchardt L, Crane S, Garski B, Jamel N, Kiraly L, Pankey D, 
         Stegman S, London WB (2021). DEsign and conDUCt of dose Escalation trials (DEDUCE). Available at:", 
         a(href="https://bengarski.shinyapps.io/DEDUCE/", "https://bengarski.shinyapps.io/DEDUCE/")
       ),
       br(),
       h2("Acknowledgements:"),
-      p(class = "home-about-p",
+      p(class = "main-text",
         "We would like to thank the Northwestern Mutual Tech for Good team for their pro-bono development, design, and project management 
         support for the DEDUCE platform. We would also like to thank our test users, Drs. Steven G. DuBois, Karen D. Wright, 
         and David S. Shulman for their helpful feedback."
@@ -597,13 +597,13 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
       h2("References:"),
       tags$ul(
         tags$li(
-          p(class = "home-about-p",
+          p(class = "main-text",
             a("Storer BE. Design and Analysis of Phase I Clinical Trials. ", em("Biometrics. "), "1989;45(3):925-37.",
               href="https://pubmed.ncbi.nlm.nih.gov/2790129/", target="_blank", rel="noopener noreferrer")
           )
         ),
         tags$li(
-          p(class = "home-about-p",
+          p(class = "main-text",
             a("O'Quigley J, Pepe M, Fisher L. Continual reassessment method: a practical design for phase 1 Clinical trials in cancer. ", 
               em("Biometrics. "), "1990;46(1):33-48.", href="https://pubmed.ncbi.nlm.nih.gov/2350571/", 
               target="_blank", rel="noopener noreferrer")
@@ -633,7 +633,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
     fluidRow(
       column(12, align = "center",
         div(class = "help-text",
-          p(class = "home-about-p", "Please visit",
+          p(class = "main-text", "Please visit",
             a("here", href = "https://drive.google.com/file/d/1LDj36CAF3Hnf0r5KRgeU5QiiI9ET5G-R/view", target="_blank", rel="noopener noreferrer"),
             "for a help document"
           )
