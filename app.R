@@ -781,11 +781,6 @@ server <- function(input, output, session) {
     }
   })
   
-  # Change Reactive Value When Design is Ran
-  observeEvent(input$dt_simulate, {
-    dt_sim_count(1)
-  })
-  
   # Hide/Enable/Reset the UI Elements When Reset is Clicked
   observeEvent(input$dt_reset, {
     hide("dt_ui_plots")
@@ -868,6 +863,9 @@ server <- function(input, output, session) {
   dt_function_outputs <- eventReactive(input$dt_simulate, {
     w <- Waiter$new(html = spin_heartbeat(), color = "black")
     w$show()
+    
+    # Change Reactive Value When Design is Ran
+    dt_sim_count(1)
     
     # 3+3
     if (input$dt_selector_tpt == TRUE) {
@@ -1298,9 +1296,8 @@ server <- function(input, output, session) {
     }
   })
   
-  # Show Table when Simulate is Pressed - Also Set Reactive Value to Identify Simulation Ran
+  # Show Table when Simulate is Pressed
   observeEvent(input$ct_simulate,{
-    ct_sim_count(1)
     show("ct_ui_patients")
   })
   
@@ -1355,6 +1352,9 @@ server <- function(input, output, session) {
   
   ### Running the Function ---------------------
   ct_function_outputs <- eventReactive(input$ct_simulate, {
+    
+    # Set Reactive Value to Identify Simulation Ran
+    ct_sim_count(1)
     
     tcrmc <- target_crm_conduct(prior = numerizer(input$ct_prior_tox), target_tox = input$ct_target_tox, tox = ct_patients_df()$dlt, 
                                 dose_labels = unlist(strsplit(input$ct_dose_labels, ",")), 
