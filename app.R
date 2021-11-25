@@ -559,68 +559,43 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
   ## About Tab ---------------------
   tabPanel("ABOUT",
     fluidRow(class = "text-body",
-      h2("DEDUCE Leadership: Dana-Farber/Boston Children's Cancer and Blood Disorders Center"),
-      tags$ul(
-        tags$li(
-          p("Clement Ma, PhD")
-        ),
-        tags$li(
-          p("Wendy B. London, PhD")
-        )
-      ),
-      h2("Development Team: Northwestern Mutual"),
-      tags$ul(
-        tags$li(
-          p("Judy Berdan")
-        ),
-        tags$li(
-          p("Laure Borchardt")
-        ),
-        tags$li(
-          p("Audra Brennan")
-        ),
-        tags$li(
-          p("Stan Crane")
-        ),
-        tags$li(
-          p("Ben Garski")
-        ),
-        tags$li(
-          p("Nanette Jamel")
-        ),
-        tags$li(
-          p("Lori Kiraly")
-        ),
-        tags$li(
-          p("Danielle Pankey")
-        ),
-        tags$li(
-          p("Susan Stegman, MD")
-        )
-      ),
+      h2(id = "about-top", "DEDUCE Leadership:"),
+      p(strong("Dana-Farber/Boston Children's Cancer and Blood Disorders Center")),
+      br(),
+      p("Clement Ma, PhD"),
+      p("Wendy B. London, PhD"),
+      br(),
+      h2("Development Team:"),
+      p(strong("Northwestern Mutual")),
+      p("Judy Berdan"),
+      p("Laure Borchardt"),
+      p("Audra Brennan"),
+      p("Stan Crane"),
+      p("Ben Garski"),
+      p("Nanette Jamel"),
+      p("Lori Kiraly"),
+      p("Danielle Pankey"),
+      p("Susan Stegman, MD"),
+      br(),
       h2("Contact:"),
-      tags$ul(
-        tags$li(
-          p("For assistance, please contact: Drs. Clement Ma and Wendy B. London.")
-        )
-      ),
+      br(),
+      p("For assistance, please contact: Drs. Clement Ma and Wendy B. London."),
+      br(),
       h2("Citation:"),
-      tags$ul(
-        tags$li(
-          p("To cite DEDUCE, please use: Ma C, Berdan J, Borchardt L, Crane S, Garski B, Jamel N, Kiraly L, Pankey D, Stegman S, London WB (2021). 
-            DEsign and conDUCt of dose Escalation trials (DEDUCE). Available at:", 
-            a(
-              href="https://bengarski.shinyapps.io/DEDUCE/", "https://bengarski.shinyapps.io/DEDUCE/"
-            )
-          )
-        )
+      br(),
+      p("To cite DEDUCE, please use: Ma C, Berdan J, Borchardt L, Crane S, Garski B, Jamel N, Kiraly L, Pankey D, Stegman S, London WB (2021). 
+        DEsign and conDUCt of dose Escalation trials (DEDUCE). Available at:", 
+        a(href="https://bengarski.shinyapps.io/DEDUCE/", "https://bengarski.shinyapps.io/DEDUCE/")
       ),
+      br(),
       h2("Acknowledgements:"),
+      br(),
       p(id="acknowledgements",
         "We would like to thank the Northwestern Mutual Tech for Good team for their pro-bono development, design, and project management 
         support for the DEDUCE platform. We would also like to thank our test users, Drs. Steven G. DuBois, Karen D. Wright, 
         and David S. Shulman for their helpful feedback."
       ),
+      br(),
       h2("References:"),
       tags$ul(
         tags$li(
