@@ -1282,8 +1282,10 @@ server <- function(input, output, session) {
     if(length(which(ct_patients_df()$include == TRUE)) == 0 || 
        length(which(ct_patients_df()$include == TRUE)) == 50 ||
        length(unlist(strsplit(input$ct_dose_labels, ",")))!= input$ct_num_doses ||
-       length(unlist(strsplit(input$ct_prior_tox, ",")))!= input$ct_num_doses){
-      disable("ct_simulate")
+       length(unlist(strsplit(input$ct_prior_tox, ",")))!= input$ct_num_doses ||
+       increment_check(input$ct_prior_tox) == FALSE ||
+       decimal_check(input$ct_prior_tox) == FALSE){
+        disable("ct_simulate")
     }
     else{
       enable("ct_simulate")
