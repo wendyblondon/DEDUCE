@@ -75,11 +75,6 @@
   margin-bottom: 2em;
 }
 
-.text-body{
-  margin-left: 5em;
-  margin-right: 5em;
-}
-
 /* HOME & ABOUT TAB */
 p{
   font-size: 18px;  
@@ -88,6 +83,11 @@ p{
 h2{
   color: #003087;
   font-weight: bold;
+}
+
+.text-body{
+  margin-left: 5em;
+  margin-right: 5em;
 }
 
 #df_logo{
