@@ -54,6 +54,14 @@
   color: black;
 }
 
+#nav-help-btn{
+  margin-top: 1em;
+}
+
+#nav-git-btn{
+  margin-top: 1em;
+}
+
 /* HOME TAB */
 #homeimg{
   width: 100%;
