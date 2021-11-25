@@ -630,10 +630,19 @@ ui <- page_navbar(title = "DEDUCE", collapsible = TRUE, theme = NULL, bg = "whit
   ),
   
   ## Help Link ---------------------
-  nav_item(a(href="https://drive.google.com/file/d/1LDj36CAF3Hnf0r5KRgeU5QiiI9ET5G-R/view", icon("question-circle"), target="_blank", rel="noopener noreferrer")),
+  nav_item(
+    actionButton(
+      "nav-help-btn", "", icon = icon("question-circle"), 
+      onclick = "window.open('https://drive.google.com/file/d/1LDj36CAF3Hnf0r5KRgeU5QiiI9ET5G-R/view', '_blank', 'noopener noreferrer')"
+    )
+  ),
   
   ## Github Link --------------------- 
-  nav_item(a(href="https://github.com/b-gar/DEDUCE", icon("github"), target="_blank", rel="noopener noreferrer"))
+  nav_item(
+    actionButton(
+      "nav-git-btn", "", icon = icon("github"), onclick = "window.open('https://github.com/b-gar/DEDUCE', '_blank', 'noopener noreferrer')"
+    )
+  )
 )
 
 # Server ---------------------
