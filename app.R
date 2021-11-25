@@ -633,7 +633,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
     fluidRow(
       column(12, align = "center",
         div(class = "help-text",
-          p("Please visit",
+          p(class = "home-about-p", "Please visit",
             a("here", href = "https://drive.google.com/file/d/1LDj36CAF3Hnf0r5KRgeU5QiiI9ET5G-R/view", target="_blank", rel="noopener noreferrer"),
             "for a help document"
           )
