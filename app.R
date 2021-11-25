@@ -786,7 +786,7 @@ server <- function(input, output, session) {
     dt_sim_count(1)
   })
   
-  # Hide/Reset the UI Elements When Reset is Clicked
+  # Hide/Enable/Reset the UI Elements When Reset is Clicked
   observeEvent(input$dt_reset, {
     hide("dt_ui_plots")
     enable("dt_selector_tpt")
