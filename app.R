@@ -738,23 +738,14 @@ server <- function(input, output, session) {
     updateSliderInput(session, "dt_min_cohort_b", max = input$dt_max_n)
   })
   
-  # Disable Simulate Button if Any Input Warnings Present
+  # Disable Simulate Button If Any Input Warnings Present or If No Designs Selected
   observe({
     if(length(unlist(strsplit(input$dt_dose_labels, ",")))!= input$dt_num_doses || 
        length(unlist(strsplit(input$dt_true_tox, ",")))!= input$dt_num_doses || 
-       length(unlist(strsplit(input$dt_prior_tox, ",")))!= input$dt_num_doses){
-      disable("dt_simulate")
+       length(unlist(strsplit(input$dt_prior_tox, ",")))!= input$dt_num_doses || 
+       (input$dt_selector_tpt == 0 & input$dt_selector_tcrm == 0 & input$dt_selector_crm == 0)){
+       disable("dt_simulate")
     } else{
-      enable("dt_simulate")
-    }
-  })
-  
-  # Disable Simulate Button if No Designs Selected
-  observe({
-    if(input$dt_selector_tpt == 0 & input$dt_selector_tcrm == 0 & input$dt_selector_crm == 0){
-      disable("dt_simulate")
-    }
-    else{
       enable("dt_simulate")
     }
   })
