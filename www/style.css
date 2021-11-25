@@ -242,11 +242,6 @@ h2{
   background-color: #003087
 }
 
-.ct_checkbox{
-  font-size: 18px;
-  font-weight: bold;
-}
-
 /* CONDUCT TAB */
 
 #ct_selectors{
@@ -263,6 +258,11 @@ h2{
 
 #ct_pid{
   font-size: 18px;
+}
+
+.ct_checkbox{
+  font-size: 18px;
+  font-weight: bold;
 }
 
 #ct_add{
