@@ -329,8 +329,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
           )
         ),
         column(9,
-            uiOutput("dt_plots_ui"),
-            uiOutput("dt_none_ui")
+            uiOutput("dt_plots_ui")
         )
       )
     )
@@ -815,21 +814,6 @@ server <- function(input, output, session) {
             plotOutput("dt_plot_2", width = "90%", height = "40vh"),
             plotOutput("dt_plot_4", width = "90%", height = "40vh")
           )
-        )
-      )
-    )
-  })
-  
-  # UI if No Design Selected
-  output$dt_none_ui <- renderUI({
-    req(is.null(dt_sim_count()))
-    tagList(
-      fluidRow(
-        column(12,
-               br(),
-               br(),
-               icon("arrow-left", "fa-3x"),
-               h3("Please select the appropriate inputs before running the simulation", style="color: black")
         )
       )
     )
