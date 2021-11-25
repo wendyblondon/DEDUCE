@@ -688,9 +688,10 @@ server <- function(input, output, session) {
   ### Warnings for Invalid Inputs ---------------------
   
   # Designs
-  observeEvent(input$dt_selectors, {
-    req(is.null(input$dt_selectors))
-    showNotification("A design must be selected before running the simulation", type = "error")
+  observe({
+    if (is.null(input$dt_selectors)){
+      showNotification("A design must be selected before running the simulation", type = "error", session = session)
+    }
   })
   
   # Dose Labels
