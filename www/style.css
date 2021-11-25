@@ -55,11 +55,19 @@
 }
 
 #nav-help-btn{
-  margin-top: 1em;
+  margin-top: 0.2em;
+  margin-left: 1em;
+  padding: 0;
+  border: none;
+  font-size: 2.5em;
 }
 
 #nav-git-btn{
-  margin-top: 1em;
+  margin-top: 0.2em;
+  margin-left: 1em;
+  padding: 0;
+  border: none;
+  font-size: 2.5em;
 }
 
 /* HOME TAB */
