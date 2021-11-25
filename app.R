@@ -560,35 +560,35 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
   tabPanel("ABOUT",
     fluidRow(class = "text-body",
       h2(id = "about-top", "DEDUCE Leadership:"),
-      p(strong("Dana-Farber/Boston Children's Cancer and Blood Disorders Center")),
+      p(class = "home-about-p", strong("Dana-Farber/Boston Children's Cancer and Blood Disorders Center")),
       br(),
-      p("Clement Ma, PhD"),
-      p("Wendy B. London, PhD"),
+      p(class = "home-about-p", "Clement Ma, PhD"),
+      p(class = "home-about-p", "Wendy B. London, PhD"),
       br(),
       h2("Development Team:"),
-      p(strong("Northwestern Mutual")),
+      p(class = "home-about-p", strong("Northwestern Mutual")),
       br(),
-      p("Judy Berdan"),
-      p("Laure Borchardt"),
-      p("Audra Brennan"),
-      p("Stan Crane"),
-      p("Ben Garski"),
-      p("Nanette Jamel"),
-      p("Lori Kiraly"),
-      p("Danielle Pankey"),
-      p("Susan Stegman, MD"),
+      p(class = "home-about-p", "Judy Berdan"),
+      p(class = "home-about-p", "Laure Borchardt"),
+      p(class = "home-about-p", "Audra Brennan"),
+      p(class = "home-about-p", "Stan Crane"),
+      p(class = "home-about-p", "Ben Garski"),
+      p(class = "home-about-p", "Nanette Jamel"),
+      p(class = "home-about-p", "Lori Kiraly"),
+      p(class = "home-about-p", "Danielle Pankey"),
+      p(class = "home-about-p", "Susan Stegman, MD"),
       br(),
       h2("Contact:"),
-      p("For assistance, please contact: Drs. Clement Ma and Wendy B. London."),
+      p(class = "home-about-p", "For assistance, please contact: Drs. Clement Ma and Wendy B. London."),
       br(),
       h2("Citation:"),
-      p("To cite DEDUCE, please use: Ma C, Berdan J, Borchardt L, Crane S, Garski B, Jamel N, Kiraly L, Pankey D, Stegman S, London WB (2021). 
-        DEsign and conDUCt of dose Escalation trials (DEDUCE). Available at:", 
+      p(class = "home-about-p", "To cite DEDUCE, please use: Ma C, Berdan J, Borchardt L, Crane S, Garski B, Jamel N, Kiraly L, Pankey D, 
+        Stegman S, London WB (2021). DEsign and conDUCt of dose Escalation trials (DEDUCE). Available at:", 
         a(href="https://bengarski.shinyapps.io/DEDUCE/", "https://bengarski.shinyapps.io/DEDUCE/")
       ),
       br(),
       h2("Acknowledgements:"),
-      p(
+      p(class = "home-about-p",
         "We would like to thank the Northwestern Mutual Tech for Good team for their pro-bono development, design, and project management 
         support for the DEDUCE platform. We would also like to thank our test users, Drs. Steven G. DuBois, Karen D. Wright, 
         and David S. Shulman for their helpful feedback."
@@ -597,13 +597,13 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
       h2("References:"),
       tags$ul(
         tags$li(
-          p(
+          p(class = "home-about-p",
             a("Storer BE. Design and Analysis of Phase I Clinical Trials. ", em("Biometrics. "), "1989;45(3):925-37.",
               href="https://pubmed.ncbi.nlm.nih.gov/2790129/", target="_blank", rel="noopener noreferrer")
           )
         ),
         tags$li(
-          p(
+          p(class = "home-about-p",
             a("O'Quigley J, Pepe M, Fisher L. Continual reassessment method: a practical design for phase 1 Clinical trials in cancer. ", 
               em("Biometrics. "), "1990;46(1):33-48.", href="https://pubmed.ncbi.nlm.nih.gov/2350571/", 
               target="_blank", rel="noopener noreferrer")
