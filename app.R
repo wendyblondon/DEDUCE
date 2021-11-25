@@ -726,17 +726,6 @@ server <- function(input, output, session) {
     }
   })
   
-  # All Warning Observers
-  observe({
-    if(length(unlist(strsplit(input$dt_dose_labels, ",")))!= input$dt_num_doses || 
-       length(unlist(strsplit(input$dt_true_tox, ",")))!= input$dt_num_doses || 
-       length(unlist(strsplit(input$dt_prior_tox, ",")))!= input$dt_num_doses){
-      disable("dt_simulate")
-    } else{
-      enable("dt_simulate")
-    }
-  })
-  
   ### Observers ---------------------
   
   # Update Start Level Based on Dose Labels
@@ -747,6 +736,17 @@ server <- function(input, output, session) {
   # Update Max Depending on Previous Input
   observe({
     updateSliderInput(session, "dt_min_cohort_b", max = input$dt_max_n)
+  })
+  
+  # Disable Simulate Button if Any Input Warnings Present
+  observe({
+    if(length(unlist(strsplit(input$dt_dose_labels, ",")))!= input$dt_num_doses || 
+       length(unlist(strsplit(input$dt_true_tox, ",")))!= input$dt_num_doses || 
+       length(unlist(strsplit(input$dt_prior_tox, ",")))!= input$dt_num_doses){
+      disable("dt_simulate")
+    } else{
+      enable("dt_simulate")
+    }
   })
   
   # Disable Simulate Button if No Designs Selected
@@ -764,7 +764,7 @@ server <- function(input, output, session) {
     show("dt_ui_plots")
   })
   
-  # Activate Download Button if a Simulation was Ran Already and Force User to Reset After Every Use
+  # If a Simulation was Ran Already - Enable Results, Disable Inputs and Simulate - Forces User to Reset After Each Use
   observe({
     if (!is.null(dt_sim_count())) {
       enable("dt_results")
