@@ -806,16 +806,16 @@ server <- function(input, output, session) {
     hidden(
       div(id="dt_ui_plots",
         fluidRow(
-          splitLayout(
-            plotOutput("dt_plot_1"),
-            plotOutput("dt_plot_3")
-          )
-        ),
-        br(),
-        fluidRow(
-          splitLayout(
-            plotOutput("dt_plot_2"),
-            plotOutput("dt_plot_4")
+          column(12,
+            splitLayout(
+              plotOutput("dt_plot_1", width = "100%"),
+              plotOutput("dt_plot_3", width = "100%")
+            ),
+            br(),
+            splitLayout(
+              plotOutput("dt_plot_2", width = "100%"),
+              plotOutput("dt_plot_4", width = "100%")
+            )
           )
         )
       )
@@ -951,7 +951,7 @@ server <- function(input, output, session) {
   ### Plots ---------------------
   
   # Plot1
-  dt_plot_1 <- reactive({
+  dt_plot_1_val <- reactive({
     if(length(dt_selected_design_names()) > 1){
       ggplot() + 
         geom_bar(data = dt_plot_df() %>% 
@@ -977,11 +977,11 @@ server <- function(input, output, session) {
     }
   })
   output$dt_plot_1 <- renderPlot({
-    dt_plot_1()
+    dt_plot_1_val()
   })
   
   # Plot2
-  dt_plot_2 <- reactive({
+  dt_plot_2_val <- reactive({
     if (length(dt_selected_design_names()) > 1){
       ggplot() + 
         geom_bar(data = dt_plot_df(), aes(x=dose_level, y=obs_tox_table, fill=design), stat="identity", position="dodge") + 
@@ -1005,11 +1005,11 @@ server <- function(input, output, session) {
   })
   
   output$dt_plot_2 <- renderPlot({
-    dt_plot_2()
+    dt_plot_2_val()
   })
   
   # Plot3
-  dt_plot_3 <- reactive({
+  dt_plot_3_val <- reactive({
     if (length(dt_selected_design_names()) > 1){
       ggplot() + 
         geom_bar(data=dt_plot_df(), aes(x=dose_level, y=patient_allocation_table, fill=design), stat="identity", position="dodge") +
@@ -1032,12 +1032,12 @@ server <- function(input, output, session) {
   })
   
   output$dt_plot_3 <- renderPlot({
-    dt_plot_3()
+    dt_plot_3_val()
     
   })
   
   # Plot4
-  dt_plot_4 <- reactive({
+  dt_plot_4_val <- reactive({
     dt_plot_df2() %>%
       ggplot(aes(x=design, y=mean_duration)) + 
       geom_point(size = 5) + geom_errorbar(aes(ymin= mean_duration - sd_duration, ymax = mean_duration + sd_duration), width = 0.3) + xlab("Design") +
@@ -1045,7 +1045,7 @@ server <- function(input, output, session) {
   })
   
   output$dt_plot_4 <- renderPlot({
-    dt_plot_4()
+    dt_plot_4_val()
   })
   
   ### Dataframe and Variables for Report Generation ---------------------
@@ -1188,7 +1188,7 @@ server <- function(input, output, session) {
       temp_report <- file.path(tempdir(), "report.rmd")
       file.copy("report.rmd", temp_report, overwrite = TRUE)
       params <- list(d = dt_selected_design_names(), m = dt_report_methods(), r = dt_report_results(), 
-                     p1 = dt_plot_1(), p2 = dt_plot_2(), p3 = dt_plot_3(), p4 = dt_plot_4(), t = dt_table_1_df())
+                     p1 = dt_plot_1_val(), p2 = dt_plot_2_val(), p3 = dt_plot_3_val(), p4 = dt_plot_4_val(), t = dt_table_1_df())
       render(temp_report, output_file = file, params = params, envir = new.env(parent = globalenv()))
     }
   )
