@@ -1219,6 +1219,9 @@ server <- function(input, output, session) {
   
   ## Conduct Tab ---------------------
   
+  # Set Initial Reactive Value to Keep Track If a Simulation Was Ran
+  ct_sim_count <- reactiveVal(NULL)
+  
   ### Warnings for Invalid Inputs ---------------------
   
   # Dose Labels
@@ -1288,15 +1291,16 @@ server <- function(input, output, session) {
   
   # Activate Download Button if a Simulation was Ran Already
   observe({
-    if (input$ct_simulate > 0) {
+    if (!is.null(ct_sim_count())) {
       enable("ct_results")
     } else{
       disable("ct_results")
     }
   })
   
-  # Show Table when Simulate is Pressed
+  # Show Table when Simulate is Pressed - Also Set Reactive Value to Identify Simulation Ran
   observeEvent(input$ct_simulate,{
+    ct_sim_count(1)
     show("ct_ui_patients")
   })
   
@@ -1316,6 +1320,7 @@ server <- function(input, output, session) {
     ct_patients_df(data.frame(patient_id=numeric(), dose_level=numeric(), dlt=numeric(), include=numeric()))
     hide("ct_ui_patients")
     disable("ct_results")
+    ct_sim_count(1)
   })
   
   ### Patient Table ---------------------
