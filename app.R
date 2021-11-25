@@ -687,6 +687,14 @@ server <- function(input, output, session) {
   
   ### Warnings for Invalid Inputs ---------------------
   
+  # Designs
+  observeEvent(list(input$dt_selector_tpt, input$dt_selector_tcrm, input$dt_selector_crm), {
+    hideFeedback("dt_selector_tcrm")
+    if (input$dt_selector_tpt == 0 && input$dt_selector_tcrm == 0 && input$dt_selector_crm == 0) {
+      showFeedbackDanger("dt_selector_tcrm", "A design must be selected before running the simulation.")
+    }
+  })
+  
   # Dose Labels
   observeEvent(list(input$dt_dose_labels, input$dt_num_doses), {
     hideFeedback("dt_dose_labels")
