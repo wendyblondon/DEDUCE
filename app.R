@@ -1,4 +1,5 @@
 library(shiny)
+library(bslib)
 library(shinyBS)
 library(shinyjs)
 library(shinyWidgets)
@@ -19,10 +20,10 @@ source("funs.R")
 theme_set(theme_minimal(base_size = 15))
 
 # UI ---------------------
-ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
+ui <- page_navbar(title = "DEDUCE", collapsible = TRUE, theme = NULL, bg = "white",
   
   ## Home Tab ---------------------               
-  tabPanel("HOME",
+  nav("HOME",
     useShinyjs(), includeCSS("www/style.css"), useShinyFeedback(), use_waiter(),
     img(id = "homeimg", src = "home.jpg"),
     fluidRow(class = "text-body",
@@ -106,7 +107,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
   ),
   
   ## Design Tab ---------------------
-  tabPanel("DESIGN YOUR TRIAL",
+  nav("DESIGN YOUR TRIAL",
     div(class = "other_tabs",
       fluidRow(
         column(3, style="overflow-y:scroll; height: 80vh;",
@@ -336,7 +337,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
   ),
   
   ## Conduct Tab ---------------------
-  tabPanel("CONDUCT YOUR TRIAL",
+  nav("CONDUCT YOUR TRIAL",
     div(class = "other_tabs",
       fluidRow(
         column(3, style="overflow-y:scroll; height: 80vh;",
@@ -556,7 +557,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
   ),
   
   ## About Tab ---------------------
-  tabPanel("ABOUT",
+  nav("ABOUT",
     fluidRow(class = "text-body",
       h2(id = "about-top", "DEDUCE Leadership:"),
       p(class = "main-text", strong("Dana-Farber/Boston Children's Cancer and Blood Disorders Center")),
@@ -627,19 +628,12 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
       )
     )
   ),
-  ## Help Tab ---------------------
-  tabPanel("HELP",
-    fluidRow(
-      column(12, align = "center",
-        div(class = "help-text",
-          p(class = "main-text", "Please visit",
-            a("here", href = "https://drive.google.com/file/d/1LDj36CAF3Hnf0r5KRgeU5QiiI9ET5G-R/view", target="_blank", rel="noopener noreferrer"),
-            "for a help document"
-          )
-        )
-      )
-    )
-  )
+  
+  ## Help Link ---------------------
+  nav_item(a(href="https://drive.google.com/file/d/1LDj36CAF3Hnf0r5KRgeU5QiiI9ET5G-R/view", icon("question-circle"), target="_blank", rel="noopener noreferrer")),
+  
+  ## Github Link --------------------- 
+  nav_item(a(href="https://github.com/b-gar/DEDUCE", icon("github"), target="_blank", rel="noopener noreferrer"))
 )
 
 # Server ---------------------
