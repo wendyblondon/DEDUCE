@@ -1277,9 +1277,12 @@ server <- function(input, output, session) {
     }
   })
   
-  # Disable Simulate Button if Patient Table is Empty or Max is Reached
+  # Disable Simulate Button if Patient Table is Empty or Max is Reached or If Any Input Warning is Shown
   observe({
-    if(length(which(ct_patients_df()$include == TRUE)) == 0 || length(which(ct_patients_df()$include == TRUE)) == 50){
+    if(length(which(ct_patients_df()$include == TRUE)) == 0 || 
+       length(which(ct_patients_df()$include == TRUE)) == 50 ||
+       length(unlist(strsplit(input$ct_dose_labels, ",")))!= input$ct_num_doses ||
+       length(unlist(strsplit(input$ct_prior_tox, ",")))!= input$ct_num_doses){
       disable("ct_simulate")
     }
     else{
