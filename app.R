@@ -672,9 +672,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
 
 # Server ---------------------
 server <- function(input, output, session) {
-  observeEvent(input$btn1, {
-    
-  })
+
   ## Design Tab ---------------------
   
   ### Misc. ---------------------
@@ -725,6 +723,17 @@ server <- function(input, output, session) {
     }
     else if (decimal_check(input$dt_prior_tox)==FALSE) {
       showFeedbackDanger("dt_prior_tox", "The probabilities must be a decimal")
+    }
+  })
+  
+  # All Warning Observers
+  observe({
+    if(length(unlist(strsplit(input$dt_dose_labels, ",")))!= input$dt_num_doses || 
+       length(unlist(strsplit(input$dt_true_tox, ",")))!= input$dt_num_doses || 
+       length(unlist(strsplit(input$dt_prior_tox, ",")))!= input$dt_num_doses){
+      disable("dt_simulate")
+    } else{
+      enable("dt_simulate")
     }
   })
   
