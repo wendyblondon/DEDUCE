@@ -689,10 +689,8 @@ server <- function(input, output, session) {
   
   # Designs
   observeEvent(input$dt_selectors, {
-    hideFeedback("dt_selectors")
-    if (is.null(input$dt_selectors)) {
-      showFeedbackDanger("dt_selectors", "A design must be selected before running the simulation.")
-    }
+    req(is.null(input$dt_selectors))
+    showNotification("A design must be selected before running the simulation", type = "error")
   })
   
   # Dose Labels
