@@ -567,6 +567,7 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
       br(),
       h2("Development Team:"),
       p(strong("Northwestern Mutual")),
+      br(),
       p("Judy Berdan"),
       p("Laure Borchardt"),
       p("Audra Brennan"),
@@ -578,19 +579,16 @@ ui <- navbarPage(title = "DEDUCE", collapsible = TRUE,
       p("Susan Stegman, MD"),
       br(),
       h2("Contact:"),
-      br(),
       p("For assistance, please contact: Drs. Clement Ma and Wendy B. London."),
       br(),
       h2("Citation:"),
-      br(),
       p("To cite DEDUCE, please use: Ma C, Berdan J, Borchardt L, Crane S, Garski B, Jamel N, Kiraly L, Pankey D, Stegman S, London WB (2021). 
         DEsign and conDUCt of dose Escalation trials (DEDUCE). Available at:", 
         a(href="https://bengarski.shinyapps.io/DEDUCE/", "https://bengarski.shinyapps.io/DEDUCE/")
       ),
       br(),
       h2("Acknowledgements:"),
-      br(),
-      p(id="acknowledgements",
+      p(
         "We would like to thank the Northwestern Mutual Tech for Good team for their pro-bono development, design, and project management 
         support for the DEDUCE platform. We would also like to thank our test users, Drs. Steven G. DuBois, Karen D. Wright, 
         and David S. Shulman for their helpful feedback."
