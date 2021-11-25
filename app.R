@@ -690,7 +690,7 @@ server <- function(input, output, session) {
   # Designs
   observe({
     if (is.null(input$dt_selectors)){
-      showNotification("A design must be selected before running the simulation", type = "error", session = session)
+      shinyjs::alert("A design must be selected before running the simulation")
     }
   })
   
