@@ -76,10 +76,6 @@
 }
 
 /* HOME & ABOUT TAB */
-p{
-  font-size: 18px;  
-}
-
 .main-text{
   font-size: 1.6em;
 }
@@ -87,6 +83,10 @@ p{
 h2{
   color: #003087;
   font-weight: bold;
+}
+
+ul{
+  padding-left: 1.2em;
 }
 
 .text-body{
@@ -200,6 +200,10 @@ h2{
 }
 
 /* DESIGN & CONDUCT TAB */
+p{
+  font-size: 18px;  
+}
+
 .control-label{
   font-size: 18px;
 }
