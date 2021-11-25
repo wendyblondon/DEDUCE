@@ -106,6 +106,10 @@ h2{
 }
 
 /* DESIGN TAB */
+.checkbox-inline{
+  font-size: 18px;
+}
+
 #dt_dose_labels{
   font-size: 18px;
 }
@@ -193,10 +197,6 @@ h2{
 }
 
 /* DESIGN & CONDUCT TAB */
-.pretty{
-  font-size: 18px;
-}
-
 .control-label{
   font-size: 18px;
 }
