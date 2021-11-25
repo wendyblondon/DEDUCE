@@ -737,11 +737,15 @@ server <- function(input, output, session) {
   
   # Disable Simulate Button If Any Input Warnings Present or If No Designs Selected
   observe({
-    if(length(unlist(strsplit(input$dt_dose_labels, ",")))!= input$dt_num_doses || 
-       length(unlist(strsplit(input$dt_true_tox, ",")))!= input$dt_num_doses || 
-       length(unlist(strsplit(input$dt_prior_tox, ",")))!= input$dt_num_doses || 
-       (input$dt_selector_tpt == 0 & input$dt_selector_tcrm == 0 & input$dt_selector_crm == 0)){
-       disable("dt_simulate")
+    if(length(unlist(strsplit(input$dt_dose_labels, ",")))!= input$dt_num_doses ||
+       length(unlist(strsplit(input$dt_true_tox, ",")))!= input$dt_num_doses ||
+       increment_check(input$dt_true_tox)==FALSE ||
+       decimal_check(input$dt_true_tox)==FALSE ||
+       length(unlist(strsplit(input$dt_prior_tox, ",")))!= input$dt_num_doses ||
+       increment_check(input$dt_prior_tox)==FALSE ||
+       decimal_check(input$dt_prior_tox)==FALSE ||
+       (input$dt_selector_tpt == 0 && input$dt_selector_tcrm == 0 && input$dt_selector_crm == 0)){
+        disable("dt_simulate")
     } else{
       enable("dt_simulate")
     }
