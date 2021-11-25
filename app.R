@@ -689,7 +689,6 @@ server <- function(input, output, session) {
   
   # Dose Labels
   observeEvent(list(input$dt_dose_labels, input$dt_num_doses), {
-    req(input$dt_dose_labels)
     hideFeedback("dt_dose_labels")
     if (length(unlist(strsplit(input$dt_dose_labels, ",")))!= input$dt_num_doses) {
       showFeedbackDanger("dt_dose_labels", "The length must match the number of dose levels selected above. Be sure to use commas to separate each label.")
@@ -698,7 +697,6 @@ server <- function(input, output, session) {
   
   # True Tox
   observeEvent(list(input$dt_true_tox, input$dt_num_doses), {
-    req(input$dt_true_tox)
     hideFeedback("dt_true_tox")
     if (length(unlist(strsplit(input$dt_true_tox, ",")))!= input$dt_num_doses) {
       showFeedbackDanger("dt_true_tox", "The length must match the number of dose levels selected at the top. Be sure to use commas to separate each decimal.")
@@ -713,7 +711,6 @@ server <- function(input, output, session) {
   
   # Prior Tox
   observeEvent(list(input$dt_prior_tox, input$dt_num_doses), {
-    req(input$dt_prior_tox)
     hideFeedback("dt_prior_tox")
     if (length(unlist(strsplit(input$dt_prior_tox, ",")))!= input$dt_num_doses) {
       showFeedbackDanger("dt_prior_tox", "The length must match the number of dose levels selected at the top. Be sure to use commas to separate each decimal.")
@@ -1226,7 +1223,6 @@ server <- function(input, output, session) {
   
   # Dose Labels
   observeEvent(list(input$ct_dose_labels, input$ct_num_doses), {
-    req(input$ct_dose_labels)
     hideFeedback("ct_dose_labels")
     if (length(unlist(strsplit(input$ct_dose_labels, ",")))!= input$ct_num_doses) {
       showFeedbackDanger("ct_dose_labels", "The length must match the number of dose levels selected above. Be sure to use commas to separate each label.")
@@ -1235,7 +1231,6 @@ server <- function(input, output, session) {
   
   # Prior Tox
   observeEvent(list(input$ct_prior_tox, input$ct_num_doses), {
-    req(input$ct_prior_tox)
     hideFeedback("ct_prior_tox")
     if (length(unlist(strsplit(input$ct_prior_tox, ",")))!= input$ct_num_doses) {
       showFeedbackDanger("ct_prior_tox", "The length must match the number of dose levels selected at the top. Be sure to use commas to separate each decimal.")
