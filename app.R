@@ -632,14 +632,18 @@ ui <- page_navbar(title = "DEDUCE", theme = bs_theme(version = 3), bg = "white",
   
   ## Help Link ---------------------
   nav_item(
-    a("HELP", icon("external-link-alt"), href = "https://drive.google.com/file/d/1LDj36CAF3Hnf0r5KRgeU5QiiI9ET5G-R/view", target="_blank", rel="noopener noreferrer")
+    actionButton(
+      "nav-help-btn", "HELP", icon = icon("external-link-alt"), 
+      onclick = "window.open('https://drive.google.com/file/d/1LDj36CAF3Hnf0r5KRgeU5QiiI9ET5G-R/view', '_blank', 'noopener noreferrer')"
+    )
   ),
   nav_spacer(),
   
   ## Github Link --------------------- 
   nav_item(
     actionButton(
-      "nav-git-btn", "", icon = icon("github"), onclick = "window.open('https://github.com/b-gar/DEDUCE', '_blank', 'noopener noreferrer')"
+      "nav-git-btn", "", icon = icon("github"), 
+      onclick = "window.open('https://github.com/b-gar/DEDUCE', '_blank', 'noopener noreferrer')"
     )
   )
 )
