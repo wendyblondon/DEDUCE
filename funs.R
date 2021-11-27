@@ -64,24 +64,3 @@ decimal_check <- function(x){
 null_to_na <- function(x){
   ifelse(is.null(x), NA, x)
 }
-
-design_inputs <- function(x){
-  
-  trues <- which(x==TRUE)
-  
-  for (i in trues) {
-    if (i == 1) {
-      x[i] <-"3+3"
-    }
-    else if (i == 2) {
-      x[i] <- "TARGET-CRM"
-    }
-    
-    else{
-      x[i] <- "CRM"
-    }
-  }
-  
-  x <- x[trues]
-  return(x)
-}
