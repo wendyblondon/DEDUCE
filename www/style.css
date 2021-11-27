@@ -36,20 +36,20 @@
 }
 
 .navbar-default .navbar-nav .active a{
-  border-top: 0.8em solid #003087;
+  border-top: 0.3em solid #003087;
   background-color: white !important;
   color: black;
   text-decoration: underline;
 }
 
 .navbar-default .navbar-nav .active a:focus{
-  border-top: 0.8em solid #003087;
+  border-top: 0.3em solid #003087;
   background-color: white;
   color: black;
 }
 
 .navbar-default .navbar-nav a:hover{
-  border-top: 0.8em solid #41B6E6;
+  border-top: 0.3em solid #41B6E6;
   background-color: white;
   color: black;
 }
