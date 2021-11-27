@@ -25,13 +25,10 @@
   font-weight: bold;
 }
 
-.nav li a{
-  margin-right: 1.2em;
-}
-
 .navbar-default .navbar-nav li a{
   color: black;
   font-size: 1.6em;
+  margin-right: 1.2em;
 }
 
 .navbar-default .navbar-nav .active a{
@@ -60,6 +57,10 @@
   padding: 0;
   border: none;
   font-size: 2.5em;
+}
+
+#nav-git-btn:focus{
+  background-color: white;
 }
 
 #nav-git-btn:hover{
