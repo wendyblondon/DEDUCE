@@ -21,7 +21,7 @@ source("funs.R")
 theme_set(theme_minimal(base_size = 15))
 
 # UI ---------------------
-ui <- page_navbar(title = "DEDUCE", collapsible = TRUE, theme = NULL, bg = "white",
+ui <- page_navbar(title = "DEDUCE", theme = bs_theme(version = 3), bg = "white",
   
   ## Home Tab ---------------------               
   nav("HOME",
@@ -632,11 +632,9 @@ ui <- page_navbar(title = "DEDUCE", collapsible = TRUE, theme = NULL, bg = "whit
   
   ## Help Link ---------------------
   nav_item(
-    actionButton(
-      "nav-help-btn", "", icon = icon("question-circle"), 
-      onclick = "window.open('https://drive.google.com/file/d/1LDj36CAF3Hnf0r5KRgeU5QiiI9ET5G-R/view', '_blank', 'noopener noreferrer')"
-    )
+    a("HELP", icon("external-link-alt"), href = "https://drive.google.com/file/d/1LDj36CAF3Hnf0r5KRgeU5QiiI9ET5G-R/view", target="_blank", rel="noopener noreferrer")
   ),
+  nav_spacer(),
   
   ## Github Link --------------------- 
   nav_item(
