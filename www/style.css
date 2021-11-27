@@ -54,26 +54,6 @@
   color: black;
 }
 
-#nav-help-btn{
-  margin-top: 0.2em;
-  margin-right: 1em;
-  margin-left: 1em;
-  padding: 0;
-  border: none;
-  font-size: 2.5em;
-}
-
-#nav-help-btn:hover{
-  margin-top: 0.2em;
-  margin-right: 1em;
-  margin-left: 1em;
-  padding: 0;
-  border: none;
-  font-size: 2.5em;
-  color: #41B6E6;
-  background-color: white;
-}
-
 #nav-git-btn{
   margin-top: 0.2em;
   margin-left: 1em;
