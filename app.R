@@ -949,7 +949,7 @@ server <- function(input, output, session) {
                    filter(dose_num == true_mtd), aes(x=dose_level, y=mtd_prop, fill=design, color=as.factor(true_mtd)), stat="identity", position="dodge", size=2) +
         xlab("Dose Level") + ylab("") + scale_color_manual(name="True MTD", values=c("black"), labels=NULL) +
         ggtitle("Proportion of Simulated Trials Selecting\nEach Dose Level as True MTD") + theme(plot.title = element_text(hjust = 0.5)) +
-        guides(fill=guide_legend(order=1), color = guide_legend(override.aes = list(fill = "white"), order=2))
+        guides(fill=guide_legend(title="Design", order=1), color = guide_legend(override.aes = list(fill = "white"), order=2))
     }
     
     else if (length(dt_selected_design_names()) == 1){
@@ -978,7 +978,7 @@ server <- function(input, output, session) {
         geom_hline(aes(yintercept=input$dt_target_tox), linetype="dashed") + guides(color = FALSE) +
         xlab("Dose Level") + ylab("") + scale_color_manual(name="True MTD", values=c("black"), labels=NULL) +
         ggtitle("Proportion of Patients Experiencing\na DLT Per Dose Level") + theme(plot.title = element_text(hjust = 0.5)) +
-        guides(fill=guide_legend(order=1), color = guide_legend(override.aes = list(fill = "white"), order=2))
+        guides(fill=guide_legend(title="Design", order=1), color = guide_legend(override.aes = list(fill = "white"), order=2))
     }
     
     else if (length(dt_selected_design_names()) == 1){
@@ -1005,7 +1005,7 @@ server <- function(input, output, session) {
                    filter(dose_num == true_mtd), aes(x=dose_level, y=patient_allocation_table, fill=design, color=as.factor(true_mtd)), stat="identity", position="dodge", size=2) +
         xlab("Dose Level") + ylab("") + scale_color_manual(name="True MTD", values=c("black"), labels=NULL) +
         ggtitle("Proportion of Patients Allocated\nto Each Dose Level") + theme(plot.title = element_text(hjust = 0.5)) +
-        guides(fill=guide_legend(order=1), color = guide_legend(override.aes = list(fill = "white"), order=2))
+        guides(fill=guide_legend(title="Design", order=1), color = guide_legend(override.aes = list(fill = "white"), order=2))
     }
     
     else if (length(dt_selected_design_names()) == 1){
