@@ -1028,8 +1028,10 @@ server <- function(input, output, session) {
   dt_plot_4_val <- reactive({
     dt_plot_df2() %>%
       ggplot(aes(x=design, y=mean_duration)) + 
-      geom_point(size = 5) + geom_errorbar(aes(ymin= mean_duration - sd_duration, ymax = mean_duration + sd_duration), width = 0.3) + xlab("Design") +
-      ylab("") + ggtitle("Mean Study Duration in Days (+/- 1 SD)") + theme(plot.title = element_text(hjust = 0.5))
+      geom_bar(aes(fill=design), stat="identity", position="dodge", width=0.3) + scale_fill_manual(values = c("#66c2a5", "#fc8d62", "#8da0cb")) +
+      geom_errorbar(aes(ymin= mean_duration - sd_duration, ymax = mean_duration + sd_duration), width=0.3, size=2) + 
+      xlab("Design") + ylab("") + ggtitle("Mean Study Duration in Days (+/- 1 SD)") +
+      theme(plot.title = element_text(hjust = 0.5)) + guides(fill=guide_legend(title="Design"))
   })
   
   output$dt_plot_4 <- renderPlot({
