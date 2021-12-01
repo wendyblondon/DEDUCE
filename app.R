@@ -946,9 +946,9 @@ server <- function(input, output, session) {
         geom_bar(data = dt_plot_df() %>% 
                    mutate(mtd_prop=mtd.Freq/input$dt_num_trials) %>% 
                    filter(dose_num == true_mtd), aes(x=dose_level, y=mtd_prop, fill=design, color=as.factor(true_mtd)), stat="identity", position="dodge", size=2) +
-        xlab("Dose Level") + ylab("") + scale_color_manual(name="True MTD", values=c("black"), labels=NULL) + scale_fill_manual(values = c("#66c2a5", "#fc8d62", "#8da0cb")) +
-        ggtitle("Proportion of Simulated Trials Selecting\nEach Dose Level as True MTD") + theme(plot.title = element_text(hjust = 0.5)) +
-        guides(fill=guide_legend(title="Design", order=1), color = guide_legend(override.aes = list(fill = "white"), order=2))
+        scale_color_manual(name="True MTD", values=c("black"), labels=NULL) + scale_fill_manual(values = c("#66c2a5", "#fc8d62", "#8da0cb")) +
+        xlab("Dose Level") + ylab("") + ggtitle("Proportion of Simulated Trials Selecting\nEach Dose Level as True MTD") +
+        theme(plot.title = element_text(hjust = 0.5)) + guides(fill=guide_legend(title="Design", order=1), color = guide_legend(override.aes = list(fill = "white"), order=2))
   })
   output$dt_plot_1 <- renderPlot({
     dt_plot_1_val()
@@ -961,8 +961,8 @@ server <- function(input, output, session) {
         geom_bar(data = dt_plot_df() %>% 
                    filter(dose_num == true_mtd), aes(x=dose_level, y=obs_tox_table, fill=design, color=as.factor(true_mtd)), stat="identity", position="dodge", size=2) +
         geom_hline(aes(yintercept=input$dt_target_tox), linetype="dashed") + guides(color = FALSE) +
-        xlab("Dose Level") + ylab("") + scale_color_manual(name="True MTD", values=c("black"), labels=NULL) + scale_fill_manual(values = c("#66c2a5", "#fc8d62", "#8da0cb")) +
-        ggtitle("Proportion of Patients Experiencing\na DLT Per Dose Level") + theme(plot.title = element_text(hjust = 0.5)) +
+        scale_color_manual(name="True MTD", values=c("black"), labels=NULL) + scale_fill_manual(values = c("#66c2a5", "#fc8d62", "#8da0cb")) +
+        xlab("Dose Level") + ylab("") + ggtitle("Proportion of Patients Experiencing\na DLT Per Dose Level") + theme(plot.title = element_text(hjust = 0.5)) +
         guides(fill=guide_legend(title="Design", order=1), color = guide_legend(override.aes = list(fill = "white"), order=2))
   })
   
@@ -975,15 +975,14 @@ server <- function(input, output, session) {
     ggplot() + 
         geom_bar(data=dt_plot_df(), aes(x=dose_level, y=patient_allocation_table, fill=design), stat="identity", position="dodge") +
         geom_bar(data=dt_plot_df() %>% 
-                   filter(dose_num == true_mtd), aes(x=dose_level, y=patient_allocation_table, fill=design, color=as.factor(true_mtd)), stat="identity", position="dodge", size=2) +
-        xlab("Dose Level") + ylab("") + scale_color_manual(name="True MTD", values=c("black"), labels=NULL) + scale_fill_manual(values = c("#66c2a5", "#fc8d62", "#8da0cb")) +
-        ggtitle("Proportion of Patients Allocated\nto Each Dose Level") + theme(plot.title = element_text(hjust = 0.5)) +
+                   filter(dose_num == true_mtd), aes(x=dose_level, y=patient_allocation_table, fill=design, color=as.factor(true_mtd)), stat="identity", position="dodge") +
+        scale_color_manual(name="True MTD", values=c("black"), labels=NULL) + scale_fill_manual(values = c("#66c2a5", "#fc8d62", "#8da0cb")) +
+        xlab("Dose Level") + ylab("") + ggtitle("Proportion of Patients Allocated\nto Each Dose Level") + theme(plot.title = element_text(hjust = 0.5)) +
         guides(fill=guide_legend(title="Design", order=1), color = guide_legend(override.aes = list(fill = "white"), order=2))
   })
   
   output$dt_plot_3 <- renderPlot({
     dt_plot_3_val()
-    
   })
   
   # Plot4
