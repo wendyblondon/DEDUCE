@@ -1275,10 +1275,10 @@ server <- function(input, output, session) {
   })
   
   # Create the Patients Table
-  output$ct_patients_table <- renderDT(ct_patients_df(), rownames = FALSE, 
+  output$ct_patients_table <- renderDT(ct_patients_df(), rownames = FALSE, extensions = 'Responsive',
                                        colnames = c("Patient ID", "Dose Level", "DLT Observed", "Include in Model"), selection = 'single', 
                                        options = list(dom = 't', scrollY = "25vh", ordering = FALSE, pageLength = nrow(ct_patients_df()),
-                                                      initComplete = JS("function(settings, json) {","$(this.api().table().container()).css({'font-size': '18px'});","}"),
+                                                      initComplete = JS("function(settings, json) {","$(this.api().table().container()).css({'font-size': '16px'});","}"),
                                                       language = list(zeroRecords = "Add patient(s) to the table")
                                        )
                                        
@@ -1316,10 +1316,10 @@ server <- function(input, output, session) {
   })
   
   # DF
-  output$ct_df <- renderDT(ct_function_outputs()$df2, rownames = FALSE, selection = 'none',
-                           colnames = c("Dose Level", "Prior Prob. of DLT", "# Patients", "# DLT's", "Posterior Prob. of DLT", "Lower Limit", "Upper Limit"),
-                           options = list(dom = 't', scrollY = "30vh", ordering = FALSE, 
-                                          initComplete = JS("function(settings, json) {","$(this.api().table().container()).css({'font-size': '18px'});","}")
+  output$ct_df <- renderDT(ct_function_outputs()$df2, rownames = FALSE, selection = 'none', extensions = 'Responsive',
+                           colnames = c("Dose Level", "Prior Toxicity Prob.", "n", "# Experienced a DLT", "Posterior Toxicity Prob.", "Lower Limit of 90% Prob. Interval", "Upper Limit of 90% Probability Interval"),
+                           options = list(dom = 't', scrollY = "30vh", ordering = FALSE,
+                                          initComplete = JS("function(settings, json) {","$(this.api().table().container()).css({'font-size': '16px'});","}")
                            )
   )
   
