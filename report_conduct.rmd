@@ -29,7 +29,7 @@ knitr::kable(params$df1, col.names = c("Patient ID", "Dose Level", "Experienced 
 
 # Toxicity Probability Results:
 ```{r, echo=FALSE}
-knitr::kable(params$df2, col.names = c("Dose Level", "Prior Toxicity", "n", "Total Experiencing a DLT", "Probability Toxicity", "Lower", "Upper"), caption = "(90 Percent Probability Interval)")
+knitr::kable(params$df2, col.names = c("Dose Level", "Prior Toxicity Prob.", "n", "# Experienced a DLT", "Posterior Toxicity Prob.", "Lower Limit of 90% Prob. Interval", "Upper Limit of 90% Prob. Interval"), caption = "(90 Percent Probability Interval)")
 ```
 
 Next Recommended Dose Level: `r params$r1`
