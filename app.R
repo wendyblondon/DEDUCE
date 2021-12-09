@@ -1316,11 +1316,12 @@ server <- function(input, output, session) {
   })
   
   # DF
-  output$ct_df <- renderDT(ct_function_outputs()$df2, rownames = FALSE, selection = 'none', extensions = 'Responsive',
-                           colnames = c("Dose Level", "Prior Toxicity Prob.", "n", "# Experienced a DLT", "Posterior Toxicity Prob.", "Lower Limit of 90% Prob. Interval", "Upper Limit of 90% Probability Interval"),
-                           options = list(dom = 't', scrollY = "30vh", ordering = FALSE,
-                                          initComplete = JS("function(settings, json) {","$(this.api().table().container()).css({'font-size': '16px'});","}")
-                           )
+  output$ct_df <- renderDT(
+    ct_function_outputs()$df2, rownames = FALSE, selection = 'none', extensions = 'Responsive',
+    colnames = c("Dose Level", "Prior Toxicity Prob.", "n", "# Experienced a DLT", "Posterior Toxicity Prob.", "Lower Limit of 90% Prob. Interval", "Upper Limit of 90% Probability Interval"),
+    options = list(dom = 't', scrollY = "30vh", ordering = FALSE,
+                   initComplete = JS("function(settings, json) {","$(this.api().table().container()).css({'font-size': '16px'});","}")
+    )
   )
   
   # Recommended Dose
