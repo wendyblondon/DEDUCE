@@ -1195,6 +1195,29 @@ server <- function(input, output, session) {
     updateTextInput(session, "ct_pid", value = sprintf("C%d", nrow(ct_patients_df()) + 1))
   })
   
+  # Disable Inputs Once Patient is Added to Table
+  observe({
+    if (nrow(ct_patients_df()) > 0) {
+      disable("ct_selectors")
+      disable("ct_num_doses")
+      disable("ct_dose_labels")
+      disable("ct_target_tox")
+      disable("ct_prior_tox")
+      disable("ct_cohort_size")
+      disable("ct_slots")
+      disable("ct_current_dose")
+    } else {
+      enable("ct_selectors")
+      enable("ct_num_doses")
+      enable("ct_dose_labels")
+      enable("ct_target_tox")
+      enable("ct_prior_tox")
+      enable("ct_cohort_size")
+      enable("ct_slots")
+      enable("ct_current_dose")
+    }
+  })
+  
   # Disable Remove Patient Button if Row isn't Selected
   observe({
     if (!is.null(input$ct_patients_table_rows_selected)) {
