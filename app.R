@@ -643,7 +643,7 @@ ui <- page_navbar(title = "DEDUCE", theme = bs_theme(version = 3), bg = "white",
   nav_item(
     actionButton(
       "nav-git-btn", "", icon = icon("github"), 
-      onclick = "window.open('https://github.com/b-gar/DEDUCE', '_blank', 'noopener noreferrer')"
+      onclick = "window.open('https://github.com/wendyblondon/DEDUCE', '_blank', 'noopener noreferrer')"
     )
   )
 )
