@@ -13,7 +13,7 @@ params:
 ---
 *Report Date and Time: "`r paste(lubridate::with_tz(Sys.time(), "America/New_York"), 'ET')`"*
 
-*Software:* DEDUCE app version 1.0 available [here](https://bengarski.shinyapps.io/DEDUCE/) 
+*Software:* DEDUCE app version 1.0 available [here](https://wendyblondon.shinyapps.io/DEDUCE/) 
 
 
 # Objective:
