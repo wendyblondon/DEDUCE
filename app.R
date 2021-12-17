@@ -585,7 +585,7 @@ ui <- page_navbar(title = "DEDUCE", theme = bs_theme(version = 3), bg = "white",
       h2("Citation:"),
       p(class = "main-text", "To cite DEDUCE, please use: Ma C, Berdan J, Borchardt L, Crane S, Garski B, Jamel N, Kiraly L, Pankey D, 
         Stegman S, London WB (2021). DEsign and conDUCt of dose Escalation trials (DEDUCE). Available at:", 
-        a(href="https://bengarski.shinyapps.io/DEDUCE/", "https://bengarski.shinyapps.io/DEDUCE/")
+        a(href="https://wendyblondon.shinyapps.io/DEDUCE/", "https://wendyblondon.shinyapps.io/DEDUCE/")
       ),
       br(),
       h2("Acknowledgements:"),
