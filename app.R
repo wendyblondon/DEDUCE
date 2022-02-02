@@ -494,7 +494,7 @@ ui <- page_navbar(title = "DEDUCE", theme = bs_theme(version = 3), bg = "white",
               ),
               bsPopover(
                 "ct-dlt-obs-help", "",
-                "Please select if a dose limiting toxicity (DLT) was observed during the DLT observation", 
+                "Please select if a dose limiting toxicity (DLT) was observed during the DLT observation period.", 
                 placement = "top", trigger = "focus"
               ),
               
