@@ -197,7 +197,7 @@ ui <- page_navbar(title = "DEDUCE", theme = bs_theme(version = 3), bg = "white",
           ),
           bsPopover(
             "dt-true-tox-help", "",
-            "Please enter the true toxicity probabilities for each dose level (separated by commas). Toxicity probabilities must increase with each subsequent dose level.",
+            "Please enter the true toxicity probabilities for each dose level (separated by commas). The true toxicity probability is the actual underlying chance that a patient will experience a DLT at that dose level. Toxicity probabilities must increase with each subsequent dose level.",
             placement = "top", trigger = "focus"
           ),
           
@@ -237,7 +237,7 @@ ui <- page_navbar(title = "DEDUCE", theme = bs_theme(version = 3), bg = "white",
             ),
             bsPopover(
               "dt-prior-tox-help", "",
-              "Please enter the prior toxicity probabilities for each dose level (separated by commas). Toxicity probabilities must increase with each subsequent dose level.",
+              "Please enter the prior toxicity probabilities for each dose level (separated by commas). The prior toxicity probability is the initial estimate of the chance that a patient will experience a DLT at that dose level. Toxicity probabilities must increase with each subsequent dose level.",
               placement = "top", trigger = "focus"
             ),
             
@@ -316,7 +316,7 @@ ui <- page_navbar(title = "DEDUCE", theme = bs_theme(version = 3), bg = "white",
           ),
           bsPopover(
             "dt_simulate", "",
-            "Simulates the selected design(s) using the values of the above inputs", 
+            "Simulates the selected design(s) using the values of the above inputs. A larger number of simulations increase the precision of the simulation results and computation time.", 
             placement = "top"
           ),
           bsPopover(
@@ -494,7 +494,7 @@ ui <- page_navbar(title = "DEDUCE", theme = bs_theme(version = 3), bg = "white",
               ),
               bsPopover(
                 "ct-dlt-obs-help", "",
-                "Please select if a dose limiting toxicity (DLT) was observed during the DLT observation period", 
+                "Please select if a dose limiting toxicity (DLT) was observed during the DLT observation", 
                 placement = "top", trigger = "focus"
               ),
               
