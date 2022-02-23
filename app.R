@@ -403,7 +403,7 @@ ui <- page_navbar(title = "DEDUCE", theme = bs_theme(version = 3), bg = "white",
             "ct-prior-tox-help", "",
             paste(
               "Please enter the estimated prior toxicity probabilities for each dose level", 
-              "evaluated in the trial (separated by commas without spaces).",
+              "evaluated in the trial (separated by commas).",
               "Toxicity probabilities must increase with each subsequent dose level."
             ),
             placement = "top", trigger = "focus"
