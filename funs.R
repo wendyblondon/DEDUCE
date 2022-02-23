@@ -16,7 +16,7 @@ increment_check <- function(x) {
       vecX <- unlist(strsplit(x, ","))
       
       for (i in 1:(lengthX - 1)) {
-        if (vecX[i + 1] > vecX[i]) {
+        if (as.numeric(vecX[i + 1]) > as.numeric(vecX[i])) {
           next
         }
         else{
