@@ -764,7 +764,7 @@ server <- function(input, output, session) {
     } else{
       disable("dt_results")
       enable("dt_simulate")
-      addPopover(session, "dt_simulate", "", "Simulates the selected design(s) using the values of the above inputs", placement = "top")
+      addPopover(session, "dt_simulate", "", "Simulates the selected design(s) using the values of the above inputs. A larger number of simulations increase the precision of the simulation results and computation time.", placement = "top")
     }
   })
   
