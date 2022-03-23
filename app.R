@@ -91,7 +91,15 @@ ui <- page_navbar(title = "DEDUCE", theme = bs_theme(version = 3), bg = "white",
     ),
     fluidRow(class = "footer",
       column(12,
-        splitLayout(
+             div(style = "font-size:11px;",
+               p(class = "main-text", strong("DISCLAIMER")),
+             p(class = "main-text", strong("You alone are responsible for your use of any applications or services available on this web site.")),
+             p(class = "main-text", "You agree and accept that these applications and services are experimental in nature and are made available as a courtesy “AS IS”, without any obligation by Boston Children’s Hospital (or its affiliates or partners) to provide accompanying services or support, and should be used for research purposes only.  Any risk associated with use of the application or service is with the user."),
+             p(class = "main-text", "BOSTON CHILDREN’S HOSPITAL EXPRESSLY DISCLAIMS ANY AND ALL WARRANTIES CONCERNING THE APPLICATIONS AND SERVICES, INCLUDING WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR ANY PARTICULAR PURPOSE, WARRANTIES OF NON-INFRINGEMENT, AND WARRANTIES OF PERFORMANCE, AND ANY WARRANTY THAT MIGHT OTHERWISE ARISE FROM COURSE OF DEALING OR USAGE OF TRADE.  NO WARRANTY IS EITHER EXPRESS OR IMPLIED WITH RESPECT TO THE USE OF THE APPLICATION.",
+               a(href="https://www.childrenshospital.org/legal/terms-of-use", "https://www.childrenshospital.org/legal/terms-of-use")),
+             p(class = "main-text", "In no event shall the creators of the applications or this website, including Boston Children’s Hospital and its affiliates or partners be liable for damages, including any lost profits or other special, incidental or consequential damages arising out of the use of or inability to use these applications.")),
+             br(),
+             splitLayout(
           a(
             href="https://www.danafarberbostonchildrens.org",
             img(id="df_logo", src = "dfbc.png"),
@@ -336,7 +344,7 @@ ui <- page_navbar(title = "DEDUCE", theme = bs_theme(version = 3), bg = "white",
       )
     )
   ),
-  
+ 
   ## Conduct Tab ---------------------
   nav("CONDUCT YOUR TRIAL",
     div(class = "other_tabs",
@@ -1136,8 +1144,8 @@ server <- function(input, output, session) {
     filename = function(){paste0("DEDUCE Design ", lubridate::with_tz(Sys.time(), "America/New_York"), " ET.docx")}, 
     content = function(file){
       
-      temp_report <- file.path(tempdir(), "report.rmd")
-      file.copy("report.rmd", temp_report, overwrite = TRUE)
+      temp_report <- file.path(tempdir(), "report.Rmd")
+      file.copy("report.Rmd", temp_report, overwrite = TRUE)
       params <- list(d = dt_selected_design_names(), m = dt_report_methods(), r = dt_report_results(), 
                      p1 = dt_plot_1_val(), p2 = dt_plot_2_val(), p3 = dt_plot_3_val(), p4 = dt_plot_4_val(), t = dt_table_1_df())
       render(temp_report, output_file = file, params = params, envir = new.env(parent = globalenv()))
