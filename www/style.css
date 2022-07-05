@@ -406,6 +406,109 @@ p{
   border-left-color: #003087;
 }
 
+/* CONDUCT UPLOAD TAB*/
+#ct_download{
+  width: 100%;
+  background-color: #003087;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  border: 2px solid black;
+}
+
+#ct_download:hover{
+  width: 100%;
+  background-color: #1b9e77;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  border: 2px solid black;
+}
+
+#ct_file1{
+  width: 100%;
+  background-color: #003087;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  border: 2px solid black;
+}
+
+#ct_file1:hover{
+  width: 100%;
+  background-color: #d95f02;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  border: 2px solid black;
+}
+
+#ct_simulate_upload{
+  width: 100%;
+  background-color: #003087;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border: 2px solid black;
+}
+
+#ct_simulate_upload:hover{
+  width: 100%;
+  background-color: #1b9e77;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border: 2px solid black;
+}
+
+#ct_results_upload{
+  width: 100%;
+  background-color: #003087;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border: 2px solid black;
+}
+
+#ct_results_upload:hover{
+  width: 100%;
+  background-color: #7570b3;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border: 2px solid black;
+}
+
+#ct_reset_upload{
+  width: 100%;
+  background-color: #003087;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border: 2px solid black;
+}
+
+#ct_reset_upload:hover{
+  width: 100%;
+  background-color: #d95f02;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border: 2px solid black;
+}
+
+#ct_next_dose_upload{
+  font-size: 20px;
+  font-weight: bold;
+  color: black;
+  background-color: #41B6E6;
+  padding: 5px;
+  margin: 15px;
+  border-left-width: 10px;
+  border-left-style: solid;
+  border-left-color: #003087;
+}
+
 /* ABOUT TAB */
 #about-top{
   margin-top: 3em;

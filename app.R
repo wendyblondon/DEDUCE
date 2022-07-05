@@ -346,7 +346,7 @@ ui <- page_navbar(title = "DEDUCE", theme = bs_theme(version = 3), bg = "white",
   ),
  
   ## Conduct Tab ---------------------
-  nav("CONDUCT YOUR TRIAL",
+  nav("CONDUCT YOUR TRIAL (enter data)",
     div(class = "other_tabs",
       fluidRow(
         column(3, style="overflow-y:scroll; height: 80vh;",
@@ -566,7 +566,7 @@ ui <- page_navbar(title = "DEDUCE", theme = bs_theme(version = 3), bg = "white",
   ),
   
   ## Conduct Tab Upload csv---------------------
-  nav("CONDUCT YOUR TRIAL_uploadcsv",
+  nav("CONDUCT YOUR TRIAL (upload data)",
       div(class = "other_tabs",
           fluidRow(
             column(3, style="overflow-y:scroll; height: 80vh;",
@@ -698,7 +698,7 @@ ui <- page_navbar(title = "DEDUCE", theme = bs_theme(version = 3), bg = "white",
                             splitLayout(
                               cellWidths = c("50%", "50%"), cellArgs = list(style = "padding: 5px"),
                               downloadButton("ct_download", "Download .csv template"),
-                              fileInput("file1", "Upload .csv file", accept = ".csv")
+                              fileInput("ct_file1", "Upload .csv file", accept = ".csv")
                               ),
                             
                             ### Patients Table ---------------------
@@ -1550,6 +1550,42 @@ server <- function(input, output, session) {
   )
   
   ### Download csv template ----------------
+  # Disable Simulate Button If Patient Table is Empty, Max Rows Are Reached, or If Any Input Warnings Are Shown
+  observe({
+    if(length(which(csv_upload()$`Include in Model` == TRUE)) == 0 ||
+       length(which(csv_upload()$`Include in Model` == TRUE)) == 50 ||
+       length(unlist(strsplit(input$ct_dose_labels, ",")))!= input$ct_num_doses ||
+       length(unlist(strsplit(input$ct_prior_tox, ",")))!= input$ct_num_doses ||
+       increment_check(input$ct_prior_tox) == FALSE ||
+       decimal_check(input$ct_prior_tox) == FALSE){
+      disable("ct_simulate_upload")
+    }
+    else{
+      enable("ct_simulate_upload")
+    }
+  })
+  
+  # Reset Inputs When Reset Button Clicked
+  observeEvent(input$ct_reset_upload, {
+    reset("ct_selectors_upload")
+    reset("ct_num_doses_upload")
+    reset("ct_dose_labels_upload")
+    reset("ct_target_tox_upload")
+    reset("ct_prior_tox_upload")
+    reset("ct_cohort_size_upload")
+    reset("ct_current_dose_upload")
+    hide("ct_ui_patients_upload")
+    disable("ct_results_upload")
+    disable("ct_simulate_upload")
+    hide("ct_patients_table_upload")
+    ct_sim_count_upload(NULL)
+  })
+  
+  
+  # Set Initial Reactive Value to Keep Track If a Simulation Was Ran
+  ct_sim_count_upload <- reactiveVal(NULL)
+  
+  ## create a csv template for users to download
   output$ct_download <- downloadHandler(
     filename = function(){"template.csv"},
     content = function(file){
@@ -1562,15 +1598,34 @@ server <- function(input, output, session) {
       }
   )
   
-  ### Show csv table after users' upload ---------------
-  output$ct_patients_table_upload <- renderTable({
-    file <- input$file1
+  ### use reactive to save uploaded csv data
+  csv_upload <- reactive({
+    
+    file <- input$ct_file1
     ext <- tools::file_ext(file$datapath)
+    
+    if (is.null(input$ct_file1))
+      return(NULL)
     
     req(file)
     validate(need(ext == "csv", "Please upload a csv file"))
     
     read.csv(file$datapath, check.names = FALSE)
+    
+  })
+  
+  ### Show csv table after users' upload ---------------
+  output$ct_patients_table_upload <- renderTable({
+    csv_upload()
+  })
+  
+  ### Show Table when Simulate is Pressed
+  observeEvent(input$ct_simulate_upload,{
+    show("ct_ui_patients_upload")
+  })
+  ### Show uploaded csv file when upload button is pressed
+  observeEvent(input$ct_file1,{
+    show("ct_patients_table_upload")
   })
   
   
@@ -1580,10 +1635,10 @@ server <- function(input, output, session) {
     # Set Reactive Value to Identify Simulation Ran
     ct_sim_count_upload(1)
     
-    tcrmc_upload <- target_crm_conduct(prior = numerizer(input$ct_prior_tox_upload), target_tox = input$ct_target_tox_upload, tox = input$file1$`DLT Observed`, 
+    tcrmc_upload <- target_crm_conduct(prior = numerizer(input$ct_prior_tox_upload), target_tox = input$ct_target_tox_upload, tox = csv_upload()$`DLT Observed`, 
                                 dose_labels = unlist(strsplit(input$ct_dose_labels_upload, ",")), 
-                                level = match(input$file1$`Dose Level`, unlist(strsplit(input$ct_dose_labels_upload, ","))), 
-                                pid = unlist(strsplit(input$file1$`Patient ID`, ",")), include = which(input$file1$`Include in Model`), 
+                                level = match(csv_upload()$`Dose Level`, unlist(strsplit(input$ct_dose_labels_upload, ","))), 
+                                pid = unlist(strsplit(csv_upload()$`Patient ID`, ",")), include = which(csv_upload()$`Include in Model`), 
                                 cohort_size = input$ct_cohort_size_upload, num_slots_remain = input$ct_slots_upload, 
                                 current_dose = match(input$ct_current_dose_upload, unlist(strsplit(input$ct_dose_labels_upload, ","))))
     
@@ -1595,7 +1650,7 @@ server <- function(input, output, session) {
   # UI Output for Patient Tables upload section
   output$ct_patients_ui_upload <- renderUI({
     hidden(
-      div(id="ct_patients_ui_upload",
+      div(id="ct_ui_patients_upload",
           fluidRow(
             h3("Dose Escalation Recommendations", style = "text-align: center;"),
             DTOutput("ct_df_upload"),
@@ -1619,6 +1674,30 @@ server <- function(input, output, session) {
     paste("Recommended Dose Level:", ct_function_outputs_upload()$crm_out$mtd)
   })
   
+  ### Download Results for csv upload panel ---------------------
+  # Activate Download Button if a Simulation was Ran Already
+  observe({
+    if (!is.null(ct_sim_count_upload())) {
+      enable("ct_results_upload")
+    } else{
+      disable("ct_results_upload")
+    }
+  })
+  
+  output$ct_results_upload <- downloadHandler(
+    filename = function(){paste0("DEDUCE Conduct ", lubridate::with_tz(Sys.time(), "America/New_York"), input$csv_upload$name, " ET.docx")}, 
+    content = function(file){
+      
+      temp_report <- file.path(tempdir(), "report_conduct_csv.Rmd")
+      file.copy("report_conduct_csv.Rmd", temp_report, overwrite = TRUE)
+      params <- list(name = input$ct_file1$name, d = input$ct_selectors_upload, df1 = ct_function_outputs_upload()$df1, df2 = ct_function_outputs_upload()$df2, r1 = ct_function_outputs_upload()$crm_out$mtd, 
+                     r2 = ct_function_outputs_upload()$crm_out$target, r3 = ct_function_outputs_upload()$crm_out$prior, 
+                     r4 = ct_function_outputs_upload()$crm_out$prior.var, r5 = ct_function_outputs_upload()$crm_out$estimate, 
+                     r6 = ct_function_outputs_upload()$crm_out$post.var, r7 = ct_function_outputs_upload()$crm_out$dosename[ct_function_outputs_upload()$current_dose], 
+                     r8 = ct_function_outputs_upload()$cohort_size, r9 = ct_function_outputs_upload()$num_slots_remain)
+      render(temp_report, output_file = file, params = params, envir = new.env(parent = globalenv()))
+    }
+  )
   
 }
 
