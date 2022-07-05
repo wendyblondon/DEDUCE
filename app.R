@@ -346,7 +346,7 @@ ui <- page_navbar(title = "DEDUCE", theme = bs_theme(version = 3), bg = "white",
   ),
  
   ## Conduct Tab ---------------------
-  nav("CONDUCT YOUR TRIAL",
+  nav("CONDUCT YOUR TRIAL (enter data)",
     div(class = "other_tabs",
       fluidRow(
         column(3, style="overflow-y:scroll; height: 80vh;",
@@ -563,6 +563,179 @@ ui <- page_navbar(title = "DEDUCE", theme = bs_theme(version = 3), bg = "white",
         )
       )
     )
+  ),
+  
+  ## Conduct Tab Upload csv---------------------
+  nav("CONDUCT YOUR TRIAL (upload data)",
+      div(class = "other_tabs",
+          fluidRow(
+            column(3, style="overflow-y:scroll; height: 80vh;",
+                   h3("Inputs", style="text-align: center;"),
+                   br(),
+                   
+                   ### Designs ---------------------
+                   radioButtons(
+                     "ct_selectors_upload",
+                     div(p(class = "help-p", "Design"), HTML('<button id="ct-selectors-help_upload" class="help-btn" type="button">?</button>')),
+                     c("CRM", "TARGET CRM"), inline = "TRUE"
+                   ),
+                   bsPopover(
+                     "ct-selectors-help_upload", "",
+                     "Select the design to run in the model", 
+                     placement = "top", trigger = "focus"
+                   ),
+                   
+                   ### Number of Doses ---------------------
+                   sliderInput(
+                     "ct_num_doses_upload",
+                     div(p(class = "help-p", "Number of Dose Levels"), HTML('<button id="ct-num-doses-help_upload" class="help-btn" type="button">?</button>')),
+                     min = 3, max = 10, value = 4, width = "100%", ticks = FALSE
+                   ),
+                   bsPopover(
+                     "ct-num-doses-help_upload", "",
+                     "Please enter the number of dose levels in your trial",
+                     placement = "top", trigger = "focus"
+                   ),
+                   
+                   ### Dose Labels ---------------------
+                   textInput(
+                     "ct_dose_labels_upload",
+                     div(p(class = "help-p", "Dose Level Labels"), HTML('<button id="ct-dose-labels-help_upload" class="help-btn" type="button">?</button>')),
+                     value = "-1,1,2,3", width = "100%"
+                   ),
+                   bsPopover(
+                     "ct-dose-labels-help_upload", "",
+                     "Please enter the dose level labels (separated by commas) for each dose level evaluated in the trial",
+                     placement = "top", trigger = "focus"
+                   ),
+                   
+                   ### Target Toxicity ---------------------
+                   sliderInput(
+                     "ct_target_tox_upload",
+                     div(p(class = "help-p", "Target Toxicity Probability"), HTML('<button id="ct-target-tox-help_upload" class="help-btn" type="button">?</button>')),
+                     min = 0, max = 0.8, value = 0.2, step = 0.01, width = "100%", ticks = FALSE
+                   ),
+                   bsPopover(
+                     "ct-target-tox-help_upload", "",
+                     "Please enter the target toxicity probability of the study agent", 
+                     placement = "top", trigger = "focus"
+                   ),
+                   
+                   ### Prior Toxicity ---------------------
+                   textInput(
+                     "ct_prior_tox_upload",
+                     div(p(class = "help-p", "Prior Toxicity Probability Vector Per Dose Level"), HTML('<button id="ct-prior-tox-help_upload" class="help-btn" type="button">?</button>')),
+                     value = "0.05,0.12,0.2,0.3", width = "100%"
+                   ),
+                   bsPopover(
+                     "ct-prior-tox-help_upload", "",
+                     paste(
+                       "Please enter the estimated prior toxicity probabilities for each dose level", 
+                       "evaluated in the trial (separated by commas).",
+                       "Toxicity probabilities must increase with each subsequent dose level."
+                     ),
+                     placement = "top", trigger = "focus"
+                   ),
+                   
+                   ### Cohort Size ---------------------
+                   sliderInput(
+                     "ct_cohort_size_upload",
+                     div(p(class = "help-p", "Cohort Size"), HTML('<button id="ct-cohort-size-help_upload" class="help-btn" type="button">?</button>')),
+                     min = 1, max = 9, value = 3, width = "100%", ticks = FALSE
+                   ),
+                   bsPopover(
+                     "ct-cohort-size-help_upload", "",
+                     paste(
+                       "Please enter the cohort size. The cohort size is the number of patients to be treated",
+                       "at the current dose level before a dose escalation decision is made."
+                     ),
+                     placement = "top", trigger = "focus"
+                   ),
+                   
+                   ### Slots Remaining ---------------------
+                   sliderInput(
+                     "ct_slots_upload",
+                     div(p(class = "help-p", "Number of Slots Remaining"), HTML('<button id="ct-slots-help_upload" class="help-btn" type="button">?</button>')),
+                     min = 0, max = 8, value = 0, width = "100%", ticks = FALSE
+                   ),
+                   bsPopover(
+                     "ct-slots-help_upload", "",
+                     paste(
+                       "Please enter the number of slots remaining to be enrolled for the current cohort of patients.",
+                       "Escalating to a higher dose level is not permitted until the current cohort is fully evaluated",
+                       "at the current dose level. Please update this input parameter for each successive patient enrolled in the trial."
+                     ),
+                     placement = "top", trigger = "focus"
+                   ),
+                   
+                   ### Current Dose ---------------------
+                   selectInput(
+                     "ct_current_dose_upload",
+                     div(p(class = "help-p", "Dose level Currently Under Evaluation"), HTML('<button id="ct-current-dose-help_upload" class="help-btn" type="button">?</button>')),
+                     choices = c(-1,1,2,3), selected = 1, width = "100%"
+                   ),
+                   bsPopover(
+                     "ct-current-dose-help_upload", "",
+                     paste(
+                       "Please enter the dose level currently under evaluation.",
+                       "(TARGET-CRM permits enrolling patients at one dose level below the dose level under evaluation.)"
+                     ),
+                     placement = "top", trigger = "focus"
+                   )
+            ),
+            column(9,
+                   fluidRow(
+                     column(5,
+                            h3(strong("Upload Patient Toxicity Data"), style = "text-align: center;"),
+                            p(class = "text", 
+                              "Please upload a comma separated values (.csv) file with the current patient toxicity data from your trial. DO NOT upload patient protected health information (PHI)"),
+                            br(),
+                            p(class = "text", 
+                              "A file template is available for download below. Enter one row per participant. For each patient, enter the: (1) Patient ID, (2) Dose Level, (3) Whether a DLT was observed, and (4) Whether to include a participant in the model."),
+                            br(),
+                            
+                            ### Download/Upload CSV Buttons ---------------------
+                            splitLayout(
+                              cellWidths = c("50%", "50%"), cellArgs = list(style = "padding: 5px"),
+                              downloadButton("ct_download", "Download .csv template"),
+                              fileInput("ct_file1", "Upload .csv file", accept = ".csv")
+                              ),
+                            
+                            ### Patients Table ---------------------
+                            tableOutput("ct_patients_table_upload")
+                     ),
+                     column(7,
+                            
+                            ### Results UI ---------------------
+                            uiOutput("ct_patients_ui_upload"),
+                            
+                            ### Simulate/Download/Reset Buttons ---------------------
+                            splitLayout(
+                              cellWidths = c("50%", "25%", "25%"), cellArgs = list(style = "padding: 5px"),
+                              actionButton("ct_simulate_upload", "Run Model"),
+                              downloadButton("ct_results_upload", ""),
+                              actionButton("ct_reset_upload", "Reset")
+                            ),
+                            bsPopover(
+                              "ct_simulate_upload", "",
+                              "Simulates the selected design using the chosen inputs and patients info", 
+                              placement = "bottom",
+                            ),
+                            bsPopover(
+                              "ct_results_upload", "",
+                              "Download the dose escalation recommendations in a MS Word report", 
+                              placement = "bottom",
+                            ),
+                            bsPopover(
+                              "ct_reset_upload", "",
+                              "WARNING: Resets all of the inputs and results. Cannot be undone.", 
+                              placement = "bottom",
+                            )
+                     )
+                   )
+            )
+          )
+      )
   ),
   
   ## About Tab ---------------------
@@ -1375,6 +1548,157 @@ server <- function(input, output, session) {
       render(temp_report, output_file = file, params = params, envir = new.env(parent = globalenv()))
     }
   )
+  
+  ### Download csv template ----------------
+  # Disable Simulate Button If Patient Table is Empty, Max Rows Are Reached, or If Any Input Warnings Are Shown
+  observe({
+    if(length(which(csv_upload()$`Include in Model` == TRUE)) == 0 ||
+       length(which(csv_upload()$`Include in Model` == TRUE)) == 50 ||
+       length(unlist(strsplit(input$ct_dose_labels, ",")))!= input$ct_num_doses ||
+       length(unlist(strsplit(input$ct_prior_tox, ",")))!= input$ct_num_doses ||
+       increment_check(input$ct_prior_tox) == FALSE ||
+       decimal_check(input$ct_prior_tox) == FALSE){
+      disable("ct_simulate_upload")
+    }
+    else{
+      enable("ct_simulate_upload")
+    }
+  })
+  
+  # Reset Inputs When Reset Button Clicked
+  observeEvent(input$ct_reset_upload, {
+    reset("ct_selectors_upload")
+    reset("ct_num_doses_upload")
+    reset("ct_dose_labels_upload")
+    reset("ct_target_tox_upload")
+    reset("ct_prior_tox_upload")
+    reset("ct_cohort_size_upload")
+    reset("ct_current_dose_upload")
+    hide("ct_ui_patients_upload")
+    disable("ct_results_upload")
+    disable("ct_simulate_upload")
+    hide("ct_patients_table_upload")
+    ct_sim_count_upload(NULL)
+  })
+  
+  
+  # Set Initial Reactive Value to Keep Track If a Simulation Was Ran
+  ct_sim_count_upload <- reactiveVal(NULL)
+  
+  ## create a csv template for users to download
+  output$ct_download <- downloadHandler(
+    filename = function(){"template.csv"},
+    content = function(file){
+      `Patient ID` <- c("C1", "C2", "C3")
+      `Dose Level` <- c(1, 1, 1)
+      `DLT Observed` <- c(FALSE, TRUE, FALSE)
+      `Include in Model` <- c(TRUE, TRUE, TRUE)
+      temp_csv <- data.frame(`Patient ID`, `Dose Level`, `DLT Observed`, `Include in Model`, check.names = FALSE)
+      write.csv(temp_csv, file, row.names = FALSE)
+      }
+  )
+  
+  ### use reactive to save uploaded csv data
+  csv_upload <- reactive({
+    
+    file <- input$ct_file1
+    ext <- tools::file_ext(file$datapath)
+    
+    if (is.null(input$ct_file1))
+      return(NULL)
+    
+    req(file)
+    validate(need(ext == "csv", "Please upload a csv file"))
+    
+    read.csv(file$datapath, check.names = FALSE)
+    
+  })
+  
+  ### Show csv table after users' upload ---------------
+  output$ct_patients_table_upload <- renderTable({
+    csv_upload()
+  })
+  
+  ### Show Table when Simulate is Pressed
+  observeEvent(input$ct_simulate_upload,{
+    show("ct_ui_patients_upload")
+  })
+  ### Show uploaded csv file when upload button is pressed
+  observeEvent(input$ct_file1,{
+    show("ct_patients_table_upload")
+  })
+  
+  
+  ### Running the Function with uploaded csv file---------------------
+  ct_function_outputs_upload <- eventReactive(input$ct_simulate_upload, {
+    
+    # Set Reactive Value to Identify Simulation Ran
+    ct_sim_count_upload(1)
+    
+    tcrmc_upload <- target_crm_conduct(prior = numerizer(input$ct_prior_tox_upload), target_tox = input$ct_target_tox_upload, tox = csv_upload()$`DLT Observed`, 
+                                dose_labels = unlist(strsplit(input$ct_dose_labels_upload, ",")), 
+                                level = match(csv_upload()$`Dose Level`, unlist(strsplit(input$ct_dose_labels_upload, ","))), 
+                                pid = unlist(strsplit(csv_upload()$`Patient ID`, ",")), include = which(csv_upload()$`Include in Model`), 
+                                cohort_size = input$ct_cohort_size_upload, num_slots_remain = input$ct_slots_upload, 
+                                current_dose = match(input$ct_current_dose_upload, unlist(strsplit(input$ct_dose_labels_upload, ","))))
+    
+    return(tcrmc_upload)
+  })
+  
+  ### Function Outputs ---------------------
+  
+  # UI Output for Patient Tables upload section
+  output$ct_patients_ui_upload <- renderUI({
+    hidden(
+      div(id="ct_ui_patients_upload",
+          fluidRow(
+            h3("Dose Escalation Recommendations", style = "text-align: center;"),
+            DTOutput("ct_df_upload"),
+            textOutput("ct_next_dose_upload")
+          )
+      )
+    )
+  })
+  
+  # DF upload section
+  output$ct_df_upload <- renderDT(
+    ct_function_outputs_upload()$df2, rownames = FALSE, selection = 'none', extensions = 'Responsive',
+    colnames = c("Dose Level", "Prior Toxicity Prob.", "n", "# Experienced a DLT", "Posterior Toxicity Prob.", "Lower Limit of 90% Prob. Interval", "Upper Limit of 90% Probability Interval"),
+    options = list(dom = 't', scrollY = "30vh", ordering = FALSE,
+                   initComplete = JS("function(settings, json) {","$(this.api().table().container()).css({'font-size': '16px'});","}")
+    )
+  )
+  
+  # Recommended Dose upload section
+  output$ct_next_dose_upload <- renderText({
+    paste("Recommended Dose Level:", ct_function_outputs_upload()$crm_out$mtd)
+  })
+  
+  ### Download Results for csv upload panel ---------------------
+  # Activate Download Button if a Simulation was Ran Already
+  observe({
+    if (!is.null(ct_sim_count_upload())) {
+      enable("ct_results_upload")
+    } else{
+      disable("ct_results_upload")
+    }
+  })
+  
+  output$ct_results_upload <- downloadHandler(
+    filename = function(){paste0("DEDUCE Conduct ", lubridate::with_tz(Sys.time(), "America/New_York"), input$csv_upload$name, " ET.docx")}, 
+    content = function(file){
+      
+      temp_report <- file.path(tempdir(), "report_conduct_csv.Rmd")
+      file.copy("report_conduct_csv.Rmd", temp_report, overwrite = TRUE)
+      params <- list(name = input$ct_file1$name, d = input$ct_selectors_upload, df1 = ct_function_outputs_upload()$df1, df2 = ct_function_outputs_upload()$df2, r1 = ct_function_outputs_upload()$crm_out$mtd, 
+                     r2 = ct_function_outputs_upload()$crm_out$target, r3 = ct_function_outputs_upload()$crm_out$prior, 
+                     r4 = ct_function_outputs_upload()$crm_out$prior.var, r5 = ct_function_outputs_upload()$crm_out$estimate, 
+                     r6 = ct_function_outputs_upload()$crm_out$post.var, r7 = ct_function_outputs_upload()$crm_out$dosename[ct_function_outputs_upload()$current_dose], 
+                     r8 = ct_function_outputs_upload()$cohort_size, r9 = ct_function_outputs_upload()$num_slots_remain)
+      render(temp_report, output_file = file, params = params, envir = new.env(parent = globalenv()))
+    }
+  )
+  
 }
 
 shinyApp(ui, server)
