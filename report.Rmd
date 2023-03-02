@@ -119,3 +119,5 @@ params$p4 + theme(text = element_text(size = 12))
 knitr::kable(params$t, caption = "Table 1: Summary of operating characteristics for the selected designs.")
 ```
 
+
+

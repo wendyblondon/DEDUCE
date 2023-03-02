@@ -129,7 +129,7 @@ ui <- page_navbar(title = "DEDUCE", theme = bs_theme(version = 3), bg = "white",
           checkboxGroupInput(
             "dt_selectors",
             div(p(class = "help-p", "Designs"), HTML('<button id="dt-designs-help" class="help-btn" type="button">?</button>'), style = "font-weight: bold; font-size: 18px;"),
-            c("3+3", "CRM", "TARGET-CRM"), selected = "3+3", inline = TRUE
+            c("3+3", "TARGET-CRM", "CRM"), selected = "3+3", inline = TRUE
           ),
           bsPopover(
             "dt-designs-help", "",
@@ -430,37 +430,6 @@ ui <- page_navbar(title = "DEDUCE", theme = bs_theme(version = 3), bg = "white",
               "at the current dose level before a dose escalation decision is made."
             ),
             placement = "top", trigger = "focus"
-          ),
-          
-          ### Slots Remaining ---------------------
-          sliderInput(
-            "ct_slots",
-            div(p(class = "help-p", "Number of Slots Remaining"), HTML('<button id="ct-slots-help" class="help-btn" type="button">?</button>')),
-            min = 0, max = 8, value = 0, width = "100%", ticks = FALSE
-          ),
-          bsPopover(
-            "ct-slots-help", "",
-            paste(
-              "Please enter the number of slots remaining to be enrolled for the current cohort of patients.",
-              "Escalating to a higher dose level is not permitted until the current cohort is fully evaluated",
-              "at the current dose level. Please update this input parameter for each successive patient enrolled in the trial."
-            ),
-            placement = "top", trigger = "focus"
-          ),
-          
-          ### Current Dose ---------------------
-          selectInput(
-            "ct_current_dose",
-            div(p(class = "help-p", "Dose level Currently Under Evaluation"), HTML('<button id="ct-current-dose-help" class="help-btn" type="button">?</button>')),
-            choices = c(-1,1,2,3), selected = 1, width = "100%"
-          ),
-          bsPopover(
-            "ct-current-dose-help", "",
-            paste(
-              "Please enter the dose level currently under evaluation.",
-              "(TARGET-CRM permits enrolling patients at one dose level below the dose level under evaluation.)"
-            ),
-            placement = "top", trigger = "focus"
           )
         ),
         column(9,
@@ -477,7 +446,7 @@ ui <- page_navbar(title = "DEDUCE", theme = bs_theme(version = 3), bg = "white",
               bsPopover(
                 "ct-pid-help", "",
                 paste(
-                  "Please enter a patient identifier. This auto-populates if you choose not to enter an ID.",
+                  "Please enter a unique patient identifier. This auto-populates if you choose not to enter an ID.",
                   "DO NOT ENTER PATIENT PROTECTED HEALTH INFORMATION (PHI) (e.g. MRNs, patient initials, cooperative group ID)."
                 ),
                 placement = "bottom", trigger = "focus"
@@ -524,12 +493,45 @@ ui <- page_navbar(title = "DEDUCE", theme = bs_theme(version = 3), bg = "white",
               ),
               bsPopover(
                 "ct_add", "",
-                "Add the chosen patient inputs to the table", 
+                "(No patient data have been entered yet)", 
                 placement = "top",
               ),
               
               ### Patients Table ---------------------
-              DTOutput("ct_patients_table")
+              DTOutput("ct_patients_table"),
+              
+              h3("Enter Trial Status:", style = "text-align: center;"),
+              
+              ### Slots Remaining ---------------------
+              sliderInput(
+                "ct_slots",
+                div(p(class = "help-p", "Number of Slots Remaining"), HTML('<button id="ct-slots-help" class="help-btn" type="button">?</button>')),
+                min = 0, max = 8, value = 0, width = "100%", ticks = FALSE
+              ),
+              bsPopover(
+                "ct-slots-help", "",
+                paste(
+                  "Please enter the number of slots remaining to be enrolled for the current cohort of patients.",
+                  "Escalating to a higher dose level is not permitted until the current cohort is fully evaluated",
+                  "at the current dose level. Please update this input parameter for each successive patient enrolled in the trial."
+                ),
+                placement = "top", trigger = "focus"
+              ),
+              
+              ### Current Dose ---------------------
+              selectInput(
+                "ct_current_dose",
+                div(p(class = "help-p", "Dose level Currently Under Evaluation"), HTML('<button id="ct-current-dose-help" class="help-btn" type="button">?</button>')),
+                choices = c(-1,1,2,3), selected = 1, width = "100%"
+              ),
+              bsPopover(
+                "ct-current-dose-help", "",
+                paste(
+                  "Please enter the dose level currently under evaluation.",
+                  "(TARGET-CRM permits enrolling patients at one dose level below the dose level under evaluation.)"
+                ),
+                placement = "top", trigger = "focus"
+              )
             ),
             column(7,
                    
@@ -691,7 +693,7 @@ ui <- page_navbar(title = "DEDUCE", theme = bs_theme(version = 3), bg = "white",
                               "Please upload a comma separated values (.csv) file with the current patient toxicity data from your trial. DO NOT upload patient protected health information (PHI)"),
                             br(),
                             p(class = "text", 
-                              "A file template is available for download below. Enter one row per participant. For each patient, enter the: (1) Patient ID, (2) Dose Level, (3) Whether a DLT was observed, and (4) Whether to include a participant in the model."),
+                              "To upload data, please download and use the template below.  Enter one row per trial participant. For each trial participant, enter the: (A) Patient ID (e.g. C1, C2), (B) Dose Level – the same numeric values for ‘administered Dose Level’ that were used in specifying the design (valid values are: -2, -1, 1, 2, 3, 4, 5, 6), (C) Whether a DLT was observed (valid values: “TRUE”, “FALSE”), and (D) Whether the trial participant should be included in the model (valid values: “TRUE”, “FALSE”)."),
                             br(),
                             
                             ### Download/Upload CSV Buttons ---------------------
@@ -1325,11 +1327,11 @@ server <- function(input, output, session) {
     }
   )
   
-  ## Conduct Tab ---------------------
+  ## Conduct Tab (enter data) ---------------------
   
   # Set Initial Reactive Value to Keep Track If a Simulation Was Ran
   ct_sim_count <- reactiveVal(NULL)
-  
+ 
   ### Warnings for Invalid Inputs ---------------------
   
   # Dose Labels
@@ -1371,10 +1373,17 @@ server <- function(input, output, session) {
     updateSelectInput(session, "ct_dose_adm", choices = unlist(strsplit(input$ct_dose_labels, ",")), selected = unlist(strsplit(input$ct_dose_labels, ","))[2])
   })
   
-  # Update Patient ID Based on Length of Table
+  # Update Patient ID Based on patient table's current Patient ID
   observe({
-    updateTextInput(session, "ct_pid", value = sprintf("C%d", nrow(ct_patients_df()) + 1))
+    if (nrow(ct_patients_df()) == 0) {
+      updateTextInput(session, "ct_pid", value = sprintf("C%d", 1))
+    } else{
+      updateTextInput(session, "ct_pid", value = sprintf("C%d", 
+                                                         as.numeric(substr(ct_patients_df()[nrow(ct_patients_df()),1], 
+                                                                           2, nchar(ct_patients_df()[nrow(ct_patients_df()),1]))) + 1 ))
+    }
   })
+  
   
   # Disable Inputs Once Patient is Added to Table
   observe({
@@ -1385,8 +1394,8 @@ server <- function(input, output, session) {
       disable("ct_target_tox")
       disable("ct_prior_tox")
       disable("ct_cohort_size")
-      disable("ct_slots")
-      disable("ct_current_dose")
+      #disable("ct_slots")
+      #disable("ct_current_dose")
     } else {
       enable("ct_selectors")
       enable("ct_num_doses")
@@ -1483,7 +1492,7 @@ server <- function(input, output, session) {
                                        colnames = c("Patient ID", "Dose Level", "DLT Observed", "Include in Model"), selection = 'single', 
                                        options = list(dom = 't', scrollY = "25vh", ordering = FALSE, pageLength = nrow(ct_patients_df()),
                                                       initComplete = JS("function(settings, json) {","$(this.api().table().container()).css({'font-size': '16px'});","}"),
-                                                      language = list(zeroRecords = "Add patient(s) to the table")
+                                                      language = list(zeroRecords = "(No patient data have been entered yet)")
                                        )
                                        
   )
@@ -1549,8 +1558,46 @@ server <- function(input, output, session) {
     }
   )
   
-  ### Download csv template ----------------
-  # Disable Simulate Button If Patient Table is Empty, Max Rows Are Reached, or If Any Input Warnings Are Shown
+  ## Conduct Tab (upload data) ---------------------
+  
+  ### Warnings for Invalid Inputs ---------------------
+  
+  # Dose Labels
+  observeEvent(list(input$ct_dose_labels_upload, input$ct_num_doses_upload), {
+    hideFeedback("ct_dose_labels_upload")
+    if (length(unlist(strsplit(input$ct_dose_labels_upload, ",")))!= input$ct_num_doses_upload) {
+      showFeedbackDanger("ct_dose_labels_upload", "The length must match the number of dose levels selected above. Be sure to use commas to separate each label.")
+    }
+  })
+  
+  # Prior Tox
+  observeEvent(list(input$ct_prior_tox_upload, input$ct_num_doses_upload), {
+    hideFeedback("ct_prior_tox_upload")
+    if (length(unlist(strsplit(input$ct_prior_tox_upload, ",")))!= input$ct_num_doses_upload) {
+      showFeedbackDanger("ct_prior_tox_upload", "The length must match the number of dose levels selected at the top. Be sure to use commas to separate each decimal.")
+    }
+    else if (increment_check(input$ct_prior_tox_upload)==FALSE) {
+      showFeedbackDanger("ct_prior_tox_upload", "The probabilities must increase with each subsequent dose")
+    }
+    else if (decimal_check(input$ct_prior_tox_upload)==FALSE) {
+      showFeedbackDanger("ct_prior_tox_upload", "The probabilities must be a decimal")
+    }
+  })
+  
+  ### Observers ---------------------
+  
+  # Update Number of Slots Remaining Max Based off Cohort Size
+  observe({
+    updateSliderInput(session, "ct_slots_upload", max = input$ct_cohort_size_upload - 1, value = input$ct_cohort_size_upload - 1)
+  })
+  
+  # Update Current Dose Based on Dose Labels
+  observe({
+    updateSelectInput(session, "ct_current_dose_upload", choices = unlist(strsplit(input$ct_dose_labels_upload, ",")), selected = unlist(strsplit(input$ct_dose_labels_upload, ","))[2])
+  })
+  
+
+   # Disable Simulate Button If Patient Table is Empty, Max Rows Are Reached, or If Any Input Warnings Are Shown
   observe({
     if(length(which(csv_upload()$`Include in Model` == TRUE)) == 0 ||
        length(which(csv_upload()$`Include in Model` == TRUE)) == 50 ||
@@ -1578,6 +1625,7 @@ server <- function(input, output, session) {
     disable("ct_results_upload")
     disable("ct_simulate_upload")
     hide("ct_patients_table_upload")
+    reset("ct_file1")
     ct_sim_count_upload(NULL)
   })
   
@@ -1589,10 +1637,10 @@ server <- function(input, output, session) {
   output$ct_download <- downloadHandler(
     filename = function(){"template.csv"},
     content = function(file){
-      `Patient ID` <- c("C1", "C2", "C3")
-      `Dose Level` <- c(1, 1, 1)
-      `DLT Observed` <- c(FALSE, TRUE, FALSE)
-      `Include in Model` <- c(TRUE, TRUE, TRUE)
+      `Patient ID` <- c("")
+      `Dose Level` <- c("")
+      `DLT Observed` <- c("")
+      `Include in Model` <- c("")
       temp_csv <- data.frame(`Patient ID`, `Dose Level`, `DLT Observed`, `Include in Model`, check.names = FALSE)
       write.csv(temp_csv, file, row.names = FALSE)
       }
@@ -1604,18 +1652,36 @@ server <- function(input, output, session) {
     file <- input$ct_file1
     ext <- tools::file_ext(file$datapath)
     
-    if (is.null(input$ct_file1))
-      return(NULL)
-    
     req(file)
-    validate(need(ext == "csv", "Please upload a csv file"))
+    validate(need(ext == "csv", "Error: wrong file format was uploaded. \nPlease upload a csv file"),
+             errorClass = "myClass")
     
     read.csv(file$datapath, check.names = FALSE)
-    
   })
-  
-  ### Show csv table after users' upload ---------------
+
+
+  ### Check input format and Show csv table after users' upload ---------------
   output$ct_patients_table_upload <- renderTable({
+    
+    validate(
+      need(
+        all(sapply(csv_upload()[, 1], is.character)),
+        "Column 'Patient ID' must contain character data (e.g. C1, C2)."
+      ),
+      need(
+        all(sapply(csv_upload()[, 2], is.numeric)),
+        "Column 'Dose Level' must contain numeric data (e.g. 1, 2)."
+      ),
+      need(
+      all(sapply(csv_upload()[, 3], is.logical)),
+      "Column 'DLT Observed' must contain logical data (e.g. True, False)."
+    ),
+    need(
+      all(sapply(csv_upload()[, 4], is.logical)),
+      "Column 'Include in Model' must contain logical data (e.g. True, False)."
+    ),
+    errorClass = "myClass")
+    
     csv_upload()
   })
   

@@ -281,7 +281,7 @@ p{
   background-color: #003087
 }
 
-/* CONDUCT TAB */
+/* CONDUCT TAB (enter data) */
 
 #ct_selectors{
   font-size: 18px;
@@ -406,7 +406,26 @@ p{
   border-left-color: #003087;
 }
 
-/* CONDUCT UPLOAD TAB*/
+/* CONDUCT TAB (upload data)*/
+
+#ct_selectors_upload{
+  font-size: 18px;
+}
+
+#ct_dose_labels_upload{
+  font-size: 18px;
+}
+
+#ct_prior_tox_upload{
+  font-size: 18px;
+}
+
+.shiny-output-error-myClass {
+        font-size: 18px;
+        color: red;
+        font-weight: bold;
+      }
+
 #ct_download{
   width: 100%;
   background-color: #003087;
