@@ -43,7 +43,7 @@ decimal_check <- function(x) {
     if (lengthX > 1) {
       vecX <- unlist(strsplit(x, ","))
       
-      for (i in 1:(lengthX - 1)) {
+      for (i in 1:lengthX) {
         if (as.numeric(vecX[i]) > 0 & as.numeric(vecX[i]) < 1) {
           next
         }
