@@ -1,0 +1,65 @@
+---
+title: "DEDUCE Dose Escalation Recommendations"
+output: word_document
+params:
+  name: NA
+  d: NA
+  df1: NA
+  df2: NA
+  r1: NA
+  r2: NA
+  r3: NA
+  r4: NA
+  r5: NA
+  r6: NA
+  r7: NA
+  r8: NA
+  r9: NA
+---
+
+Trial Design: `r params$d`\
+Software: DEDUCE app version 1.0 available [here](https://wendyblondon.shinyapps.io/DEDUCE/)\
+Report Date and Time: `r paste(lubridate::with_tz(Sys.time(), "America/New_York"), 'ET')`\
+CSV data used: `r params$name`\
+
+
+# Observed Toxicity Data:
+
+```{r, echo=FALSE}
+knitr::kable(params$df1, col.names = c("Patient ID", "Dose Level", "Experienced a DLT", "Included in Model"))
+```
+
+
+# Toxicity Probability Results:
+```{r, echo=FALSE}
+knitr::kable(params$df2, col.names = c("Dose Level", "Prior Toxicity Prob.", "n", "# Experienced a DLT", "Posterior Toxicity Prob.", "Lower Limit of 90% Prob. Interval", "Upper Limit of 90% Prob. Interval"), caption = "(90 Percent Probability Interval)")
+```
+
+Next Recommended Dose Level: `r params$r1`
+
+Recommendation is Based on a Target Toxicity Probability of `r params$r2`
+
+# Additional Details:
+
+Current Dose Level: `r params$r7`
+
+Cohort Size: `r params$r8`
+
+Number of Slots Remaining at Current Dose Level: `r params$r9`
+
+# Dose Escalation Rules:
+
+* No dose skipping upon dose escalation
+* Intra-cohort dose de-escalation is allowed
+* Intra-cohort dose escalation is not allowed
+
+# Estimation Details:
+
+Empiric Dose-Toxicity Model: $p = dose^{exp(beta)}$\
+dose = `r params$r3`
+
+Normal Prior on Beta with Mean 0 and Variance `r params$r4`
+
+Posterior Mean of Beta: `r params$r5`
+
+Posterior Variance of Beta: `r params$r6`

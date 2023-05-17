@@ -16,7 +16,8 @@ increment_check <- function(x) {
       vecX <- unlist(strsplit(x, ","))
       
       for (i in 1:(lengthX - 1)) {
-        if (as.numeric(vecX[i + 1]) > as.numeric(vecX[i])) {
+        if (as.numeric(vecX[i + 1]) > as.numeric(vecX[i]) |
+            as.numeric(vecX[1]) > 0 | as.numeric(vecX[lengthX]) < 1) {
           next
         }
         else{
@@ -34,7 +35,7 @@ increment_check <- function(x) {
   }
 }
 
-decimal_check <- function(x){
+decimal_check <- function(x) {
   if (is.character(x)) {
     
     lengthX <- length(unlist(strsplit(x, ",")))
@@ -42,12 +43,12 @@ decimal_check <- function(x){
     if (lengthX > 1) {
       vecX <- unlist(strsplit(x, ","))
       
-      for (i in 1:lengthX) {
-        if (grepl("[.]", vecX[i]) == FALSE) {
-          return(FALSE)
+      for (i in 1:(lengthX - 1)) {
+        if (as.numeric(vecX[i]) > 0 & as.numeric(vecX[i]) < 1) {
+          next
         }
         else{
-          next
+          return(FALSE)
         }
       }
       return(TRUE)
@@ -63,4 +64,22 @@ decimal_check <- function(x){
 
 null_to_na <- function(x){
   ifelse(is.null(x), NA, x)
+}
+
+missingvalues_csv <- function(x){
+  if(anyNA(x)) {
+    return(FALSE)
+  }
+}
+
+duplicatevalues_csv <- function(x){
+  if(sum(duplicated(x)>0)) {
+    return(FALSE)
+  }
+}
+
+columnscheck_csv <- function(x){
+  if(ncol(x) !=4 ) {
+    return(FALSE)
+  }
 }
