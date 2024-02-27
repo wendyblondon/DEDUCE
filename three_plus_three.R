@@ -185,15 +185,15 @@ three_plus_three <- function (target_tox, number_trials, true_tox, arrival_rate,
   time_taken <- finish - start
   
   result <- list(df=df, target_tox=target_tox, number_trials=number_trials, true_tox=true_tox, arrival_rate=arrival_rate, 
-               prop_b=prop_b, cycle_length=cycle_length, start_level=start_level, 
-               
-               total_patients=total_patients, num_cohort_a_patients=num_cohort_a_patients, num_cohort_b_patients=num_cohort_b_patients,
-               mtd_selection=mtd_selection, study_duration=study_duration, observe_tox=observe_tox, patient_allocation=patient_allocation,
-               
-               mtd_selection_table = mtd_selection_table, true_mtd=true_mtd, pcs=pcs, obs_tox_overall=obs_tox_overall,
-               mean_obs_n=mean_obs_n, min_obs_n=min_obs_n, max_obs_n=max_obs_n,
-               patient_allocation_table=patient_allocation_table, obs_tox_table=obs_tox_table, mean_cohort_b=mean_cohort_b, sd_cohort_b=sd_cohort_b,
-               mean_duration=mean_duration, sd_duration=sd_duration, time_taken=time_taken)
+                 prop_b=prop_b, cycle_length=cycle_length, start_level=start_level, 
+                 
+                 total_patients=total_patients, num_cohort_a_patients=num_cohort_a_patients, num_cohort_b_patients=num_cohort_b_patients,
+                 mtd_selection=mtd_selection, study_duration=study_duration, observe_tox=observe_tox, patient_allocation=patient_allocation,
+                 
+                 mtd_selection_table = mtd_selection_table, true_mtd=true_mtd, pcs=pcs, obs_tox_overall=obs_tox_overall,
+                 mean_obs_n=mean_obs_n, min_obs_n=min_obs_n, max_obs_n=max_obs_n,
+                 patient_allocation_table=patient_allocation_table, obs_tox_table=obs_tox_table, mean_cohort_b=mean_cohort_b, sd_cohort_b=sd_cohort_b,
+                 mean_duration=mean_duration, sd_duration=sd_duration, time_taken=time_taken)
   return(result)
   
 }
