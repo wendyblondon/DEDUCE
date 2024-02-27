@@ -6,6 +6,7 @@ params:
   m: NA
   r: NA
   t: NA
+  t2: NA
   p1: NA
   p2: NA
   p3: NA
@@ -13,7 +14,7 @@ params:
 ---
 *Report Date and Time: "`r paste(lubridate::with_tz(Sys.time(), "America/New_York"), 'ET')`"*
 
-*Software:* DEDUCE app version 1.0 available [here](https://wendyblondon.shinyapps.io/DEDUCE/) 
+*Software:* DEDUCE app version 1.0 available [here](https://deduce.shinyapps.io/DEDUCE/) 
 
 
 # Objective:
@@ -24,33 +25,24 @@ To evaluate the operating characteristics of the following dose escalation desig
 
 Trial operating characteristics are averaged over **`r params$m[1]`** simulated trials. Simulated trials have **`r params$m[2]`** dose levels labeled **`r dQuote(params$m[3])`**, starting on dose level **`r dQuote(params$m[4])`**, and assuming true toxicity probabilities of **`r params$m[5]`**. The target toxicity probability is **`r params$m[6]`**. One patient arrives every **`r params$m[7]`** days on average. The DLT observation period is **`r params$m[8]`** days.
 
-<!-- Test if TARGET-CRM/CRM is a Design Used -->
+<!-- Test if TARGET-CRM/CRM/BOIN is a Design Used -->
 ```{r, echo=FALSE}
-if("TARGET-CRM" %in% params$d | "CRM" %in% params$d) {
+if("TARGET-CRM" %in% params$d | "CRM" %in% params$d | "BOIN" %in% params$d) {
   show_text_methods <- TRUE
 }else{
   show_text_methods <- FALSE
 }
 ```
 
-<!-- Only Show if TARGET-CRM/CRM is Selected -->
+<!-- Only Show if TARGET-CRM/CRM/BOIN is Selected -->
 `r if(!show_text_methods) {"<!--"}`
 
-For the TARGET-CRM and/or CRM design, the prior toxicity probabilities per dose level are **`r params$m[9]`**. The cohort size is **`r params$m[10]`** and the maximum sample size is **`r params$m[11]`**. Patients belong to one of two cohorts: Cohort A or Cohort B. Patients with pre-specified characteristics (e.g. tumor type, tumor mutation) belong to Cohort B; all other patients belong to Cohort A. The TARGET-CRM design allows enrollment of Cohort B patients at one dose level below the current dose during the DLT observation period of the current cohort of patients. The proportion of patients from Cohort B is **`r params$m[12]`**. Simulated trials using the TARGET-CRM and/or CRM designs are required to have a minimum enrollment of **`r params$m[13]`** Cohort B patients.
+For the TARGET-CRM and/or CRM, BOIN design, the prior toxicity probabilities per dose level are **`r params$m[9]`**. The cohort size is **`r params$m[10]`** and the maximum sample size is **`r params$m[11]`**. Patients belong to one of two cohorts: Cohort A or Cohort B. Patients with pre-specified characteristics (e.g. tumor type, tumor mutation) belong to Cohort B; all other patients belong to Cohort A. The TARGET-CRM design allows enrollment of Cohort B patients at one dose level below the current dose during the DLT observation period of the current cohort of patients. The proportion of patients from Cohort B is **`r params$m[12]`**. Simulated trials using the TARGET-CRM and/or CRM designs are required to have a minimum enrollment of **`r params$m[13]`** Cohort B patients.
 
 
 `r if(!show_text_methods) {"-->"}`
 
 # Results:
-
-<!-- Test if TARGET-CRM is a Design Used -->
-```{r, echo=FALSE}
-if("TARGET-CRM" %in% params$d) {
-  show_text_results <- TRUE
-}else{
-  show_text_results <- FALSE
-}
-```
 
 <!-- Test if 1 Design Used -->
 ```{r, echo=FALSE}
@@ -118,6 +110,130 @@ params$p4 + theme(text = element_text(size = 12))
 ```{r, echo=FALSE}
 knitr::kable(params$t, caption = "Table 1: Summary of operating characteristics for the selected designs.")
 ```
+
+`r if(!show_text_methods) {"<!--"}`
+## Example protocol template of the dose escalation rules for the selected designs:
+
+
+The following section provides an example protocol template for the dose escalation / de-escalation 
+rules for the selected designs. This description can be modified for your trial and included in the statistical section of your study protocol. However, this report only includes a single simulation scenario with a specific set of design parameters. To determine the required sample size of a particular design, investigators should assess the design’s operating characteristics across multiple simulation scenarios.
+`r if(!show_text_methods) {"-->"}`
+
+
+<!-- Test if CRM is a Design Used -->
+```{r, echo=FALSE}
+if("CRM" %in% params$d) {
+  show_text_results4 <- FALSE
+}else{
+  show_text_results4 <- TRUE
+}
+```
+
+`r if(show_text_results4) {"<!--"}`
+
+#### Continual Reassessment Method (CRM)
+
+The Continual Reassessment Method (1) will guide the dose escalation / de-escalation for this trial. The maximum sample size is **`r params$m[11]`** evaluable patients. Patients are treated in a cohort size of **`r params$m[10]`**. The target toxicity rate is **`r params$m[6]`**. There are **`r params$m[2]`** dose levels to be evaluated. The prior toxicity probabilities are **`r params$m[9]`**. Dose-escalation / de-escalation is described as follows:
+
+1.	Patients in the first cohort are treated at the starting dose level **`r dQuote(params$m[4])`**.
+2.	To assign a dose to the next cohort of patients, we conduct dose escalation / de-escalation according to the rules below:
+    a.	After the DLT observation period of **`r params$m[8]`** days is complete for the current cohort of patients, run the CRM model using all enrolled, evaluable patients in the trial. (_The CRM model can be executed using the DEDUCE “CONDUCT YOUR TRIAL” tab_.)
+    b.	The posterior toxicity probabilities will be computed using the prior toxicity probabilities and observed DLT data. 
+    c.	The recommended dose for the next cohort of patients will the dose level with the posterior toxicity probability closest to the target toxicity probability.
+    d.	For dose escalation, the recommended dose level can never be more than one sequential dose level above the current dose level.
+    e.	For dose de-escalation, the recommended dose may be one or two dose levels below the current dose level.
+3.	Repeat step 2 until the maximum sample size of **`r params$m[11]`** evaluable patients is reached.
+4.	Based on all observed data, run the CRM model one final time. The MTD is the dose level with the posterior toxicity probability closest to the target toxicity probability.
+
+
+References:
+
+1.	O'Quigley J, Pepe M, Fisher L. Continual reassessment method: a practical design for phase 1 clinical trials in cancer. Biometrics. 1990 Mar;46(1):33-48. PMID: 2350571.
+
+`r if(show_text_results4) {"-->"}`
+
+
+<!-- Test if TARGET-CRM is a Design Used -->
+```{r, echo=FALSE}
+if("TARGET-CRM" %in% params$d) {
+  show_text_results5 <- FALSE
+}else{
+  show_text_results5 <- TRUE
+}
+```
+
+`r if(show_text_results5) {"<!--"}`
+
+#### Targeted Agent - Continual Reassessment Method (TARGET-CRM)
+
+The Targeted Agent Continual Reassessment Method (TARGET-CRM) (1) will guide the dose escalation / de-escalation for this trial. The TARGET-CRM design is a variation of the standard CRM design. Consider a phase 1 trial of a targeted agent, whereby patients belong to either Cohort A, with unspecified tumor types, or Cohort B, with specific rare tumor aberrations who are anticipated to better respond to the targeted agent. The proportion of patients from Cohort B is **`r params$m[12]`**.
+
+The maximum sample size is **`r params$m[11]`** evaluable patients. Patients are treated in a cohort size of **`r params$m[10]`**. The target toxicity rate is **`r params$m[6]`**. There are **`r params$m[2]`** dose levels to be evaluated. The prior toxicity probabilities are **`r params$m[9]`**. Dose-escalation / de-escalation is described as follows:
+
+1.	Patients in the first cohort are treated at the starting dose level **`r dQuote(params$m[4])`**.
+2.	While each cohort of 3 patients are being evaluated for DLTs in the first cycle of treatment, no enrollment slots are available and patients for Cohort A will enter a waitlist. However, when no enrollment slots are available, patients from Cohort B may enroll at one dose level below the currently evaluated dose level of the cohort of patients under observation. If the lowest dose level is being evaluated as the current dose level, enrollment for patients from Cohort B at one dose level below the current dose will not be permitted.
+3.	To assign a dose to the next cohort of patients, we conduct dose escalation / de-escalation according to the rules below:
+    a.	After the DLT observation period of **`r params$m[8]`** days is complete for the current cohort of patients, run the TARGET-CRM model using all enrolled, evaluable patients in the trial, including Cohort B patients enrolled at one dose level below the currently evaluated dose. (_The TARGET-CRM model can be executed using the DEDUCE “CONDUCT YOUR TRIAL” tab_.)
+    b.	The posterior toxicity probabilities will be computed using the prior toxicity probabilities and observed DLT data. 
+    c.	The recommended dose for the next cohort of patients will the dose level with the posterior toxicity probability closest to the target toxicity probability.
+    d.	For dose escalation, the recommended dose level can never be more than one sequential dose level above the current dose level.
+    e.	For dose de-escalation, the recommended dose may be one or two dose levels below the current dose level.
+4.	Repeat step 2 until the maximum sample size of **`r params$m[11]`** evaluable patients is reached.
+5.	Based on all observed data, run the TARGET-CRM model one final time. The MTD is the dose level with the posterior toxicity probability closest to the target toxicity probability.
+
+
+References:
+
+1.	Ma C., Shulman DS, Al-Sayegh H, DuBois SG, London W. TARGET-CRM: a novel Bayesian enrichment design for phase 1 trials of molecularly-targeted therapies. In preparation.
+
+`r if(show_text_results5) {"-->"}`
+
+
+<!-- Test if BOIN is a Design Used -->
+```{r, echo=FALSE}
+if("BOIN" %in% params$d) {
+  show_text_results3 <- FALSE
+}else{
+  show_text_results3 <- TRUE
+}
+```
+
+`r if(show_text_results3) {"<!--"}`
+#### Bayesian Optimal Interval (BOIN) Design
+
+The Bayesian Optimal INterval (BOIN) design (1,2) will guide dose escalation / de-escalation for this trial. The maximum sample size is **`r params$m[11]`** evaluable patients. Patients are treated in a cohort size of **`r params$m[10]`**. The target toxicity rate is **`r params$m[6]`**. There are **`r params$m[2]`** dose levels to be evaluated. Dose-escalation / de-escalation is described as follows:
+
+1.	Patients in the first cohort are treated at the starting dose level **`r dQuote(params$m[4])`**. 
+2.	To assign a dose to the next cohort of patients, we conduct dose escalation / de-escalation according to the rule displayed in **Table 2**. When using **Table 2**, please note the following
+    a.	“Eliminate” means that we eliminate the current and higher dose levels from the trial to prevent treating any future patients at these dose levels because they are overly toxic.
+    b.	When we eliminate a dose level, we automatically de-escalate the dose to the next lower level. When the lowest dose level is eliminated, we stop the trial for safety. In this case, no dose level should be selected as the MTD.
+    c.	If none of the actions (i.e., escalation, de-escalation or elimination) is triggered, we treat the new patients at the current dose level.
+    d.	If the current dose level is the lowest dose level and the rule indicates dose de- escalation, we will treat the new patients at the lowest dose level unless the number of DLTs reaches the elimination boundary, at which point we will terminate the trial for safety.
+    e.	If the current dose level is the highest dose and the rule indicates dose escalation, we will treat the new patients at the highest dose level.
+3.	Repeat step 2 until the maximum sample size of **`r params$m[11]`** evaluable patients is reached or stop the trial if the number of evaluable patients treated at the current dose reaches 15.
+4.	Based on all observed data, select the MTD based on isotonic regression method described in (1).
+
+<br><br><br><br>
+```{r, echo=FALSE}
+knitr::kable(params$t2, caption = "Table 2: Dose escalation/de-escalation rule for the BOIN design.")
+```
+
+
+References:
+
+1. Lin R, Yin G. Bayesian optimal interval design for dose finding in drug-combination trials. Stat Methods Med Res. 2017 Oct;26(5):2155-2167. doi: 10.1177/0962280215594494. Epub 2015 Jul 15. PMID: 26178591.
+
+2. Yuan Y, Hess KR, Hilsenbeck SG, Gilbert MR. Bayesian Optimal Interval Design: A Simple and Well-Performing Design for Phase I Oncology Trials. Clin Cancer Res. 2016 Sep 1;22(17):4291-301. doi: 10.1158/1078-0432.CCR-16-0592. Epub 2016 Jul 12. PMID: 27407096; PMCID: PMC5047439.
+
+`r if(show_text_results3) {"-->"}`
+
+
+
+
+
+
+
+
 
 
 

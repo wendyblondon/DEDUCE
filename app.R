@@ -9,6 +9,8 @@ library(dplyr)
 library(ggplot2)
 library(rmarkdown)
 library(DT)
+library(future)
+library(paletteer)
 
 # Adding External Files
 source("crm.R")
@@ -16,6 +18,7 @@ source("target_crm.R")
 source("three_plus_three.R")
 source("target_crm_conduct.R")
 source("funs.R")
+source("BOIN.R")
 
 # Set ggplot2 Default Font Size
 theme_set(theme_minimal(base_size = 15))
@@ -27,6 +30,26 @@ ui <- page_navbar(title = "DEDUCE", theme = bs_theme(version = 3), bg = "white",
                   nav("HOME",
                       useShinyjs(), includeCSS("www/style.css"), useShinyFeedback(), use_waiter(),
                       img(id = "homeimg", src = "home.jpg"),
+                      fluidRow(
+                        br(),
+                        column(width = 6,
+                               align = "center", 
+                               a(
+                                 href="https://www.danafarberbostonchildrens.org",
+                                 img(id="df_logo", src = "dfbc.png"),
+                                 target="_blank", rel="noopener noreferrer"
+                               )
+                        ),
+                        
+                        column(width = 6,
+                               align = "center", 
+                               a(
+                                 href="https://www.NorthwesternMutual.com",
+                                 img(id="nm_logo", src = "nm.png"),
+                                 target="_blank", rel="noopener noreferrer"
+                               )
+                        )
+                      ),
                       fluidRow(class = "text-body",
                                column(12,
                                       p(id = "hometagline", 
@@ -55,7 +78,7 @@ ui <- page_navbar(title = "DEDUCE", theme = bs_theme(version = 3), bg = "white",
                                       p(class = "main-text", "CONDUCT YOUR TRIAL"),
                                       p(class = "main-text", "Users can implement the adaptive trial, and determine the recommended dose level each time a new patient enrolls."),
                                       br(),
-                                      h2("Available Designs"),
+                                      h2("Available Designs: Version 2.0 includes"),
                                       tags$ul(
                                         tags$li(
                                           p(class = "main-text", "Continual Reassessment Method (CRM) ",
@@ -75,7 +98,19 @@ ui <- page_navbar(title = "DEDUCE", theme = bs_theme(version = 3), bg = "white",
                                               target="_blank", rel="noopener noreferrer"
                                             )
                                           )
-                                        )     
+                                        ),
+                                        tags$li(
+                                          p(class = "main-text", "BOIN ", 
+                                            a(
+                                              href="https://pubmed.ncbi.nlm.nih.gov/26178591/", "[Lin and Yin. ", em("Statistical Methods in Medical Research,"), " 2017]", 
+                                              target="_blank", rel="noopener noreferrer"
+                                            ),
+                                            a(
+                                              href="https://pubmed.ncbi.nlm.nih.gov/27407096/", "[Yuan et al. ", em("Clinical Cancer Research,"), " 2016]", 
+                                              target="_blank", rel="noopener noreferrer"
+                                            )
+                                          )
+                                        )
                                       ),
                                       br(),
                                       h2("Key Features of DEDUCE"),
@@ -85,6 +120,9 @@ ui <- page_navbar(title = "DEDUCE", theme = bs_theme(version = 3), bg = "white",
                                         ),
                                         tags$li(
                                           p(class = "main-text", "Dynamically generates a written report summarizing simulation results")
+                                        ),
+                                        tags$li(
+                                          p(class = "main-text", "Version 2.0")
                                         )
                                       )
                                )
@@ -129,7 +167,7 @@ ui <- page_navbar(title = "DEDUCE", theme = bs_theme(version = 3), bg = "white",
                                    checkboxGroupInput(
                                      "dt_selectors",
                                      div(p(class = "help-p", "Designs"), HTML('<button id="dt-designs-help" class="help-btn" type="button">?</button>'), style = "font-weight: bold; font-size: 18px;"),
-                                     c("3+3", "TARGET-CRM", "CRM"), selected = "3+3", inline = TRUE
+                                     c("TARGET-CRM", "3+3", "BOIN", "CRM"), selected = "3+3", inline = TRUE
                                    ),
                                    bsPopover(
                                      "dt-designs-help", "",
@@ -141,7 +179,7 @@ ui <- page_navbar(title = "DEDUCE", theme = bs_theme(version = 3), bg = "white",
                                    sliderInput(
                                      "dt_num_doses",
                                      div(p(class = "help-p", "Number of Dose Levels"), HTML('<button id="dt-num-doses-help" class="help-btn" type="button">?</button>')),
-                                     min = 3, max = 10, value = 4, width = "100%", ticks = FALSE
+                                     min = 2, max = 10, value = 4, width = "100%", ticks = FALSE
                                    ),
                                    bsPopover(
                                      "dt-num-doses-help", "",
@@ -233,9 +271,10 @@ ui <- page_navbar(title = "DEDUCE", theme = bs_theme(version = 3), bg = "white",
                                      placement = "top", trigger = "focus"
                                    ),
                                    
-                                   ### TARGET-CRM & CRM Inputs ---------------------
+                                   ### TARGET-CRM & CRM & BOIN Inputs ---------------------
                                    conditionalPanel(
-                                     condition = "input.dt_selectors.includes('TARGET-CRM') || input.dt_selectors.includes('CRM')",
+                                     condition = "input.dt_selectors.includes('TARGET-CRM') || input.dt_selectors.includes('CRM')
+                                     || input.dt_selectors.includes('BOIN')",
                                      
                                      #### Prior Toxicity ---------------------
                                      textInput(
@@ -817,7 +856,7 @@ ui <- page_navbar(title = "DEDUCE", theme = bs_theme(version = 3), bg = "white",
                   nav_item(
                     actionButton(
                       "nav-help-btn", "HELP", icon = icon("external-link-alt"), 
-                      onclick = "window.open('https://drive.google.com/file/d/1LDj36CAF3Hnf0r5KRgeU5QiiI9ET5G-R/view', '_blank', 'noopener noreferrer')"
+                      onclick = "window.open('https://drive.google.com/file/d/1QvdzRUBM88nGA8J4ETlcbfDMzSv1w_gb/view?usp=sharing', '_blank', 'noopener noreferrer')"
                     )
                   ),
                   nav_spacer(),
@@ -1002,7 +1041,10 @@ server <- function(input, output, session) {
             splitLayout(
               plotOutput("dt_plot_2", width = "90%", height = "40vh"),
               plotOutput("dt_plot_4", width = "90%", height = "40vh")
-            )
+            ),
+            br(),
+            div(style = "font-size:11px;",
+                p(class = "main-text", strong("Details about the trial design can be found in the downloadable report, for inclusion in the protocol statistical section.")))
           )
       )
     )
@@ -1024,14 +1066,13 @@ server <- function(input, output, session) {
                               start_level = match(input$dt_start_level, unlist(strsplit(input$dt_dose_labels, ","))))
     }
     
-    # TARGET-CRM
-    if("TARGET-CRM" %in% input$dt_selectors) {
+    # BOIN
+    if("BOIN" %in% input$dt_selectors) {
       
-      tcrm <- my_target_crm(prior = numerizer(input$dt_prior_tox), target_tox = input$dt_target_tox, 
-                            number_trials = input$dt_num_trials, true_tox = numerizer(input$dt_true_tox), 
-                            arrival_rate = input$dt_arrival_rate, prop_b = input$dt_prop_b, min_cohort_b = input$dt_min_cohort_b, cycle_length = input$dt_cycle_length, 
-                            cohort_size = input$dt_cohort_size, max_n = input$dt_max_n, start_level = match(input$dt_start_level, unlist(strsplit(input$dt_dose_labels, ","))))
-      
+      boin <- my_boin(prior = numerizer(input$dt_prior_tox), target_tox = input$dt_target_tox, 
+                      number_trials = input$dt_num_trials, true_tox = numerizer(input$dt_true_tox), 
+                      arrival_rate = input$dt_arrival_rate, cycle_length = input$dt_cycle_length, 
+                      cohort_size = input$dt_cohort_size, max_n = input$dt_max_n, start_level = match(input$dt_start_level, unlist(strsplit(input$dt_dose_labels, ","))))
     }
     
     # CRM
@@ -1043,7 +1084,17 @@ server <- function(input, output, session) {
                     cohort_size = input$dt_cohort_size, max_n = input$dt_max_n, start_level = match(input$dt_start_level, unlist(strsplit(input$dt_dose_labels, ","))))
     }
     
-    all <- list(get0("tpt"), get0("tcrm"), get0("crm"))
+    # TARGET-CRM
+    if("TARGET-CRM" %in% input$dt_selectors) {
+      
+      tcrm <- my_target_crm(prior = numerizer(input$dt_prior_tox), target_tox = input$dt_target_tox, 
+                            number_trials = input$dt_num_trials, true_tox = numerizer(input$dt_true_tox), 
+                            arrival_rate = input$dt_arrival_rate, prop_b = input$dt_prop_b, min_cohort_b = input$dt_min_cohort_b, cycle_length = input$dt_cycle_length, 
+                            cohort_size = input$dt_cohort_size, max_n = input$dt_max_n, start_level = match(input$dt_start_level, unlist(strsplit(input$dt_dose_labels, ","))))
+      
+    }
+    
+        all <- list(get0("tcrm"), get0("tpt"), get0("boin"), get0("crm"))
     w$hide()
     return(all[lengths(all) != 0])
     
@@ -1058,12 +1109,20 @@ server <- function(input, output, session) {
     fun_list <- list()
     
     for (v in seq(1, length(dt_selected_design_names()))) {
-      df <- data.frame("design"=dt_selected_design_names()[v], "pcs"=dt_function_outputs()[[v]]$pcs, "true_mtd"=dt_function_outputs()[[v]]$true_mtd, 
-                       "obs_tox"=dt_function_outputs()[[v]]$obs_tox_overall, "target_tox"=dt_function_outputs()[[v]]$target_tox, 
+      df <- data.frame("design"=dt_selected_design_names()[v], 
+                       "pcs"=dt_function_outputs()[[v]]$pcs, 
+                       "true_mtd"=dt_function_outputs()[[v]]$true_mtd, 
+                       "obs_tox"=dt_function_outputs()[[v]]$obs_tox_overall, 
+                       "target_tox"=dt_function_outputs()[[v]]$target_tox, 
                        "patmtd"=dt_function_outputs()[[v]]$patient_allocation_table[dt_function_outputs()[[v]]$true_mtd], 
-                       "mean_duration"=dt_function_outputs()[[v]]$mean_duration, "sd_duration"=dt_function_outputs()[[v]]$sd_duration, 
-                       "mean_obs_n"=dt_function_outputs()[[v]]$mean_obs_n, "min_obs_n"=dt_function_outputs()[[v]]$min_obs_n, "max_obs_n"=dt_function_outputs()[[v]]$max_obs_n, 
-                       "prop_b"=dt_function_outputs()[[v]]$prop_b, "mean_cohort_b"=dt_function_outputs()[[v]]$mean_cohort_b, "sd_cohort_b"=dt_function_outputs()[[v]]$sd_cohort_b)
+                       "mean_duration"=dt_function_outputs()[[v]]$mean_duration, 
+                       "sd_duration"=dt_function_outputs()[[v]]$sd_duration, 
+                       "mean_obs_n"=dt_function_outputs()[[v]]$mean_obs_n, 
+                       "min_obs_n"=dt_function_outputs()[[v]]$min_obs_n, 
+                       "max_obs_n"=dt_function_outputs()[[v]]$max_obs_n, 
+                       "prop_b"=dt_function_outputs()[[v]]$prop_b, 
+                       "mean_cohort_b"=dt_function_outputs()[[v]]$mean_cohort_b, 
+                       "sd_cohort_b"=dt_function_outputs()[[v]]$sd_cohort_b)
       fun_list[[v]] <- df
     }
     
@@ -1085,9 +1144,12 @@ server <- function(input, output, session) {
       }
       
       finaldf <- bind_rows(fun_list)
-      finaldf$dose_level <- factor(unlist(strsplit(input$dt_dose_labels, ",")), levels=unlist(strsplit(input$dt_dose_labels, ",")))
+      finaldf$dose_level <- factor(unlist(strsplit(input$dt_dose_labels, ",")), 
+                                   levels=unlist(strsplit(input$dt_dose_labels, ",")))
       finaldf$design <- as.factor(finaldf$design)
-      finaldf$dose_num <- rep(seq(1, length(unlist(strsplit(input$dt_dose_labels, ",")))), length(dt_selected_design_names()))
+      finaldf$dose_num <- rep(seq(1, length(unlist(strsplit(input$dt_dose_labels, ",")))), 
+                              length(dt_selected_design_names()))
+      
       
       return(finaldf)
     }
@@ -1096,9 +1158,11 @@ server <- function(input, output, session) {
     else if(length(dt_selected_design_names()) == 1){
       
       df <- dt_function_outputs()[[1]]$df
-      df$dose_level <- factor(unlist(strsplit(input$dt_dose_labels, ",")), levels=unlist(strsplit(input$dt_dose_labels, ",")))
+      df$dose_level <- factor(unlist(strsplit(input$dt_dose_labels, ",")), 
+                              levels=unlist(strsplit(input$dt_dose_labels, ",")))
       df$design <- as.factor(df$design)
       df$dose_num <- seq(1, length(unlist(strsplit(input$dt_dose_labels, ","))))
+      
       return(df)
     }
   })
@@ -1109,7 +1173,8 @@ server <- function(input, output, session) {
     fun_list <- list()
     
     for (v in seq(1, fun_length)) {
-      df <- data.frame("design"=dt_function_outputs()[[v]]$df$design[1], "mean_duration"=dt_function_outputs()[[v]]$mean_duration, 
+      df <- data.frame("design"=dt_function_outputs()[[v]]$df$design[1], 
+                       "mean_duration"=dt_function_outputs()[[v]]$mean_duration, 
                        "sd_duration"=dt_function_outputs()[[v]]$sd_duration)
       fun_list[[v]] <- df
       
@@ -1119,19 +1184,29 @@ server <- function(input, output, session) {
     return(finaldf)
   })
   
+
   ### Plots ---------------------
   
   # Plot1
   dt_plot_1_val <- reactive({
     ggplot() + 
       geom_bar(data = dt_plot_df() %>% 
-                 mutate(mtd_prop=mtd.Freq/input$dt_num_trials), aes(x=dose_level, y=mtd_prop, fill=design), stat="identity", position="dodge") + 
+                 mutate(mtd_prop=mtd.Freq/input$dt_num_trials), 
+               aes(x=dose_level, y=mtd_prop, fill=design), 
+               stat="identity", position="dodge") + 
       geom_bar(data = dt_plot_df() %>% 
                  mutate(mtd_prop=mtd.Freq/input$dt_num_trials) %>% 
-                 filter(dose_num == true_mtd), aes(x=dose_level, y=mtd_prop, fill=design, color=as.factor(true_mtd)), stat="identity", position="dodge", size=2) +
-      scale_color_manual(name="True MTD", values=c("black"), labels=NULL) + scale_fill_manual(values = c("#66c2a5", "#fc8d62", "#8da0cb")) +
-      xlab("Dose Level") + ylab("") + ggtitle("Proportion of Simulated Trials Selecting\nEach Dose Level as True MTD") +
-      theme(plot.title = element_text(hjust = 0.5)) + guides(fill=guide_legend(title="Design", order=1), color = guide_legend(override.aes = list(fill = "white"), order=2))
+                 filter(dose_num == true_mtd), 
+               aes(x=dose_level, y=mtd_prop, fill=design, 
+                   color=as.factor(true_mtd)), stat="identity", position="dodge", linewidth=2) +
+      scale_color_manual(name="True MTD", values=c("black"), labels=NULL) + 
+      scale_fill_manual(values = c("#79AF97", "#C93312", "#6A6599", "#FFDC91")) +
+      xlab("Dose Level") + 
+      ylab("") + 
+      ggtitle("Proportion of Simulated Trials Selecting\nEach Dose Level as True MTD") +
+      theme(plot.title = element_text(hjust = 0.5)) + 
+      guides(fill=guide_legend(title="Design", order=1), 
+             color = guide_legend(override.aes = list(fill = "white"), order=2))
   })
   output$dt_plot_1 <- renderPlot({
     dt_plot_1_val()
@@ -1140,13 +1215,22 @@ server <- function(input, output, session) {
   # Plot2
   dt_plot_2_val <- reactive({
     ggplot() + 
-      geom_bar(data = dt_plot_df(), aes(x=dose_level, y=obs_tox_table, fill=design), stat="identity", position="dodge") + 
+      geom_bar(data = dt_plot_df(), 
+               aes(x=dose_level, y=obs_tox_table, fill=design), 
+               stat="identity", position="dodge") + 
       geom_bar(data = dt_plot_df() %>% 
-                 filter(dose_num == true_mtd), aes(x=dose_level, y=obs_tox_table, fill=design, color=as.factor(true_mtd)), stat="identity", position="dodge", size=2) +
-      geom_hline(aes(yintercept=input$dt_target_tox), linetype="dashed") + guides(color = FALSE) +
-      scale_color_manual(name="True MTD", values=c("black"), labels=NULL) + scale_fill_manual(values = c("#66c2a5", "#fc8d62", "#8da0cb")) +
-      xlab("Dose Level") + ylab("") + ggtitle("Proportion of Patients Experiencing\na DLT Per Dose Level") + theme(plot.title = element_text(hjust = 0.5)) +
-      guides(fill=guide_legend(title="Design", order=1), color = guide_legend(override.aes = list(fill = "white"), order=2))
+                 filter(dose_num == true_mtd), 
+               aes(x=dose_level, y=obs_tox_table, fill=design, 
+                   color=as.factor(true_mtd)), stat="identity", position="dodge", linewidth=2) +
+      geom_hline(aes(yintercept=input$dt_target_tox), linetype="dashed") + 
+      guides(color = FALSE) +
+      scale_color_manual(name="True MTD", values=c("black"), labels=NULL) + 
+      scale_fill_manual(values = c("#79AF97", "#C93312", "#6A6599", "#FFDC91")) +
+      xlab("Dose Level") + ylab("") + 
+      ggtitle("Proportion of Patients Experiencing\na DLT Per Dose Level") + 
+      theme(plot.title = element_text(hjust = 0.5)) +
+      guides(fill=guide_legend(title="Design", order=1), 
+             color = guide_legend(override.aes = list(fill = "white"), order=2))
   })
   
   output$dt_plot_2 <- renderPlot({
@@ -1156,12 +1240,20 @@ server <- function(input, output, session) {
   # Plot3
   dt_plot_3_val <- reactive({
     ggplot() + 
-      geom_bar(data=dt_plot_df(), aes(x=dose_level, y=patient_allocation_table, fill=design), stat="identity", position="dodge") +
+      geom_bar(data=dt_plot_df(), 
+               aes(x=dose_level, y=patient_allocation_table, fill=design), 
+               stat="identity", position="dodge") +
       geom_bar(data=dt_plot_df() %>% 
-                 filter(dose_num == true_mtd), aes(x=dose_level, y=patient_allocation_table, fill=design, color=as.factor(true_mtd)), stat="identity", position="dodge", size=2) +
-      scale_color_manual(name="True MTD", values=c("black"), labels=NULL) + scale_fill_manual(values = c("#66c2a5", "#fc8d62", "#8da0cb")) +
-      xlab("Dose Level") + ylab("") + ggtitle("Proportion of Patients Allocated\nto Each Dose Level") + theme(plot.title = element_text(hjust = 0.5)) +
-      guides(fill=guide_legend(title="Design", order=1), color = guide_legend(override.aes = list(fill = "white"), order=2))
+                 filter(dose_num == true_mtd), 
+               aes(x=dose_level, y=patient_allocation_table, fill=design, 
+                   color=as.factor(true_mtd)), stat="identity", position="dodge", linewidth=2) +
+      scale_color_manual(name="True MTD", values=c("black"), labels=NULL) + 
+      scale_fill_manual(values = c("#79AF97", "#C93312", "#6A6599", "#FFDC91")) +
+      xlab("Dose Level") + ylab("") + 
+      ggtitle("Proportion of Patients Allocated\nto Each Dose Level") + 
+      theme(plot.title = element_text(hjust = 0.5)) +
+      guides(fill=guide_legend(title="Design", order=1), 
+             color = guide_legend(override.aes = list(fill = "white"), order=2))
   })
   
   output$dt_plot_3 <- renderPlot({
@@ -1172,10 +1264,13 @@ server <- function(input, output, session) {
   dt_plot_4_val <- reactive({
     dt_plot_df2() %>%
       ggplot(aes(x=design, y=mean_duration)) + 
-      geom_bar(aes(fill=design), stat="identity", position="dodge", width=0.3) + scale_fill_manual(values = c("#66c2a5", "#fc8d62", "#8da0cb")) +
-      geom_errorbar(aes(ymin= mean_duration - sd_duration, ymax = mean_duration + sd_duration), width=0.3, size=2) + 
+      geom_bar(aes(fill=design), stat="identity", position="dodge", width=0.3) + 
+      scale_fill_manual(values = c("#79AF97", "#C93312", "#6A6599", "#FFDC91")) +
+      geom_errorbar(aes(ymin= mean_duration - sd_duration, ymax = mean_duration + 
+                          sd_duration), width=0.3, size=2) + 
       xlab("Design") + ylab("") + ggtitle("Mean Study Duration in Days (+/- 1 SD)") +
-      theme(plot.title = element_text(hjust = 0.5)) + guides(fill=guide_legend(title="Design"))
+      theme(plot.title = element_text(hjust = 0.5)) + 
+      guides(fill=guide_legend(title="Design"))
   })
   
   output$dt_plot_4 <- renderPlot({
@@ -1231,7 +1326,8 @@ server <- function(input, output, session) {
   dt_report_methods <- reactive({
     req(input$dt_simulate > 0)
     
-    if ("TARGET-CRM" %in% input$dt_selectors || "CRM" %in% input$dt_selectors) {
+    if ("TARGET-CRM" %in% input$dt_selectors || "CRM" %in% input$dt_selectors ||
+        "BOIN" %in% input$dt_selectors) {
       
       x1 <- input$dt_num_trials
       x2 <- input$dt_num_doses
@@ -1314,6 +1410,29 @@ server <- function(input, output, session) {
     } 
   })
   
+  # BOIN table for Report Results
+  dt_report_BOINtable <- reactive({
+    
+    BOINtable <- get.boundary(target=input$dt_target_tox, 
+                              ncohort=input$dt_max_n/input$dt_cohort_size, 
+                              cohortsize=input$dt_cohort_size, n.earlystop = 100, 
+                              p.saf = 0.6*input$dt_target_tox, 
+                              p.tox = 1.4*input$dt_target_tox, 
+                              cutoff.eli = 0.95, extrasafe = FALSE, offset = 0.05)
+    if(input$dt_cohort_size==1) {
+      x1 <- t(as.data.frame(BOINtable$boundary_tab))
+      rownames(x1)<-NULL
+      x1<-t(t(x1))
+      return(x1) 
+    } else {
+      x1 <- t(as.data.frame(BOINtable$full_boundary_tab))
+      rownames(x1)<-NULL
+      x1<-t(t(x1))
+      return(x1) 
+    }
+    
+  })
+  
   ### Download Results ---------------------
   output$dt_results <- downloadHandler(
     filename = function(){paste0("DEDUCE Design ", lubridate::with_tz(Sys.time(), "America/New_York"), " ET.docx")}, 
@@ -1321,9 +1440,16 @@ server <- function(input, output, session) {
       
       temp_report <- file.path(tempdir(), "report.Rmd")
       file.copy("report.Rmd", temp_report, overwrite = TRUE)
-      params <- list(d = dt_selected_design_names(), m = dt_report_methods(), r = dt_report_results(), 
-                     p1 = dt_plot_1_val(), p2 = dt_plot_2_val(), p3 = dt_plot_3_val(), p4 = dt_plot_4_val(), t = dt_table_1_df())
-      render(temp_report, output_file = file, params = params, envir = new.env(parent = globalenv()))
+      params <- list(d = dt_selected_design_names(), m = dt_report_methods(), 
+                     r = dt_report_results(), 
+                     p1 = dt_plot_1_val(), 
+                     p2 = dt_plot_2_val(), 
+                     p3 = dt_plot_3_val(), 
+                     p4 = dt_plot_4_val(), 
+                     t = dt_table_1_df(),
+                     t2 = dt_report_BOINtable())
+      render(temp_report, output_file = file, params = params, 
+             envir = new.env(parent = globalenv()))
     }
   )
   
@@ -1549,11 +1675,17 @@ server <- function(input, output, session) {
       
       temp_report <- file.path(tempdir(), "report_conduct.rmd")
       file.copy("report_conduct.rmd", temp_report, overwrite = TRUE)
-      params <- list(d = input$ct_selectors, df1 = ct_function_outputs()$df1, df2 = ct_function_outputs()$df2, r1 = ct_function_outputs()$crm_out$mtd, 
-                     r2 = ct_function_outputs()$crm_out$target, r3 = ct_function_outputs()$crm_out$prior, 
-                     r4 = ct_function_outputs()$crm_out$prior.var, r5 = ct_function_outputs()$crm_out$estimate, 
-                     r6 = ct_function_outputs()$crm_out$post.var, r7 = ct_function_outputs()$crm_out$dosename[ct_function_outputs()$current_dose], 
-                     r8 = ct_function_outputs()$cohort_size, r9 = ct_function_outputs()$num_slots_remain)
+      params <- list(d = input$ct_selectors, df1 = ct_function_outputs()$df1, 
+                     df2 = ct_function_outputs()$df2, 
+                     r1 = ct_function_outputs()$crm_out$mtd, 
+                     r2 = ct_function_outputs()$crm_out$target, 
+                     r3 = ct_function_outputs()$crm_out$prior, 
+                     r4 = ct_function_outputs()$crm_out$prior.var, 
+                     r5 = ct_function_outputs()$crm_out$estimate, 
+                     r6 = ct_function_outputs()$crm_out$post.var, 
+                     r7 = ct_function_outputs()$crm_out$dosename[ct_function_outputs()$current_dose], 
+                     r8 = ct_function_outputs()$cohort_size, 
+                     r9 = ct_function_outputs()$num_slots_remain)
       render(temp_report, output_file = file, params = params, envir = new.env(parent = globalenv()))
     }
   )
@@ -1778,11 +1910,18 @@ server <- function(input, output, session) {
       
       temp_report <- file.path(tempdir(), "report_conduct_csv.Rmd")
       file.copy("report_conduct_csv.Rmd", temp_report, overwrite = TRUE)
-      params <- list(name = input$ct_file1$name, d = input$ct_selectors_upload, df1 = ct_function_outputs_upload()$df1, df2 = ct_function_outputs_upload()$df2, r1 = ct_function_outputs_upload()$crm_out$mtd, 
-                     r2 = ct_function_outputs_upload()$crm_out$target, r3 = ct_function_outputs_upload()$crm_out$prior, 
-                     r4 = ct_function_outputs_upload()$crm_out$prior.var, r5 = ct_function_outputs_upload()$crm_out$estimate, 
-                     r6 = ct_function_outputs_upload()$crm_out$post.var, r7 = ct_function_outputs_upload()$crm_out$dosename[ct_function_outputs_upload()$current_dose], 
-                     r8 = ct_function_outputs_upload()$cohort_size, r9 = ct_function_outputs_upload()$num_slots_remain)
+      params <- list(name = input$ct_file1$name, d = input$ct_selectors_upload, 
+                     df1 = ct_function_outputs_upload()$df1, 
+                     df2 = ct_function_outputs_upload()$df2, 
+                     r1 = ct_function_outputs_upload()$crm_out$mtd, 
+                     r2 = ct_function_outputs_upload()$crm_out$target, 
+                     r3 = ct_function_outputs_upload()$crm_out$prior, 
+                     r4 = ct_function_outputs_upload()$crm_out$prior.var, 
+                     r5 = ct_function_outputs_upload()$crm_out$estimate, 
+                     r6 = ct_function_outputs_upload()$crm_out$post.var, 
+                     r7 = ct_function_outputs_upload()$crm_out$dosename[ct_function_outputs_upload()$current_dose], 
+                     r8 = ct_function_outputs_upload()$cohort_size, 
+                     r9 = ct_function_outputs_upload()$num_slots_remain)
       render(temp_report, output_file = file, params = params, envir = new.env(parent = globalenv()))
     }
   )
