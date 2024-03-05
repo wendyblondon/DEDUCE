@@ -99,7 +99,8 @@ my_boin <- function(prior, target_tox, number_trials, true_tox, arrival_rate,
         d = current_dose
         
         study_end=0
-      } else if (num_DLT >= BOIN_col[3] & num_DLT < BOIN_col[4]) { #De-escalate   
+      } else if ((num_DLT >= BOIN_col[3] & is.na(BOIN_col[4])) | 
+                 (num_DLT >= BOIN_col[3] & num_DLT < BOIN_col[4])) { #De-escalate   
         current_dose = current_dose-1 
         d = current_dose
         study_end=0

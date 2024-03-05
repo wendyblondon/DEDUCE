@@ -58,7 +58,7 @@ if(length(params$d)==1) {
 
 **Accuracy:** For each dose level, Figure 1 presents the proportion of simulated trials that a given dose level was selected as the true MTD. The proportion of correct selection (PCS) of the MTD for the **`r params$d`** design is **`r params$r[1]`**.
 
-**Safety:** Figure 2 presents the proportion of patients experiencing a DLT for each dose level. The proportion of patients experiencing a DLT for the **`r params$d`** design is **`r params$r[2]`** which is **`r params$r[4]`** the target toxicity probability of **`r params$r[3]`**
+**Safety:** Table 1 presents the overall proportion of patients experiencing a DLT for each dose level. The overall proportion of patients experiencing a DLT for the **`r params$d`** design is **`r params$r[2]`** which is **`r params$r[4]`** the target toxicity probability of **`r params$r[3]`**. Figure 2 presents the proportion of patients experiencing a DLT for each dose level. 
 
 **Patient Allocation:** Figure 3 presents the proportion of patients assigned to each dose level. The proportion of patients assigned to the true MTD (dose level **`r dQuote(params$r[5])`**) for the **`r params$d`** design is **`r params$r[6]`**.
 
