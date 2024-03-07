@@ -163,6 +163,18 @@ ui <- page_navbar(title = "DEDUCE", theme = bs_theme(version = 3), bg = "white",
                                    
                                    ### Main Inputs ---------------------
                                    
+                                   #### Set seed ------------------
+                                   textInput(
+                                     "dt_setseed",
+                                     div(p(class = "help-p", "Seed"), HTML('<button id="dt-setseed-help" class="help-btn" type="button">?</button>')),
+                                     value = "YYYYMMDD", width = "100%"
+                                   ),
+                                   bsPopover(
+                                     "dt-setseed-help", "",
+                                     "Please enter the seed for simulation (format YYYYMMDD).",
+                                     placement = "top", trigger = "focus"
+                                   ),
+                                   
                                    #### Designs ---------------------
                                    checkboxGroupInput(
                                      "dt_selectors",
@@ -171,7 +183,7 @@ ui <- page_navbar(title = "DEDUCE", theme = bs_theme(version = 3), bg = "white",
                                    ),
                                    bsPopover(
                                      "dt-designs-help", "",
-                                     "Select the design(s) to run in the model",
+                                     "Select the design(s) to run in the model. For 3+3 design, a cohort of 3 will be always used.",
                                      placement = "top", trigger = "focus"
                                    ),
                                    
@@ -311,7 +323,7 @@ ui <- page_navbar(title = "DEDUCE", theme = bs_theme(version = 3), bg = "white",
                                      ),
                                      bsPopover(
                                        "dt-cohort-size-help", "",
-                                       "Please enter the cohort size. The cohort size is the number of patients to be treated at the current dose level before a dose escalation decision is made.",
+                                       "Please enter the cohort size. The cohort size is the number of patients to be treated at the current dose level before a dose escalation decision is made. For 3+3 design, a cohort of 3 will be always used.",
                                        placement = "top", trigger = "focus"
                                      )
                                    ),
@@ -356,10 +368,10 @@ ui <- page_navbar(title = "DEDUCE", theme = bs_theme(version = 3), bg = "white",
                                    
                                    ### Simulate/Download/Reset Buttons ---------------------
                                    splitLayout(
-                                     cellWidths = c("50%", "25%", "25%"),
+                                     cellWidths = c("50%", "50%"), #"25%"),
                                      actionButton("dt_simulate", "Simulate"),
-                                     downloadButton("dt_results", ""),
-                                     actionButton("dt_reset", "Reset")
+                                     downloadButton("dt_results", "")#,
+                                     #actionButton("dt_reset", "Reset")
                                    ),
                                    bsPopover(
                                      "dt_simulate", "",
@@ -370,12 +382,12 @@ ui <- page_navbar(title = "DEDUCE", theme = bs_theme(version = 3), bg = "white",
                                      "dt_results", "",
                                      "Download a MS Word document with the full report of plots, tables, and summaries", 
                                      placement = "top"
-                                   ),
-                                   bsPopover(
-                                     "dt_reset", "",
-                                     "WARNING: Resets all of the inputs and results. Cannot be undone.", 
-                                     placement = "top"
-                                   )
+                                   ) #,
+                                   # bsPopover(
+                                   #   "dt_reset", "",
+                                   #   "WARNING: Resets all of the inputs and results. Cannot be undone.", 
+                                   #   placement = "top"
+                                   # )
                             ),
                             column(9,
                                    uiOutput("dt_plots_ui")
@@ -886,6 +898,13 @@ server <- function(input, output, session) {
   dt_sim_count <- reactiveVal(NULL)
   
   ### Warnings for Invalid Inputs ---------------------
+  # 
+  # # Set seed
+  # observe({
+  #   if (nchar(input$dt_setseed) != 8){
+  #     shinyjs::alert("The seed should be in format of YYYYMMDD")
+  #   }
+  # })
   
   # Designs
   observe({
@@ -963,25 +982,25 @@ server <- function(input, output, session) {
     show("dt_ui_plots")
   })
   
-  # If a Simulation was Ran Already - Enable Results, Disable Inputs and Simulate - Forces User to Reset After Each Use
+  # If a Simulation was Ran Already - Enable Results, not Disable Inputs and Simulate 
   observe({
     if (!is.null(dt_sim_count())) {
       enable("dt_results")
-      disable("dt_selectors")
-      disable("dt_num_doses")
-      disable("dt_dose_labels")
-      disable("dt_start_level")
-      disable("dt_num_trials")
-      disable("dt_target_tox")
-      disable("dt_true_tox")
-      disable("dt_arrival_rate")
-      disable("dt_cycle_length")
-      disable("dt_prior_tox")
-      disable("dt_max_n")
-      disable("dt_cohort_size")
-      disable("dt_prop_b")
-      disable("dt_min_cohort_b")
-      disable("dt_simulate")
+      enable("dt_selectors")
+      enable("dt_num_doses")
+      enable("dt_dose_labels")
+      enable("dt_start_level")
+      enable("dt_num_trials")
+      enable("dt_target_tox")
+      enable("dt_true_tox")
+      enable("dt_arrival_rate")
+      enable("dt_cycle_length")
+      enable("dt_prior_tox")
+      enable("dt_max_n")
+      enable("dt_cohort_size")
+      enable("dt_prop_b")
+      enable("dt_min_cohort_b")
+      enable("dt_simulate")
       removePopover(session, "dt_simulate")
     } else{
       disable("dt_results")
@@ -991,39 +1010,39 @@ server <- function(input, output, session) {
   })
   
   # Hide/Enable/Reset the UI Elements When Reset is Clicked
-  observeEvent(input$dt_reset, {
-    hide("dt_ui_plots")
-    enable("dt_selectors")
-    enable("dt_num_doses")
-    enable("dt_dose_labels")
-    enable("dt_start_level")
-    enable("dt_num_trials")
-    enable("dt_target_tox")
-    enable("dt_true_tox")
-    enable("dt_arrival_rate")
-    enable("dt_cycle_length")
-    enable("dt_prior_tox")
-    enable("dt_max_n")
-    enable("dt_cohort_size")
-    enable("dt_prop_b")
-    enable("dt_min_cohort_b")
-    reset("dt_selectors")
-    reset("dt_num_doses")
-    reset("dt_dose_labels")
-    reset("dt_start_level")
-    reset("dt_num_trials")
-    reset("dt_target_tox")
-    reset("dt_true_tox")
-    reset("dt_arrival_rate")
-    reset("dt_prop_b")
-    reset("dt_cycle_length")
-    reset("dt_prior_tox")
-    reset("dt_max_n")
-    reset("dt_min_cohort_b")
-    reset("dt_cohort_size")
-    dt_sim_count(NULL)
-    disable("dt_results")
-  })
+  # observeEvent(input$dt_reset, {
+  #   hide("dt_ui_plots")
+  #   enable("dt_selectors")
+  #   enable("dt_num_doses")
+  #   enable("dt_dose_labels")
+  #   enable("dt_start_level")
+  #   enable("dt_num_trials")
+  #   enable("dt_target_tox")
+  #   enable("dt_true_tox")
+  #   enable("dt_arrival_rate")
+  #   enable("dt_cycle_length")
+  #   enable("dt_prior_tox")
+  #   enable("dt_max_n")
+  #   enable("dt_cohort_size")
+  #   enable("dt_prop_b")
+  #   enable("dt_min_cohort_b")
+  #   reset("dt_selectors")
+  #   reset("dt_num_doses")
+  #   reset("dt_dose_labels")
+  #   reset("dt_start_level")
+  #   reset("dt_num_trials")
+  #   reset("dt_target_tox")
+  #   reset("dt_true_tox")
+  #   reset("dt_arrival_rate")
+  #   reset("dt_prop_b")
+  #   reset("dt_cycle_length")
+  #   reset("dt_prior_tox")
+  #   reset("dt_max_n")
+  #   reset("dt_min_cohort_b")
+  #   reset("dt_cohort_size")
+  #   dt_sim_count(NULL)
+  #   disable("dt_results")
+  # })
   
   ### UI ---------------------
   
@@ -1057,12 +1076,14 @@ server <- function(input, output, session) {
     
     # Change Reactive Value When Design is Ran
     dt_sim_count(1)
+    set.seed(as.numeric(input$dt_setseed))
     
     # 3+3
     if ("3+3" %in% input$dt_selectors) {
       
       tpt <- three_plus_three(target_tox = input$dt_target_tox, number_trials = input$dt_num_trials, 
-                              true_tox = numerizer(input$dt_true_tox), arrival_rate = input$dt_arrival_rate, cycle_length = input$dt_cycle_length, 
+                              true_tox = numerizer(input$dt_true_tox), arrival_rate = input$dt_arrival_rate, 
+                              cycle_length = input$dt_cycle_length, 
                               start_level = match(input$dt_start_level, unlist(strsplit(input$dt_dose_labels, ","))))
     }
     
@@ -1116,7 +1137,10 @@ server <- function(input, output, session) {
                        "target_tox"=dt_function_outputs()[[v]]$target_tox, 
                        "patmtd"=dt_function_outputs()[[v]]$patient_allocation_table[dt_function_outputs()[[v]]$true_mtd], 
                        "mean_duration"=dt_function_outputs()[[v]]$mean_duration, 
-                       "sd_duration"=dt_function_outputs()[[v]]$sd_duration, 
+                       "sd_duration"=dt_function_outputs()[[v]]$sd_duration,
+                       "median_duration"=dt_function_outputs()[[v]]$median_duration,
+                       "q1_duration"=dt_function_outputs()[[v]]$q1_duration,
+                       "q3_duration"=dt_function_outputs()[[v]]$q3_duration,
                        "mean_obs_n"=dt_function_outputs()[[v]]$mean_obs_n, 
                        "min_obs_n"=dt_function_outputs()[[v]]$min_obs_n, 
                        "max_obs_n"=dt_function_outputs()[[v]]$max_obs_n, 
@@ -1198,7 +1222,8 @@ server <- function(input, output, session) {
                  mutate(mtd_prop=mtd.Freq/input$dt_num_trials) %>% 
                  filter(dose_num == true_mtd), 
                aes(x=dose_level, y=mtd_prop, fill=design, 
-                   color=as.factor(true_mtd)), stat="identity", position="dodge", linewidth=2) +
+                   color=as.factor(true_mtd)), stat="identity", position="dodge", 
+               linewidth=2) +
       scale_color_manual(name="True MTD", values=c("black"), labels=NULL) + 
       scale_fill_manual(values = c("#79AF97", "#C93312", "#6A6599", "#FFDC91")) +
       xlab("Dose Level") + 
@@ -1287,21 +1312,24 @@ server <- function(input, output, session) {
     for (v in seq(1, length(dt_selected_design_names()))) {
       if (dt_function_outputs()[[v]]$df$design[1] == "3+3") {
         
-        x <- round(unname(c(null_to_na(dt_function_outputs()[[v]]$pcs), null_to_na(dt_function_outputs()[[v]]$true_mtd), 
-                            dt_function_outputs()[[v]]$mtd_selection_table/dt_function_outputs()[[v]]$number_trials, 
-                            null_to_na(dt_function_outputs()[[v]]$obs_tox_overall), dt_function_outputs()[[v]]$obs_tox_table, 
-                            null_to_na(dt_function_outputs()[[v]]$mean_obs_n), null_to_na(dt_function_outputs()[[v]]$min_obs_n), 
-                            null_to_na(dt_function_outputs()[[v]]$max_obs_n), dt_function_outputs()[[v]]$patient_allocation_table, 
-                            dt_function_outputs()[[v]]$mean_duration, dt_function_outputs()[[v]]$sd_duration, NA, NA)), 3)
-        x_name <- dt_function_outputs()[[v]]$df$design[1]
-      }
-      else {
-        x <- round(unname(c(null_to_na(dt_function_outputs()[[v]]$pcs), null_to_na(dt_function_outputs()[[v]]$true_mtd), 
+        x <- round(unname(c(null_to_na(dt_function_outputs()[[v]]$pcs), null_to_na(as.numeric(unlist(strsplit(input$dt_dose_labels, ","))[dt_function_outputs()[[v]]$true_mtd])), 
                             dt_function_outputs()[[v]]$mtd_selection_table/dt_function_outputs()[[v]]$number_trials, 
                             null_to_na(dt_function_outputs()[[v]]$obs_tox_overall), dt_function_outputs()[[v]]$obs_tox_table, 
                             null_to_na(dt_function_outputs()[[v]]$mean_obs_n), null_to_na(dt_function_outputs()[[v]]$min_obs_n), 
                             null_to_na(dt_function_outputs()[[v]]$max_obs_n), dt_function_outputs()[[v]]$patient_allocation_table, 
                             dt_function_outputs()[[v]]$mean_duration, dt_function_outputs()[[v]]$sd_duration, 
+                            dt_function_outputs()[[v]]$median_duration, dt_function_outputs()[[v]]$q1_duration, dt_function_outputs()[[v]]$q3_duration,
+                            NA, NA)), 3)
+        x_name <- dt_function_outputs()[[v]]$df$design[1]
+      }
+      else {
+        x <- round(unname(c(null_to_na(dt_function_outputs()[[v]]$pcs), null_to_na(as.numeric(unlist(strsplit(input$dt_dose_labels, ","))[dt_function_outputs()[[v]]$true_mtd])), 
+                            dt_function_outputs()[[v]]$mtd_selection_table/dt_function_outputs()[[v]]$number_trials, 
+                            null_to_na(dt_function_outputs()[[v]]$obs_tox_overall), dt_function_outputs()[[v]]$obs_tox_table, 
+                            null_to_na(dt_function_outputs()[[v]]$mean_obs_n), null_to_na(dt_function_outputs()[[v]]$min_obs_n), 
+                            null_to_na(dt_function_outputs()[[v]]$max_obs_n), dt_function_outputs()[[v]]$patient_allocation_table, 
+                            dt_function_outputs()[[v]]$mean_duration, dt_function_outputs()[[v]]$sd_duration, 
+                            dt_function_outputs()[[v]]$median_duration, dt_function_outputs()[[v]]$q1_duration, dt_function_outputs()[[v]]$q3_duration,
                             null_to_na(dt_function_outputs()[[v]]$mean_cohort_b), null_to_na(dt_function_outputs()[[v]]$sd_cohort_b))), 3)
         x_name <- dt_function_outputs()[[v]]$df$design[1]
       }
@@ -1311,11 +1339,13 @@ server <- function(input, output, session) {
       
     }
     df <- as.data.frame(do.call(cbind, table_list))
-    op_chars <- c("Proportion of correct selection (PCS)", "True MTD", sprintf("Proportion of trials selecting dose %s as true MTD", unlist(strsplit(input$dt_dose_labels, ","))),
+    op_chars <- c("Proportion of correct selection (PCS)", "True MTD", 
+                  sprintf("Proportion of trials selecting dose %s as true MTD", unlist(strsplit(input$dt_dose_labels, ","))),
                   "Proportion of patients experiencing a DLT overall", sprintf("Proportion of patients experiencing a DLT at dose %s", unlist(strsplit(input$dt_dose_labels, ","))),
                   "Mean total sample size", "Minimmum total sample size", "Maximum total sample size", 
                   sprintf("Proportion of patients enrolled at dose %s", unlist(strsplit(input$dt_dose_labels, ","))), "Mean study duration in days", 
-                  "Standard deviation of study duration in days", "Mean # of cohort B patients enrolled during DTL observation period (TARGET-CRM only)",
+                  "Standard deviation of study duration in days", "Median study duration in days", "25% percentile study duration in days", "75% percentile study duration in days",
+                  "Mean # of cohort B patients enrolled during DTL observation period (TARGET-CRM only)",
                   "Standard deviation of # of cohort B patients enrolled during DLT observation period (TARGET-CRM only)")
     df <- cbind(op_chars, df)
     colnames(df)[1] <- "Operating Characteristic"
@@ -1342,7 +1372,8 @@ server <- function(input, output, session) {
       x11 <- input$dt_max_n
       x12 <- input$dt_prop_b
       x13 <- input$dt_min_cohort_b
-      return(c(x1,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11,x12,x13))
+      x14 <- input$dt_setseed
+      return(c(x1,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11,x12,x13,x14))
       
     }
     else{
@@ -1354,7 +1385,8 @@ server <- function(input, output, session) {
       x6 <- input$dt_target_tox
       x7 <- input$dt_arrival_rate
       x8 <- input$dt_cycle_length
-      return(c(x1,x2,x3,x4,x5,x6,x7,x8))
+      x14 <- input$dt_setseed
+      return(c(x1,x2,x3,x4,x5,x6,x7,x8,x14))
       
     }
   })
@@ -1375,12 +1407,15 @@ server <- function(input, output, session) {
       x9 <- dt_results_df()$mean_obs_n
       x10 <- dt_results_df()$min_obs_n
       x11 <- dt_results_df()$max_obs_n
+      x15 <- round(dt_results_df()$median_duration, 2)
+      x16 <- round(dt_results_df()$q1_duration, 2)
+      x17 <- round(dt_results_df()$q3_duration, 2)
       
       # Only Needed for TARGET-CRM
       x12 <- dt_results_df()$prop_b
       x13 <- dt_results_df()$mean_cohort_b
       x14 <- dt_results_df()$sd_cohort_b
-      return(c(x1,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11,x12,x13,x14))
+      return(c(x1,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11,x12,x13,x14,x15,x16,x17))
     }
     
     # 2+ Designs
@@ -1388,7 +1423,7 @@ server <- function(input, output, session) {
       x1 <- dt_results_df() %>% slice_max(pcs) %>% select(design) %>% pull()
       x2 <- unlist(strsplit(input$dt_dose_labels, ","))[dt_results_df()$true_mtd[1]]
       x3 <- paste(sprintf("The proportion of correct selection (PCS) of the MTD for the %s design is %g.", dt_results_df()$design, dt_results_df()$pcs), collapse = " ")
-      x4 <- paste(sprintf("The proportion of patients experiencing a DLT for the %s design is %g, which %s the target toxicity probability of %g.", 
+      x4 <- paste(sprintf("The overall proportion of patients experiencing a DLT for the %s design is %g, which %s the target toxicity probability of %g.", 
                           dt_results_df()$design, dt_results_df()$obs_tox, ifelse(dt_results_df()$obs_tox > dt_results_df()$target_tox, "is greater than", 
                                                                                   ifelse(dt_results_df()$obs_tox == dt_results_df()$target_tox, "equals", "is lower than")), dt_results_df()$target_tox[1]), collapse = " ")
       x5 <- dt_results_df() %>% slice_max(patmtd) %>% select(design) %>% pull()
@@ -1398,6 +1433,9 @@ server <- function(input, output, session) {
                           dt_results_df()$sd_duration), collapse = " ")
       x9 <- paste(sprintf("The mean total sample size for the %s design is %g (range=%g-%g).", dt_results_df()$design, 
                           dt_results_df()$mean_obs_n, dt_results_df()$min_obs_n, dt_results_df()$max_obs_n), collapse = " ")
+      x13 <- paste(sprintf("The median study duration for the %s design is %g days(IQR=%g-%g).", dt_results_df()$design, dt_results_df()$median_duration, 
+                          dt_results_df()$q1_duration, dt_results_df()$q3_duration), collapse = " ")
+      
       
       # Only Needed for TARGET-CRM
       x10 <- dt_results_df()$prop_b[1]
@@ -1406,7 +1444,7 @@ server <- function(input, output, session) {
       x12 <- ifelse(nrow(dt_results_df() %>% filter(design == 'TARGET-CRM'))==0, NA, 
                     dt_results_df() %>% filter(design == 'TARGET-CRM') %>% select(sd_cohort_b) %>% pull())
       
-      return(c(x1,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11,x12))
+      return(c(x1,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11,x12,x13))
     } 
   })
   

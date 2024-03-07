@@ -294,7 +294,7 @@ for (i in 1:number_trials) {
 	}
 }
 
-mtd_selection_table <- table(mtd_selection)
+mtd_selection_table <- table(factor(mtd_selection, levels = 1:length(true_tox)))
 true_mtd <- which.min(round(abs(target_tox-true_tox),10))
 pcs <- mtd_selection_table[true_mtd] / sum(mtd_selection_table)
 obs_tox_overall <- sum(observe_tox)/sum(patient_allocation)
@@ -309,6 +309,9 @@ mean_cohort_b = mean(num_group_2_patients)
 sd_cohort_b = sd(num_group_2_patients)
 mean_duration = mean(study_duration)
 sd_duration = sd(study_duration)
+median_duration = median(study_duration)
+q1_duration = quantile(study_duration,0.25)
+q3_duration = quantile(study_duration, 0.75)
 
 df <- data.frame("design"="TARGET-CRM", "true_tox"=true_tox, "true_mtd"=true_mtd, "mtd"=mtd_selection_table,"patient_allocation_table"=patient_allocation_table, "obs_tox_table"=obs_tox_table)
 
@@ -324,13 +327,15 @@ num_group_1_patients=num_group_1_patients, num_group_2_patients=num_group_2_pati
 study_duration=study_duration, observe_tox=observe_tox, patient_allocation=patient_allocation, mean_obs_n=mean_obs_n, min_obs_n=min_obs_n, max_obs_n=max_obs_n,
 
 mtd_selection_table = mtd_selection_table, true_mtd=true_mtd, pcs=pcs, obs_tox_overall=obs_tox_overall, patient_allocation_table=patient_allocation_table, obs_tox_table=obs_tox_table,
-mean_cohort_b=mean_cohort_b, sd_cohort_b=sd_cohort_b, mean_duration=mean_duration, sd_duration=sd_duration)
+mean_cohort_b=mean_cohort_b, sd_cohort_b=sd_cohort_b, mean_duration=mean_duration, sd_duration=sd_duration, median_duration=median_duration, q1_duration=q1_duration, q3_duration=q3_duration)
 return(result)
 }
 
 # Example: -------------------
-# target_crm_result <- my_target_crm(prior=c(0.05,0.1,0.2,0.3), target_tox=0.2, number_trials=100, true_tox=c(0.05,0.12,0.20,0.30), 
-#                      arrival_rate=15, prop_b=0.1, min_cohort_b=0, cycle_length=28, cohort_size=3, max_n=18, start_level=2)
+# target_crm_result <- my_target_crm(prior=c(0.05,0.1,0.2,0.3), target_tox=0.2, number_trials=100, 
+#                                    true_tox=c(0.05,0.12,0.20,0.30),
+#                      arrival_rate=15, prop_b=0.1, min_cohort_b=0, cycle_length=28, 
+#                      cohort_size=1, max_n=18, start_level=3)
 
 
 

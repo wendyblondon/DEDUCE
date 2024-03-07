@@ -164,7 +164,7 @@ three_plus_three <- function (target_tox, number_trials, true_tox, arrival_rate,
   }
   
   # Calculate summary statistics
-  mtd_selection_table <- table(mtd_selection)
+  mtd_selection_table <- table(factor(mtd_selection, levels = 1:length(true_tox)))
   true_mtd <- which.min(round(abs(target_tox-true_tox),10))
   pcs <- mtd_selection_table[true_mtd] / sum(mtd_selection_table)
   obs_tox_overall <- sum(observe_tox)/sum(patient_allocation)
@@ -179,8 +179,14 @@ three_plus_three <- function (target_tox, number_trials, true_tox, arrival_rate,
   sd_cohort_b <- 0
   mean_duration = mean(study_duration)
   sd_duration = sd(study_duration)
+  median_duration = median(study_duration)
+  q1_duration = quantile(study_duration,0.25)
+  q3_duration = quantile(study_duration, 0.75)
   
-  df <- data.frame("design"="3+3", "true_tox"=true_tox, "true_mtd"=true_mtd, "mtd"=mtd_selection_table,"patient_allocation_table"=patient_allocation_table, "obs_tox_table"=obs_tox_table)
+  df <- data.frame("design"="3+3", "true_tox"=true_tox, "true_mtd"=true_mtd, 
+                   "mtd"=mtd_selection_table,
+                   "patient_allocation_table"=patient_allocation_table, 
+                   "obs_tox_table"=obs_tox_table)
   
   finish <- Sys.time()
   time_taken <- finish - start
@@ -194,7 +200,7 @@ three_plus_three <- function (target_tox, number_trials, true_tox, arrival_rate,
                  mtd_selection_table = mtd_selection_table, true_mtd=true_mtd, pcs=pcs, obs_tox_overall=obs_tox_overall,
                  mean_obs_n=mean_obs_n, min_obs_n=min_obs_n, max_obs_n=max_obs_n,
                  patient_allocation_table=patient_allocation_table, obs_tox_table=obs_tox_table, mean_cohort_b=mean_cohort_b, sd_cohort_b=sd_cohort_b,
-                 mean_duration=mean_duration, sd_duration=sd_duration, time_taken=time_taken)
+                 mean_duration=mean_duration, sd_duration=sd_duration, time_taken=time_taken, median_duration=median_duration, q1_duration=q1_duration, q3_duration=q3_duration)
   return(result)
   
 }

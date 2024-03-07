@@ -21,7 +21,7 @@ my_boin <- function(prior, target_tox, number_trials, true_tox, arrival_rate,
   
   ##############################################
   # Hard coded target_crm parameter = 0.
-  # target_crm <- 0
+  target_crm <- 0
   ##############################################
   
   start_time <- proc.time()
@@ -43,7 +43,7 @@ my_boin <- function(prior, target_tox, number_trials, true_tox, arrival_rate,
       BOIN_col <- BOINtable$full_boundary_tab[, which(BOINtable$full_boundary_tab[1,]==num_treated)] #select the column for num_treated
     }
     
-    if(cohort_size==1) {
+    if(num_treated<=2) {
       if(num_DLT <= BOIN_col[2]) { #Escalate        
         current_dose = current_dose+1           
         # Check if dose is eliminated 
@@ -59,15 +59,8 @@ my_boin <- function(prior, target_tox, number_trials, true_tox, arrival_rate,
         d = current_dose
         
         study_end=0
-      } else if ((num_DLT >= BOIN_col[3] & is.na(BOIN_col[4])) | 
-                 (num_DLT >= BOIN_col[3] & num_DLT < BOIN_col[4])) { #De-escalate   
+      } else if (num_DLT >= BOIN_col[3]) { #De-escalate   
         current_dose = current_dose-1 
-        d = current_dose
-        study_end=0
-      } else if (num_DLT >= BOIN_col[4]) { #Eliminate  
-        elim.dose = current_dose ## Keep track that the current dose level is eliminated
-        #print(c("Eliminated dose", elim.dose))
-        current_dose = current_dose-1
         d = current_dose
         study_end=0
       } else { #Stay   
@@ -99,8 +92,7 @@ my_boin <- function(prior, target_tox, number_trials, true_tox, arrival_rate,
         d = current_dose
         
         study_end=0
-      } else if ((num_DLT >= BOIN_col[3] & is.na(BOIN_col[4])) | 
-                 (num_DLT >= BOIN_col[3] & num_DLT < BOIN_col[4])) { #De-escalate   
+      } else if (num_DLT >= BOIN_col[3] & num_DLT < BOIN_col[4]) { #De-escalate   
         current_dose = current_dose-1 
         d = current_dose
         study_end=0
@@ -213,7 +205,7 @@ my_boin <- function(prior, target_tox, number_trials, true_tox, arrival_rate,
     
   }
   
-  mtd_selection_table <- table(mtd_selection)
+  mtd_selection_table <- table(factor(mtd_selection, levels = 1:length(true_tox)))
   true_mtd <- which.min(round(abs(target_tox-true_tox),10))
   pcs <- mtd_selection_table[true_mtd] / sum(mtd_selection_table)
   obs_tox_overall <- sum(observe_tox)/sum(patient_allocation)
@@ -228,6 +220,9 @@ my_boin <- function(prior, target_tox, number_trials, true_tox, arrival_rate,
   sd_cohort_b = NA
   mean_duration = mean(study_duration)
   sd_duration = sd(study_duration)
+  median_duration = median(study_duration)
+  q1_duration = quantile(study_duration,0.25)
+  q3_duration = quantile(study_duration, 0.75)
   
   # print(c("true_tox:", true_tox))
   # print(c("true_mtd:", true_mtd))
@@ -247,18 +242,19 @@ my_boin <- function(prior, target_tox, number_trials, true_tox, arrival_rate,
   
   result <- list(df=df, prior=prior, target_tox=target_tox, number_trials=number_trials, true_tox=true_tox, arrival_rate=arrival_rate, 
                  prop_b=prop_b, min_cohort_b=min_cohort_b, cycle_length=cycle_length, cohort_size=cohort_size, max_n=max_n, start_level=start_level, 
-                 total_patients=total_patients, num_cohort_a_patients=0, num_cohort_b_patients=0,
-                 num_group_1_patients=0, num_group_2_patients=0, results_num_dose_changes=0, mtd_selection=mtd_selection,
+                 total_patients=total_patients, num_cohort_a_patients=NA, num_cohort_b_patients=NA,
+                 num_group_1_patients=NA, num_group_2_patients=NA, results_num_dose_changes=NA, mtd_selection=mtd_selection,
                  study_duration=study_duration, observe_tox=observe_tox, patient_allocation=patient_allocation, mean_obs_n=mean_obs_n, min_obs_n=min_obs_n, max_obs_n=max_obs_n,
                  
                  mtd_selection_table = mtd_selection_table, true_mtd=true_mtd, pcs=pcs, obs_tox_overall=obs_tox_overall, patient_allocation_table=patient_allocation_table, obs_tox_table=obs_tox_table,
-                 mean_cohort_b=0, sd_cohort_b=0, mean_duration=mean_duration, sd_duration=sd_duration, time_taken=time_taken)
+                 mean_cohort_b=NA, sd_cohort_b=NA, mean_duration=mean_duration, sd_duration=sd_duration, time_taken=time_taken,
+                 pt=pt, BOINtable=BOINtable, median_duration=median_duration, q1_duration=q1_duration, q3_duration=q3_duration)
   return(result)
 }
 
 
 # # Example: -------------------------------------
 # 
-# boin_result <- my_boin(prior=c(0.05,0.1,0.2,0.3), target_tox=0.2, number_trials=3, 
-#                        true_tox=c(0.05,0.12,0.20,0.30), arrival_rate=15, 
-#                        cycle_length=28, cohort_size=3, max_n=18, start_level=2)
+boin_result <- my_boin(prior=c(0.05,0.1,0.2,0.3), target_tox=0.2, number_trials=100,
+                       true_tox=c(0.05,0.12,0.20,0.30), arrival_rate=15,
+                       cycle_length=28, cohort_size=2, max_n=100, start_level=3)

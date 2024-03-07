@@ -23,7 +23,7 @@ To evaluate the operating characteristics of the following dose escalation desig
 
 # Methods:
 
-Trial operating characteristics are averaged over **`r params$m[1]`** simulated trials. Simulated trials have **`r params$m[2]`** dose levels labeled **`r dQuote(params$m[3])`**, starting on dose level **`r dQuote(params$m[4])`**, and assuming true toxicity probabilities of **`r params$m[5]`**. The target toxicity probability is **`r params$m[6]`**. One patient arrives every **`r params$m[7]`** days on average. The DLT observation period is **`r params$m[8]`** days.
+Trial operating characteristics are averaged over **`r params$m[1]`** simulated trials. Simulated trials have **`r params$m[2]`** dose levels labeled **`r dQuote(params$m[3])`**, starting on dose level **`r dQuote(params$m[4])`**, and assuming true toxicity probabilities of **`r params$m[5]`**. The target toxicity probability is **`r params$m[6]`**. One patient arrives every **`r params$m[7]`** days on average. The DLT observation period is **`r params$m[8]`** days. The seed is **`r params$m[14]`**. 
 
 <!-- Test if TARGET-CRM/CRM/BOIN is a Design Used -->
 ```{r, echo=FALSE}
@@ -37,7 +37,7 @@ if("TARGET-CRM" %in% params$d | "CRM" %in% params$d | "BOIN" %in% params$d) {
 <!-- Only Show if TARGET-CRM/CRM/BOIN is Selected -->
 `r if(!show_text_methods) {"<!--"}`
 
-For the TARGET-CRM and/or CRM, BOIN design, the prior toxicity probabilities per dose level are **`r params$m[9]`**. The cohort size is **`r params$m[10]`** and the maximum sample size is **`r params$m[11]`**. Patients belong to one of two cohorts: Cohort A or Cohort B. Patients with pre-specified characteristics (e.g. tumor type, tumor mutation) belong to Cohort B; all other patients belong to Cohort A. The TARGET-CRM design allows enrollment of Cohort B patients at one dose level below the current dose during the DLT observation period of the current cohort of patients. The proportion of patients from Cohort B is **`r params$m[12]`**. Simulated trials using the TARGET-CRM and/or CRM designs are required to have a minimum enrollment of **`r params$m[13]`** Cohort B patients.
+For the TARGET-CRM and/or CRM, BOIN design, the prior toxicity probabilities per dose level are **`r params$m[9]`**. The cohort size is **`r params$m[10]`** and the maximum sample size is **`r params$m[11]`**. Patients belong to one of two cohorts: Cohort A or Cohort B. Patients with pre-specified characteristics (e.g. tumor type, tumor mutation) belong to Cohort B; all other patients belong to Cohort A. The TARGET-CRM design allows enrollment of Cohort B patients at one dose level below the current dose during the DLT observation period of the current cohort of patients. The proportion of patients from Cohort B is **`r params$m[12]`**. Simulated trials using the TARGET-CRM and/or CRM designs are required to have a minimum enrollment of **`r params$m[13]`** Cohort B patients. 
 
 
 `r if(!show_text_methods) {"-->"}`
@@ -62,7 +62,7 @@ if(length(params$d)==1) {
 
 **Patient Allocation:** Figure 3 presents the proportion of patients assigned to each dose level. The proportion of patients assigned to the true MTD (dose level **`r dQuote(params$r[5])`**) for the **`r params$d`** design is **`r params$r[6]`**.
 
-**Study Duration:** Figure 4 presents the mean (+/- standard deviation) study duration in days for each design. The mean study duration for the **`r params$d`** design is **`r params$r[7]`** (standard deviation = **`r params$r[8]`**).
+**Study Duration:** Figure 4 presents the mean (+/- standard deviation) study duration in days for each design. The mean study duration for the **`r params$d`** design is **`r params$r[7]`** (standard deviation = **`r params$r[8]`**). The median study duration for the **`r params$d`** design is **`r params$r[15]`** (IQR = **`r params$r[16]`**-**`r params$r[17]`**).
 
 Table 1 presents a summary of the operating characteristics for each design.
 
@@ -75,11 +75,11 @@ Table 1 presents a summary of the operating characteristics for each design.
 
 **Accuracy:** For each dose level, Figure 1 presents the proportion of simulated trials that a given dose level was selected as the true MTD. The **`r params$r[1]`** design has the greatest probability of selecting the true MTD (dose level **`r dQuote(params$r[2])`**). `r params$r[3]`
 
-**Safety:** Figure 2 presents the proportion of patients experiencing a DLT for each dose level. `r params$r[4]`
+**Safety:** Table 1 presents the overall proportion of patients experiencing a DLT across all dose levels.  `r params$r[4]` Figure 2 presents the proportion of patients experiencing a DLT for each dose level.
 
 **Patient Allocation:** Figure 3 presents the proportion of patients assigned to each dose level. The **`r params$r[5]`** design has the greatest probability of assigning patients at the true MTD (dose level **`r dQuote(params$r[2])`**). `r params$r[6]`
 
-**Study Duration:** Figure 4 presents the mean (+/- standard deviation) study duration in days for each design. The **`r params$r[7]`** design has the shortest mean study duration. `r params$r[8]`
+**Study Duration:** Figure 4 presents the mean (+/- standard deviation) study duration in days for each design. The **`r params$r[7]`** design has the shortest mean study duration. `r params$r[8]``r params$r[13]`
 
 Table 1 presents a summary of the operating characteristics for each design.
 
