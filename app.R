@@ -166,13 +166,13 @@ ui <- page_navbar(title = "DEDUCE", theme = bs_theme(version = 3), bg = "white",
                                    #### Set seed ------------------
                                    textInput(
                                      "dt_setseed",
-                                     div(p(class = "help-p", "Seed"), HTML('<button id="dt-setseed-help" class="help-btn" type="button">?</button>')),
-                                     value = "YYYYMMDD", width = "100%"
+                                     div(p(class = "help-p", "Random Seed (Optional)"), HTML('<button id="dt-setseed-help" class="help-btn" type="button">?</button>')),
+                                     value = format(Sys.Date(), "%Y%m%d"), width = "100%"
                                    ),
                                    bsPopover(
                                      "dt-setseed-help", "",
-                                     "Please enter the seed for simulation (format YYYYMMDD).",
-                                     placement = "top", trigger = "focus"
+                                     "The random seed defaults to the current date. Setting it to a value used previously will permit replication of previous results.",
+                                     placement = "bottom", trigger = "focus"
                                    ),
                                    
                                    #### Designs ---------------------
@@ -183,7 +183,7 @@ ui <- page_navbar(title = "DEDUCE", theme = bs_theme(version = 3), bg = "white",
                                    ),
                                    bsPopover(
                                      "dt-designs-help", "",
-                                     "Select the design(s) to run in the model. For 3+3 design, a cohort of 3 will be always used.",
+                                     "Select the design(s) to run in the model. For the 3+3 design, a cohort size of 3 will be always used.",
                                      placement = "top", trigger = "focus"
                                    ),
                                    
@@ -323,7 +323,7 @@ ui <- page_navbar(title = "DEDUCE", theme = bs_theme(version = 3), bg = "white",
                                      ),
                                      bsPopover(
                                        "dt-cohort-size-help", "",
-                                       "Please enter the cohort size. The cohort size is the number of patients to be treated at the current dose level before a dose escalation decision is made. For 3+3 design, a cohort of 3 will be always used.",
+                                       "Please enter the cohort size. The cohort size is the number of patients to be treated at the current dose level before a dose escalation decision is made. For the 3+3 design, a cohort size of 3 will be always used.",
                                        placement = "top", trigger = "focus"
                                      )
                                    ),
@@ -1212,7 +1212,7 @@ server <- function(input, output, session) {
   ### Plots ---------------------
   
   # Plot1
-  dt_plot_1_val <- reactive({
+  dt_plot_1_val <- eventReactive(input$dt_simulate, {
     ggplot() + 
       geom_bar(data = dt_plot_df() %>% 
                  mutate(mtd_prop=mtd.Freq/input$dt_num_trials), 
@@ -1238,7 +1238,7 @@ server <- function(input, output, session) {
   })
   
   # Plot2
-  dt_plot_2_val <- reactive({
+  dt_plot_2_val <- eventReactive(input$dt_simulate, {
     ggplot() + 
       geom_bar(data = dt_plot_df(), 
                aes(x=dose_level, y=obs_tox_table, fill=design), 
@@ -1263,7 +1263,7 @@ server <- function(input, output, session) {
   })
   
   # Plot3
-  dt_plot_3_val <- reactive({
+  dt_plot_3_val <- eventReactive(input$dt_simulate, {
     ggplot() + 
       geom_bar(data=dt_plot_df(), 
                aes(x=dose_level, y=patient_allocation_table, fill=design), 
@@ -1286,7 +1286,7 @@ server <- function(input, output, session) {
   })
   
   # Plot4
-  dt_plot_4_val <- reactive({
+  dt_plot_4_val <- eventReactive(input$dt_simulate, {
     dt_plot_df2() %>%
       ggplot(aes(x=design, y=mean_duration)) + 
       geom_bar(aes(fill=design), stat="identity", position="dodge", width=0.3) + 
@@ -1312,7 +1312,7 @@ server <- function(input, output, session) {
     for (v in seq(1, length(dt_selected_design_names()))) {
       if (dt_function_outputs()[[v]]$df$design[1] == "3+3") {
         
-        x <- round(unname(c(null_to_na(dt_function_outputs()[[v]]$pcs), null_to_na(as.numeric(unlist(strsplit(input$dt_dose_labels, ","))[dt_function_outputs()[[v]]$true_mtd])), 
+        x <- round(unname(c(null_to_na(dt_function_outputs()[[v]]$pcs), #null_to_na(as.numeric(unlist(strsplit(input$dt_dose_labels, ","))[dt_function_outputs()[[v]]$true_mtd])), 
                             dt_function_outputs()[[v]]$mtd_selection_table/dt_function_outputs()[[v]]$number_trials, 
                             null_to_na(dt_function_outputs()[[v]]$obs_tox_overall), dt_function_outputs()[[v]]$obs_tox_table, 
                             null_to_na(dt_function_outputs()[[v]]$mean_obs_n), null_to_na(dt_function_outputs()[[v]]$min_obs_n), 
@@ -1323,7 +1323,7 @@ server <- function(input, output, session) {
         x_name <- dt_function_outputs()[[v]]$df$design[1]
       }
       else {
-        x <- round(unname(c(null_to_na(dt_function_outputs()[[v]]$pcs), null_to_na(as.numeric(unlist(strsplit(input$dt_dose_labels, ","))[dt_function_outputs()[[v]]$true_mtd])), 
+        x <- round(unname(c(null_to_na(dt_function_outputs()[[v]]$pcs), #null_to_na(as.numeric(unlist(strsplit(input$dt_dose_labels, ","))[dt_function_outputs()[[v]]$true_mtd])), 
                             dt_function_outputs()[[v]]$mtd_selection_table/dt_function_outputs()[[v]]$number_trials, 
                             null_to_na(dt_function_outputs()[[v]]$obs_tox_overall), dt_function_outputs()[[v]]$obs_tox_table, 
                             null_to_na(dt_function_outputs()[[v]]$mean_obs_n), null_to_na(dt_function_outputs()[[v]]$min_obs_n), 
@@ -1339,13 +1339,13 @@ server <- function(input, output, session) {
       
     }
     df <- as.data.frame(do.call(cbind, table_list))
-    op_chars <- c("Proportion of correct selection (PCS)", "True MTD", 
+    op_chars <- c("Proportion of correct selection (PCS)", #"True MTD (dose level)", 
                   sprintf("Proportion of trials selecting dose %s as true MTD", unlist(strsplit(input$dt_dose_labels, ","))),
                   "Proportion of patients experiencing a DLT overall", sprintf("Proportion of patients experiencing a DLT at dose %s", unlist(strsplit(input$dt_dose_labels, ","))),
                   "Mean total sample size", "Minimmum total sample size", "Maximum total sample size", 
                   sprintf("Proportion of patients enrolled at dose %s", unlist(strsplit(input$dt_dose_labels, ","))), "Mean study duration in days", 
                   "Standard deviation of study duration in days", "Median study duration in days", "25% percentile study duration in days", "75% percentile study duration in days",
-                  "Mean # of cohort B patients enrolled during DTL observation period (TARGET-CRM only)",
+                  "Mean # of cohort B patients enrolled during DLT observation period (TARGET-CRM only)",
                   "Standard deviation of # of cohort B patients enrolled during DLT observation period (TARGET-CRM only)")
     df <- cbind(op_chars, df)
     colnames(df)[1] <- "Operating Characteristic"
@@ -1429,11 +1429,11 @@ server <- function(input, output, session) {
       x5 <- dt_results_df() %>% slice_max(patmtd) %>% select(design) %>% pull()
       x6 <- paste(sprintf("The proportion of patients assigned to the true MTD for the %s design is %g.", dt_results_df()$design, dt_results_df()$patmtd), collapse = " ")
       x7 <- dt_results_df() %>% slice_min(mean_duration) %>% select(design) %>% pull()
-      x8 <- paste(sprintf("The mean study duration for the %s design is %g days(SD=%g).", dt_results_df()$design, dt_results_df()$mean_duration, 
+      x8 <- paste(sprintf("The mean study duration for the %s design is %g days (SD=%g).", dt_results_df()$design, dt_results_df()$mean_duration, 
                           dt_results_df()$sd_duration), collapse = " ")
       x9 <- paste(sprintf("The mean total sample size for the %s design is %g (range=%g-%g).", dt_results_df()$design, 
                           dt_results_df()$mean_obs_n, dt_results_df()$min_obs_n, dt_results_df()$max_obs_n), collapse = " ")
-      x13 <- paste(sprintf("The median study duration for the %s design is %g days(IQR=%g-%g).", dt_results_df()$design, dt_results_df()$median_duration, 
+      x13 <- paste(sprintf("The median study duration for the %s design is %g days (IQR=%g-%g).", dt_results_df()$design, dt_results_df()$median_duration, 
                           dt_results_df()$q1_duration, dt_results_df()$q3_duration), collapse = " ")
       
       
