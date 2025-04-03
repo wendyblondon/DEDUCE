@@ -9,7 +9,7 @@ library(dplyr)
 library(ggplot2)
 library(rmarkdown)
 library(DT)
-library(future)
+#library(future)
 library(paletteer)
 
 # Adding External Files
@@ -1170,7 +1170,8 @@ server <- function(input, output, session) {
       finaldf <- bind_rows(fun_list)
       finaldf$dose_level <- factor(unlist(strsplit(input$dt_dose_labels, ",")), 
                                    levels=unlist(strsplit(input$dt_dose_labels, ",")))
-      finaldf$design <- as.factor(finaldf$design)
+      #finaldf$design <- as.factor(finaldf$design)
+      finaldf$design <- factor(finaldf$design, levels = c("3+3","CRM","BOIN","TARGET-CRM"))
       finaldf$dose_num <- rep(seq(1, length(unlist(strsplit(input$dt_dose_labels, ",")))), 
                               length(dt_selected_design_names()))
       
@@ -1247,7 +1248,7 @@ server <- function(input, output, session) {
                  filter(dose_num == true_mtd), 
                aes(x=dose_level, y=obs_tox_table, fill=design, 
                    color=as.factor(true_mtd)), stat="identity", position="dodge", linewidth=2) +
-      geom_hline(aes(yintercept=input$dt_target_tox), linetype="dashed") + 
+      geom_hline(aes(yintercept=isolate(input$dt_target_tox)), linetype="dashed") + 
       guides(color = FALSE) +
       scale_color_manual(name="True MTD", values=c("black"), labels=NULL) + 
       scale_fill_manual(values = c("#79AF97", "#C93312", "#6A6599", "#FFDC91")) +
@@ -1342,7 +1343,7 @@ server <- function(input, output, session) {
     op_chars <- c("Proportion of correct selection (PCS)", #"True MTD (dose level)", 
                   sprintf("Proportion of trials selecting dose %s as true MTD", unlist(strsplit(input$dt_dose_labels, ","))),
                   "Proportion of patients experiencing a DLT overall", sprintf("Proportion of patients experiencing a DLT at dose %s", unlist(strsplit(input$dt_dose_labels, ","))),
-                  "Mean total sample size", "Minimmum total sample size", "Maximum total sample size", 
+                  "Mean total sample size", "Minimum total sample size", "Maximum total sample size", 
                   sprintf("Proportion of patients enrolled at dose %s", unlist(strsplit(input$dt_dose_labels, ","))), "Mean study duration in days", 
                   "Standard deviation of study duration in days", "Median study duration in days", "25% percentile study duration in days", "75% percentile study duration in days",
                   "Mean # of cohort B patients enrolled during DLT observation period (TARGET-CRM only)",
